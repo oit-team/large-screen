@@ -250,7 +250,7 @@ export default {
 .logoBox{
   width: 220px;
   height:40px;
-  background:url('~@/assets/images/logo.png') 0 center no-repeat ;
+  background:url('~@/assets/logo.png') 0 center no-repeat ;
   background-size: 35px;
 
   >span{

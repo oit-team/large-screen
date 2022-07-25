@@ -41,7 +41,7 @@ VueRouter.prototype.replace = function replace(location) {
   return routerReplace.call(this, location).catch(error => error)
 }
 router.beforeEach((to, from, next) => {
-  document.title = '宝赢轩'
+  document.title = '立得'
   if (to.meta.requiresAuth) {
     if (sessionStorage.userId) {
       if (to.path !== '/' && to.path !== '/index') {

@@ -24,7 +24,7 @@
             <span @click.stop.prevent>
               <el-switch
                 :disabled="roomList.length == 0"
-                active-color="#D50000"
+                active-color="#8d1323"
                 inactive-color="#BFBFBF"
                 @change='menuChange(item)'
                 v-model="item.state == 0">
@@ -32,7 +32,7 @@
             </span>
           </div>
         </el-button>
-        
+
       </div>
     </el-aside>
     <el-container id="Content">
@@ -48,7 +48,7 @@
                 <span @click.stop.prevent>
                   <el-switch
                     :disabled='inDuringDate'
-                    active-color="#D50000"
+                    active-color="#8d1323"
                     inactive-color="#BFBFBF"
                     @change='menuChange(item, 1)'
                     v-model="item.state == 0">
@@ -72,8 +72,8 @@
           <div class="AuctionManage">
             <span>预约人数：{{relationInfo.appointedNum}}人</span>
             <span>抢购人数：{{relationInfo.auctionNum}}人</span>
-            <span>积分限制：<span style="color:#D50000;cursor:pointer" @click="openRelationDrawer">{{relationInfo.integralLimit}}<i style="margin-left:4px;" class="el-icon-edit"></i></span></span>
-            <span>宝玉限制：<span style="color:#D50000;cursor:pointer" @click="openRelationDrawer">{{relationInfo.byLimit}}<i style="margin-left:4px;" class="el-icon-edit"></i></span></span>
+            <span>积分限制：<span style="color:#8d1323;cursor:pointer" @click="openRelationDrawer">{{relationInfo.integralLimit}}<i style="margin-left:4px;" class="el-icon-edit"></i></span></span>
+            <span>宝玉限制：<span style="color:#8d1323;cursor:pointer" @click="openRelationDrawer">{{relationInfo.byLimit}}<i style="margin-left:4px;" class="el-icon-edit"></i></span></span>
           </div>
           <div>
             <el-checkbox-group id="ImgList" class='scrollbar' v-model="checkList">
@@ -263,7 +263,7 @@ export default {
   created() {
   },
   mounted() {
-    this.getConferenceHall() 
+    this.getConferenceHall()
   },
   activated() {},
   watch: {
@@ -381,7 +381,7 @@ export default {
               _this.roomClick()
             }
           }
-          
+
           _this.closeDialog()
         } else {
           _this.$message({
@@ -540,7 +540,7 @@ export default {
           })
         })
       }).catch(() => {
-        
+
       })
     },
     getCalculatePrice (){
@@ -551,7 +551,7 @@ export default {
               message: '请勾选商品',
               type: 'warning',
             })
-            return 
+            return
           }
           const _this = this
           this.CalculatePrice = JSON.parse(JSON.stringify(this.ruleForm)) //复制一份请求的起拍价等信息
@@ -574,7 +574,7 @@ export default {
         }
       })
     },
-    
+
     addGoodsAndPriceDetailed() {
       const _this = this
       if (_this.checkList.length == 0) {
@@ -582,7 +582,7 @@ export default {
           message: '请选择商品',
           type: 'warning',
         })
-        return 
+        return
       }
       this.$confirm('请确认保存价格?', '提示', {
         confirmButtonText: '确定',
@@ -628,12 +628,12 @@ export default {
               type: 'warning',
             })
           }
-          
+
         }).catch(err => {
           console.log(err)
         })
       }).catch(()=>{
-        
+
       })
     },
     setgoodsManage(con){
@@ -713,14 +713,14 @@ export default {
           this.ruleForm.premiumRatio = goodsInfo.premiumRatio
           this.ruleForm.depositRatio = goodsInfo.depositRatio
           this.ruleForm.integralRatio = goodsInfo.integralProportion
-          this.CalculatePrice = JSON.parse(JSON.stringify(this.ruleForm)) 
+          this.CalculatePrice = JSON.parse(JSON.stringify(this.ruleForm))
           this.prices = goodsInfo.price
         }
       } else{
         this.prices = [];
         this.$refs.ruleForm.resetFields();
       }
-      
+
     }
   },
 }
@@ -767,7 +767,7 @@ export default {
           float: unset;
           margin: 0 auto;
         }
-        
+
         >.el-button{
           width:100%;
           margin-left:0px;
@@ -821,7 +821,7 @@ export default {
         >.el-button.active{
           background:#F7F7F7;
           .left{
-            background:#D50000;
+            background:#8d1323;
           }
           .center{
             >span:nth-child(1){
@@ -893,13 +893,13 @@ export default {
           padding-left:18px;
           padding-bottom: 20px;
           .el-button{
-            background:#D50000;
-            border:1px solid #D50000;
+            background:#8d1323;
+            border:1px solid #8d1323;
           }
         }
       }
     }
-    
+
     body > .el-container {
       margin-bottom: 40px;
     }
@@ -926,7 +926,7 @@ export default {
         margin-bottom: 0px;
         .active{
           span{
-            color: #D50000;
+            color: #8d1323;
           }
         }
         >div:not(:last-child){
@@ -1059,5 +1059,5 @@ export default {
   #elMain{
     padding:0px;
   }
-  
+
 </style>

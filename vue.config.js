@@ -6,11 +6,10 @@ module.exports = {
   lintOnSave: false, // eslint 是否在保存时检查
   assetsDir: 'static', // 配置js、css静态资源二级目录的位置
   devServer: {
-    port: 2051,
+    port: 2061,
     proxy: {
       '/api': {
-        target: 'http://192.168.9.67:11011',
-        // target: 'http://home.zjbyxpm.com:8082/api',
+        target: 'http://192.168.9.12:11011',
         changeOrigin: true,
         pathRewrite: {'^/api': ''}
       }

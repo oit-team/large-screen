@@ -2,7 +2,7 @@
   <el-header>
     <div class="system">
       <div class="logoBox">
-        <span>宝赢轩管理系统</span>
+        <span>立得管理系统</span>
       </div>
     </div>
     <div class="navBox">
@@ -132,7 +132,7 @@ export default {
     },
     pageTo(val) {
       if (this.activeIndex === val.menuId){
-        return 
+        return
       } else if (!val.menuType) {
         this.activeIndex = val.menuId
       }
@@ -159,17 +159,17 @@ export default {
 @import "src/styles/element-variables";
 
 .el-menu-item:not(.is-disabled):hover{
-  border-bottom: 2px solid #D50000!important;
-  color:#D50000!important;
+  border-bottom: 2px solid #8d1323!important;
+  color:#8d1323!important;
   background:#fff!important;
 }
 .el-menu-item:not(.is-disabled):focus{
-  border-bottom: 2px solid #D50000!important;
-  color:#D50000!important;
+  border-bottom: 2px solid #8d1323!important;
+  color:#8d1323!important;
   background:#fff!important;
 }
 .is-active{
-  border-bottom:2px solid #D50000!important;
+  border-bottom:2px solid #8d1323!important;
 }
 .el-header {
   z-index: 1;
@@ -201,7 +201,7 @@ export default {
       height:53px;
     }
     .is-active{
-      color:#D50000;
+      color:#8d1323;
     }
   }
   >.account{
@@ -250,16 +250,17 @@ export default {
 .logoBox{
   width: 220px;
   height:40px;
-  background:url('~@/assets/images/logo3.svg') 0 center no-repeat ;
-  
+  background:url('~@/assets/images/logo.png') 0 center no-repeat ;
+  background-size: 35px;
+
   >span{
     font-size:20px;
     font-weight: bolder;
     display: inline-block;
     line-height: 40px;
     margin-left:40px;
-    
-    
+
+
   }
 }
 </style>

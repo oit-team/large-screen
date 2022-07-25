@@ -5,8 +5,8 @@
         <div class="LoginBox">
           <div class="headBox">
             <div class="head_img">
-              <img src="../assets/images/logo3.svg">
-              <span>宝赢轩</span>
+              <img src="../assets/images/logo.png" height="35" width="35">
+              <span>立得拍卖</span>
             </div>
           </div>
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm">

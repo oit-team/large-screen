@@ -32,7 +32,7 @@
             <span @click.stop.prevent>
               <el-switch
                 :disabled="roomList.length == 0"
-                active-color="#D50000"
+                active-color="#8d1323"
                 inactive-color="#BFBFBF"
                 @change='menuChange(item)'
                 v-model="item.state == 0">
@@ -71,7 +71,7 @@
                 <span @click.stop.prevent>
                   <el-switch
                     :disabled='inDuringDate'
-                    active-color="#D50000"
+                    active-color="#8d1323"
                     inactive-color="#BFBFBF"
                     @change='menuChange(item, 1)'
                     v-model="item.state == 0">
@@ -87,8 +87,8 @@
             <span>预约人数（有券）：{{relationInfo.haveTicketAppointedNum || 0}}人</span>
             <span>预约人数（无券）：{{relationInfo.noTicketAppointedNum || 0}}人</span>
             <span>抢购人数：{{relationInfo.auctionNum}}人</span>
-            <span>积分限制：<span style="color:#D50000;cursor:pointer" @click="openRelationDrawer">{{relationInfo.integralLimit}}<i style="margin-left:4px;" class="el-icon-edit"></i></span></span>
-            <span>宝玉限制：<span style="color:#D50000;cursor:pointer" @click="openRelationDrawer">{{relationInfo.byLimit}}<i style="margin-left:4px;" class="el-icon-edit"></i></span></span>
+            <span>积分限制：<span style="color:#8d1323;cursor:pointer" @click="openRelationDrawer">{{relationInfo.integralLimit}}<i style="margin-left:4px;" class="el-icon-edit"></i></span></span>
+            <span>宝玉限制：<span style="color:#8d1323;cursor:pointer" @click="openRelationDrawer">{{relationInfo.byLimit}}<i style="margin-left:4px;" class="el-icon-edit"></i></span></span>
           </div>
           <div>
             <el-checkbox-group id="ImgList" class='scrollbar' v-model="checkList">
@@ -98,7 +98,7 @@
                     <i class="el-icon-document-copy" @click="ClickCopy(item)" style="color: #e6a23c;"></i>
                   </el-tooltip>
                   <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                    <i class="el-icon-delete"  @click="deleteGoods(item)" style="color:#D50000"></i>
+                    <i class="el-icon-delete"  @click="deleteGoods(item)" style="color:#8d1323"></i>
                   </el-tooltip>
                 </span>
                 <div class="imgBox">
@@ -1281,7 +1281,7 @@ export default {
         >.el-button.active{
           background:#dedede;
           .left{
-            background:#D50000;
+            background:#8d1323;
           }
           .center{
             >span:nth-child(1){
@@ -1358,8 +1358,8 @@ export default {
         //   padding-left:18px;
         //   padding-bottom: 20px;
           .el-button{
-            background:#D50000;
-            border:1px solid #D50000;
+            background:#8d1323;
+            border:1px solid #8d1323;
             margin-left:28px;
           }
           .el-button:nth-child(1){
@@ -1397,7 +1397,7 @@ export default {
         margin-bottom: 0px;
         .active{
           span{
-            color: #D50000;
+            color: #8d1323;
           }
         }
         >div:not(:last-child){
@@ -1546,19 +1546,19 @@ export default {
       background-color: #fed1d1;
     }
     ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner{
-      background: #D50000;
+      background: #8d1323;
     }
     ::v-deep .el-checkbox__inner:hover{
-      border-color: #D50000;
+      border-color: #8d1323;
     }
     ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner{
-      border-color: #D50000;
+      border-color: #8d1323;
     }
     ::v-deep .el-checkbox__input.is-focus .el-checkbox__inner{
-      border-color: #D50000;
+      border-color: #8d1323;
     }
     ::v-deep .el-checkbox__input.is-checked + .el-checkbox__label{
-      color: #D50000;
+      color: #8d1323;
     }
 </style>
 <style>

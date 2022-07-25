@@ -1,0 +1,78 @@
+.pageCommonStyle{
+  width:100%;
+  margin:0 auto;
+  padding: 18px  18px 0 18px;
+  box-sizing: border-box;
+  background-color: #fff;
+  box-shadow: 0px 0px 5px  #ccc;
+  overflow: auto;
+}
+
+.addBtnOnly{
+  background-color:#4FD5AC;
+  border-color: #4FD5AC;
+}
+.addBtnOnly:hover{
+  background-color:rgb(78, 233, 186)!important;
+  border-color: rgb(78, 233, 186)!important;
+}
+.addBtnOnly.is-active {
+  background: red !important;
+}
+.authBtnOnly{
+  background-color:#FCCB02;
+  border-color: #FCCB02;
+}
+.authBtnOnly:hover{
+  background-color:rgb(250, 211, 53)!important;
+  border-color: rgb(250, 211, 53)!important;
+}
+
+.editBtnOnly{
+  background-color:#5EA1FE;
+  border-color: #5EA1FE;
+  /* padding:7px !important; */
+}
+.editBtnOnly:hover{
+  background-color:rgb(66, 143, 250)!important;
+  border-color: rgb(66, 143, 250)!important;
+}
+
+.delBtnOnly{
+  background-color:#FF8C7C;
+  border-color: #FF8C7C;
+}
+.delBtnOnly:hover{
+  background-color:rgb(250, 117, 100)!important;
+  border-color: rgb(250, 117, 100)!important;
+}
+.downLoadBtnOnly{
+  background-color: #ADA3EE;
+  border-color: #ADA3EE;
+}
+.downLoadBtnOnly:hover{
+  background-color:rgb(184, 174, 243)!important;
+  border-color: rgb(184, 174, 243)!important;
+}
+.el-page-header__content{
+  font-size: 14px;
+}
+
+.el-divider--horizontal{
+  margin:18px 0;
+}
+.el-table .el-table__cell{
+  padding:5px 0px;
+}
+.animate{
+  transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear; /* Firefox 4 */
+  -webkit-transition: all 0.2s linear; /* Safari 和 Chrome */
+  -o-transition: all 0.2s linear; /* Opera */
+}
+.el-table__fixed-right {
+  height: 100% !important;
+}
+.global-messageZindex{
+  z-index:3000 !important;
+}

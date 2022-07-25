@@ -1,0 +1,10 @@
+/**
+ * css样式重置文件
+ */
+@import "~modern-normalize/modern-normalize.css";
+
+ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}

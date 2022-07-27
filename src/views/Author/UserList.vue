@@ -8,8 +8,9 @@
       :requestUrl='requestUrl'
       @changeLoading='changeLoad'
       @sendData='showChildData'/>
+
     <div class="operateBtn" style="display: inline-block;">
-  
+      <el-button type="primary" @click="exportFile">导出</el-button>
     </div>
     <el-divider></el-divider>
     <el-table
@@ -85,6 +86,7 @@
 
 <script>
 import VcSearch from '../../components/basic/CommonSearch'
+import { downloadFile } from '@oit/utils'
 
 export default {
   components: {
@@ -104,6 +106,7 @@ export default {
       loading: true,
       tableData: [],
       headTitArr: [],
+      searchParams: {},
     }
   },
   created() {
@@ -161,6 +164,19 @@ export default {
   },
   watch: {},
   methods: {
+    // 导出用户列表
+     exportFile() {
+      this.$axios
+        .post(this.Api.getExportUser, this.GLOBAL.paramJson({
+          ...this.searchParams,
+        }), {
+          responseType: 'arraybuffer',
+        })
+        .then(res => {
+          const date = new Date().toLocaleDateString().replace(/\//g, '-')
+          downloadFile(res.data, `用户列表${date}.xls`)
+        })
+    },
     editCustomerItem(item, index) {
       this.editIndex = index
       this.$router.push({
@@ -208,7 +224,8 @@ export default {
     changeLoad(val) {
       this.loading = val
     },
-    showChildData(tableData, total, tableEmptyText, pageNum) {
+    showChildData(tableData, total, tableEmptyText, pageNum, params) {
+      this.searchParams = params
       if (tableData) {
         this.tableData = tableData
       }

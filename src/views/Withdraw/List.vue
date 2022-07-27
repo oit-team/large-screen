@@ -69,6 +69,8 @@
 </template>
 
 <script>
+import { downloadFile } from '@oit/utils'
+
 export default {
   name: 'WithdrawList',
 
@@ -93,6 +95,15 @@ export default {
     tablePageOption() {
       return {
         promise: this.loadData,
+        // 新增导出按钮
+        actions: [
+          {
+            name: '导出',
+            type: 'primary',
+            click: this.exportFile
+            // to: '/role/addRole',
+          },
+        ],
         table: {
           data: this.data.allWithdrawList,
           actions: {
@@ -151,6 +162,23 @@ export default {
   },
 
   methods: {
+    // 导出提现列表
+    exportFile() {
+      const params = this.$refs.table.getQueryParams()
+      delete params.pageNum
+      delete params.pageSize
+      this.$axios
+        .post(this.Api.getExportWithdrawRecord, this.GLOBAL.paramJson({
+          createId:this.createId,
+          ...params,
+        }), {
+          responseType: 'arraybuffer',
+        })
+        .then(res => {
+          const date = new Date().toLocaleDateString().replace(/\//g, '-')
+          downloadFile(res.data, `提现列表${date}.xls`)
+        })
+    },
     loadUserList($state) {
       this.$axios
         .post(this.Api.getWithdrawUserInfo, this.GLOBAL.paramJson({
@@ -169,7 +197,7 @@ export default {
         .catch($state.fail)
     },
     async loadData(params) {
-      this.$axios
+      return this.$axios
         .post(this.Api.getWithdrawApplyList, this.GLOBAL.paramJson({
           createId: this.createId,
           ...params,

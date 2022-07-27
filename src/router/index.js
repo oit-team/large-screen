@@ -33,7 +33,7 @@ const routes = [
         component: () => import('@/views/Home'),
       },
       {
-        path: 'Role/RoleList',
+        path: 'role/roleList',
         name: 'RoleList',
         meta: {
           title: '角色列表',
@@ -83,6 +83,16 @@ const routes = [
         component: () => import('@/views/Author/AuthorList'),
       },
       {
+        path: '/role/roleList',
+        name: 'RoleList',
+        meta: {
+          title: '角色管理',
+          keepAlive: true,
+          requiresAuth: true,
+        },
+        component: () => import('@/views/Role/RoleList'),
+      },
+      {
         path: 'author/userlist',
         name: 'UserList',
         meta: {
@@ -101,6 +111,26 @@ const routes = [
           requiresAuth: true,
         },
         component: () => import('@/views/Author/EditUserInfo'),
+      },
+      {
+        path: '/role/addRole',
+        name: 'RoleList',
+        meta: {
+          title: '角色管理',
+          keepAlive: true,
+          requiresAuth: true,
+        },
+        component: () => import('@/views/Role/addRole'),
+      },
+      {
+        path: '/role/roleUsersByRoleId',
+        name: 'roleUsersByRoleId',
+        meta: {
+          title: '角色管理',
+          keepAlive: true,
+          requiresAuth: true,
+        },
+        component: () => import('@/views/Role/RoleUsersByRoleId'),
       },
       {
         path: 'author/addauthor',

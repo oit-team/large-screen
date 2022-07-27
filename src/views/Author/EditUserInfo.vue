@@ -46,9 +46,11 @@
         <el-form-item label="宝玉" prop="bys">
           <el-input
             type="number"
-            v-model="ruleForm.bys"
+            readonly
+            :value="ruleForm.bys"
             placeholder="请输入宝玉"
             @input="ruleForm.bys = ruleForm.bys.substring(0, 10)"
+            @click.native="drawer = true"
             maxlength="10"
             style="width:100%;">
           </el-input>
@@ -56,9 +58,11 @@
         <el-form-item label="积分" prop="integral">
           <el-input
             type="number"
-            v-model="ruleForm.integral"
+            readonly
+            :value="ruleForm.integral"
             placeholder="请输入积分"
             @input="ruleForm.integral = ruleForm.integral.substring(0, 10)"
+            @click.native="drawer = true"
             maxlength="10"
             style="width:100%;">
           </el-input>
@@ -101,6 +105,43 @@
         <!-- <el-button size="small" icon="el-icon-refresh" v-if="!editFlag" @click="resetForm('ruleForm')">重置</el-button> -->
       </div>
     </el-form>
+
+    <el-drawer
+      title="编辑宝玉/积分"
+      :visible.sync="drawer"
+    >
+      <el-form class="px-6" label-position="top" :model="valueForm">
+        <el-form-item label="宝玉" prop="bys">
+          <el-input
+            type="number"
+            v-model="valueForm.bys"
+            placeholder="请输入宝玉"
+            @input="valueForm.bys = valueForm.bys.substring(0, 10)"
+            @click.native="drawer = true"
+            maxlength="10">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="积分" prop="integral">
+          <el-input
+            type="number"
+            v-model="valueForm.integral"
+            placeholder="请输入积分"
+            @input="valueForm.integral = valueForm.integral.substring(0, 10)"
+            @click.native="drawer = true"
+            maxlength="10">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="方式" prop="byAddType">
+          <el-radio-group v-model="valueForm.byAddType">
+            <el-radio :label="0" border>用户充值</el-radio>
+            <el-radio :label="1" border>平台赠送</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <div>
+          <el-button type="primary" class="w-full" @click="confirmValue()">确定</el-button>
+        </div>
+      </el-form>
+    </el-drawer>
   </div>
 </template>
 
@@ -132,6 +173,11 @@ export default {
         integral: '',
         recommender: '',
       },
+      valueForm: {
+        bys: '',
+        integral: '',
+        byAddType: 0,
+      },
       rules: {
         userName: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -148,6 +194,7 @@ export default {
           { max: 20, message: '最多输入20位数字/字母', trigger: 'blur' },
         ],
       },
+      drawer: false,
     }
   },
   created() {
@@ -183,6 +230,10 @@ export default {
             res.data.body.userInfo.recommender = res.data.body.userInfo.recommenderName
           }
           _this.ruleForm = res.data.body.userInfo
+
+          this.rawForm = Object.freeze(JSON.parse(JSON.stringify(_this.ruleForm)))
+          this.valueForm.bys = this.ruleForm.bys
+          this.valueForm.integral = this.ruleForm.integral
         } else {
           _this.$message({
             message: res.data.head.msg,
@@ -217,10 +268,19 @@ export default {
       _this.$refs[formName].validate((valid) => {
         if (valid) {
           let recommender = this.ruleForm.recommender == this.ruleForm.recommenderName ? '0' :this.ruleForm.recommender
+          let valueForm = {}
+
+          if (this.rawForm.bys !== this.ruleForm.bys || this.rawForm.integral !== this.ruleForm.integral) {
+            valueForm = {
+              bys: this.ruleForm.bys,
+              integral: this.ruleForm.integral,
+              byAddType: this.ruleForm.byAddType,
+            }
+          }
+
           let con = {
-            bys:this.ruleForm.bys,
-            integral:this.ruleForm.integral,
             recommender:recommender,
+            ...valueForm,
           }
           let encryPwd = ''
           if (_this.editFlag) {
@@ -272,6 +332,10 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
+    },
+    confirmValue() {
+      Object.assign(this.ruleForm, this.valueForm)
+      this.drawer = false
     },
   },
 }

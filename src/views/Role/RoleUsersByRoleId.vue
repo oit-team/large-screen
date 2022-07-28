@@ -55,16 +55,14 @@ export default {
   methods: {
     handleChange(value, direction, movedKeys) {
       if (direction === 'right') {
-        console.log('授权')
-        this.addUserAndRole(0, movedKeys)
+        this.addUserAndRole(0, movedKeys) // 授权
       } else if (direction === 'left') {
-        console.log('取消')
-        this.addUserAndRole(1, movedKeys)
+        this.addUserAndRole(1, movedKeys) // 取消
       }
     },
     addUserAndRole(type, value) {
-      console.log(type) //0--授权
-      console.log(value); // 角色id
+      // console.log(type) //0--授权
+      // console.log(value); // 角色id
       const con = {
         roleIds: this.roleId,
         userIds: value.toString(),
@@ -95,11 +93,8 @@ export default {
       const _this = this
       this.$axios.post(_this.Api.getRoleUserList, jsonParam).then((res) => {
         if (res.data.head.status === 0) {
-          console.log(res)
-          _this.allUserList = res.data.body.allUser
-          _this.associatedUser = res.data.body.isAssociatedUser
-          console.log(_this.allUserList)  //未授权的角色列表id
-          console.log(_this.associatedUser) // 已授权的列表
+          _this.allUserList = res.data.body.allUser  //未授权的角色列表id
+          _this.associatedUser = res.data.body.isAssociatedUser  // 已授权的列表
         } else {
           _this.$message({
             message: res.data.head.msg,
@@ -115,7 +110,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   >>>.el-transfer-panel{
     width: 300px;
   }

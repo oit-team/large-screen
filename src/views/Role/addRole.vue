@@ -77,7 +77,7 @@ export default {
       this.ruleForm = this.$route.query.item
     }else{
       this.title = "新增角色";
-      // this.ruleForm = {}
+      this.ruleForm = {}
       this.getHomeMenuList();//获取菜单树
     }
   },
@@ -208,8 +208,10 @@ export default {
         }
       });
     },
+    // 重置
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      this.$refs.tree.setCheckedKeys([]);
     }
   }
 }

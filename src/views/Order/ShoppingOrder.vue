@@ -1,5 +1,5 @@
 <template>
-  <div id="customerList" class="pageCommonStyle">
+  <div id="customerList" class="pageCommonStyle" style="height:100%;display: flex;flex-direction: column;">
     <vc-search
       ref="child"
       :headTitArr='headTitArr'
@@ -193,3 +193,6 @@ export default {
   },
 }
 </script>
+<style lang="scss" scope>
+
+</style>

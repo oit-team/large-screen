@@ -4,7 +4,7 @@
       <el-tab-pane label="购物订单" name="ShoppingOrder" id="shoppingOrder" style="height:100%">
         <vc-shoppingOrder></vc-shoppingOrder>
       </el-tab-pane>
-      <el-tab-pane label="竞拍订单" name="AuctionOrder">
+      <el-tab-pane label="竞拍订单" name="AuctionOrder" style="height:100%">
         <vc-auctionOrder></vc-auctionOrder>
       </el-tab-pane>
     </el-tabs>

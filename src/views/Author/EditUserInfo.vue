@@ -1,103 +1,114 @@
 <template>
-  <div id="addRole" class="pageCommonStyle" >
-    <el-page-header @back="goBack" :content="title"></el-page-header>
+  <div id="addRole" class="pageCommonStyle">
+    <el-page-header :content="title" @back="goBack"></el-page-header>
     <el-divider></el-divider>
     <el-form
-      style="margin-top: 20px"
       ref="ruleForm"
+      style="margin-top: 20px"
       :rules="rules"
       :model="ruleForm"
       label-width="90px"
-      label-position="left">
+      label-position="left"
+    >
       <div style="width: 50%;display: inline-block;float: left;border-right: 1px solid #DCDFE6;padding-right: 20px;">
         <el-form-item label="用户姓名">
-          <el-input v-model="ruleForm.userName" :disabled="true" placeholder="请输入用户姓名" style="width:100%;"></el-input>
+          <el-input v-model="ruleForm.userName" style="width:100%;" :disabled="true" placeholder="请输入用户姓名"></el-input>
         </el-form-item>
         <el-form-item v-if="editFlag" label="用户状态" prop="status">
-          <el-select filterable
+          <el-select
             v-model="ruleForm.status"
+            style="width:100%;"
+            filterable
             :disabled="true"
             placeholder="请选择用户状态"
-            style="width:100%;">
-            <el-option v-for="(item,index) in statusList"
+          >
+            <el-option
+              v-for="(item,index) in statusList"
               :key="index"
               :label="item.label"
-              :value="item.key">
+              :value="item.key"
+            >
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="推荐码">
-          <el-input v-model="ruleForm.invitationCode" :disabled="true" style="width:100%;"></el-input>
+          <el-input v-model="ruleForm.invitationCode" style="width:100%;" :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="推荐人">
           <el-select
+            v-model="ruleForm.recommender"
+            style="width:100%;"
             clearable
             filterable
-            v-model="ruleForm.recommender"
             placeholder="请选择推荐人"
-            style="width:100%;">
-            <el-option v-for="(item,index) in userList"
+          >
+            <el-option
+              v-for="(item,index) in userList"
               :key="index"
               :label="item.nickName"
-              :value="item.id">
+              :value="item.id"
+            >
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="宝玉" prop="bys">
           <el-input
+            style="width:100%;"
             type="number"
             readonly
             :value="ruleForm.bys"
             placeholder="请输入宝玉"
+            maxlength="10"
             @input="ruleForm.bys = ruleForm.bys.substring(0, 10)"
             @click.native="drawer = true"
-            maxlength="10"
-            style="width:100%;">
+          >
           </el-input>
         </el-form-item>
         <el-form-item label="积分" prop="integral">
           <el-input
+            style="width:100%;"
             type="number"
             readonly
             :value="ruleForm.integral"
             placeholder="请输入积分"
+            maxlength="10"
             @input="ruleForm.integral = ruleForm.integral.substring(0, 10)"
             @click.native="drawer = true"
-            maxlength="10"
-            style="width:100%;">
+          >
           </el-input>
         </el-form-item>
         <el-form-item label="密码" prop="passWord">
-          <el-input v-model="ruleForm.passWord" placeholder="请输入新密码" show-password style="width:100%;"></el-input>
+          <el-input v-model="ruleForm.passWord" style="width:100%;" placeholder="请输入新密码" show-password></el-input>
         </el-form-item>
 
       </div>
       <div style="width: 50%;display: inline-block;float: left;padding-left: 20px;">
         <el-form-item label="真实姓名">
-          <el-input v-model="ruleForm.nickName" :disabled="true" style="width:100%;"></el-input>
+          <el-input v-model="ruleForm.nickName" style="width:100%;" :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="出生日期">
-          <el-input v-model="ruleForm.birthDate" :disabled="true" style="width:100%;"></el-input>
+          <el-input v-model="ruleForm.birthDate" style="width:100%;" :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="性别">
-          <el-input v-if="ruleForm.sex == 0" :disabled="true" value="男" style="width:100%;"></el-input>
-          <el-input v-else-if="ruleForm.sex == 1" :disabled="true" value="女" style="width:100%;"></el-input>
-          <el-input v-else-if="ruleForm.sex == -1" :disabled="true" value="暂无" style="width:100%;"></el-input>
-          <el-input v-else :disabled="true" v-model="ruleForm.sex" style="width:100%;"></el-input>
+          <el-input v-if="ruleForm.sex == 0" style="width:100%;" :disabled="true" value="男"></el-input>
+          <el-input v-else-if="ruleForm.sex == 1" style="width:100%;" :disabled="true" value="女"></el-input>
+          <el-input v-else-if="ruleForm.sex == -1" style="width:100%;" :disabled="true" value="暂无"></el-input>
+          <el-input v-else v-model="ruleForm.sex" style="width:100%;" :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="电话号码">
-          <el-input v-model="ruleForm.telephone" :disabled="true" style="width:100%;"></el-input>
+          <el-input v-model="ruleForm.telephone" style="width:100%;" :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="地址">
-          <el-input v-model="ruleForm.address" :disabled="true" style="width:100%;"></el-input>
+          <el-input v-model="ruleForm.address" style="width:100%;" :disabled="true"></el-input>
         </el-form-item>
 
         <el-form-item label="用户头像">
           <el-image
             v-if="ruleForm.headPortrait"
             style="width: 100px; height: 100px"
-            :src="ruleForm.headPortrait"></el-image>
-          <span v-else='ruleForm.headPortrait' style="color:#BFBFBF">暂无头像</span>
+            :src="ruleForm.headPortrait"
+          ></el-image>
+          <span v-else="ruleForm.headPortrait" style="color:#BFBFBF">暂无头像</span>
         </el-form-item>
       </div>
       <div style="clear: both;text-align: center;">
@@ -107,53 +118,92 @@
     </el-form>
 
     <el-drawer
-      title="编辑宝玉/积分"
       :visible.sync="drawer"
+      :before-close="handleClose"
+      :with-header="false"
     >
-      <el-form class="px-6" label-position="top" :model="valueForm">
-        <el-form-item label="宝玉" prop="bys">
-          <el-input
-            type="number"
-            v-model="valueForm.bys"
-            placeholder="请输入宝玉"
-            @input="valueForm.bys = valueForm.bys.substring(0, 10)"
-            @click.native="drawer = true"
-            maxlength="10">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="积分" prop="integral">
-          <el-input
-            type="number"
-            v-model="valueForm.integral"
-            placeholder="请输入积分"
-            @input="valueForm.integral = valueForm.integral.substring(0, 10)"
-            @click.native="drawer = true"
-            maxlength="10">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="方式" prop="byAddType">
-          <el-radio-group v-model="valueForm.byAddType">
-            <el-radio :label="0" border>用户充值</el-radio>
-            <el-radio :label="1" border>平台赠送</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <div>
-          <el-button type="primary" class="w-full" @click="confirmValue()">确定</el-button>
-        </div>
-      </el-form>
+      <el-tabs class="py-3 px-4" value="0">
+        <el-tab-pane label="宝玉/积分">
+          <el-form ref="valueForm" label-position="top" :model="lazyValueForm">
+            <el-form-item label="宝玉" prop="bys" :rules="lazyValueForm.byAddType !== 6 ? absRule : null">
+              <el-input
+                v-model="lazyValueForm.bys"
+                type="number"
+                placeholder="请输入宝玉"
+                maxlength="10"
+                @input="lazyValueForm.bys = lazyValueForm.bys.substring(0, 10)"
+                @click.native="drawer = true"
+              >
+              </el-input>
+            </el-form-item>
+            <el-form-item label="积分" prop="integral" :rules="lazyValueForm.byAddType !== 6 ? absRule : null">
+              <el-input
+                v-model="lazyValueForm.integral"
+                type="number"
+                placeholder="请输入积分"
+                maxlength="10"
+                @input="lazyValueForm.integral = lazyValueForm.integral.substring(0, 10)"
+                @click.native="drawer = true"
+              >
+              </el-input>
+            </el-form-item>
+            <el-form-item label="方式" prop="byAddType">
+              <el-radio-group v-model="lazyValueForm.byAddType">
+                <el-radio :label="3" border>用户充值</el-radio>
+                <el-radio :label="5" border>平台赠送</el-radio>
+                <el-radio :label="6" border>平台更改</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <div>
+              <el-button class="w-full" type="primary" @click="confirmValue()">确定</el-button>
+            </div>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="变更记录" shadow="never">
+          <ul class="space-y-3">
+            <li v-for="item of recordList" :key="item.id">
+              <el-card>
+                <div>
+                  <span>变更类型：</span>
+                  <span>{{ item.type }}</span>
+                </div>
+                <div class="space-x-2">
+                  <span>宝玉</span>
+                  <span>{{ item.byType }}</span>
+                  <span>剩余</span>
+                  <span>{{ item.totalBy }}</span>
+                </div>
+                <div class="space-x-2">
+                  <span>积分</span>
+                  <span>{{ item.integralType }}</span>
+                  <span>剩余</span>
+                  <span>{{ item.totalIntegral }}</span>
+                </div>
+                <div>
+                  <span>变更时间：</span>
+                  <span>{{ item.createTime }}</span>
+                </div>
+              </el-card>
+            </li>
+          </ul>
+          <vc-load-more ref="loadMore" first-load @load="loadRecord"></vc-load-more>
+        </el-tab-pane>
+      </el-tabs>
     </el-drawer>
   </div>
 </template>
 
 <script>
 import CryptoJS from '../../assets/js/CryptoJS'
+import { isEqual } from 'lodash'
+
 export default {
   name: 'addUser',
   props: {},
   data() {
     return {
-      userList:'',
-      passWord:'',
+      userList: '',
+      passWord: '',
       editFlag: false,
       statusList: [
         {
@@ -173,10 +223,11 @@ export default {
         integral: '',
         recommender: '',
       },
+      lazyValueForm: {},
       valueForm: {
         bys: '',
         integral: '',
-        byAddType: 0,
+        byAddType: 3,
       },
       rules: {
         userName: [
@@ -195,6 +246,15 @@ export default {
         ],
       },
       drawer: false,
+      absRule: {
+        validator: (rule, value, callback) => {
+          if (+value < 0) callback(new Error('不可输入负值'))
+          else callback()
+        },
+        trigger: 'blur',
+      },
+      pageNum: 1,
+      recordList: [],
     }
   },
   created() {
@@ -209,9 +269,34 @@ export default {
     }
   },
   mounted() {},
-  activated() {},
-  watch: {},
+  activated() {
+    this.pageNum = 1
+  },
+  watch: {
+    drawer() {
+      if (this.drawer) this.lazyValueForm = { ...this.valueForm }
+    },
+  },
   methods: {
+    loadRecord($state) {
+      return this.$axios
+        .post(
+          'api/order/appointed/getBillingList',
+          this.GLOBAL.paramJson({
+            userId: this.$route.query.item.id,
+            pageNum: this.pageNum,
+            pageSize: 20,
+          }),
+        )
+        .then(res => {
+          if (res.data.head.status !== 0) return Promise.reject(res)
+          const data = res.data.body
+          this.recordList = this.pageNum === 1 ? data.resultList : [...this.recordList, ...data.resultList]
+          this.recordList.length >= data.count ? $state.done() : $state.next()
+          this.pageNum++
+        })
+        .catch($state.fail)
+    },
     isUnique() {
       return false
     },
@@ -220,7 +305,7 @@ export default {
     },
     getUserInfo(data) {
       const con = {
-        userId: data.id
+        userId: data.id,
       }
       const _this = this
       const jsonParam = _this.GLOBAL.paramJson(con)
@@ -230,10 +315,6 @@ export default {
             res.data.body.userInfo.recommender = res.data.body.userInfo.recommenderName
           }
           _this.ruleForm = res.data.body.userInfo
-
-          this.rawForm = Object.freeze(JSON.parse(JSON.stringify(_this.ruleForm)))
-          this.valueForm.bys = this.ruleForm.bys
-          this.valueForm.integral = this.ruleForm.integral
         } else {
           _this.$message({
             message: res.data.head.msg,
@@ -252,7 +333,7 @@ export default {
       const _this = this
       const jsonParam = this.GLOBAL.paramJson(con)
 
-      this.$axios.post(this.Api.getUsers,jsonParam).then((res) => {
+      this.$axios.post(this.Api.getUsers, jsonParam).then((res) => {
         if (res.data.head.status == 0) {
           _this.userList = res.data.body.usersList
         } else {
@@ -267,25 +348,25 @@ export default {
       const _this = this
       _this.$refs[formName].validate((valid) => {
         if (valid) {
-          let recommender = this.ruleForm.recommender == this.ruleForm.recommenderName ? '0' :this.ruleForm.recommender
+          let recommender = this.ruleForm.recommender == this.ruleForm.recommenderName ? '0' : this.ruleForm.recommender
           let valueForm = {}
 
-          if (this.rawForm.bys !== this.ruleForm.bys || this.rawForm.integral !== this.ruleForm.integral) {
+          if (this.valueForm.bys || this.valueForm.integral) {
             valueForm = {
-              bys: this.ruleForm.bys,
-              integral: this.ruleForm.integral,
-              byAddType: this.ruleForm.byAddType,
+              bys: this.valueForm.bys,
+              integral: this.valueForm.integral,
+              byAddType: this.valueForm.byAddType,
             }
           }
 
           let con = {
-            recommender:recommender,
+            recommender: recommender,
             ...valueForm,
           }
           let encryPwd = ''
           if (_this.editFlag) {
             if (_this.ruleForm.passWord) {
-              encryPwd = CryptoJS.encrypt(_this.ruleForm.passWord);
+              encryPwd = CryptoJS.encrypt(_this.ruleForm.passWord)
               con.password = encryPwd
             }
             con.id = _this.ruleForm.id
@@ -333,9 +414,21 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
-    confirmValue() {
-      Object.assign(this.ruleForm, this.valueForm)
+    async confirmValue() {
+      await this.$refs.valueForm.validate()
+      this.valueForm = { ...this.lazyValueForm }
       this.drawer = false
+    },
+    async handleClose() {
+      if (!isEqual(this.lazyValueForm, this.valueForm)) {
+        await this.$confirm('确定要关闭修改吗？', {
+          type: 'warning',
+        })
+        this.lazyValueForm = { ...this.valueForm }
+        this.drawer = false
+      } else {
+        this.drawer = false
+      }
     },
   },
 }

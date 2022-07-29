@@ -131,9 +131,18 @@
                 type="number"
                 placeholder="请输入宝玉"
                 maxlength="10"
-                @input="lazyValueForm.bys = lazyValueForm.bys.substring(0, 10)"
+                @input="lazyValueForm.bys = formatNumber(lazyValueForm.bys)"
                 @click.native="drawer = true"
+                class="input-with-select"
               >
+                <el-select v-model="selectBys" style="width:80px" slot="prepend" placeholder="增加" v-if="lazyValueForm.byAddType === 6 ? true:false">
+                    <el-option
+                      v-for="item in selectByOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
               </el-input>
             </el-form-item>
             <el-form-item label="积分" prop="integral" :rules="lazyValueForm.byAddType !== 6 ? absRule : null">
@@ -142,9 +151,18 @@
                 type="number"
                 placeholder="请输入积分"
                 maxlength="10"
-                @input="lazyValueForm.integral = lazyValueForm.integral.substring(0, 10)"
+                @input="lazyValueForm.integral = formatNumber(lazyValueForm.integral)"
                 @click.native="drawer = true"
+                class="input-with-select"
               >
+                 <el-select v-model="selectIntegral" style="width:80px" slot="prepend" placeholder="增加" v-if="lazyValueForm.byAddType === 6 ? true:false">
+                     <el-option
+                      v-for="item in selectJfOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                  </el-option>
+                  </el-select>
               </el-input>
             </el-form-item>
             <el-form-item label="方式" prop="byAddType">
@@ -202,6 +220,22 @@ export default {
   props: {},
   data() {
     return {
+      selectByOptions: [{
+        value: '1',
+        label: '增加'
+      }, {
+        value: '0',
+        label: '减少'
+      }],
+      selectJfOptions: [{
+        value: '1',
+        label: '增加'
+      }, {
+        value: '0',
+        label: '减少'
+      }],
+      selectBys:'', //宝玉选择正负
+      selectIntegral:'', //积分选择正负
       userList: '',
       passWord: '',
       editFlag: false,
@@ -278,6 +312,10 @@ export default {
     },
   },
   methods: {
+    // 输入宝玉和积分 取绝对值
+    formatNumber(number) {
+      return Math.abs(number).toString().substring(0, 10)
+    },
     loadRecord($state) {
       return this.$axios
         .post(
@@ -350,11 +388,12 @@ export default {
         if (valid) {
           let recommender = this.ruleForm.recommender == this.ruleForm.recommenderName ? '0' : this.ruleForm.recommender
           let valueForm = {}
-
           if (this.valueForm.bys || this.valueForm.integral) {
+            const sureMinus = this.valueForm.byAddType === 6
+
             valueForm = {
-              bys: this.valueForm.bys,
-              integral: this.valueForm.integral,
+              bys: sureMinus && this.selectBys==0 ? -this.valueForm.bys : this.valueForm.bys,
+              integral: sureMinus && this.selectIntegral==0 ? -this.valueForm.integral : this.valueForm.integral,
               byAddType: this.valueForm.byAddType,
             }
           }

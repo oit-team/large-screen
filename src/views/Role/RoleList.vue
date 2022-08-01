@@ -2,7 +2,7 @@
   <div class="flex h-full">
     <main class="flex-1 flex flex-col">
       <div id="customerList" class="pageCommonStyle" style="height:100%;display: flex;flex-direction: column;">
-        <TablePage v-bind="tablePageOption" ref="table"></TablePage>
+        <TablePage v-bind="tablePageOption" ref="table" auto-layout></TablePage>
       </div>
     </main>
   </div>
@@ -128,6 +128,7 @@ export default {
         .then(res => {
           if (res.data.head.status !== 0) return Promise.reject(res)
           this.data = res.data.body
+          this.$refs.table.doLayout()
         })
     },
     // 删除当前角色

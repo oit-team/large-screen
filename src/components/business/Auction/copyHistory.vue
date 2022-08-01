@@ -53,8 +53,8 @@ export default {
         copyConferenceCode: [{required: true, message: '请选择被复制的场次'},],
         copyTime: [{required: true, message: '请选择场次时间'},],
         // roomCode: [{required: true, message: '请输入房间编号'},],
-        // integralLimit: [{required: true, type:'number', message: '请输入积分限制(数字)'},],
-        // byLimit: [{required: true, type:'number', message: '请输入宝玉限制(数字)'},],
+        // integralLimit: [{required: true, type:'number', message: '请输入水滴限制(数字)'},],
+        // byLimit: [{required: true, type:'number', message: '请输入能量值限制(数字)'},],
       },
     }
   },

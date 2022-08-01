@@ -1,27 +1,27 @@
 <template>
   <div class="auctionRelation">
     <el-drawer
-      title="积分/宝玉信息"
+      title="水滴/能量值信息"
       :append-to-body="true"
       :modal-append-to-body="true"
       :before-close="handleClose"
       :visible="RelationDrawer"
       :direction="direction">
       <el-form style="width:80%;margin: 0 auto" :model="RelationRuleForm" :rules="RelationRules" ref="RelationruleForm">
-        <el-form-item label="积分限制" prop="integralLimit">
+        <el-form-item label="水滴限制" prop="integralLimit">
           <el-input
             v-model.number="RelationRuleForm.integralLimit"
             oninput="value=value.replace(/[^\d]/g,'')"
             clearable
-            placeholder="请输入积分">
+            placeholder="请输入水滴">
           </el-input>
         </el-form-item>
-        <el-form-item label="宝玉限制"  prop="byLimit">
+        <el-form-item label="能量值限制"  prop="byLimit">
           <el-input
             v-model.number="RelationRuleForm.byLimit"
             oninput="value=value.replace(/[^\d]/g,'')"
             clearable
-            placeholder="请输入宝玉">
+            placeholder="请输入能量值">
           </el-input>
         </el-form-item>
       </el-form>
@@ -48,8 +48,8 @@ export default {
         roomCode: '',
       },
       RelationRules:{
-        byLimit: [{required: true,message: '请输入宝玉',trigger: 'blur'},{type:'number',message: '请输入数字',trigger: 'blur'}],
-        integralLimit: [{required: true,message: '请输入积分',trigger: 'blur'},{type:'number',message: '请输入数字',trigger: 'blur'}],
+        byLimit: [{required: true,message: '请输入能量值',trigger: 'blur'},{type:'number',message: '请输入数字',trigger: 'blur'}],
+        integralLimit: [{required: true,message: '请输入水滴',trigger: 'blur'},{type:'number',message: '请输入数字',trigger: 'blur'}],
       },
     }
   },

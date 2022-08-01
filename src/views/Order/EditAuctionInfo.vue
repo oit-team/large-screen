@@ -6,8 +6,8 @@
       <el-descriptions>
         <el-descriptions-item label="场次名称">{{ruleForm.conferenceHallName}}</el-descriptions-item>
         <el-descriptions-item label="分区名称">{{ruleForm.roomName}}</el-descriptions-item>
-        <!-- <el-descriptions-item label="支付宝玉">{{ruleForm.paymentNum}}</el-descriptions-item> -->
-        <el-descriptions-item label="扣除积分">{{ruleForm.deductPoints}}</el-descriptions-item>
+        <!-- <el-descriptions-item label="支付能量值">{{ruleForm.paymentNum}}</el-descriptions-item> -->
+        <el-descriptions-item label="扣除水滴">{{ruleForm.deductPoints}}</el-descriptions-item>
         <el-descriptions-item label="个人收益">{{ruleForm.personalIncome}}</el-descriptions-item>
         <el-descriptions-item label="平台分润">{{ruleForm.platformRevenum}}</el-descriptions-item>
         <el-descriptions-item label="应付定金">{{ruleForm.deposit}}</el-descriptions-item>
@@ -40,8 +40,8 @@
             </div>
           </div>
 <!--          <div class="itemFoot">
-            <span>支付宝玉:{{ruleForm.paymentNum}}</span>
-            <span>支付积分:{{ruleForm.deductPoints}}</span>
+            <span>支付能量值:{{ruleForm.paymentNum}}</span>
+            <span>支付水滴:{{ruleForm.deductPoints}}</span>
             <span>个人分润:{{ruleForm.deductPoints}}</span>
             <span>平台分润:{{ruleForm.personalIncome}}</span>
             <span>应付定金:{{ruleForm.deposit}}</span>

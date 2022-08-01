@@ -87,8 +87,8 @@
             <span>预约人数（有券）：{{relationInfo.haveTicketAppointedNum || 0}}人</span>
             <span>预约人数（无券）：{{relationInfo.noTicketAppointedNum || 0}}人</span>
             <span>抢购人数：{{relationInfo.auctionNum}}人</span>
-            <span>积分限制：<span style="color:#8d1323;cursor:pointer" @click="openRelationDrawer">{{relationInfo.integralLimit}}<i style="margin-left:4px;" class="el-icon-edit"></i></span></span>
-            <span>宝玉限制：<span style="color:#8d1323;cursor:pointer" @click="openRelationDrawer">{{relationInfo.byLimit}}<i style="margin-left:4px;" class="el-icon-edit"></i></span></span>
+            <span>水滴限制：<span style="color:#8d1323;cursor:pointer" @click="openRelationDrawer">{{relationInfo.integralLimit}}<i style="margin-left:4px;" class="el-icon-edit"></i></span></span>
+            <span>能量值限制：<span style="color:#8d1323;cursor:pointer" @click="openRelationDrawer">{{relationInfo.byLimit}}<i style="margin-left:4px;" class="el-icon-edit"></i></span></span>
           </div>
           <div>
             <el-checkbox-group id="ImgList" class='scrollbar' v-model="checkList">
@@ -138,7 +138,7 @@
                     <i slot="suffix">%</i>
                   </el-input>
                 </el-form-item>
-                <el-form-item label="积分比" prop="integralRatio">
+                <el-form-item label="水滴比" prop="integralRatio">
                   <el-input v-model="ruleForm.integralRatio" oninput="value=value.replace(/[^\d\.]/g, '').replace(/^\./g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.')">
                     <i slot="suffix">%</i>
                   </el-input>
@@ -201,15 +201,15 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="扣除积分"
+                label="扣除水滴"
                 align="center">
                 <template slot-scope="scope">
                   <el-input
                     :ref="'deductPoints'+scope.$index"
                     v-model="scope.row.deductPoints"
-                    @blur="checkNull(scope.row,scope.$index,'deductPoints','扣除积分')"
+                    @blur="checkNull(scope.row,scope.$index,'deductPoints','扣水滴')"
                     oninput="value=value.replace(/[^\d\.]/g, '').replace(/^\./g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.')"
-                    placeholder="扣除积分">
+                    placeholder="扣除水滴">
                   </el-input>
                 </template>
               </el-table-column>
@@ -314,7 +314,7 @@
     </el-dialog>
     <el-drawer :visible.sync="couponDrawer" title="竞拍券配置">
       <el-form class="px-6" label-width="7rem" :model="form">
-        <el-form-item label="所需积分">
+        <el-form-item label="所需水滴">
           <el-input v-model="form.auctionTicket" type="number"></el-input>
         </el-form-item>
         <el-form-item label="有效天数">
@@ -399,7 +399,7 @@ export default {
         biddingPrice: [{ required: true, message: '输入起拍价(数字)', trigger: 'blur'},{validator: this.testValidator , trigger: 'blur'}],
         transactionPrice: [{  required: true, message: '输入交割价(数字)', trigger: 'blur'},{validator: this.testValidator , trigger: 'blur'}],
         premiumRatio: { required: true, message: '输入溢价比(数字)', trigger: 'blur'},
-        integralRatio: { required: true, message: '输入积分比(数字)', trigger: 'blur'},
+        integralRatio: { required: true, message: '输入水滴比(数字)', trigger: 'blur'},
         depositRatio: { required: true, message: '输入定金比(数字)', trigger: 'blur'},
         depositPrice: { required: true, message: '输入定金(数字)', trigger: 'blur'},
         profitRatio: { required: true, message: '输入个人收益(数字)', trigger: 'blur'},
@@ -773,7 +773,7 @@ export default {
         swtichStr = '开启'
       }
       if (val == 1 && this.relationInfo.integralLimit == 0&& this.relationInfo.byLimit == 0) {
-        str = '当前宝玉和积分为0，'
+        str = '当前能量值和水滴为0，'
       }
       this.$confirm(`${str}确认要在app里${swtichStr}预约竞拍吗？`, '提示', {
         confirmButtonText: '确定',

@@ -51,29 +51,43 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="宝玉" prop="bys">
+        <el-form-item label="能量值" prop="bys">
           <el-input
             style="width:100%;"
             type="number"
             readonly
             :value="ruleForm.bys"
-            placeholder="请输入宝玉"
+            placeholder="请输入能量值"
             maxlength="10"
             @input="ruleForm.bys = ruleForm.bys.substring(0, 10)"
             @click.native="drawer = true"
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="积分" prop="integral">
+        <el-form-item label="水滴" prop="integral">
           <el-input
             style="width:100%;"
             type="number"
             readonly
             :value="ruleForm.integral"
-            placeholder="请输入积分"
+            placeholder="请输入水滴"
             maxlength="10"
             @input="ruleForm.integral = ruleForm.integral.substring(0, 10)"
             @click.native="drawer = true"
+          >
+          </el-input>
+        </el-form-item>
+        <!-- 总资产 -->
+         <el-form-item label="总资产" prop="totalAssets">
+          <el-input
+            style="width:100%;"
+            type="number"
+            readonly
+            :value="ruleForm.totalAssets"
+            placeholder="请输入总资产"
+            maxlength="10"
+            @input="ruleForm.totalAssets = ruleForm.totalAssets.substring(0, 10)"
+            @click.native="drawer2 = true"
           >
           </el-input>
         </el-form-item>
@@ -123,13 +137,13 @@
       :with-header="false"
     >
       <el-tabs class="py-3 px-4" value="0">
-        <el-tab-pane label="宝玉/积分">
+        <el-tab-pane label="能量值/水滴">
           <el-form ref="valueForm" label-position="top" :model="lazyValueForm">
-            <el-form-item label="宝玉" prop="bys" :rules="lazyValueForm.byAddType !== 6 ? absRule : null">
+            <el-form-item label="能量值" prop="bys" :rules="lazyValueForm.byAddType !== 6 ? absRule : null">
               <el-input
                 v-model="lazyValueForm.bys"
                 type="number"
-                placeholder="请输入宝玉"
+                placeholder="请输入能量值"
                 maxlength="10"
                 @input="lazyValueForm.bys = formatNumber(lazyValueForm.bys)"
                 @click.native="drawer = true"
@@ -145,11 +159,11 @@
                   </el-select>
               </el-input>
             </el-form-item>
-            <el-form-item label="积分" prop="integral" :rules="lazyValueForm.byAddType !== 6 ? absRule : null">
+            <el-form-item label="水滴" prop="integral" :rules="lazyValueForm.byAddType !== 6 ? absRule : null">
               <el-input
                 v-model="lazyValueForm.integral"
                 type="number"
-                placeholder="请输入积分"
+                placeholder="请输入水滴"
                 maxlength="10"
                 @input="lazyValueForm.integral = formatNumber(lazyValueForm.integral)"
                 @click.native="drawer = true"
@@ -186,13 +200,13 @@
                   <span>{{ item.type }}</span>
                 </div>
                 <div class="space-x-2">
-                  <span>宝玉</span>
+                  <span>能量值</span></span>
                   <span>{{ item.byType }}</span>
                   <span>剩余</span>
                   <span>{{ item.totalBy }}</span>
                 </div>
                 <div class="space-x-2">
-                  <span>积分</span>
+                  <span>水滴</span>
                   <span>{{ item.integralType }}</span>
                   <span>剩余</span>
                   <span>{{ item.totalIntegral }}</span>
@@ -205,6 +219,61 @@
             </li>
           </ul>
           <vc-load-more ref="loadMore" first-load @load="loadRecord"></vc-load-more>
+        </el-tab-pane>
+      </el-tabs>
+    </el-drawer>
+     <el-drawer
+      :visible.sync="drawer2"
+      :before-close="handleClose"
+      :with-header="false"
+    >
+      <el-tabs class="py-3 px-4" value="0">
+        <el-tab-pane label="流动资产 / 冻结资产">
+          <el-form ref="valueForm" label-position="top" :model="lazyValueForm">
+            <el-form-item label="流动资产" prop="bys">
+              <el-input
+                v-model="lazyValueForm.currentAssets"
+                type="number"
+                placeholder="请输入流动资产"
+                maxlength="10"
+                @input="lazyValueForm.currentAssets = formatNumber(lazyValueForm.currentAssets)"
+                @click.native="drawer2 = true"
+                class="input-with-select"
+              >
+                <el-select v-model="selectCurrentAssets" style="width:80px" slot="prepend" placeholder="增加">
+                    <el-option
+                      v-for="item in selectByOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="冻结资产" prop="freezingAssets">
+              <el-input
+                v-model="lazyValueForm.frozenAssets"
+                type="number"
+                placeholder="请输入冻结资产"
+                maxlength="10"
+                @input="lazyValueForm.frozenAssets = formatNumber(lazyValueForm.frozenAssets)"
+                @click.native="drawer2 = true"
+                class="input-with-select"
+              >
+                 <el-select v-model="selectFrozenAssets" style="width:80px" slot="prepend" placeholder="增加">
+                     <el-option
+                      v-for="item in selectJfOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                  </el-option>
+                  </el-select>
+              </el-input>
+            </el-form-item>
+            <div>
+              <el-button class="w-full" type="primary" @click="confirmValue()">确定</el-button>
+            </div>
+          </el-form>
         </el-tab-pane>
       </el-tabs>
     </el-drawer>
@@ -234,8 +303,10 @@ export default {
         value: '0',
         label: '减少'
       }],
-      selectBys:'', //宝玉选择正负
-      selectIntegral:'', //积分选择正负
+      selectBys:'1', // 能量值选择正负
+      selectIntegral:'1', //水滴选择正负
+      selectFrozenAssets: '1', // 冻结资产选择
+      selectCurrentAssets: '1', // 流动资产 默认为增加
       userList: '',
       passWord: '',
       editFlag: false,
@@ -256,22 +327,29 @@ export default {
         bys: '',
         integral: '',
         recommender: '',
+        totalAssets: '' // 总水滴
       },
       lazyValueForm: {},
       valueForm: {
         bys: '',
         integral: '',
         byAddType: 3,
+        currentAssets: '',
+        frozenAssets: ''
+
       },
       rules: {
         userName: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
         ],
         bys: [
-          { required: true, message: '请输入宝玉', trigger: 'blur' },
+          { required: true, message: '请输入能量值', trigger: 'blur' },
         ],
         integral: [
-          { required: true, message: '请输入积分', trigger: 'blur' },
+          { required: true, message: '请输入水滴', trigger: 'blur' },
+        ],
+        totalAssets: [
+          { required: true, message: '请输入总资产', trigger: 'blur' },
         ],
         passWord: [
           { required: false, message: '请输入密码', trigger: 'blur' },
@@ -280,6 +358,7 @@ export default {
         ],
       },
       drawer: false,
+      drawer2: false,
       absRule: {
         validator: (rule, value, callback) => {
           if (+value < 0) callback(new Error('不可输入负值'))
@@ -308,11 +387,11 @@ export default {
   },
   watch: {
     drawer() {
-      if (this.drawer) this.lazyValueForm = { ...this.valueForm }
+      if (this.drawer || this.drawer2) this.lazyValueForm = { ...this.valueForm }
     },
   },
   methods: {
-    // 输入宝玉和积分 取绝对值
+    // 输入能量值和水滴 取绝对值
     formatNumber(number) {
       return Math.abs(number).toString().substring(0, 10)
     },
@@ -344,15 +423,19 @@ export default {
     getUserInfo(data) {
       const con = {
         userId: data.id,
+        currentAssets: data.currentAssets,
+        frozenAssets: data.frozenAssets
       }
       const _this = this
       const jsonParam = _this.GLOBAL.paramJson(con)
       _this.$axios.post(_this.Api.getUserById, jsonParam).then((res) => {
+        console.log(res)
         if (res.data.head.status === 0) {
           if (res.data.body.userInfo.recommender == '0') {
             res.data.body.userInfo.recommender = res.data.body.userInfo.recommenderName
           }
           _this.ruleForm = res.data.body.userInfo
+          console.log(_this.ruleForm);
         } else {
           _this.$message({
             message: res.data.head.msg,
@@ -388,16 +471,24 @@ export default {
         if (valid) {
           let recommender = this.ruleForm.recommender == this.ruleForm.recommenderName ? '0' : this.ruleForm.recommender
           let valueForm = {}
+          // 能量值和水滴
           if (this.valueForm.bys || this.valueForm.integral) {
             const sureMinus = this.valueForm.byAddType === 6
-
             valueForm = {
               bys: sureMinus && this.selectBys==0 ? -this.valueForm.bys : this.valueForm.bys,
               integral: sureMinus && this.selectIntegral==0 ? -this.valueForm.integral : this.valueForm.integral,
               byAddType: this.valueForm.byAddType,
             }
           }
-
+          // 流动资产和冻结资产
+          if (this.valueForm.currentAssets || this.valueForm.frozenAssets) {
+            valueForm 
+            = {
+              frozenAssets: this.selectFrozenAssets==0 ? -this.valueForm.frozenAssets : this.valueForm.frozenAssets,
+              currentAssets: this.selectCurrentAssets==0 ? -this.valueForm.currentAssets : this.valueForm.currentAssets,
+            }
+          }
+          
           let con = {
             recommender: recommender,
             ...valueForm,
@@ -457,6 +548,7 @@ export default {
       await this.$refs.valueForm.validate()
       this.valueForm = { ...this.lazyValueForm }
       this.drawer = false
+      this.drawer2 = false
     },
     async handleClose() {
       if (!isEqual(this.lazyValueForm, this.valueForm)) {
@@ -465,8 +557,10 @@ export default {
         })
         this.lazyValueForm = { ...this.valueForm }
         this.drawer = false
+        this.drawer2 = false
       } else {
         this.drawer = false
+        this.drawer2= false
       }
     },
   },

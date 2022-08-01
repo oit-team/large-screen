@@ -15,18 +15,18 @@
             placeholder="请输入房间名称">
           </el-input>
         </el-form-item>
-<!--        <el-form-item label="积分限制" prop="integralLimit">
+<!--        <el-form-item label="水滴限制" prop="integralLimit">
           <el-input
             v-model.number="areaRuleForm.integralLimit"
             clearable
-            placeholder="请输入积分限制">
+            placeholder="请输入水滴限制">
           </el-input>
         </el-form-item>
-        <el-form-item label="宝玉限制" prop="byLimit">
+        <el-form-item label="能量值限制" prop="byLimit">
           <el-input
             v-model.number="areaRuleForm.byLimit"
             clearable
-            placeholder="请输入宝玉限制">
+            placeholder="请输入能量值限制">
           </el-input>
         </el-form-item> -->
       </el-form>
@@ -54,8 +54,8 @@ export default {
       areaRules:{
         roomName: [{required: true, message: '请输入房间名称'},],
         // roomCode: [{required: true, message: '请输入房间编号'},],
-        // integralLimit: [{required: true, type:'number', message: '请输入积分限制(数字)'},],
-        // byLimit: [{required: true, type:'number', message: '请输入宝玉限制(数字)'},],
+        // integralLimit: [{required: true, type:'number', message: '请输入水滴限制(数字)'},],
+        // byLimit: [{required: true, type:'number', message: '请输入能量值限制(数字)'},],
       },
     }
   },

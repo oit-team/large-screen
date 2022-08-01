@@ -200,7 +200,7 @@
                   <span>{{ item.type }}</span>
                 </div>
                 <div class="space-x-2">
-                  <span>能量值</span></span>
+                  <span>能量值</span>
                   <span>{{ item.byType }}</span>
                   <span>剩余</span>
                   <span>{{ item.totalBy }}</span>
@@ -482,8 +482,7 @@ export default {
           }
           // 流动资产和冻结资产
           if (this.valueForm.currentAssets || this.valueForm.frozenAssets) {
-            valueForm 
-            = {
+            valueForm = {
               frozenAssets: this.selectFrozenAssets==0 ? -this.valueForm.frozenAssets : this.valueForm.frozenAssets,
               currentAssets: this.selectCurrentAssets==0 ? -this.valueForm.currentAssets : this.valueForm.currentAssets,
             }

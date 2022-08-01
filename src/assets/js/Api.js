@@ -64,6 +64,7 @@ const getTicketUsedRecord = `${api}/order/auction/getTicketUsedRecord`
 const getAuctionTicketConfig = `${api}/order/auction/getAuctionTicketConfig`
 const setAuctionTicketConfig = `${api}/order/auction/setAuctionTicketConfig`
 const getExportAuctionOrder = `${api}/order/auctionOrder/getExportAuctionOrder`
+const getBillingList = `${api}/order/appointed/getBillingList`
 export default {
   login,
   checkCodeImg,
@@ -127,4 +128,5 @@ export default {
   getAuctionTicketConfig,
   setAuctionTicketConfig,
   getExportAuctionOrder,
+  getBillingList,
 }

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view/>
-    <div class="text-center leading-[4vh]">Copyright  2021-present 浙江宝瀛轩拍卖有限公司 版权所有 浙ICP备2022010515号</div>
+    <div class="text-center leading-[4vh]">Copyright 2021-present 上海立得拍卖有限公司 版权所有 沪ICP备2021025044号</div>
   </div>
 </template>
 

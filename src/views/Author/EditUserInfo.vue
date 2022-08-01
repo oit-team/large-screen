@@ -319,7 +319,7 @@ export default {
     loadRecord($state) {
       return this.$axios
         .post(
-          'api/order/appointed/getBillingList',
+          this.Api.getBillingList,
           this.GLOBAL.paramJson({
             userId: this.$route.query.item.id,
             pageNum: this.pageNum,

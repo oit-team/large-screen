@@ -120,6 +120,7 @@ export default {
     },
     // 获取角色列表
     async loadData(params) {
+      console.log(params)
       return this.$axios
         .post(this.Api.getRoleList, this.GLOBAL.paramJson({
           createId: this.createId,

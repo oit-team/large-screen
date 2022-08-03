@@ -207,7 +207,7 @@
                   <el-input
                     :ref="'deductPoints'+scope.$index"
                     v-model="scope.row.deductPoints"
-                    @blur="checkNull(scope.row,scope.$index,'deductPoints','扣水滴')"
+                    @blur="checkNull(scope.row,scope.$index,'deductPoints','扣除水滴')"
                     oninput="value=value.replace(/[^\d\.]/g, '').replace(/^\./g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.')"
                     placeholder="扣除水滴">
                   </el-input>

@@ -7,7 +7,7 @@ function paramJson(con = {}, cmd) {
       "mod": "home",
       "de": "2019-10-16",
       "sync": 1,
-      "cmd": 10008,
+      "cmd": cmd || 10008,
       "chcode": "ef19843298ae8f2134f"
     },
     con,

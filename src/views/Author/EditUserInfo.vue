@@ -228,50 +228,34 @@
       :with-header="false"
     >
       <el-tabs class="py-3 px-4" value="0">
-        <el-tab-pane label="流动资产 / 冻结资产">
-          <el-form ref="valueForm" label-position="top" :model="lazyValueForm">
-            <el-form-item label="流动资产" prop="bys">
+        <el-tab-pane label="已释放资产 / 冻结资产">
+          <el-form ref="valueForm" label-position="top" :model="ruleForm">
+            <el-form-item label="已释放资产" prop="bys">
               <el-input
-                v-model="lazyValueForm.currentAssets"
+                v-model="ruleForm.currentAssets"
                 type="number"
-                placeholder="请输入流动资产"
+                placeholder="请输入已释放资产"
                 maxlength="10"
-                @input="lazyValueForm.currentAssets = formatNumber(lazyValueForm.currentAssets)"
+                @input="ruleForm.currentAssets = formatNumber(ruleForm.currentAssets)"
                 @click.native="drawer2 = true"
                 class="input-with-select"
               >
-                <el-select v-model="selectCurrentAssets" style="width:80px" slot="prepend" placeholder="增加">
-                    <el-option
-                      v-for="item in selectByOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                  </el-select>
               </el-input>
             </el-form-item>
             <el-form-item label="冻结资产" prop="freezingAssets">
               <el-input
-                v-model="lazyValueForm.frozenAssets"
+                v-model="ruleForm.frozenAssets"
                 type="number"
                 placeholder="请输入冻结资产"
                 maxlength="10"
-                @input="lazyValueForm.frozenAssets = formatNumber(lazyValueForm.frozenAssets)"
+                @input="ruleForm.frozenAssets = formatNumber(ruleForm.frozenAssets)"
                 @click.native="drawer2 = true"
                 class="input-with-select"
               >
-                 <el-select v-model="selectFrozenAssets" style="width:80px" slot="prepend" placeholder="增加">
-                     <el-option
-                      v-for="item in selectJfOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                  </el-option>
-                  </el-select>
               </el-input>
             </el-form-item>
             <div>
-              <el-button class="w-full" type="primary" @click="confirmValue()">确定</el-button>
+              <el-button class="w-full" type="primary" @click="confirmValue2()">确定</el-button>
             </div>
           </el-form>
         </el-tab-pane>
@@ -305,8 +289,6 @@ export default {
       }],
       selectBys:'1', // 能量值选择正负
       selectIntegral:'1', //水滴选择正负
-      selectFrozenAssets: '1', // 冻结资产选择
-      selectCurrentAssets: '1', // 流动资产 默认为增加
       userList: '',
       passWord: '',
       editFlag: false,
@@ -378,13 +360,14 @@ export default {
       this.title = '新增用户'
     }
   },
-  mounted() {},
+  mounted() {
+  },
   activated() {
     this.pageNum = 1
   },
   watch: {
     drawer() {
-      if (this.drawer || this.drawer2) this.lazyValueForm = { ...this.valueForm }
+      if (this.drawer) this.lazyValueForm = { ...this.valueForm }
     },
   },
   methods: {
@@ -426,13 +409,11 @@ export default {
       const _this = this
       const jsonParam = _this.GLOBAL.paramJson(con)
       _this.$axios.post(_this.Api.getUserById, jsonParam).then((res) => {
-        console.log(res)
         if (res.data.head.status === 0) {
           if (res.data.body.userInfo.recommender == '0') {
             res.data.body.userInfo.recommender = res.data.body.userInfo.recommenderName
           }
           _this.ruleForm = res.data.body.userInfo
-          console.log(_this.ruleForm);
         } else {
           _this.$message({
             message: res.data.head.msg,
@@ -478,16 +459,18 @@ export default {
             }
           }
           // 流动资产和冻结资产
-          if (this.valueForm.currentAssets || this.valueForm.frozenAssets) {
-            valueForm = {
-              frozenAssets: this.selectFrozenAssets==0 ? -this.valueForm.frozenAssets : this.valueForm.frozenAssets,
-              currentAssets: this.selectCurrentAssets==0 ? -this.valueForm.currentAssets : this.valueForm.currentAssets,
-            }
-          }
+          // if (this.valueForm.currentAssets || this.valueForm.frozenAssets) {
+          //   valueForm = {
+          //     frozenAssets: this.selectFrozenAssets==0 ? -this.valueForm.frozenAssets : this.valueForm.frozenAssets,
+          //     currentAssets: this.selectCurrentAssets==0 ? -this.valueForm.currentAssets : this.valueForm.currentAssets,
+          //   }
+          // }
           
           let con = {
             recommender: recommender,
             ...valueForm,
+            frozenAssets:_this.ruleForm.frozenAssets,
+            currentAssets:_this.ruleForm.currentAssets
           }
           let encryPwd = ''
           if (_this.editFlag) {
@@ -544,6 +527,9 @@ export default {
       await this.$refs.valueForm.validate()
       this.valueForm = { ...this.lazyValueForm }
       this.drawer = false
+    },
+    async confirmValue2() {
+      await this.$refs.valueForm.validate()
       this.drawer2 = false
     },
     async handleClose() {

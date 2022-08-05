@@ -10,7 +10,8 @@
       @sendData='showChildData'/>
 
     <div class="operateBtn" style="display: inline-block;">
-      <el-button type="primary" @click="exportFile">导出</el-button>
+      <el-button type="primary" plain @click="exportFile">导出</el-button>
+      <el-button type="primary" plain @click="assetAllocation">资产配置</el-button>
     </div>
     <el-divider></el-divider>
     <el-table
@@ -81,6 +82,36 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
       </el-pagination>
+
+      <el-drawer
+      :visible.sync="drawerProportion"
+      :before-close="handleClose"
+      :with-header="false"
+    >
+      <el-tabs class="py-3 px-4" value="0">
+        <el-tab-pane label="冻结资产配置比例" :v-model="proportionValList">
+          <el-form label-position="top">
+            <el-form-item label="资产比例" prop="proportionVal">
+              <el-input
+                v-model="proportionVal"
+                type="number"
+                placeholder="请输入资产比例"
+                min="0"
+                max="100"
+                maxlength="3"
+                @change="formatInputNumber()"
+                class="input-with-select"
+              >
+              </el-input>
+              <span class="percentSign">%</span>
+            </el-form-item>
+            <div>
+              <el-button class="w-full" type="primary"  @click="confirmProportionInfo()">确认</el-button>
+            </div>
+          </el-form>
+        </el-tab-pane>
+      </el-tabs>
+    </el-drawer>
   </div>
 </template>
 
@@ -107,6 +138,10 @@ export default {
       tableData: [],
       headTitArr: [],
       searchParams: {},
+      drawerProportion:false,
+      proportionValList:'',
+      proportionVal:'',
+      isUpdate:true
     }
   },
   created() {
@@ -164,6 +199,17 @@ export default {
   },
   watch: {},
   methods: {
+    formatInputNumber(){
+      const val = this.proportionVal
+      if(val > 100){
+        this.$message({
+          message: '值不可以大于100！请重新输入',
+          type: 'warning'
+        })
+      }else{
+        this.proportionVal = Math.round(this.proportionVal * 100) / 100
+      }
+    },
     // 导出用户列表
      exportFile() {
       this.$axios
@@ -176,6 +222,77 @@ export default {
           const date = new Date().toLocaleDateString().replace(/\//g, '-')
           downloadFile(res.data, `用户列表${date}.xls`)
         })
+    },
+    // 资产配置确认
+    async confirmProportionInfo() {
+      console.log(this.proportionVal)
+      if(this.proportionVal>100){
+        if(val > 100){
+          this.$message({
+            message: '值不可以大于100！请重新输入',
+            type: 'warning'
+          })
+        }
+        return
+      }
+      // if(isUpdate){
+      //   this.addDictitemInfoAllMethod()
+      // }
+      this.updateDictitemInfoAllMethod()
+      this.drawerProportion = false
+    },
+    // 新增资产比例
+    // addDictitemInfoAllMethod(){
+     
+    // },
+    // 编辑资产比例
+    getDictitemInfoAllMethod(){
+     const _this = this
+      const con = {
+        type: "USER_ASSETS"
+      }
+      const cmd = 100009
+      const jsonParam = _this.GLOBAL.paramJson(con,cmd)
+      _this.$axios.post(_this.Api.getDictitemInfoAllMethod, jsonParam).then((res) => {
+        if(res.data.head.status === 0) {
+          console.log(res)
+          this.proportionValList = res.data.body.result[0]
+          this.proportionVal = res.data.body.result[0].dicttimeDisplayName
+        } else {
+          _this.$message({
+            message: res.data.head.msg,
+            type: 'warning',
+          })
+        }
+       
+      })
+    },
+    // 修改资产比例
+    updateDictitemInfoAllMethod(){
+      const _this = this
+      const con = {
+        dictitemCode: this.proportionValList.dictitemCode,
+        dictCode:this.proportionValList.dictCode,
+        dictitemOrderkey:1,
+        dictitemDisplayName:this.proportionVal
+      }
+      const cmd = 100003
+      const jsonParam = _this.GLOBAL.paramJson(con,cmd)
+      _this.$axios.post(_this.Api.getDictitemInfoAllMethod, jsonParam).then((res) => {
+        if(res.data.head.status === 0) {
+          console.log(res)
+        } else {
+          _this.$message({
+            message: res.data.head.msg,
+            type: 'warning',
+          })
+        }
+       
+      })
+    },
+    assetAllocation(){
+      this.drawerProportion = true
+      this.getDictitemInfoAllMethod()
     },
     editCustomerItem(item, index) {
       this.editIndex = index
@@ -265,6 +382,24 @@ export default {
     indexMethod(index) {
       return (index + 1) + ((this.pageNum - 1) * this.pageSize)
     },
+    async handleClose() {
+      if (!this.proportionVal) {
+        await this.$confirm('确定要关闭修改吗？', {
+          type: 'warning',
+        })
+        this.drawerProportion = false
+      } else {
+        this.drawerProportion = false
+      }
+    },
   },
 }
 </script>
+<style lang="scss" scoped>
+  ::v-deep .el-form-item__content .input-with-select{
+    width: 50%;
+  }
+  .percentSign{
+    margin-left: 10px;
+  }
+</style>

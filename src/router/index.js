@@ -113,6 +113,16 @@ const routes = [
         component: () => import('@/views/Author/EditUserInfo'),
       },
       {
+        path: 'log/logList',
+        name: 'LogInfo',
+        meta: {
+          title: '日志记录',
+          keepAlive: false,
+          requiresAuth: true,
+        },
+        component: () => import('@/views/LogList/index'),
+      },
+      {
         path: '/role/addRole',
         name: 'RoleList',
         meta: {

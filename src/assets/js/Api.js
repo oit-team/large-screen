@@ -48,6 +48,8 @@ const updateCharacter =  `${api}/system/role/updateRoleById`// 获取菜单树�
 const getRoleUserList =  `${api}/system/role/getRoleUserList`// 获取角色绑定用户
 const addUserAndRole =  `${api}/system/user/addUserAndRole`// 用户角色绑定
 
+const getUpdateInfoList = `${api}/system/user/getUpdateInfoList`// 查询日志记录列表
+
 const getDictitemInfoAllMethod =  `${api}/goods/dictitemInfo/dictitemInfoAllMethod`// 查询用户配置资产比例
 const updateDictitemInfoAllMethod =  `${api}/goods/dictitemInfo/dictitemInfoAllMethod`// 修改用户配置资产比例
 const addDictitemInfoAllMethod =  `${api}/goods/dictitemInfo/dictitemInfoAllMethod`// 修改用户配置资产比例
@@ -117,6 +119,7 @@ export default {
   updateCharacter,
   getRoleUserList,
   getExportUser,
+  getUpdateInfoList,
   getDictitemInfoAllMethod,
   updateDictitemInfoAllMethod,
   addDictitemInfoAllMethod,

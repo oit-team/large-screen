@@ -10,8 +10,8 @@
       @sendData='showChildData'/>
 
     <div class="operateBtn" style="display: inline-block;">
-      <el-button type="primary" plain @click="exportFile">导出</el-button>
-      <el-button type="primary" plain @click="assetAllocation">资产配置</el-button>
+      <el-button type="primary" size="small" @click="exportFile">导出</el-button>
+      <el-button type="primary" size="small" @click="assetAllocation">资产配置</el-button>
     </div>
     <el-divider></el-divider>
     <el-table
@@ -92,17 +92,15 @@
         <el-tab-pane label="冻结资产配置比例" :v-model="proportionValList">
           <el-form label-position="top">
             <el-form-item label="资产比例" prop="proportionVal">
-              <el-input
+              <vc-input
                 v-model="proportionVal"
                 type="number"
                 placeholder="请输入资产比例"
-                min="0"
-                max="100"
-                maxlength="3"
-                @change="formatInputNumber()"
+                :formatter="formatter"
+                format-trigger="blur"
                 class="input-with-select"
               >
-              </el-input>
+              </vc-input>
               <span class="percentSign">%</span>
             </el-form-item>
             <div>
@@ -118,10 +116,12 @@
 <script>
 import VcSearch from '../../components/basic/CommonSearch'
 import { downloadFile } from '@oit/utils'
+import { Input as VcInput } from '@oit/element-ui-extend'
 
 export default {
   components: {
     VcSearch,
+    VcInput,
   },
   props: {
     msg: String,
@@ -139,12 +139,14 @@ export default {
       headTitArr: [],
       searchParams: {},
       drawerProportion:false,
+      proportionCreatedId:'',
       proportionValList:'',
       proportionVal:'',
-      isUpdate:true
+      isAddProportion:false
     }
   },
   created() {
+    console.log(sessionStorage.getItem('userId'));
     this.requestUrl = this.Api.getUsers
     
     if (sessionStorage.headTitString&&sessionStorage.headTitString.indexOf('@') == -1) {
@@ -199,16 +201,9 @@ export default {
   },
   watch: {},
   methods: {
-    formatInputNumber(){
-      const val = this.proportionVal
-      if(val > 100){
-        this.$message({
-          message: '值不可以大于100！请重新输入',
-          type: 'warning'
-        })
-      }else{
-        this.proportionVal = Math.round(this.proportionVal * 100) / 100
-      }
+    formatter(value){
+      value = Math.min(Math.max(0, +value), 100)
+      return value.toFixed(2)
     },
     // 导出用户列表
      exportFile() {
@@ -224,28 +219,34 @@ export default {
         })
     },
     // 资产配置确认
-    async confirmProportionInfo() {
-      console.log(this.proportionVal)
-      if(this.proportionVal>100){
-        if(val > 100){
-          this.$message({
-            message: '值不可以大于100！请重新输入',
-            type: 'warning'
-          })
-        }
-        return
-      }
-      // if(isUpdate){
-      //   this.addDictitemInfoAllMethod()
-      // }
-      this.updateDictitemInfoAllMethod()
+    confirmProportionInfo() {
+      this.isAddProportion ? this.addDictitemInfoAllMethod() : this.updateDictitemInfoAllMethod()
       this.drawerProportion = false
     },
     // 新增资产比例
-    // addDictitemInfoAllMethod(){
-     
-    // },
-    // 编辑资产比例
+    addDictitemInfoAllMethod(){
+      const _this = this
+      const con = {
+        dictCode: "USER_ASSETS",
+        dictitemDisplayName:this.proportionVal,
+        dictitemOrderkey:1,
+        createId:this.proportionCreatedId
+      }
+      const cmd = 100002
+      const jsonParam = _this.GLOBAL.paramJson(con,cmd)
+      _this.$axios.post(_this.Api.addDictitemInfoAllMethod, jsonParam).then((res)=>{
+        if(res.data.head.status === 0){
+          console.log(res)
+
+        } else{
+          _this.$message({
+            message:res.data.head.msg,
+            type:'warning',
+          })
+        }
+      })
+    },
+    // 获取资产比例
     getDictitemInfoAllMethod(){
      const _this = this
       const con = {
@@ -255,7 +256,11 @@ export default {
       const jsonParam = _this.GLOBAL.paramJson(con,cmd)
       _this.$axios.post(_this.Api.getDictitemInfoAllMethod, jsonParam).then((res) => {
         if(res.data.head.status === 0) {
-          console.log(res)
+          if(res.data.body.result.length===0){
+            this.isAddProportion = true
+            this.proportionCreatedId = sessionStorage.getItem('userId')
+            return true
+          }
           this.proportionValList = res.data.body.result[0]
           this.proportionVal = res.data.body.result[0].dicttimeDisplayName
         } else {
@@ -272,9 +277,9 @@ export default {
       const _this = this
       const con = {
         dictitemCode: this.proportionValList.dictitemCode,
-        dictCode:this.proportionValList.dictCode,
-        dictitemOrderkey:1,
-        dictitemDisplayName:this.proportionVal
+        dictCode: this.proportionValList.dictCode,
+        dictitemOrderkey: 1,
+        dictitemDisplayName: this.proportionVal
       }
       const cmd = 100003
       const jsonParam = _this.GLOBAL.paramJson(con,cmd)

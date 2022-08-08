@@ -10,7 +10,7 @@
       @sendData="showChildData"
     />
     <div class="operateBtn" style="display: inline-block;">
-      <el-button type="primary" @click="exportFile">导出</el-button>
+      <el-button type="primary" size="small" @click="exportFile">导出</el-button>
     </div>
     <el-divider></el-divider>
     <el-table

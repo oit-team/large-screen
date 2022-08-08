@@ -146,7 +146,6 @@ export default {
     }
   },
   created() {
-    console.log(sessionStorage.getItem('userId'));
     this.requestUrl = this.Api.getUsers
     
     if (sessionStorage.headTitString&&sessionStorage.headTitString.indexOf('@') == -1) {
@@ -182,6 +181,7 @@ export default {
     // this.$refs.child.parentMsgs(this.dynamicParam)
   },
   activated() {
+    console.log(this.isAddProportion)
     if (sessionStorage.headTitString&&sessionStorage.headTitString.indexOf('@') == -1) {
       this.headTitArr = JSON.parse(sessionStorage.headTitString)
     }
@@ -220,6 +220,13 @@ export default {
     },
     // 资产配置确认
     confirmProportionInfo() {
+      if(!this.proportionVal) {
+         this.$message({
+          message: '资产比例不能为空！请重新输入',
+          type: 'warning'
+        })
+        return
+      }
       this.isAddProportion ? this.addDictitemInfoAllMethod() : this.updateDictitemInfoAllMethod()
       this.drawerProportion = false
     },
@@ -228,8 +235,9 @@ export default {
       const _this = this
       const con = {
         dictCode: "USER_ASSETS",
-        dictitemDisplayName:this.proportionVal,
+        dictitemDisplayName: this.formatter(this.proportionVal),
         dictitemOrderkey:1,
+        remark:"资产解封比例",
         createId:this.proportionCreatedId
       }
       const cmd = 100002
@@ -258,9 +266,11 @@ export default {
         if(res.data.head.status === 0) {
           if(res.data.body.result.length===0){
             this.isAddProportion = true
+            this.proportionVal= ''
             this.proportionCreatedId = sessionStorage.getItem('userId')
-            return true
+            return
           }
+          this.isAddProportion=false
           this.proportionValList = res.data.body.result[0]
           this.proportionVal = res.data.body.result[0].dicttimeDisplayName
         } else {
@@ -279,7 +289,7 @@ export default {
         dictitemCode: this.proportionValList.dictitemCode,
         dictCode: this.proportionValList.dictCode,
         dictitemOrderkey: 1,
-        dictitemDisplayName: this.proportionVal
+        dictitemDisplayName: this.formatter(this.proportionVal)
       }
       const cmd = 100003
       const jsonParam = _this.GLOBAL.paramJson(con,cmd)

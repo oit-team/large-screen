@@ -181,7 +181,6 @@ export default {
     // this.$refs.child.parentMsgs(this.dynamicParam)
   },
   activated() {
-    console.log(this.isAddProportion)
     if (sessionStorage.headTitString&&sessionStorage.headTitString.indexOf('@') == -1) {
       this.headTitArr = JSON.parse(sessionStorage.headTitString)
     }

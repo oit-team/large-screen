@@ -71,7 +71,6 @@ export default {
           ...this.form,
         }))
         .then(res => {
-          console.log(res)
           if (res.data.head.status !== 0) return Promise.reject(res)
           const data = res.data.body
           this.pageNum++

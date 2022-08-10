@@ -81,7 +81,7 @@ export default {
       this.title = `复制场次--${currData.conferenceHallName}`
     },
     loadTime() {
-      
+
       const con = {
         conferenceCode: this.historyRuleForm.copyConferenceCode
       }

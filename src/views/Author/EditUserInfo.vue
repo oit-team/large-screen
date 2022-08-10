@@ -465,7 +465,7 @@ export default {
           //     currentAssets: this.selectCurrentAssets==0 ? -this.valueForm.currentAssets : this.valueForm.currentAssets,
           //   }
           // }
-          
+
           let con = {
             recommender: recommender,
             ...valueForm,

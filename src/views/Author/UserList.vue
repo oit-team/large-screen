@@ -244,7 +244,6 @@ export default {
       _this.$axios.post(_this.Api.addDictitemInfoAllMethod, jsonParam).then((res)=>{
         if(res.data.head.status === 0){
           console.log(res)
-
         } else{
           _this.$message({
             message:res.data.head.msg,

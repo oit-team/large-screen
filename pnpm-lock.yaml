@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@babel/plugin-proposal-nullish-coalescing-operator': ^7.17.12
   '@babel/plugin-proposal-optional-chaining': ^7.17.12
-  '@oit/element-ui-extend': 0.3.0-beta.0
+  '@oit/element-ui-extend': 0.3.2-beta.0
   '@oit/utils': ^0.1.0
   '@oit/vue-components': ^0.1.0
   '@vue/babel-helper-vue-jsx-merge-props': ^1.2.1
@@ -32,7 +32,7 @@ specifiers:
   windicss: ^3.5.5
 
 dependencies:
-  '@oit/element-ui-extend': 0.3.0-beta.0_7myr5zpzvz6hv4wry7hpdcdlda
+  '@oit/element-ui-extend': 0.3.2-beta.0_7myr5zpzvz6hv4wry7hpdcdlda
   '@oit/utils': 0.1.0
   '@oit/vue-components': 0.1.1
   async-validator: 4.2.5
@@ -1438,8 +1438,8 @@ packages:
       fastq: 1.13.0
     dev: true
 
-  /@oit/element-ui-extend/0.3.0-beta.0_7myr5zpzvz6hv4wry7hpdcdlda:
-    resolution: {integrity: sha512-b+rjFBHN7RZ3ZvyRJYvIT8HXaYcW4QQP1jdDIq6+i+0c1OkBd8ghW/kQmIb4944in8lzLfX46pW7IVFs2ULx1Q==}
+  /@oit/element-ui-extend/0.3.2-beta.0_7myr5zpzvz6hv4wry7hpdcdlda:
+    resolution: {integrity: sha512-m+5rzwsL8P3TLcRGturbVJudQ81F33iNJspVV9dpDbIZSeJyMNYNftaNfDrTbGyedjtxme1vUKm4hJF6NPur2g==}
     peerDependencies:
       element-ui: ^2.15.9
       sass: ^1.53.0

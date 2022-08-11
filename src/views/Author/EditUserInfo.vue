@@ -231,28 +231,28 @@
         <el-tab-pane label="已释放资产 / 冻结资产">
           <el-form ref="valueForm" label-position="top" :model="ruleForm">
             <el-form-item label="已释放资产" prop="bys">
-              <el-input
+              <vc-input
                 v-model="ruleForm.currentAssets"
                 type="number"
                 placeholder="请输入已释放资产"
-                maxlength="10"
-                @input="ruleForm.currentAssets = formatNumber(ruleForm.currentAssets)"
+                :formatter="formatter"
+                format-trigger="blur"
                 @click.native="drawer2 = true"
                 class="input-with-select"
               >
-              </el-input>
+              </vc-input>
             </el-form-item>
             <el-form-item label="冻结资产" prop="freezingAssets">
-              <el-input
+              <vc-input
                 v-model="ruleForm.frozenAssets"
                 type="number"
                 placeholder="请输入冻结资产"
-                maxlength="10"
-                @input="ruleForm.frozenAssets = formatNumber(ruleForm.frozenAssets)"
+                :formatter="formatter"
+                format-trigger="blur"
                 @click.native="drawer2 = true"
                 class="input-with-select"
               >
-              </el-input>
+              </vc-input>
             </el-form-item>
             <div>
               <el-button class="w-full" type="primary" @click="confirmValue2()">确定</el-button>
@@ -267,9 +267,13 @@
 <script>
 import CryptoJS from '../../assets/js/CryptoJS'
 import { isEqual } from 'lodash'
+import { Input as VcInput } from '@oit/element-ui-extend'
 
 export default {
   name: 'addUser',
+  components: {
+    VcInput,
+  },
   props: {},
   data() {
     return {
@@ -309,7 +313,9 @@ export default {
         bys: '',
         integral: '',
         recommender: '',
-        totalAssets: '' // 总水滴
+        totalAssets: '', // 总水滴
+        frozenAssets:'',
+        currentAssets:''
       },
       lazyValueForm: {},
       valueForm: {
@@ -375,6 +381,11 @@ export default {
     formatNumber(number) {
       return Math.abs(number).toString().substring(0, 10)
     },
+    // 已释放资产和冻结资产
+    formatter(value){
+      value = Math.max(0, +value)
+      return value.toFixed(4)
+    },
     loadRecord($state) {
       return this.$axios
         .post(
@@ -403,8 +414,8 @@ export default {
     getUserInfo(data) {
       const con = {
         userId: data.id,
-        currentAssets: data.currentAssets,
-        frozenAssets: data.frozenAssets
+        currentAssets: this.formatter(data.currentAssets),
+        frozenAssets: this.formatter(data.frozenAssets)
       }
       const _this = this
       const jsonParam = _this.GLOBAL.paramJson(con)
@@ -458,14 +469,7 @@ export default {
               byAddType: this.valueForm.byAddType,
             }
           }
-          // 流动资产和冻结资产
-          // if (this.valueForm.currentAssets || this.valueForm.frozenAssets) {
-          //   valueForm = {
-          //     frozenAssets: this.selectFrozenAssets==0 ? -this.valueForm.frozenAssets : this.valueForm.frozenAssets,
-          //     currentAssets: this.selectCurrentAssets==0 ? -this.valueForm.currentAssets : this.valueForm.currentAssets,
-          //   }
-          // }
-          
+          // 已释放资产和冻结资产
           let con = {
             recommender: recommender,
             ...valueForm,

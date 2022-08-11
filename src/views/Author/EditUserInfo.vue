@@ -122,7 +122,7 @@
             style="width: 100px; height: 100px"
             :src="ruleForm.headPortrait"
           ></el-image>
-          <span v-else="ruleForm.headPortrait" style="color:#BFBFBF">暂无头像</span>
+          <span v-else style="color:#BFBFBF">暂无头像</span>
         </el-form-item>
       </div>
       <div style="clear: both;text-align: center;">

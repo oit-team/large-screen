@@ -7,7 +7,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@oit/element-ui-extend": "0.3.1",
+    "@oit/element-ui-extend": "0.3.2-beta.0",
     "@oit/utils": "^0.1.0",
     "@oit/vue-components": "^0.1.0",
     "async-validator": "^4.0.7",

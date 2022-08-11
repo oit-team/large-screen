@@ -137,7 +137,7 @@
               </el-table-column>
               <el-table-column
                 prop="deductPoints"
-                label="扣水滴"
+                label="扣除水滴"
                 align="center">
               </el-table-column>
               <el-table-column

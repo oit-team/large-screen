@@ -12,7 +12,7 @@
         <el-descriptions-item label="平台分润">{{ruleForm.platformRevenum}}</el-descriptions-item>
         <el-descriptions-item label="应付定金">{{ruleForm.deposit}}</el-descriptions-item>
         <el-descriptions-item label="竞拍时间">{{ruleForm.createTime}}</el-descriptions-item>
-        <el-descriptions-item label="支付时间">{{ruleForm.paymentTime}}</el-descriptions-item> 
+        <el-descriptions-item label="支付时间">{{ruleForm.paymentTime}}</el-descriptions-item>
       </el-descriptions>
       <div class="InfoContent">
         <div class="itemBox">
@@ -98,7 +98,7 @@ export default {
   watch: {},
   methods: {
     handleChange() {
-      
+
     },
     isUnique() {
       return false

@@ -330,12 +330,6 @@ export default {
         userName: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
         ],
-        bys: [
-          { required: true, message: '请输入能量值', trigger: 'blur' },
-        ],
-        integral: [
-          { required: true, message: '请输入水滴', trigger: 'blur' },
-        ],
         passWord: [
           { required: false, message: '请输入密码', trigger: 'blur' },
           { min: 6, message: '最少输入6位数字/字母', trigger: 'blur' },

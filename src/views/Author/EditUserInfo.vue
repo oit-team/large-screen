@@ -140,7 +140,7 @@
       <el-tabs class="py-3 px-4" value="0">
         <el-tab-pane label="能量值/水滴">
           <el-form ref="valueForm" label-position="top" :model="lazyValueForm">
-            <el-form-item label="能量值" prop="bys" :rules="lazyValueForm.byAddType !== 6 ? absRule : null">
+            <el-form-item :label="lazyValueForm.byAddType === 5 ? `能量值(累计赠送:${ruleForm.giveBy})` : '能量值'" prop="bys" :rules="lazyValueForm.byAddType !== 6 ? absRule : null">
               <el-input
                 v-model="lazyValueForm.bys"
                 type="number"
@@ -150,7 +150,7 @@
                 @input="lazyValueForm.bys = formatNumber(lazyValueForm.bys)"
                 @click.native="drawer = true"
               >
-                <el-select v-if="lazyValueForm.byAddType === 6 ? true : false" slot="prepend" v-model="selectBys" style="width:80px" placeholder="增加">
+                <el-select v-if="[5,6].includes(lazyValueForm.byAddType)" slot="prepend" v-model="selectBys" style="width:80px" placeholder="增加">
                   <el-option
                     v-for="item in selectByOptions"
                     :key="item.value"
@@ -161,7 +161,7 @@
                 </el-select>
               </el-input>
             </el-form-item>
-            <el-form-item label="水滴" prop="integral" :rules="lazyValueForm.byAddType !== 6 ? absRule : null">
+            <el-form-item :label="lazyValueForm.byAddType === 5 ? `水滴(累计赠送:${ruleForm.giveIntegral})` : '水滴'" prop="integral" :rules="lazyValueForm.byAddType !== 6 ? absRule : null">
               <el-input
                 v-model="lazyValueForm.integral"
                 type="number"
@@ -171,7 +171,7 @@
                 @input="lazyValueForm.integral = formatNumber(lazyValueForm.integral)"
                 @click.native="drawer = true"
               >
-                <el-select v-if="lazyValueForm.byAddType === 6 ? true : false" slot="prepend" v-model="selectIntegral" style="width:80px" placeholder="增加">
+                <el-select v-if="[5,6].includes(lazyValueForm.byAddType)" slot="prepend" v-model="selectIntegral" style="width:80px" placeholder="增加">
                   <el-option
                     v-for="item in selectJfOptions"
                     :key="item.value"
@@ -465,7 +465,7 @@ export default {
           let valueForm = {}
           // 能量值和水滴
           if (this.valueForm.bys || this.valueForm.integral) {
-            const sureMinus = this.valueForm.byAddType === 6
+            const sureMinus = [5,6].includes(this.valueForm.byAddType)
             valueForm = {
               bys: sureMinus && this.selectBys == 0 ? -this.valueForm.bys : this.valueForm.bys,
               integral: sureMinus && this.selectIntegral == 0 ? -this.valueForm.integral : this.valueForm.integral,

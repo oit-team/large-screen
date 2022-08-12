@@ -7,27 +7,22 @@
       :modal-append-to-body="true"
       :before-close="handleClose"
       :visible="goodsDrawer"
-      :direction="direction"
-    >
-      <div class="operateBtn">
-        <el-button size="small" icon="el-icon-plus" type="primary" @click="CopyPrice">
-          复制价格
-        </el-button>
-      </div>
-      <el-divider></el-divider>
-      <el-table
-        ref="elTable"
-        v-loading="loading"
-        element-loading-text="拼命加载中..."
-        :data="tableData"
-        :row-key="getRowKey"
-        border
-        style="width: 100%"
-      >
-        <el-table-column label="选择" align="center" width="65">
-          <template scope="scope">
-            <el-radio
-              v-model="radio"
+      :direction="direction">
+        <div class="operateBtn">
+          <el-button size="small" @click='CopyPrice'  icon="el-icon-plus" type="primary">复制价格</el-button>
+        </div>
+        <el-divider></el-divider>
+        <el-table
+          v-loading="loading"
+          element-loading-text="拼命加载中..."
+          :data="tableData"
+          :row-key="getRowKey"
+          border
+          height="100%"
+          ref="elTable">
+          <el-table-column label="选择" align="center" width="65">
+            <template scope="scope">
+              <el-radio v-model="radio"
               :label="scope.row.goodsCode"
               @change.native="getCurrentRow(scope.row)"
             >

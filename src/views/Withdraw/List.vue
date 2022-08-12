@@ -43,7 +43,7 @@
       </div>
     </aside>
 
-    <main class="flex-1 flex flex-col">
+    <main class="flex-1 flex flex-col" style="overflow:hidden">
       <div class="border border-gray-200 rounded mb-2 p-3">
         <div class="text-lg pb-1" @click="loading = !loading">历史统计：</div>
         <div class="grid grid-cols-3 text-xl">

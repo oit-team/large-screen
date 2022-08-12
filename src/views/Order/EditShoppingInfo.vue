@@ -59,7 +59,7 @@
             </div>
           </el-collapse-item>
         </el-collapse> -->
-        <div v-for="(item, index) in ruleForm.orderDetailed" class="itemBox">
+        <div v-for="(item, index) in ruleForm.orderDetailed" :key="index" class="itemBox">
           <!-- <div class="itemTitle">{{item.goodsName}}</div> -->
           <div class="itemInfo">
             <div class="imgBox">
@@ -70,7 +70,7 @@
                   fit="scale-down"
                   :src="item.resUrl"
                 ></el-image>
-                <span v-else="item.resUrl" style="color:#BFBFBF">暂无图片</span>
+                <span v-else style="color:#BFBFBF">暂无图片</span>
               </div>
               <div class="right">
                 <span>{{ item.goodsName }}</span>
@@ -91,7 +91,6 @@
 </template>
 
 <script>
-import CryptoJS from '../../assets/js/CryptoJS'
 export default {
   name: 'AddUser',
   props: {},
@@ -160,9 +159,7 @@ export default {
             type: 'warning',
           })
         }
-      }).catch((err) => {
-        console.log(err)
-      })
+      }).catch((err) => {})
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()

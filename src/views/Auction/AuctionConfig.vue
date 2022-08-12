@@ -38,7 +38,7 @@
           <div class="right">
             <span @click.stop.prevent>
               <el-switch
-                v-model="item.state == 0"
+                :value="item.state == 0"
                 :disabled="roomList.length == 0"
                 active-color="#8d1323"
                 inactive-color="#BFBFBF"
@@ -53,7 +53,7 @@
     <el-container id="Content">
       <div id="roomBox" class="scrollbar" style="height: 48px;background:#fff;border:0px;line-height: 28px;padding:10px;overflow:auto">
         <el-checkbox-group v-model="roomCheckList">
-          <el-checkbox v-for="(item, index) in roomList" :key="item.roomCode" :label="item.roomCode" @contextmenu.prevent.native="rightClick('areaDrawer', item)" @change="checked => roomCheckListChange(checked, item)">
+          <el-checkbox v-for="(item) in roomList" :key="item.roomCode" :label="item.roomCode" @contextmenu.prevent.native="rightClick('areaDrawer', item)" @change="checked => roomCheckListChange(checked, item)">
             {{ item.roomName }}
           </el-checkbox>
           <div class="addBtn">
@@ -80,7 +80,7 @@
                 <span>{{ item.roomName }}</span>
                 <span @click.stop.prevent>
                   <el-switch
-                    v-model="item.state == 0"
+                    :value="item.state == 0"
                     :disabled="inDuringDate"
                     active-color="#8d1323"
                     inactive-color="#BFBFBF"
@@ -656,15 +656,11 @@ export default {
             type: 'error',
           })
         }
-      }).catch((err) => {
-        console.log(err)
-      })
+      }).catch((err) => {})
     },
     openDrawer(Name, data) {
       if (Name === 'goodsDrawer') {
-        if (this.inDuringDate || this.associatedRoom.length == 0) {
-
-        } else {
+        if (!(this.inDuringDate || this.associatedRoom.length == 0)) {
           this.$refs.goodsDrawer.handleOpen()
           this.$refs.goodsDrawer.loadManage()
         }
@@ -727,7 +723,6 @@ export default {
           })
         }
       }).catch((err) => {
-        console.log(err)
       })
     },
     getConferenceHall(loadRoomInfo) {
@@ -755,7 +750,6 @@ export default {
           }
         }
       }).catch((err) => {
-        console.log(err)
       })
     },
     reloadManage(msg, data) {
@@ -768,7 +762,7 @@ export default {
         } else {
           this.getConferenceHall()
         }
-      } else if (msg = 'areaDrawer') {
+      } else if (msg === 'areaDrawer') {
         if (data) {
           const MenuItem = this.roomList.filter((item) => { return item.roomId === data.id })
           const associatedRoomItem = this.associatedRoom.find(item => item.roomId == data.id)
@@ -901,7 +895,6 @@ export default {
               })
             }
           }).catch((err) => {
-            console.log(err)
           })
         }
       })
@@ -977,11 +970,8 @@ export default {
             })
           }
         }).catch((err) => {
-          console.log(err)
         })
-      }).catch(() => {
-
-      })
+      }).catch(() => {})
     },
     setgoodsManage(con) {
       const goodslist = this.goodsList.filter(item => this.checkList.includes(item.goodsCode))
@@ -1031,7 +1021,6 @@ export default {
         setTimeout(() => { this.loading = false }, 500)
       }).catch((err) => {
         setTimeout(() => { this.loading = false }, 500)
-        console.log(err)
       })
     },
     addGoods(data) {
@@ -1107,9 +1096,7 @@ export default {
                 type: 'warning',
               })
             }
-          }).catch((err) => {
-            console.log(err)
-          })
+          }).catch((err) => {})
         } else {
           _this.goodsList = _this.goodsList.filter(Item => Item.goodsCode != item.goodsCode)
           _this.checkList = _this.checkList.filter(Item => Item != item.goodsCode)
@@ -1150,9 +1137,7 @@ export default {
               })
               this.roomCheckList = this.roomCheckList.filter(Item => Item != item.roomCode)
             }
-          }).catch((err) => {
-            console.log(err)
-          })
+          }).catch((err) => {})
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -1192,9 +1177,7 @@ export default {
                 type: 'warning',
               })
             }
-          }).catch((err) => {
-            console.log(err)
-          })
+          }).catch((err) => {})
         }).catch(() => {
           this.roomCheckList.push(item.roomCode)
           this.$message({
@@ -1216,7 +1199,6 @@ export default {
       }
     },
     CopyHistory() {
-      // this.activeMenu = ''
       this.getConferenceHall('loadRoomInfo')
     },
   },
@@ -1383,7 +1365,6 @@ export default {
         }
         .el-form{
           width: 100%;
-          display: inline-block;
           float: left;
           text-align:left;
         }
@@ -1423,7 +1404,7 @@ export default {
         .roomNull{
           color:#BFBFBF;
           font-size:16px;
-          heihgt:50px;
+          height:50px;
           line-height: 50px;
         }
         .roomNull::after{
@@ -1440,7 +1421,6 @@ export default {
         }
         >div:not(:last-child){
           overflow:hidden;
-          display: inline-block;
           float: left;
           padding:0 16px;
           position:relative;
@@ -1567,9 +1547,6 @@ export default {
     }
     .disabled{
       cursor: not-allowed!important;
-    }
-    .el-button:focus{
-      //background-color:#fff;
     }
     .el-switch.is-disabled{
       opacity: 0.3

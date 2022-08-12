@@ -257,7 +257,6 @@ export default {
       this.videoImgList = this.$route.query.item.videoImage ? this.setFileList([{ resUrl: this.$route.query.item.videoImage }]) : []
       if (this.$route.query.flag) {
         this.flag = this.$route.query.flag
-        console.log(this.flag)
       }
     } else {
       this.title = '新增商品'
@@ -362,9 +361,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch((err) => {
-              console.log(err)
-            })
+            }).catch((err) => {})
           } else {
             const jsonParam = _this.GLOBAL.paramJson(con)
             _this.$axios.post(_this.Api.addGoodsInfo, jsonParam).then((res) => {
@@ -381,9 +378,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch((err) => {
-              console.log(err)
-            })
+            }).catch((err) => {})
           }
         }
       })
@@ -465,7 +460,6 @@ export default {
 
     },
     VideoUploadSuccess(res, file) {
-      // this.isShowUploadVideo = true;
       this.uploadVideoFlag = false
       this.perValue = 0
       if (res.status === 0) {

@@ -42,7 +42,7 @@
                   fit="scale-down"
                   :src="ruleForm.resUrl"
                 ></el-image>
-                <span v-else="ruleForm.resUrl" style="color:#BFBFBF">暂无图片</span>
+                <span v-else style="color:#BFBFBF">暂无图片</span>
               </div>
               <div class="right">
                 <span>{{ ruleForm.goodsName }}</span>
@@ -70,7 +70,6 @@
 </template>
 
 <script>
-import CryptoJS from '../../assets/js/CryptoJS'
 export default {
   name: 'AddUser',
   props: {},
@@ -132,16 +131,13 @@ export default {
       _this.$axios.post(_this.Api.getAllAuctionDetailed, jsonParam).then((res) => {
         if (res.data.head.status === 0) {
           _this.ruleForm = res.data.body
-          // _this.ruleForm = res.data.body.allResultList[0].orderDetailed[0]
         } else {
           _this.$message({
             message: res.data.head.msg,
             type: 'warning',
           })
         }
-      }).catch((err) => {
-        console.log(err)
-      })
+      }).catch((err) => {})
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()

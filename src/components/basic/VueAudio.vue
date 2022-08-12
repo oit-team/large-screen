@@ -70,38 +70,31 @@ export default {
   methods: {
     setSrc() {
       this.activeUrl = 'http://127.0.0.1:8000/console/play/audio.wav'
-      console.log(this.activeUrl)
       this.$nextTick(() => {
-        	this.$refs.audio.load()
+        this.$refs.audio.load()
         this.$refs.audio.play()
       })
     },
     clickAudio() {
-      console.log('click')
     },
     // 当音频播放
     onPlay() {
       this.audio.playing = true
-      console.log('onPlay')
     },
     // 当音频暂停
     onPause() {
       if (parseInt(this.audio.currentTime) == this.audio.maxTime) {
-        console.log('播放结束')
         this.setSrc()
       }
       this.audio.playing = false
-      console.log('onPause')
     },
     // 音频播放
     play() {
       this.$refs.audio.play()
-      console.log('play')
     },
     // 音频暂停
     pause() {
       this.$refs.audio.pause()
-      console.log('pause')
     },
     // 控制按钮
     startPlayOrPause() {
@@ -145,7 +138,6 @@ export default {
       this.isChange = false
     },
     nextAudio() {
-
     },
   },
 }

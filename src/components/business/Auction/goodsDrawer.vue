@@ -34,7 +34,6 @@
         border
         style="width: 100%"
       >
-        </el-table-column>
         <el-table-column
           type="selection"
           :selectable="selected"

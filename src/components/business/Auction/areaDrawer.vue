@@ -62,11 +62,6 @@ export default {
       },
     }
   },
-  created() {
-  },
-  mounted() {
-    const _this = this
-  },
   methods: {
     handleClose() {
       this.$refs.arearuleForm.resetFields()
@@ -113,7 +108,6 @@ export default {
               })
             }
           }).catch((err) => {
-            console.log(err)
           })
         }
       })

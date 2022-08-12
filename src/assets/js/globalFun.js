@@ -2,13 +2,13 @@ function paramJson(con = {}, cmd) {
   const Json = {
     head: {
       aid: sessionStorage.userId,
-      ver: '1.0',
-      ln: 'cn',
-      mod: 'home',
-      de: '2019-10-16',
-      sync: 1,
-      cmd: cmd || 10008,
-      chcode: 'ef19843298ae8f2134f',
+      ver: '1.0',
+      ln: 'cn',
+      mod: 'home',
+      de: '2019-10-16',
+      sync: 1,
+      cmd: cmd || 10008,
+      chcode: 'ef19843298ae8f2134f',
     },
     con,
   }

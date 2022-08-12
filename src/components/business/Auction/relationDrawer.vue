@@ -57,11 +57,6 @@ export default {
       },
     }
   },
-  created() {
-  },
-  mounted() {
-    const _this = this
-  },
   methods: {
     handleClose() {
       this.RelationDrawer = false
@@ -91,7 +86,6 @@ export default {
               })
             }
           }).catch((err) => {
-            console.log(err)
           })
         }
       })

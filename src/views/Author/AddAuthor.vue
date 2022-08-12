@@ -110,9 +110,7 @@ export default {
             type: 'warning',
           })
         }
-      }).catch((err) => {
-        console.log(err)
-      })
+      }).catch((err) => {})
     },
     submitForm(formName) {
       const _this = this
@@ -142,9 +140,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch((err) => {
-              console.log(err)
-            })
+            }).catch((err) => {})
           } else {
             const jsonParam = _this.GLOBAL.paramJson(con)
             _this.$axios.post(_this.Api.insertAuthorInfo, jsonParam).then((res) => {
@@ -161,9 +157,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch((err) => {
-              console.log(err)
-            })
+            }).catch((err) => {})
           }
         }
       })

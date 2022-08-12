@@ -59,11 +59,6 @@ export default {
       },
     }
   },
-  created() {
-  },
-  mounted() {
-    const _this = this
-  },
   methods: {
     handleClose() {
       this.$refs.menuruleForm.resetFields()
@@ -118,7 +113,6 @@ export default {
               })
             }
           }).catch((err) => {
-            console.log(err)
           })
         }
       })

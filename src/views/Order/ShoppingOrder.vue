@@ -32,10 +32,7 @@
         :label="item.fieldName"
       >
         <template v-if="item.fieldKey == 'state'" scope="scopeStatus">
-          <span v-if="scopeStatus.row.state == 0">所有</span>
-          <span v-else-if="scopeStatus.row.state == 1">待付款</span>
-          <span v-else-if="scopeStatus.row.state == 2">待收货</span>
-          <span v-else-if="scopeStatus.row.state == 3">已完成</span>
+          <span>{{ scopeStatus.row.stateMsg }}</span>
         </template>
       </el-table-column>
       <el-table-column

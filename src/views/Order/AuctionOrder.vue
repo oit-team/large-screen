@@ -34,10 +34,7 @@
         :label="item.fieldName"
       >
         <template v-if="item.fieldKey == 'state'" scope="scopeStatus">
-          <span v-if="scopeStatus.row.state == 0">未付款</span>
-          <span v-else-if="scopeStatus.row.state == 1">未挂拍</span>
-          <span v-else-if="scopeStatus.row.state == 2">取消挂拍</span>
-          <span v-else-if="scopeStatus.row.state == 3">已完成</span>
+          <span>{{ scopeStatus.row.stateName }}</span>
         </template>
       </el-table-column>
       <el-table-column

@@ -150,7 +150,7 @@
                 @input="lazyValueForm.bys = formatNumber(lazyValueForm.bys)"
                 @click.native="drawer = true"
               >
-                <el-select v-if="[5,6].includes(lazyValueForm.byAddType)" slot="prepend" v-model="selectBys" style="width:80px" placeholder="增加">
+                <el-select v-if="[5, 6].includes(lazyValueForm.byAddType)" slot="prepend" v-model="selectBys" style="width:80px" placeholder="增加">
                   <el-option
                     v-for="item in selectByOptions"
                     :key="item.value"
@@ -171,7 +171,7 @@
                 @input="lazyValueForm.integral = formatNumber(lazyValueForm.integral)"
                 @click.native="drawer = true"
               >
-                <el-select v-if="[5,6].includes(lazyValueForm.byAddType)" slot="prepend" v-model="selectIntegral" style="width:80px" placeholder="增加">
+                <el-select v-if="[5, 6].includes(lazyValueForm.byAddType)" slot="prepend" v-model="selectIntegral" style="width:80px" placeholder="增加">
                   <el-option
                     v-for="item in selectJfOptions"
                     :key="item.value"
@@ -242,7 +242,7 @@
         <el-tab-pane label="已释放资产 / 冻结资产">
           <el-form ref="valueForm" label-position="top" :model="ruleForm">
             <el-form-item label="已释放资产" prop="bys">
-              <vc-input
+              <VcInput
                 v-model="ruleForm.currentAssets"
                 type="number"
                 placeholder="请输入已释放资产"
@@ -250,10 +250,10 @@
                 format-trigger="blur"
                 @click.native="drawer2 = true"
               >
-              </vc-input>
+              </VcInput>
             </el-form-item>
             <el-form-item label="冻结资产" prop="freezingAssets">
-              <vc-input
+              <VcInput
                 v-model="ruleForm.frozenAssets"
                 type="number"
                 placeholder="请输入冻结资产"
@@ -261,7 +261,7 @@
                 format-trigger="blur"
                 @click.native="drawer2 = true"
               >
-              </vc-input>
+              </VcInput>
             </el-form-item>
             <div>
               <el-button class="w-full" type="primary" @click="confirmValue2()">
@@ -277,8 +277,8 @@
 
 <script>
 import { isEqual } from 'lodash'
-import CryptoJS from '../../assets/js/CryptoJS'
 import { Input as VcInput } from '@oit/element-ui-extend'
+import CryptoJS from '../../assets/js/CryptoJS'
 
 export default {
   name: 'AddUser',
@@ -325,8 +325,8 @@ export default {
         integral: '',
         recommender: '',
         totalAssets: '', // 总水滴
-        frozenAssets:'',
-        currentAssets:''
+        frozenAssets: '',
+        currentAssets: '',
       },
       lazyValueForm: {},
       valueForm: {
@@ -387,7 +387,7 @@ export default {
       return Math.abs(number).toString().substring(0, 10)
     },
     // 已释放资产和冻结资产
-    formatter(value){
+    formatter(value) {
       value = Math.max(0, +value)
       return value.toFixed(4)
     },
@@ -465,7 +465,7 @@ export default {
           let valueForm = {}
           // 能量值和水滴
           if (this.valueForm.bys || this.valueForm.integral) {
-            const sureMinus = [5,6].includes(this.valueForm.byAddType)
+            const sureMinus = [5, 6].includes(this.valueForm.byAddType)
             valueForm = {
               bys: sureMinus && this.selectBys == 0 ? -this.valueForm.bys : this.valueForm.bys,
               integral: sureMinus && this.selectIntegral == 0 ? -this.valueForm.integral : this.valueForm.integral,

@@ -21,8 +21,8 @@
       row-key="menuId"
       border
       height="100%"
-        default-expand-all
-        :tree-props="{children: 'childrenMenu', hasChildren: 'true'}"
+      default-expand-all
+      :tree-props="{ children: 'childrenMenu', hasChildren: 'true' }"
     >
       <el-table-column
         type="index"

@@ -47,9 +47,6 @@ export default {
       }],
     }
   },
-  created() {
-    console.log('HomeCreated')
-  },
 }
 </script>
 

@@ -151,7 +151,6 @@ export default {
   watch: {},
   created() {
     if (this.$route.query.item) {
-      console.log(this.$route.query.item)
       this.title = '编辑菜单'
       this.editFlag = true
       this.$route.query.item.path = this.$route.query.item.path === '0' ? [] : this.$route.query.item.path.split(',')
@@ -177,7 +176,6 @@ export default {
     },
     getTreeData(data) {
       data.forEach((item, i) => {
-        console.log(item)
         if (item.menuId === this.ruleForm.menuId) {
           item.disabled = true
         }
@@ -197,7 +195,6 @@ export default {
     },
     changeMenuType() {},
     submitForm(formName) {
-      console.log(this.ruleForm.path.toString())
       const _this = this
       _this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -229,9 +226,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch((err) => {
-              console.log(err)
-            })
+            }).catch((err) => {})
           } else {
             const jsonParam = _this.GLOBAL.paramJson(con)
             _this.$axios.post(_this.Api.insertMenu, jsonParam).then((res) => {
@@ -249,9 +244,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch((err) => {
-              console.log(err)
-            })
+            }).catch((err) => {})
           }
         }
       })

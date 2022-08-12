@@ -121,7 +121,7 @@
             style="width: 100px; height: 100px"
             :src="ruleForm.headPortrait"
           ></el-image>
-          <span v-else="ruleForm.headPortrait" style="color:#BFBFBF">暂无头像</span>
+          <span v-else style="color:#BFBFBF">暂无头像</span>
         </el-form-item>
       </div>
       <div style="clear: both;text-align: center;">
@@ -427,9 +427,7 @@ export default {
             type: 'warning',
           })
         }
-      }).catch((err) => {
-        console.log(err)
-      })
+      }).catch((err) => {})
     },
     getUserList() {
       const con = {
@@ -465,13 +463,6 @@ export default {
               byAddType: this.valueForm.byAddType,
             }
           }
-          // 流动资产和冻结资产
-          // if (this.valueForm.currentAssets || this.valueForm.frozenAssets) {
-          //   valueForm = {
-          //     frozenAssets: this.selectFrozenAssets==0 ? -this.valueForm.frozenAssets : this.valueForm.frozenAssets,
-          //     currentAssets: this.selectCurrentAssets==0 ? -this.valueForm.currentAssets : this.valueForm.currentAssets,
-          //   }
-          // }
 
           const con = {
             recommender,
@@ -501,9 +492,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch((err) => {
-              console.log(err)
-            })
+            }).catch((err) => {})
           } else {
             const jsonParam = _this.GLOBAL.paramJson(con)
             _this.$axios.post(_this.Api.insertUser, jsonParam).then((res) => {
@@ -520,9 +509,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch((err) => {
-              console.log(err)
-            })
+            }).catch((err) => {})
           }
         }
       })

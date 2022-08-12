@@ -24,7 +24,6 @@
         border
         style="width: 100%"
       >
-        </el-table-column>
         <el-table-column label="选择" align="center" width="65">
           <template scope="scope">
             <el-radio
@@ -66,13 +65,8 @@
 </template>
 
 <script>
-import VcSearch from '../../basic/CommonSearch'
-
 export default {
   name: 'CopyPrice',
-  components: {
-    VcSearch,
-  },
   data() {
     return {
       currGoods: '',

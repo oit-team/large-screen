@@ -101,7 +101,7 @@
       :with-header="false"
     >
       <el-tabs class="py-3 px-4" value="0">
-        <el-tab-pane label="冻结资产配置比例" :v-model="proportionValList">
+        <el-tab-pane v-model="proportionValList" label="冻结资产配置比例">
           <el-form label-position="top">
             <el-form-item label="资产比例" prop="proportionVal">
               <VcInput
@@ -256,9 +256,7 @@ export default {
       const cmd = 100002
       const jsonParam = _this.GLOBAL.paramJson(con, cmd)
       _this.$axios.post(_this.Api.addDictitemInfoAllMethod, jsonParam).then((res) => {
-        if (res.data.head.status === 0) {
-          console.log(res)
-        } else {
+        if (!res.data.head.status === 0) {
           _this.$message({
             message: res.data.head.msg,
             type: 'warning',
@@ -306,8 +304,6 @@ export default {
       const jsonParam = _this.GLOBAL.paramJson(con, cmd)
       _this.$axios.post(_this.Api.getDictitemInfoAllMethod, jsonParam).then((res) => {
         if (res.data.head.status === 0) {
-          console.log(res)
-        } else {
           _this.$message({
             message: res.data.head.msg,
             type: 'warning',

@@ -67,7 +67,6 @@ export default {
                 tip: '角色授权',
                 icon: 'el-icon-thumb',
                 type: 'primary',
-                // row :roleName updateId upDateTime roleCode roReMark
                 click: ({ row }) => this.$router.push({
                   path: '/role/roleUsersByRoleId',
                   query: { item: row },
@@ -112,14 +111,12 @@ export default {
         }))
         .then((res) => {
           if (res.data.head.status !== 0) return Promise.reject(res)
-          const data = res.data.body
           this.pageNum++
         })
         .catch($state.fail)
     },
     // 获取角色列表
     async loadData(params) {
-      console.log(params)
       return this.$axios
         .post(this.Api.getRoleList, this.GLOBAL.paramJson({
           createId: this.createId,

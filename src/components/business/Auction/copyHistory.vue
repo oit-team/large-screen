@@ -22,7 +22,7 @@
         </el-form-item>
         <el-form-item label="场次时间" prop="copyTime">
           <el-radio-group v-if="TimeList.length > 0" v-model="historyRuleForm.copyTime" class="TimeListBox">
-            <el-radio v-for="(item, index) in TimeList" :label="item">
+            <el-radio v-for="(item, index) in TimeList" :key="index" :label="item">
               {{ item }}
             </el-radio>
           </el-radio-group>
@@ -103,9 +103,7 @@ export default {
             type: 'warning',
           })
         }
-      }).catch((err) => {
-        console.log(err)
-      })
+      }).catch((err) => {})
     },
     submit() {
       this.$refs.historyruleForm.validate((valid) => {
@@ -128,9 +126,7 @@ export default {
                 type: 'warning',
               })
             }
-          }).catch((err) => {
-            console.log(err)
-          })
+          }).catch((err) => {})
         }
       })
     },

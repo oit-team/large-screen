@@ -131,26 +131,12 @@ export default {
         el.value = this.pageNum
       }
     })
-    // this.$refs.child.parentMsgs(this.dynamicParam)
   },
   activated() {
     if (sessionStorage.headTitString && !sessionStorage.headTitString.includes('@')) {
       this.headTitArr = JSON.parse(sessionStorage.headTitString)
     }
     const _this = this
-    // _this.$bus.$off('detailShow')
-    // /* 接收参数 */
-    // _this.$bus.$on('detailShow', (data) => {
-    //   if (!data.id) {
-    //     _this.$nextTick(() => {
-    //       _this.$refs.child.resetSearch(_this.dynamicParam, _this.pageNum)
-    //     })
-    //   } else {
-    //     _this.tableData[_this.editIndex].birthDate = data.birthDate
-    //     _this.tableData[_this.editIndex].authorName = data.authorName
-    //     _this.tableData[_this.editIndex].category = data.category
-    //   }
-    // })
     _this.$refs.child.resetSearch(_this.dynamicParam, _this.pageNum)
   },
   methods: {
@@ -200,9 +186,7 @@ export default {
             })
           }
         })
-      }).catch(() => {
-        console.log('取消删除')
-      })
+      }).catch(() => {})
     },
     changeLoad(val) {
       this.loading = val

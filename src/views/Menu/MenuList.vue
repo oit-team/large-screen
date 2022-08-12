@@ -171,7 +171,6 @@ export default {
     // this.requestUrl = this.Api.getAllMenuAndTree
     if (sessionStorage.headTitString) {
       this.headTitArr = JSON.parse(sessionStorage.headTitString)
-      console.log(sessionStorage.headTitString)
     }
     if (this.headTitArr.length <= 0) {
       this.$message({
@@ -201,7 +200,6 @@ export default {
         el.value = this.pageNum
       }
     })
-    // this.$refs.child.parentMsgs(this.dynamicParam)
   },
   activated() {
     if (sessionStorage.headTitString) {
@@ -222,17 +220,13 @@ export default {
           _this.$refs.child.resetSearch(_this.dynamicParam, _this.pageNum)
         })
       } else {
-        console.log('修改')
-        console.log(data)
         _this.$set(_this.tableData, _this.editIndex, data)
-        console.log(_this.tableData)
       }
     })
   },
   methods: {
     editMenuItem(item, index) {
       this.editIndex = index
-      console.log('item', item)
       this.$router.push({
         path: '/menu/addmenu',
         query: {
@@ -246,7 +240,6 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        console.log('同意')
         const _this = this
         const con = {
           menuId: item.menuId,
@@ -267,7 +260,6 @@ export default {
           }
         })
       }).catch(() => {
-        console.log('取消删除')
       })
     },
     changeLoad(val) {
@@ -374,7 +366,6 @@ export default {
     handleTagEdit(index) {
       this.dynamicTags[index].edit = true
       const ref = `editableInput${index}`
-      console.log(ref)
       this.$nextTick((_) => {
         this.$refs[ref][0].$refs.input.focus()
       })

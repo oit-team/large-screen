@@ -113,7 +113,7 @@ export default {
     headTitArr: Array,
     pageNum: Number,
     pageSize: Number,
-    OtherData: Object,
+    otherData: Object,
     serverName: String,
     requestUrl: String,
     cmdVal: Number,
@@ -219,8 +219,8 @@ export default {
           con2 += `"${this.pMsg[i].key}":"${this.pMsg[i].value}",`
         }
       }
-      for (const i in this.OtherData) {
-        con2 += `"${i}":"${this.OtherData[i]}",`
+      for (const i in this.otherData) {
+        con2 += `"${i}":"${this.otherData[i]}",`
       }
       const con4 = null
       let con3 = ''

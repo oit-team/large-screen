@@ -196,17 +196,11 @@ export default {
       })
     }
     const _this = this
-    // _this.$bus.$off('detailShow')
-    // /* 接收参数 */
-    // _this.$bus.$on('detailShow', (data) => {
-    //    _this.$refs.child.resetSearch(_this.dynamicParam, _this.pageNum)
-    // })
     _this.$refs.child.resetSearch(_this.dynamicParam, _this.pageNum)
   },
   methods: {
     issueTimerItem(item, index, type) {
       let msg = ''
-      const ApiUrl = ''
       let newState = ''
       let tipMsg = ''
       if (type === 1) {
@@ -223,7 +217,6 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        console.log('同意')
         const _this = this
         const con = {
           goodsId: item.goodsId,
@@ -304,9 +297,7 @@ export default {
             })
           }
         })
-      }).catch(() => {
-        console.log('取消删除')
-      })
+      }).catch(() => {})
     },
     changeLoad(val) {
       this.loading = val

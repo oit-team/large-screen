@@ -6,52 +6,56 @@
       :modal-append-to-body="true"
       :before-close="handleClose"
       :visible="menuDrawer"
-      :direction="direction">
-      <el-form style="width:80%;margin: 0 auto" :model="menuRuleForm" :rules="menuRules" ref="menuruleForm">
+      :direction="direction"
+    >
+      <el-form ref="menuruleForm" style="width:80%;margin: 0 auto" :model="menuRuleForm" :rules="menuRules">
         <el-form-item label="场次名称" prop="Name">
           <el-input
             v-model.trim="menuRuleForm.Name"
             clearable
-            placeholder="请输入场次名称">
+            placeholder="请输入场次名称"
+          >
           </el-input>
         </el-form-item>
         <el-form-item label="场次时间" required prop="Time">
           <el-time-picker
+            v-model="menuRuleForm.Time"
             style="width: 100%;"
             is-range
             format="HH:mm"
-            v-model="menuRuleForm.Time"
             range-separator="至"
             start-placeholder="开始时间"
             end-placeholder="结束时间"
-            placeholder="请选择时间范围">
+            placeholder="请选择时间范围"
+          >
           </el-time-picker>
         </el-form-item>
       </el-form>
       <div style="width: 80%;margin:0 auto;">
-        <el-button style="width:100%" type="primary" @click="submit">提交</el-button>
+        <el-button style="width:100%" type="primary" @click="submit">
+          提交
+        </el-button>
       </div>
     </el-drawer>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'menuDrawer',
+  name: 'MenuDrawer',
   data() {
     return {
       isAdd: false,
-      menuDrawer:false,
+      menuDrawer: false,
       direction: 'rtl',
       auctionData: {},
-      menuRuleForm:{
+      menuRuleForm: {
         Name: '',
         Time: '',
       },
-      menuRules:{
-        Name: [{required: true,message: '请输入场次名称'},],
-        Time: [{required: true,message: '请输入场次名称'},],
+      menuRules: {
+        Name: [{ required: true, message: '请输入场次名称' }],
+        Time: [{ required: true, message: '请输入场次名称' }],
       },
     }
   },
@@ -69,17 +73,17 @@ export default {
     },
     handleOpen(data) {
       this.menuDrawer = true
-      if(data) {
+      if (data) {
         this.isAdd = false
-        this.auctionData = data;
-        this.menuRuleForm.Name = data.conferenceHallName;
-        this.menuRuleForm.Id = data.id;
+        this.auctionData = data
+        this.menuRuleForm.Name = data.conferenceHallName
+        this.menuRuleForm.Id = data.id
         this.menuRuleForm.Time = this.setTime(data.startTime, data.endTime)
-      }else {
+      } else {
         this.isAdd = true
       }
     },
-    setTime(startTime,endTime) {
+    setTime(startTime, endTime) {
       return [new Date(startTime), new Date(endTime)]
     },
     submit() {
@@ -87,12 +91,12 @@ export default {
       _this.$refs.menuruleForm.validate((valid) => {
         if (valid) {
           let postApi = ''
-          let con = {
+          const con = {
             conferenceHallName: this.menuRuleForm.Name,
-            startTime: _this.$moment(this.menuRuleForm.Time[0]).format("HH:mm:00"),
-            endTime: _this.$moment(this.menuRuleForm.Time[1]).format("HH:mm:00"),
+            startTime: _this.$moment(this.menuRuleForm.Time[0]).format('HH:mm:00'),
+            endTime: _this.$moment(this.menuRuleForm.Time[1]).format('HH:mm:00'),
           }
-          if(this.isAdd) {
+          if (this.isAdd) {
             postApi = this.Api.addConferenceHall
           } else {
             con.id = this.menuRuleForm.Id
@@ -113,7 +117,7 @@ export default {
                 type: 'error',
               })
             }
-          }).catch(err => {
+          }).catch((err) => {
             console.log(err)
           })
         }

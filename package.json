@@ -43,6 +43,12 @@
     "windicss": "^3.5.5"
   },
   "eslintConfig": {
-    "extends": "@oit"
+    "extends": "@oit",
+    "rules": {
+      "n/handle-callback-err": "off",
+      "vue/custom-event-name-casing": "off",
+      "vue/eqeqeq": "off",
+      "eqeqeq": "off"
+    }
   }
 }

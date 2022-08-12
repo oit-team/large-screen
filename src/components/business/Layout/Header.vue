@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="navBox">
-<!--      <i
+      <!--      <i
         class="collapse-btn"
         :class="$store.state.aside.collapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'"
         @click="$store.commit('aside/switchCollapse')"
@@ -19,19 +19,22 @@
         <el-menu-item
           v-for="(item, index) in menuList"
           :key="index"
-          :index="''+item.menuId"
-          @click="pageTo( item )">
+          :index="`${item.menuId}`"
+          @click="pageTo(item)"
+        >
           {{ item.menuName }}
         </el-menu-item>
       </el-menu>
       <div class="account">
         <el-dropdown>
           <span class="account-name">
-            {{userName}}<i class="el-icon-arrow-down el-icon--right"></i>
+            {{ userName }}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <!-- <el-dropdown-item class="dropdown-item--primary" @click.native="ChangePwd">修改密码</el-dropdown-item> -->
-            <el-dropdown-item class="dropdown-item--primary" @click.native="logout">退出登录</el-dropdown-item>
+            <el-dropdown-item class="dropdown-item--primary" @click.native="logout">
+              退出登录
+            </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -42,27 +45,32 @@
         :append-to-body="true"
         :modal-append-to-body="true"
         :visible.sync="drawer"
-        :direction="direction">
-        <el-form style="width:80%;margin: 0 auto" :model="ruleForm" :rules="rules" ref="ruleForm">
+        :direction="direction"
+      >
+        <el-form ref="ruleForm" style="width:80%;margin: 0 auto" :model="ruleForm" :rules="rules">
           <el-form-item prop="userName">
             <el-input
               v-model.trim="ruleForm.userName"
               clearable
-              placeholder="请输入工号">
+              placeholder="请输入工号"
+            >
             </el-input>
           </el-form-item>
           <el-form-item prop="passWord">
             <el-input
-              type="password"
               v-model.trim="ruleForm.passWord"
+              type="password"
               clearable
               placeholder="请输入密码"
-              @keyup.enter.native="ChangePwd('ruleForm')">
+              @keyup.enter.native="ChangePwd('ruleForm')"
+            >
             </el-input>
           </el-form-item>
         </el-form>
         <div style="width: 80%;margin:0 auto;">
-          <el-button style="width:100%" type="primary" @click="ChangePwd('ruleForm')">修改密码</el-button>
+          <el-button style="width:100%" type="primary" @click="ChangePwd('ruleForm')">
+            修改密码
+          </el-button>
         </div>
       </el-drawer>
     </div>
@@ -102,25 +110,25 @@ export default {
       },
     }
   },
-  created() {
-    this.userName = sessionStorage.userName
-    this.type = sessionStorage.accountType // 0是正式用户， 1是临时用户
-  },
-  watch:{
-    menuList: function(newData) {
+  watch: {
+    menuList(newData) {
       const MenuStatus = {}
       newData.forEach((item, i) => {
         MenuStatus[item.menuCode] = ''
       })
       sessionStorage.MenuStatus = JSON.stringify(MenuStatus)
       this.pageTo(newData[0])
-      this.activeIndex = ''+newData[0].menuId
-    }
+      this.activeIndex = `${newData[0].menuId}`
+    },
+  },
+  created() {
+    this.userName = sessionStorage.userName
+    this.type = sessionStorage.accountType // 0是正式用户， 1是临时用户
   },
   methods: {
     logout() {
       const _this = this
-      setTimeout(function(){
+      setTimeout(() => {
         sessionStorage.clear()
         _this.$router.push({
           path: '/login',
@@ -131,18 +139,18 @@ export default {
       this.drawer = true
     },
     pageTo(val) {
-      if (this.activeIndex === val.menuId){
+      if (this.activeIndex === val.menuId) {
         return
       } else if (!val.menuType) {
         this.activeIndex = val.menuId
       }
-      if (val.childrenMenu&&val.childrenMenu.length>0) {
-        this.$bus.$emit('childrenMenu', {'childrenMenu':val.childrenMenu , 'parentCode': val.menuCode})
+      if (val.childrenMenu && val.childrenMenu.length > 0) {
+        this.$bus.$emit('childrenMenu', { childrenMenu: val.childrenMenu, parentCode: val.menuCode })
         if (val.fieldDes) {
           sessionStorage.headTitString = val.fieldDes
         }
       } else {
-        this.$bus.$emit('childrenMenu', {'childrenMenu':[]})
+        this.$bus.$emit('childrenMenu', { childrenMenu: [] })
         if (val.fieldDes) {
           sessionStorage.headTitString = val.fieldDes
         }
@@ -259,7 +267,6 @@ export default {
     display: inline-block;
     line-height: 40px;
     margin-left:40px;
-
 
   }
 }

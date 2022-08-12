@@ -2,11 +2,15 @@
   <div class="flex h-full">
     <aside class="w-1/5 min-w-200px max-w-300px pr-2 flex flex-col">
       <vc-item-group v-model="form.status" class="flex w-full">
-        <vc-item v-slot="{active, toggle}" class="flex-1" :tag="false" :value="0">
-          <el-button :type="active ? 'primary' : ''" @click="toggle">未使用</el-button>
+        <vc-item v-slot="{ active, toggle }" class="flex-1" :tag="false" :value="0">
+          <el-button :type="active ? 'primary' : ''" @click="toggle">
+            未使用
+          </el-button>
         </vc-item>
-        <vc-item v-slot="{active, toggle}" class="flex-1" :tag="false" :value="1">
-          <el-button :type="active ? 'primary' : ''" @click="toggle">已使用</el-button>
+        <vc-item v-slot="{ active, toggle }" class="flex-1" :tag="false" :value="1">
+          <el-button :type="active ? 'primary' : ''" @click="toggle">
+            已使用
+          </el-button>
         </vc-item>
       </vc-item-group>
 
@@ -45,9 +49,13 @@
 
     <main class="flex-1 flex flex-col">
       <div class="border border-gray-200 rounded mb-2 p-3">
-        <div class="text-lg pb-1">历史统计：</div>
+        <div class="text-lg pb-1">
+          历史统计：
+        </div>
         <div class="grid grid-cols-3 text-xl">
-          <div v-for="(item, index) of countInfo" :key="index">{{ item }}</div>
+          <div v-for="(item, index) of countInfo" :key="index">
+            {{ item }}
+          </div>
         </div>
       </div>
       <TablePage v-bind="tablePageOption" ref="table"></TablePage>
@@ -110,7 +118,7 @@ export default {
           pageSize: 20,
           ...this.form,
         }))
-        .then(res => {
+        .then((res) => {
           const data = res.data.body
           this.allStateCount = data.totalNum
           this.customList = this.pageNum === 1 ? data.resultList : [...this.customList, ...data.resultList]
@@ -125,7 +133,7 @@ export default {
           userId: this.userId,
           ...params,
         }))
-        .then(res => {
+        .then((res) => {
           this.data = res.data.body
           this.countInfo = this.data.stateNumList
         })

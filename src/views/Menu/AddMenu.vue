@@ -1,37 +1,43 @@
 <template>
-  <div id="addRole" class="pageCommonStyle" >
-    <el-page-header @back="goBack" :content="title"></el-page-header>
+  <div id="addRole" class="pageCommonStyle">
+    <el-page-header :content="title" @back="goBack"></el-page-header>
     <el-divider></el-divider>
     <el-form
-      style="margin-top: 20px"
       ref="ruleForm"
+      style="margin-top: 20px"
       :rules="rules"
       :model="ruleForm"
       label-width="90px"
-      label-position="left">
+      label-position="left"
+    >
       <el-form-item label="菜单名称" prop="menuName">
         <el-input v-model="ruleForm.menuName" placeholder="请输入菜单名称" style="width:60%;"></el-input>
       </el-form-item>
       <el-form-item label="父级菜单" prop="path">
         <el-cascader
-          :disabled="editFlag"
           v-model="ruleForm.path"
+          :disabled="editFlag"
           placeholder="请选择父级菜单(不选默认添加根菜单)"
           :options="menuOptions"
-          :props="{ checkStrictly: true, value: 'menuId', label: 'menuName', children: 'childrenMenu'}"
-          clearable>
+          :props="{ checkStrictly: true, value: 'menuId', label: 'menuName', children: 'childrenMenu' }"
+          clearable
+        >
         </el-cascader>
       </el-form-item>
       <el-form-item label="菜单类型" prop="menuType">
-        <el-select filterable
+        <el-select
           v-model="ruleForm.menuType"
+          filterable
           placeholder="请选择菜单类型"
+          style="width:60%;"
           @change="changeMenuType"
-          style="width:60%;" >
-          <el-option v-for="(item,index) in typeList"
+        >
+          <el-option
+            v-for="(item, index) in typeList"
             :key="index"
             :label="item.label"
-            :value="item.key">
+            :value="item.key"
+          >
           </el-option>
         </el-select>
       </el-form-item>
@@ -49,25 +55,29 @@
       </el-form-item>
       <el-form-item label="菜单备注" prop="menuRemark">
         <el-input
+          v-model="ruleForm.menuRemark"
           type="textarea"
           :rows="4"
           placeholder="请输入备注"
           style="width:60%;"
-          v-model="ruleForm.menuRemark">
+        >
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">保存</el-button>
-        <el-button size="small" icon="el-icon-refresh" v-if="!editFlag" @click="resetForm('ruleForm')">重置</el-button>
+        <el-button size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">
+          保存
+        </el-button>
+        <el-button v-if="!editFlag" size="small" icon="el-icon-refresh" @click="resetForm('ruleForm')">
+          重置
+        </el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'addUser',
+  name: 'AddUser',
   props: {},
   data() {
     return {
@@ -138,6 +148,7 @@ export default {
       },
     }
   },
+  watch: {},
   created() {
     if (this.$route.query.item) {
       console.log(this.$route.query.item)
@@ -152,7 +163,6 @@ export default {
   },
   mounted() {},
   activated() {},
-  watch: {},
   methods: {
     getMenuList() {
       const con = {
@@ -171,7 +181,7 @@ export default {
         if (item.menuId === this.ruleForm.menuId) {
           item.disabled = true
         }
-        if (item.childrenMenu === null|| item.childrenMenu.length < 1) {
+        if (item.childrenMenu === null || item.childrenMenu.length < 1) {
           item.childrenMenu = null
         } else {
           this.getTreeData(item.childrenMenu)
@@ -219,7 +229,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch(err => {
+            }).catch((err) => {
               console.log(err)
             })
           } else {
@@ -239,7 +249,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch(err => {
+            }).catch((err) => {
               console.log(err)
             })
           }
@@ -252,5 +262,6 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
 </style>

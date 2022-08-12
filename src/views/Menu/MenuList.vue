@@ -1,119 +1,134 @@
 <template>
   <div id="taskList" class="pageCommonStyle">
-    <vc-search
+    <VcSearch
       ref="child"
-      :headTitArr='headTitArr'
-      :pageNum='pageNum'
-      :pageSize='pageSize'
-      :requestUrl='requestUrl'
-      @changeLoading='changeLoad'
-      @sendData='showChildData'/>
+      :head-tit-arr="headTitArr"
+      :page-num="pageNum"
+      :page-size="pageSize"
+      :request-url="requestUrl"
+      @changeLoading="changeLoad"
+      @sendData="showChildData"
+    />
     <div class="operateBtn">
-      <el-button size="small" @click="addMenu" icon="el-icon-plus" type="primary">新增菜单</el-button>
+      <el-button size="small" icon="el-icon-plus" type="primary" @click="addMenu">
+        新增菜单
+      </el-button>
     </div>
     <el-divider></el-divider>
     <el-table
-        :data="tableData"
-        style="width: 100%;margin-bottom: 20px;"
-        row-key="menuId"
-        border
-        default-expand-all
-        :tree-props="{children: 'childrenMenu', hasChildren: 'true'}">
-        <el-table-column
-          type="index"
-          :index="indexMethod"
-          width="50">
-        </el-table-column>
-        <el-table-column
-          show-overflow-tooltip
-          sortable
-          v-for="(item,index) in headTitArr"
-          :key="index"
-          :min-width="GLOBAL.minCellWidth"
-          :prop="item.fieldKey"
-          :label="item.fieldName">
-        </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          width="128">
-          <template slot-scope="scope">
-            <el-tooltip v-if="scope.row.menuType !== 2" class="item" effect="dark" content="编辑" placement="top">
-              <el-button
-                size="mini"
-                type="primary"
-                icon="el-icon-edit"
-                class="editBtnOnly"
-                circle
-                @click="editMenuItem(scope.row,scope.$index)"></el-button>
-            </el-tooltip>
-            <el-tooltip v-if="scope.row.menuType !== 2" class="item" effect="dark" content="删除" placement="top">
-              <el-button
-                size="mini"
-                type="danger"
-                icon="el-icon-delete"
-                class="delBtnOnly"
-                @click="delMenuItem(scope.row,scope.$index)"
-                circle>
-              </el-button>
-            </el-tooltip>
-            <el-tooltip v-show="isShowBtn(scope.row)" class="item" effect="dark" content="按钮权限" placement="top">
-              <el-button
-                size="mini"
-                type="warning"
-                icon="el-icon-thumb"
-                class="authBtnOnly"
-                @click="authBtn(scope.row)"
-                circle>
-              </el-button>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-dialog
-        :title="dialogTitle"
-        :visible.sync="dialogVisible"
-        width="50%"
-        :before-close="handleClose">
-        <div
-          class="tabBox"
-          v-for="(tag,index) in dynamicTags"
-          :key="index">
-          <el-input
-            class="input-new-tag"
-            v-show="tag.edit"
-            v-model="tag.name"
-            :ref="'editableInput' + index"
-            size="small"
-            @keyup.enter.native="handleInputEdit(index)"
-            @blur="handleInputEdit(index)"
-          >
-          </el-input>
-          <el-tag
-            v-show="!tag.edit"
-            closable
-            :disable-transitions="false"
-            @close="handleTagClose(tag)">
-            {{tag.name}}
-            <i class="el-icon-edit" @click="handleTagEdit(index)"></i>
-          </el-tag>
-        </div>
+      :data="tableData"
+      style="width: 100%;margin-bottom: 20px;"
+      row-key="menuId"
+      border
+      default-expand-all
+      :tree-props="{ children: 'childrenMenu', hasChildren: 'true' }"
+    >
+      <el-table-column
+        type="index"
+        :index="indexMethod"
+        width="50"
+      >
+      </el-table-column>
+      <el-table-column
+        v-for="(item, index) in headTitArr"
+        :key="index"
+        show-overflow-tooltip
+        sortable
+        :min-width="GLOBAL.minCellWidth"
+        :prop="item.fieldKey"
+        :label="item.fieldName"
+      >
+      </el-table-column>
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="128"
+      >
+        <template slot-scope="scope">
+          <el-tooltip v-if="scope.row.menuType !== 2" class="item" effect="dark" content="编辑" placement="top">
+            <el-button
+              size="mini"
+              type="primary"
+              icon="el-icon-edit"
+              class="editBtnOnly"
+              circle
+              @click="editMenuItem(scope.row, scope.$index)"
+            ></el-button>
+          </el-tooltip>
+          <el-tooltip v-if="scope.row.menuType !== 2" class="item" effect="dark" content="删除" placement="top">
+            <el-button
+              size="mini"
+              type="danger"
+              icon="el-icon-delete"
+              class="delBtnOnly"
+              circle
+              @click="delMenuItem(scope.row, scope.$index)"
+            >
+            </el-button>
+          </el-tooltip>
+          <el-tooltip v-show="isShowBtn(scope.row)" class="item" effect="dark" content="按钮权限" placement="top">
+            <el-button
+              size="mini"
+              type="warning"
+              icon="el-icon-thumb"
+              class="authBtnOnly"
+              circle
+              @click="authBtn(scope.row)"
+            >
+            </el-button>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-dialog
+      :title="dialogTitle"
+      :visible.sync="dialogVisible"
+      width="50%"
+      :before-close="handleClose"
+    >
+      <div
+        v-for="(tag, index) in dynamicTags"
+        :key="index"
+        class="tabBox"
+      >
         <el-input
+          v-show="tag.edit"
+          :ref="`editableInput${index}`"
+          v-model="tag.name"
           class="input-new-tag"
-          v-if="inputVisible"
-          v-model="inputValue"
-          ref="saveTagInput"
           size="small"
-          @keyup.enter.native="handleInputConfirm"
-          @blur="handleInputConfirm"
+          @keyup.enter.native="handleInputEdit(index)"
+          @blur="handleInputEdit(index)"
         >
         </el-input>
-        <el-button class="button-new-tag" size="small" @click="showInput">+ 添加按钮权限</el-button>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="handleClose">取 消</el-button>
-          <el-button type="primary" @click="addMenuButton">确 定</el-button>
-        </span>
-      </el-dialog>
+        <el-tag
+          v-show="!tag.edit"
+          closable
+          :disable-transitions="false"
+          @close="handleTagClose(tag)"
+        >
+          {{ tag.name }}
+          <i class="el-icon-edit" @click="handleTagEdit(index)"></i>
+        </el-tag>
+      </div>
+      <el-input
+        v-if="inputVisible"
+        ref="saveTagInput"
+        v-model="inputValue"
+        class="input-new-tag"
+        size="small"
+        @keyup.enter.native="handleInputConfirm"
+        @blur="handleInputConfirm"
+      >
+      </el-input>
+      <el-button class="button-new-tag" size="small" @click="showInput">
+        + 添加按钮权限
+      </el-button>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleClose">取 消</el-button>
+        <el-button type="primary" @click="addMenuButton">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -129,12 +144,12 @@ export default {
   },
   data() {
     return {
-      activeMenuId:[],
-      dialogTitle:'',
-      dynamicTags:[],
+      activeMenuId: [],
+      dialogTitle: '',
+      dynamicTags: [],
       inputVisible: false,
-      dialogVisible:false,
-      inputValue:'',
+      dialogVisible: false,
+      inputValue: '',
       times: 0,
       pageNum: 0,
       pageSize: 15,
@@ -146,15 +161,16 @@ export default {
       headTitArr: [],
     }
   },
-  computed:{
+  computed: {
     headTitArrNew() {
       return this.headTitArr.filter(item => !item.noTableShow)
     },
   },
+  watch: {},
   created() {
-    //this.requestUrl = this.Api.getAllMenuAndTree
+    // this.requestUrl = this.Api.getAllMenuAndTree
     if (sessionStorage.headTitString) {
-     this.headTitArr = JSON.parse(sessionStorage.headTitString)
+      this.headTitArr = JSON.parse(sessionStorage.headTitString)
       console.log(sessionStorage.headTitString)
     }
     if (this.headTitArr.length <= 0) {
@@ -180,7 +196,7 @@ export default {
   },
   mounted() {
     this.pageNum = 1
-    this.dynamicParam.forEach(el => {
+    this.dynamicParam.forEach((el) => {
       if (el.key === 'pageNum') {
         el.value = this.pageNum
       }
@@ -213,7 +229,6 @@ export default {
       }
     })
   },
-  watch: {},
   methods: {
     editMenuItem(item, index) {
       this.editIndex = index
@@ -239,7 +254,7 @@ export default {
         const jsonParam = _this.GLOBAL.paramJson(con)
         _this.$axios.post(_this.Api.delMenuById, jsonParam).then((res) => {
           if (res.data.head.status === 0) {
-             _this.$refs.child.parentMsgs(_this.dynamicParam)
+            _this.$refs.child.parentMsgs(_this.dynamicParam)
             _this.$message({
               type: 'success',
               message: '删除成功!',
@@ -283,17 +298,17 @@ export default {
     authBtn(data) {
       const dynamicTags = []
       if (data.childrenMenu.length > 0) {
-        data.childrenMenu.forEach((item,i) => {
-          dynamicTags.push({name:item.menuName,edit:false})
+        data.childrenMenu.forEach((item, i) => {
+          dynamicTags.push({ name: item.menuName, edit: false })
         })
         this.dynamicTags = dynamicTags
       }
-      if(data.path === '0') {
+      if (data.path === '0') {
         this.activeMenuId = data.menuId
       } else {
-        this.activeMenuId = data.path + ',' + data.menuId
+        this.activeMenuId = `${data.path},${data.menuId}`
       }
-      this.dialogTitle = data.menuName + '按钮权限'
+      this.dialogTitle = `${data.menuName}按钮权限`
       this.dialogVisible = true
     },
     handleClose() {
@@ -301,14 +316,14 @@ export default {
       this.dialogVisible = false
     },
     getMenuNameList(data) {
-      const arr = [];
-      data.forEach((item,i) => {
+      const arr = []
+      data.forEach((item, i) => {
         arr.push(item.name)
       })
-      return arr;
+      return arr
     },
-    addMenuButton (){
-      if(this.dynamicTags.length === 0) {
+    addMenuButton() {
+      if (this.dynamicTags.length === 0) {
         this.$message({
           message: '请添加按钮权限',
           type: 'warning',
@@ -319,7 +334,7 @@ export default {
       const menuName = this.getMenuNameList(this.dynamicTags)
       const con = {
         pId: this.activeMenuId,
-        menuName: menuName,
+        menuName,
         menuType: '2',
       }
       const jsonParam = _this.GLOBAL.paramJson(con)
@@ -340,45 +355,46 @@ export default {
       })
     },
     handleTagClose(tag) {
-      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
     },
     showInput() {
-      this.inputVisible = true;
-      this.$nextTick(_ => {
+      this.inputVisible = true
+      this.$nextTick((_) => {
         this.$refs.saveTagInput.$refs.input.focus()
       })
     },
     handleInputConfirm() {
-      let inputValue = this.inputValue
+      const inputValue = this.inputValue
       if (inputValue) {
-        this.dynamicTags.push({name:inputValue,edit:false})
+        this.dynamicTags.push({ name: inputValue, edit: false })
       }
       this.inputVisible = false
       this.inputValue = ''
     },
     handleTagEdit(index) {
       this.dynamicTags[index].edit = true
-      const ref = 'editableInput' + index
+      const ref = `editableInput${index}`
       console.log(ref)
-      this.$nextTick(_ => {
+      this.$nextTick((_) => {
         this.$refs[ref][0].$refs.input.focus()
       })
     },
-    handleInputEdit(index){
+    handleInputEdit(index) {
       this.dynamicTags[index].edit = false
     },
     isShowBtn(data) {
       if (data.childrenMenu !== null) {
-        if(data.childrenMenu.length === 0 && data.menuType === 0){
+        if (data.childrenMenu.length === 0 && data.menuType === 0) {
           return true
-        } else if (data.childrenMenu.length > 0 && data.childrenMenu[0]['menuType'] === 2){
+        } else if (data.childrenMenu.length > 0 && data.childrenMenu[0].menuType === 2) {
           return true
         }
       }
-    }
+    },
   },
 }
 </script>
+
 <style scoped>
    .el-tag + .el-tag {
       margin-left: 10px;

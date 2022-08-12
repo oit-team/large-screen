@@ -9,37 +9,42 @@
               <span>立得拍卖</span>
             </div>
           </div>
-          <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
+          <el-form ref="ruleForm" :model="ruleForm" :rules="rules">
             <el-form-item prop="userName">
               <el-input
                 v-model.trim="ruleForm.userName"
                 clearable
-                placeholder="请输入用户名">
+                placeholder="请输入用户名"
+              >
               </el-input>
             </el-form-item>
             <el-form-item prop="password">
               <el-input
-                type="password"
                 v-model.trim="ruleForm.password"
+                type="password"
                 clearable
                 placeholder="请输入密码"
-                @keyup.enter.native="login('ruleForm')">
+                @keyup.enter.native="login('ruleForm')"
+              >
               </el-input>
             </el-form-item>
             <el-form-item prop="tryCode">
               <el-input
-                type="test"
                 v-model.trim="ruleForm.tryCode"
+                type="test"
                 clearable
                 style="width:118px;"
                 placeholder="验证码"
-                @keyup.enter.native="login('ruleForm')">
+                @keyup.enter.native="login('ruleForm')"
+              >
               </el-input>
-              <img class="checkCodeImg" :src="checkCodeUrl" @click="loadCheckCodeUrl" alt="">
+              <img class="checkCodeImg" :src="checkCodeUrl" alt="" @click="loadCheckCodeUrl">
             </el-form-item>
           </el-form>
           <div class="loginBtn">
-            <el-button class="btn_submit" type="primary" @click="login('ruleForm')">登录</el-button>
+            <el-button class="btn_submit" type="primary" @click="login('ruleForm')">
+              登录
+            </el-button>
           </div>
         </div>
       </div>
@@ -48,9 +53,9 @@
 </template>
 
 <script>
-import CryptoJS from '../assets/js/CryptoJS';
+import CryptoJS from '../assets/js/CryptoJS'
 export default {
-  name: 'login',
+  name: 'Login',
   props: {},
   data() {
     return {
@@ -85,8 +90,9 @@ export default {
       },
     }
   },
+  watch: {},
   created() {
-    Object.keys(this.ruleForm).map(key => {
+    Object.keys(this.ruleForm).map((key) => {
       return false
     })
   },
@@ -94,7 +100,6 @@ export default {
     this.loadCheckCodeUrl()
   },
   activated() {},
-  watch: {},
   methods: {
     loadCheckCodeUrl() {
       this.checkCodeUrl = `${this.Api.checkCodeImg}?token=${Math.random()}`
@@ -103,7 +108,7 @@ export default {
       const _this = this
       _this.$refs[formName].validate((valid) => {
         if (valid) {
-          const encryPwd = CryptoJS.encrypt(_this.ruleForm.password);
+          const encryPwd = CryptoJS.encrypt(_this.ruleForm.password)
           const con = {
             userName: _this.ruleForm.userName,
             password: encryPwd,
@@ -137,6 +142,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
   .content{
     position: absolute;

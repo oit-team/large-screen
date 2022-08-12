@@ -1,9 +1,9 @@
 <template>
   <el-main id="elMain">
     <keep-alive v-if="isRouterAlive">
-      <router-view :key="$route.fullPath" v-if="$route.meta.keepAlive"></router-view>
+      <router-view v-if="$route.meta.keepAlive" :key="$route.fullPath"></router-view>
     </keep-alive>
-    <router-view :key="$route.fullPath" v-if="!$route.meta.keepAlive"></router-view>
+    <router-view v-if="!$route.meta.keepAlive" :key="$route.fullPath"></router-view>
   </el-main>
 </template>
 

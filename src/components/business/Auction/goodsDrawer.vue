@@ -7,67 +7,75 @@
       :modal-append-to-body="true"
       :before-close="handleClose"
       :visible="goodsDrawer"
-      :direction="direction">
-      <vc-search
+      :direction="direction"
+    >
+      <VcSearch
         ref="child"
-        :headTitArr='headTitArr'
-        :pageNum='pageNum'
-        :pageSize='pageSize'
-        :OtherData="OtherData"
-        :requestUrl='requestUrl'
-        @changeLoading='changeLoad'
-        @sendData='showChildData'/>
-        <div class="operateBtn">
-          <el-button size="small" @click='addGoods'  icon="el-icon-plus" type="primary">添加商品</el-button>
-        </div>
-        <el-divider></el-divider>
-        <el-table
-          v-loading="loading"
-          element-loading-text="拼命加载中..."
-          :data="tableData"
-          :row-key="getRowKey"
-          border
-          ref="elTable"
-          style="width: 100%">
-          </el-table-column>
-          <el-table-column
-            type="selection"
-            :selectable="selected"
-            :reserve-selection="true"
-            width="55">
-          </el-table-column>
-          <el-table-column
-            show-overflow-tooltip
-            sortable
-            v-for="(item,index) in headTitArrNew"
-            :key="index"
-            :min-width="GLOBAL.minCellWidth"
-            :prop="item.fieldKey"
-            :label="item.fieldName">
-            <template slot-scope="scope">
-              <span v-if='item.fieldKey=="status"'>
-                <span style="color: #FF0000;" v-if="scope.row.status === 0">未上架</span>
-                <span style="color: #42B983;" v-else>已上架</span>
-              </span>
-              <span class="imgBox" v-else-if='item.fieldKey=="resUrl"'>
-                <img style="display:block;margin:0 auto;"  v-if='scope.row.mainImage&&scope.row.mainImage.length>0&&scope.row.mainImage[0].resUrl' :src="scope.row.mainImage[0].resUrl" alt="">
-                <span v-else>无</span>
-              </span>
-              <div v-else>
-                <span>{{scope.row[(item.fieldKey)]}}</span>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="pageNum"
-          :page-sizes="[15, 20, 30]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
-        </el-pagination>
+        :head-tit-arr="headTitArr"
+        :page-num="pageNum"
+        :page-size="pageSize"
+        :other-data="OtherData"
+        :request-url="requestUrl"
+        @changeLoading="changeLoad"
+        @sendData="showChildData"
+      />
+      <div class="operateBtn">
+        <el-button size="small" icon="el-icon-plus" type="primary" @click="addGoods">
+          添加商品
+        </el-button>
+      </div>
+      <el-divider></el-divider>
+      <el-table
+        ref="elTable"
+        v-loading="loading"
+        element-loading-text="拼命加载中..."
+        :data="tableData"
+        :row-key="getRowKey"
+        border
+        style="width: 100%"
+      >
+        </el-table-column>
+        <el-table-column
+          type="selection"
+          :selectable="selected"
+          :reserve-selection="true"
+          width="55"
+        >
+        </el-table-column>
+        <el-table-column
+          v-for="(item, index) in headTitArrNew"
+          :key="index"
+          show-overflow-tooltip
+          sortable
+          :min-width="GLOBAL.minCellWidth"
+          :prop="item.fieldKey"
+          :label="item.fieldName"
+        >
+          <template slot-scope="scope">
+            <span v-if="item.fieldKey == &quot;status&quot;">
+              <span v-if="scope.row.status === 0" style="color: #FF0000;">未上架</span>
+              <span v-else style="color: #42B983;">已上架</span>
+            </span>
+            <span v-else-if="item.fieldKey == &quot;resUrl&quot;" class="imgBox">
+              <img v-if="scope.row.mainImage && scope.row.mainImage.length > 0 && scope.row.mainImage[0].resUrl" style="display:block;margin:0 auto;" :src="scope.row.mainImage[0].resUrl" alt="">
+              <span v-else>无</span>
+            </span>
+            <div v-else>
+              <span>{{ scope.row[(item.fieldKey)] }}</span>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        :current-page="pageNum"
+        :page-sizes="[15, 20, 30]"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      >
+      </el-pagination>
     </el-drawer>
   </div>
 </template>
@@ -76,14 +84,14 @@
 import VcSearch from '../../basic/CommonSearch'
 
 export default {
-  name: 'goodsDrawer',
+  name: 'GoodsDrawer',
   components: {
     VcSearch,
   },
   data() {
     return {
-      OtherData:{status:'1'},
-      goodsDrawer:false,
+      OtherData: { status: '1' },
+      goodsDrawer: false,
       direction: 'rtl',
       total: 0,
       pageNum: 0,
@@ -96,7 +104,7 @@ export default {
       headTitArr: [],
     }
   },
-  computed:{
+  computed: {
     headTitArrNew() {
       return this.headTitArr.filter(item => !item.noTableShow)
     },
@@ -131,7 +139,7 @@ export default {
   },
   mounted() {
     this.pageNum = 1
-    this.dynamicParam.forEach(el => {
+    this.dynamicParam.forEach((el) => {
       if (el.key === 'pageNum') {
         el.value = this.pageNum
       }
@@ -152,12 +160,12 @@ export default {
     _this.$bus.$off('detailShow')
     /* 接收参数 */
     _this.$bus.$on('detailShow', (data) => {
-       _this.$refs.child.resetSearch(_this.dynamicParam, _this.pageNum)
+      _this.$refs.child.resetSearch(_this.dynamicParam, _this.pageNum)
     })
   },
   methods: {
-    selected(row , index) {
-      if (row.status == 1){
+    selected(row, index) {
+      if (row.status == 1) {
         return true
       } else {
         return false
@@ -167,7 +175,7 @@ export default {
       return row.goodsId
     },
     handleClose() {
-      this.$refs.elTable.clearSelection();
+      this.$refs.elTable.clearSelection()
       this.goodsDrawer = false
     },
     loadManage() {
@@ -194,7 +202,7 @@ export default {
     },
     handleSizeChange(val) {
       this.pageSize = val
-      this.dynamicParam.forEach(el => {
+      this.dynamicParam.forEach((el) => {
         if (el.key === 'pageSize') {
           el.value = this.pageSize
         }
@@ -203,7 +211,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.pageNum = val
-      this.dynamicParam.forEach(el => {
+      this.dynamicParam.forEach((el) => {
         if (el.key === 'pageNum') {
           el.value = this.pageNum
         }
@@ -213,7 +221,7 @@ export default {
     handleOpen(data) {
       this.goodsDrawer = true
     },
-    addGoods(){
+    addGoods() {
       this.$emit('addGoods', this.$refs.elTable.selection)
       this.handleClose()
     },

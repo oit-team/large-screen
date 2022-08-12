@@ -467,8 +467,8 @@ export default {
           if (this.valueForm.bys || this.valueForm.integral) {
             const sureMinus = [5, 6].includes(this.valueForm.byAddType)
             valueForm = {
-              bys: sureMinus && this.selectBys == 0 ? -this.valueForm.bys : this.valueForm.bys,
-              integral: sureMinus && this.selectIntegral == 0 ? -this.valueForm.integral : this.valueForm.integral,
+              bys: (sureMinus && this.selectBys == 0 ? -this.valueForm.bys : this.valueForm.bys) || 0,
+              integral: (sureMinus && this.selectIntegral == 0 ? -this.valueForm.integral : this.valueForm.integral) || 0,
               byAddType: this.valueForm.byAddType,
             }
           }

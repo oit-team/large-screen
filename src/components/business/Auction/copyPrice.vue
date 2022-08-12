@@ -18,9 +18,8 @@
           :data="tableData"
           :row-key="getRowKey"
           border
-          ref="elTable"
-          style="width: 100%">
-          </el-table-column>
+          height="100%"
+          ref="elTable">
           <el-table-column label="选择" align="center" width="65">
             <template scope="scope">
               <el-radio v-model="radio"

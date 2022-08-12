@@ -17,6 +17,7 @@
         style="width: 100%;margin-bottom: 20px;"
         row-key="menuId"
         border
+        height="100%"
         default-expand-all
         :tree-props="{children: 'childrenMenu', hasChildren: 'true'}">
         <el-table-column

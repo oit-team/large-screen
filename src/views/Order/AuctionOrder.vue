@@ -19,6 +19,7 @@
       element-loading-text="拼命加载中..."
       :data="tableData"
       border
+      height="100%"
     >
       <el-table-column
         v-for="(item,index) in headTitArrNew"

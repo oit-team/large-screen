@@ -1,112 +1,123 @@
 <template>
   <div id="taskList" class="pageCommonStyle">
-    <vc-search
+    <VcSearch
       ref="child"
-      :headTitArr='headTitArr'
-      :pageNum='pageNum'
-      :pageSize='pageSize'
-      :requestUrl='requestUrl'
-      @changeLoading='changeLoad'
-      @sendData='showChildData'/>
+      :head-tit-arr="headTitArr"
+      :page-num="pageNum"
+      :page-size="pageSize"
+      :request-url="requestUrl"
+      @changeLoading="changeLoad"
+      @sendData="showChildData"
+    />
     <div class="operateBtn">
-      <el-button size="small" @click="addGoods" icon="el-icon-plus" type="primary">新增商品</el-button>
+      <el-button size="small" icon="el-icon-plus" type="primary" @click="addGoods">
+        新增商品
+      </el-button>
     </div>
     <el-divider></el-divider>
     <el-table
-        v-loading="loading"
-        element-loading-text="拼命加载中..."
-        :data="tableData"
-        border
-        height="100%">
-        <el-table-column
-          show-overflow-tooltip
-          sortable
-          v-for="(item,index) in headTitArrNew"
-          :key="index"
-          :min-width="GLOBAL.minCellWidth"
-          :prop="item.fieldKey"
-          :label="item.fieldName">
-          <template slot-scope="scope">
-            <span class="imgBox" v-if='item.fieldKey=="status"'>
-              <span style="color: #FF0000;" v-if="scope.row.status === 0">未上架</span>
-              <span style="color: #42B983;" v-else>已上架</span>
-            </span>
-            <span class="imgBox" v-else-if='item.fieldKey=="resUrl"'>
-              <img style="display:block;margin:0 auto;"  v-if='scope.row.mainImage&&scope.row.mainImage.length>0&&scope.row.mainImage[0].resUrl' :src="scope.row.mainImage[0].resUrl" alt="">
-              <span v-else>无</span>
-            </span>
-            <div v-else>
-              <span>{{scope.row[(item.fieldKey)]}}</span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          width="166">
-          <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" content="查看" placement="top">
-              <el-button
-                size="mini"
-                type="success"
-                icon="el-icon-view"
-                circle
-                @click="readMenuItem(scope.row,scope.$index)"></el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-              <el-button
-                size="mini"
-                :disabled="scope.row.status === 1"
-                type="primary"
-                icon="el-icon-edit"
-                class="editBtnOnly"
-                circle
-                @click="editMenuItem(scope.row,scope.$index)"></el-button>
-            </el-tooltip>
-            <el-tooltip  class="item" effect="dark" content="上架" placement="top">
-              <el-button
-                v-if="scope.row.status === 0"
-                size="mini"
-                type="warning"
-                icon="el-icon-s-promotion"
-                class="authBtnOnly"
-                circle
-                @click="issueTimerItem(scope.row,scope.$index,1)"></el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="下架" placement="top">
-              <el-button
-                v-if="scope.row.status === 1"
-                size="mini"
-                type="danger"
-                icon="el-icon-minus"
-                class="delBtnOnly"
-                @click="issueTimerItem(scope.row,scope.$index,0)"
-                circle>
-              </el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="删除" placement="top">
-              <el-button
-                :disabled="scope.row.status === 1"
-                size="mini"
-                type="danger"
-                icon="el-icon-delete"
-                class="delBtnOnly"
-                circle
-                @click="delMenuItem(scope.row,scope.$index)"></el-button>
-            </el-tooltip>
-            
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pageNum"
-        :page-sizes="[15, 20, 30]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
-      </el-pagination>
+      v-loading="loading"
+      element-loading-text="拼命加载中..."
+      :data="tableData"
+      border
+      height="100%"
+    >
+      <el-table-column
+        v-for="(item, index) in headTitArrNew"
+        :key="index"
+        show-overflow-tooltip
+        sortable
+        :min-width="GLOBAL.minCellWidth"
+        :prop="item.fieldKey"
+        :label="item.fieldName"
+      >
+        <template slot-scope="scope">
+          <span v-if="item.fieldKey == &quot;status&quot;" class="imgBox">
+            <span v-if="scope.row.status === 0" style="color: #FF0000;">未上架</span>
+            <span v-else style="color: #42B983;">已上架</span>
+          </span>
+          <span v-else-if="item.fieldKey == &quot;resUrl&quot;" class="imgBox">
+            <img v-if="scope.row.mainImage && scope.row.mainImage.length > 0 && scope.row.mainImage[0].resUrl" style="display:block;margin:0 auto;" :src="scope.row.mainImage[0].resUrl" alt="">
+            <span v-else>无</span>
+          </span>
+          <div v-else>
+            <span>{{ scope.row[(item.fieldKey)] }}</span>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="166"
+      >
+        <template slot-scope="scope">
+          <el-tooltip class="item" effect="dark" content="查看" placement="top">
+            <el-button
+              size="mini"
+              type="success"
+              icon="el-icon-view"
+              circle
+              @click="readMenuItem(scope.row, scope.$index)"
+            ></el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+            <el-button
+              size="mini"
+              :disabled="scope.row.status === 1"
+              type="primary"
+              icon="el-icon-edit"
+              class="editBtnOnly"
+              circle
+              @click="editMenuItem(scope.row, scope.$index)"
+            ></el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="上架" placement="top">
+            <el-button
+              v-if="scope.row.status === 0"
+              size="mini"
+              type="warning"
+              icon="el-icon-s-promotion"
+              class="authBtnOnly"
+              circle
+              @click="issueTimerItem(scope.row, scope.$index, 1)"
+            ></el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="下架" placement="top">
+            <el-button
+              v-if="scope.row.status === 1"
+              size="mini"
+              type="danger"
+              icon="el-icon-minus"
+              class="delBtnOnly"
+              circle
+              @click="issueTimerItem(scope.row, scope.$index, 0)"
+            >
+            </el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="删除" placement="top">
+            <el-button
+              :disabled="scope.row.status === 1"
+              size="mini"
+              type="danger"
+              icon="el-icon-delete"
+              class="delBtnOnly"
+              circle
+              @click="delMenuItem(scope.row, scope.$index)"
+            ></el-button>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      :current-page="pageNum"
+      :page-sizes="[15, 20, 30]"
+      :page-size="100"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    >
+    </el-pagination>
   </div>
 </template>
 
@@ -133,11 +144,12 @@ export default {
       headTitArr: [],
     }
   },
-  computed:{
+  computed: {
     headTitArrNew() {
       return this.headTitArr.filter(item => !item.noTableShow)
     },
   },
+  watch: {},
   created() {
     this.requestUrl = this.Api.getGoodsList
     if (sessionStorage.headTitString) {
@@ -166,7 +178,7 @@ export default {
   },
   mounted() {
     this.pageNum = 1
-    this.dynamicParam.forEach(el => {
+    this.dynamicParam.forEach((el) => {
       if (el.key === 'pageNum') {
         el.value = this.pageNum
       }
@@ -184,18 +196,11 @@ export default {
       })
     }
     const _this = this
-    // _this.$bus.$off('detailShow')
-    // /* 接收参数 */
-    // _this.$bus.$on('detailShow', (data) => {
-    //    _this.$refs.child.resetSearch(_this.dynamicParam, _this.pageNum)
-    // })
     _this.$refs.child.resetSearch(_this.dynamicParam, _this.pageNum)
   },
-  watch: {},
   methods: {
     issueTimerItem(item, index, type) {
       let msg = ''
-      let ApiUrl = ''
       let newState = ''
       let tipMsg = ''
       if (type === 1) {
@@ -212,7 +217,6 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        console.log('同意')
         const _this = this
         const con = {
           goodsId: item.goodsId,
@@ -234,7 +238,7 @@ export default {
           }
         })
       }).catch(() => {
-        
+
       })
     },
     editMenuItem(item, index) {
@@ -252,7 +256,7 @@ export default {
         path: '/brand/addgoods',
         query: {
           item,
-          flag:'read',
+          flag: 'read',
         },
       })
     },
@@ -275,7 +279,7 @@ export default {
             }
             if (_this.tableData.length === 0 && _this.total > 0) {
               _this.pageNum -= 1
-              _this.dynamicParam.forEach(el => {
+              _this.dynamicParam.forEach((el) => {
                 if (el.key === 'pageNum') {
                   el.value = _this.pageNum
                 }
@@ -293,9 +297,7 @@ export default {
             })
           }
         })
-      }).catch(() => {
-        console.log('取消删除')
-      })
+      }).catch(() => {})
     },
     changeLoad(val) {
       this.loading = val
@@ -316,7 +318,7 @@ export default {
     },
     handleSizeChange(val) {
       this.pageSize = val
-      this.dynamicParam.forEach(el => {
+      this.dynamicParam.forEach((el) => {
         if (el.key === 'pageSize') {
           el.value = this.pageSize
         }
@@ -325,7 +327,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.pageNum = val
-      this.dynamicParam.forEach(el => {
+      this.dynamicParam.forEach((el) => {
         if (el.key === 'pageNum') {
           el.value = this.pageNum
         }
@@ -343,6 +345,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
   .imgBox img{
     max-width:100%;

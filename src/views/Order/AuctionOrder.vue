@@ -1,16 +1,18 @@
 <template>
   <div id="customerList" class="pageCommonStyle" style="height:100%;display: flex;flex-direction: column;">
-    <vc-search
+    <VcSearch
       ref="child"
-      :headTitArr="headTitArr"
-      :pageNum="pageNum"
-      :pageSize="pageSize"
-      :requestUrl="requestUrl"
+      :head-tit-arr="headTitArr"
+      :page-num="pageNum"
+      :page-size="pageSize"
+      :request-url="requestUrl"
       @changeLoading="changeLoad"
       @sendData="showChildData"
     />
     <div class="operateBtn" style="display: inline-block;">
-      <el-button type="primary" size="small" @click="exportFile">导出</el-button>
+      <el-button type="primary" size="small" @click="exportFile">
+        导出
+      </el-button>
     </div>
     <el-divider></el-divider>
     <el-table
@@ -22,12 +24,12 @@
       height="100%"
     >
       <el-table-column
-        v-for="(item,index) in headTitArrNew"
+        v-for="(item, index) in headTitArrNew"
         :key="index"
         show-overflow-tooltip
         sortable
         :min-width="GLOBAL.minCellWidth"
-        :width="item.fieldKey==='landlineNum'?'160px':''"
+        :width="item.fieldKey === 'landlineNum' ? '160px' : ''"
         :prop="item.fieldKey"
         :label="item.fieldName"
       >
@@ -51,7 +53,7 @@
               type="success"
               icon="el-icon-view"
               circle
-              @click="readAuctionItem(scope.row,scope.$index)"
+              @click="readAuctionItem(scope.row, scope.$index)"
             ></el-button>
           </el-tooltip>
         </template>
@@ -71,8 +73,8 @@
 </template>
 
 <script>
-import VcSearch from '../../components/basic/CommonSearch'
 import { downloadFile } from '@oit/utils'
+import VcSearch from '../../components/basic/CommonSearch'
 
 export default {
   components: {
@@ -95,9 +97,15 @@ export default {
       searchParams: {},
     }
   },
+  computed: {
+    headTitArrNew() {
+      return this.headTitArr.filter(item => !item.noTableShow)
+    },
+  },
+  watch: {},
   created() {
     this.requestUrl = this.Api.getAllAuction
-    if (sessionStorage.headTitString && sessionStorage.headTitString.indexOf('@') != -1) {
+    if (sessionStorage.headTitString && sessionStorage.headTitString.includes('@')) {
       this.headTitArr = JSON.parse(sessionStorage.headTitString.split('@')[0])
     }
     this.dynamicParam = [
@@ -115,36 +123,30 @@ export default {
       },
     ]
   },
-  computed: {
-    headTitArrNew() {
-      return this.headTitArr.filter(item => !item.noTableShow)
-    },
-  },
   mounted() {
     this.pageNum = 1
-    this.dynamicParam.forEach(el => {
+    this.dynamicParam.forEach((el) => {
       if (el.key === 'pageNum') {
         el.value = this.pageNum
       }
     })
   },
   activated() {
-    if (sessionStorage.headTitString && sessionStorage.headTitString.indexOf('@') != -1) {
+    if (sessionStorage.headTitString && sessionStorage.headTitString.includes('@')) {
       this.headTitArr = JSON.parse(sessionStorage.headTitString.split('@')[0])
     }
     const _this = this
     _this.$refs.child.resetSearch(_this.dynamicParam, _this.pageNum)
   },
-  watch: {},
   methods: {
-    exportFile: function () {
+    exportFile() {
       this.$axios
         .post(this.Api.getExportAuctionOrder, this.GLOBAL.paramJson({
           ...this.searchParams,
         }), {
           responseType: 'arraybuffer',
         })
-        .then(res => {
+        .then((res) => {
           const date = new Date().toLocaleDateString().replace(/\//g, '-')
           downloadFile(res.data, `竞拍订单${date}.xls`)
         })
@@ -178,7 +180,7 @@ export default {
     },
     handleSizeChange(val) {
       this.pageSize = val
-      this.dynamicParam.forEach(el => {
+      this.dynamicParam.forEach((el) => {
         if (el.key === 'pageSize') {
           el.value = this.pageSize
         }
@@ -187,7 +189,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.pageNum = val
-      this.dynamicParam.forEach(el => {
+      this.dynamicParam.forEach((el) => {
         if (el.key === 'pageNum') {
           el.value = this.pageNum
         }

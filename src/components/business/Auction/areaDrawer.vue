@@ -6,16 +6,18 @@
       :modal-append-to-body="true"
       :before-close="handleClose"
       :visible="areaDrawer"
-      :direction="direction">
-      <el-form style="width:80%;margin: 0 auto" :model="areaRuleForm" :rules="areaRules" ref="arearuleForm">
+      :direction="direction"
+    >
+      <el-form ref="arearuleForm" style="width:80%;margin: 0 auto" :model="areaRuleForm" :rules="areaRules">
         <el-form-item label="房间名称" prop="roomName">
           <el-input
             v-model.trim="areaRuleForm.roomName"
             clearable
-            placeholder="请输入房间名称">
+            placeholder="请输入房间名称"
+          >
           </el-input>
         </el-form-item>
-<!--        <el-form-item label="水滴限制" prop="integralLimit">
+        <!--        <el-form-item label="水滴限制" prop="integralLimit">
           <el-input
             v-model.number="areaRuleForm.integralLimit"
             clearable
@@ -31,38 +33,34 @@
         </el-form-item> -->
       </el-form>
       <div style="width: 80%;margin:0 auto;">
-        <el-button style="width:100%" type="primary" @click="submit">提交</el-button>
+        <el-button style="width:100%" type="primary" @click="submit">
+          提交
+        </el-button>
       </div>
     </el-drawer>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'areaDrawer',
+  name: 'AreaDrawer',
   data() {
     return {
       isAdd: false,
-      areaDrawer:false,
+      areaDrawer: false,
       direction: 'rtl',
-      areaRuleForm:{
+      areaRuleForm: {
         roomName: '',
         integralLimit: '',
         byLimit: '',
       },
-      areaRules:{
-        roomName: [{required: true, message: '请输入房间名称'},],
+      areaRules: {
+        roomName: [{ required: true, message: '请输入房间名称' }],
         // roomCode: [{required: true, message: '请输入房间编号'},],
         // integralLimit: [{required: true, type:'number', message: '请输入水滴限制(数字)'},],
         // byLimit: [{required: true, type:'number', message: '请输入能量值限制(数字)'},],
       },
     }
-  },
-  created() {
-  },
-  mounted() {
-    const _this = this
   },
   methods: {
     handleClose() {
@@ -71,12 +69,12 @@ export default {
     },
     handleOpen(data) {
       this.areaDrawer = true
-      if(data) {
+      if (data) {
         this.isAdd = false
-        this.$nextTick(function(){
-            this.areaRuleForm = JSON.parse(JSON.stringify(data))
+        this.$nextTick(function () {
+          this.areaRuleForm = JSON.parse(JSON.stringify(data))
         })
-      }else {
+      } else {
         this.isAdd = true
       }
     },
@@ -85,10 +83,10 @@ export default {
       this.$refs.arearuleForm.validate((valid) => {
         if (valid) {
           let postApi = ''
-          let con = {
+          const con = {
             roomName: this.areaRuleForm.roomName,
           }
-          if(this.isAdd) {
+          if (this.isAdd) {
             postApi = this.Api.addRoomInfo
           } else {
             con.id = this.areaRuleForm.roomId
@@ -109,8 +107,7 @@ export default {
                 type: 'error',
               })
             }
-          }).catch(err => {
-            console.log(err)
+          }).catch((err) => {
           })
         }
       })

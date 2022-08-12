@@ -2,11 +2,15 @@
   <div class="flex h-full">
     <aside class="w-1/5 min-w-200px max-w-300px pr-2 flex flex-col">
       <vc-item-group v-model="form.state" class="flex w-full">
-        <vc-item v-slot="{active, toggle}" class="flex-1" :tag="false" :value="1">
-          <el-button :type="active ? 'primary' : ''" @click="toggle">待审核</el-button>
+        <vc-item v-slot="{ active, toggle }" class="flex-1" :tag="false" :value="1">
+          <el-button :type="active ? 'primary' : ''" @click="toggle">
+            待审核
+          </el-button>
         </vc-item>
-        <vc-item v-slot="{active, toggle}" class="flex-1" :tag="false" :value="3">
-          <el-button :type="active ? 'primary' : ''" @click="toggle">已完成</el-button>
+        <vc-item v-slot="{ active, toggle }" class="flex-1" :tag="false" :value="3">
+          <el-button :type="active ? 'primary' : ''" @click="toggle">
+            已完成
+          </el-button>
         </vc-item>
       </vc-item-group>
 
@@ -45,9 +49,13 @@
 
     <main class="flex-1 flex flex-col" style="overflow:hidden">
       <div class="border border-gray-200 rounded mb-2 p-3">
-        <div class="text-lg pb-1" @click="loading = !loading">历史统计：</div>
+        <div class="text-lg pb-1" @click="loading = !loading">
+          历史统计：
+        </div>
         <div class="grid grid-cols-3 text-xl">
-          <div v-for="(item, index) of countInfo" :key="index">{{ item }}</div>
+          <div v-for="(item, index) of countInfo" :key="index">
+            {{ item }}
+          </div>
         </div>
       </div>
       <TablePage v-bind="tablePageOption" ref="table"></TablePage>
@@ -60,8 +68,12 @@
       <div class="p-4">
         <el-input v-model.trim="rejectReason" placeholder="请填写拒绝原因"></el-input>
         <div class="text-right mt-2">
-          <el-button @click="drawer = false">取消</el-button>
-          <el-button type="primary" @click="reject()">确定</el-button>
+          <el-button @click="drawer = false">
+            取消
+          </el-button>
+          <el-button type="primary" @click="reject()">
+            确定
+          </el-button>
         </div>
       </div>
     </el-drawer>
@@ -100,7 +112,7 @@ export default {
           {
             name: '导出',
             type: 'primary',
-            click: this.exportFile
+            click: this.exportFile,
             // to: '/role/addRole',
           },
         ],
@@ -169,12 +181,12 @@ export default {
       delete params.pageSize
       this.$axios
         .post(this.Api.getExportWithdrawRecord, this.GLOBAL.paramJson({
-          createId:this.createId,
+          createId: this.createId,
           ...params,
         }), {
           responseType: 'arraybuffer',
         })
-        .then(res => {
+        .then((res) => {
           const date = new Date().toLocaleDateString().replace(/\//g, '-')
           downloadFile(res.data, `提现列表${date}.xls`)
         })
@@ -186,7 +198,7 @@ export default {
           pageSize: 20,
           ...this.form,
         }))
-        .then(res => {
+        .then((res) => {
           if (res.data.head.status !== 0) return Promise.reject(res)
           const data = res.data.body
           this.allStateCount = data.allStateCount
@@ -202,7 +214,7 @@ export default {
           createId: this.createId,
           ...params,
         }))
-        .then(res => {
+        .then((res) => {
           if (res.data.head.status !== 0) return Promise.reject(res)
           this.data = res.data.body
         })
@@ -230,13 +242,13 @@ export default {
       })
       return this.$axios
         .post(this.Api.updateWithdrawDeposit, this.GLOBAL.paramJson(params))
-        .then(async res => {
+        .then(async (res) => {
           if (res.data.head.status !== 0) return Promise.reject(res)
           this.$refs.table.loadData()
           this.$message.success('修改成功')
           loading.close()
         })
-        .catch(err => {
+        .catch((err) => {
           this.$message.error(err.data.head.msg ?? '修改失败')
           loading.close()
         })
@@ -246,7 +258,7 @@ export default {
         .post(this.Api.getCountAndAllMoney, this.GLOBAL.paramJson({
           createId: this.createId,
         }))
-        .then(res => {
+        .then((res) => {
           this.countInfo = res.data.body.resultList
         })
     },

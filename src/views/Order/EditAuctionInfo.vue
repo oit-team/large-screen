@@ -1,18 +1,34 @@
 <template>
-  <div id="addRole" class="pageCommonStyle" >
-    <el-page-header @back="goBack" :content="title"></el-page-header>
+  <div id="addRole" class="pageCommonStyle">
+    <el-page-header :content="title" @back="goBack"></el-page-header>
     <el-divider></el-divider>
     <div class="content">
       <el-descriptions>
-        <el-descriptions-item label="场次名称">{{ruleForm.conferenceHallName}}</el-descriptions-item>
-        <el-descriptions-item label="分区名称">{{ruleForm.roomName}}</el-descriptions-item>
+        <el-descriptions-item label="场次名称">
+          {{ ruleForm.conferenceHallName }}
+        </el-descriptions-item>
+        <el-descriptions-item label="分区名称">
+          {{ ruleForm.roomName }}
+        </el-descriptions-item>
         <!-- <el-descriptions-item label="支付能量值">{{ruleForm.paymentNum}}</el-descriptions-item> -->
-        <el-descriptions-item label="扣除水滴">{{ruleForm.deductPoints}}</el-descriptions-item>
-        <el-descriptions-item label="个人收益">{{ruleForm.personalIncome}}</el-descriptions-item>
-        <el-descriptions-item label="平台分润">{{ruleForm.platformRevenum}}</el-descriptions-item>
-        <el-descriptions-item label="应付定金">{{ruleForm.deposit}}</el-descriptions-item>
-        <el-descriptions-item label="竞拍时间">{{ruleForm.createTime}}</el-descriptions-item>
-        <el-descriptions-item label="支付时间">{{ruleForm.paymentTime}}</el-descriptions-item>
+        <el-descriptions-item label="扣除水滴">
+          {{ ruleForm.deductPoints }}
+        </el-descriptions-item>
+        <el-descriptions-item label="个人收益">
+          {{ ruleForm.personalIncome }}
+        </el-descriptions-item>
+        <el-descriptions-item label="平台分润">
+          {{ ruleForm.platformRevenum }}
+        </el-descriptions-item>
+        <el-descriptions-item label="应付定金">
+          {{ ruleForm.deposit }}
+        </el-descriptions-item>
+        <el-descriptions-item label="竞拍时间">
+          {{ ruleForm.createTime }}
+        </el-descriptions-item>
+        <el-descriptions-item label="支付时间">
+          {{ ruleForm.paymentTime }}
+        </el-descriptions-item>
       </el-descriptions>
       <div class="InfoContent">
         <div class="itemBox">
@@ -24,22 +40,23 @@
                   v-if="ruleForm.resUrl"
                   style="width: 100px; height: 100px"
                   fit="scale-down"
-                  :src="ruleForm.resUrl"></el-image>
-                <span v-else='ruleForm.resUrl' style="color:#BFBFBF">暂无图片</span>
+                  :src="ruleForm.resUrl"
+                ></el-image>
+                <span v-else style="color:#BFBFBF">暂无图片</span>
               </div>
               <div class="right">
-                <span>{{ruleForm.goodsName}}</span>
-                <span>{{ruleForm.goodsCode}}</span>
+                <span>{{ ruleForm.goodsName }}</span>
+                <span>{{ ruleForm.goodsCode }}</span>
               </div>
             </div>
             <div>
-              <span>商品数量:{{ruleForm.goodsNum}}</span>
+              <span>商品数量:{{ ruleForm.goodsNum }}</span>
             </div>
             <div>
-              <span>商品价格:{{ruleForm.goodsPrice}}</span>
+              <span>商品价格:{{ ruleForm.goodsPrice }}</span>
             </div>
           </div>
-<!--          <div class="itemFoot">
+          <!--          <div class="itemFoot">
             <span>支付能量值:{{ruleForm.paymentNum}}</span>
             <span>支付水滴:{{ruleForm.deductPoints}}</span>
             <span>个人分润:{{ruleForm.deductPoints}}</span>
@@ -53,28 +70,27 @@
 </template>
 
 <script>
-import CryptoJS from '../../assets/js/CryptoJS'
 export default {
-  name: 'addUser',
+  name: 'AddUser',
   props: {},
   data() {
     return {
       stateOptions: [
         {
           value: 0,
-          label: '未付款'
-        },{
+          label: '未付款',
+        }, {
           value: 1,
-          label: '未挂拍'
-        },{
+          label: '未挂拍',
+        }, {
           value: 2,
-          label: '取消挂拍'
-        },{
+          label: '取消挂拍',
+        }, {
           value: 3,
-          label: '已完成'
+          label: '已完成',
         },
       ],
-      activeNames:[0],
+      activeNames: [0],
       title: '竞拍订单详情',
       UserId: '',
       ruleForm: {
@@ -87,6 +103,7 @@ export default {
       },
     }
   },
+  watch: {},
   created() {
     if (this.$route.query.item) {
       // this.ruleForm = this.$route.query.item
@@ -95,7 +112,6 @@ export default {
   },
   mounted() {},
   activated() {},
-  watch: {},
   methods: {
     handleChange() {
 
@@ -108,23 +124,20 @@ export default {
     },
     getAuctionInfo(data) {
       const con = {
-        orderCode: data.orderCode
+        orderCode: data.orderCode,
       }
       const _this = this
       const jsonParam = _this.GLOBAL.paramJson(con)
       _this.$axios.post(_this.Api.getAllAuctionDetailed, jsonParam).then((res) => {
         if (res.data.head.status === 0) {
           _this.ruleForm = res.data.body
-          // _this.ruleForm = res.data.body.allResultList[0].orderDetailed[0]
         } else {
           _this.$message({
             message: res.data.head.msg,
             type: 'warning',
           })
         }
-      }).catch(err => {
-        console.log(err)
-      })
+      }).catch((err) => {})
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
@@ -132,6 +145,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
   ::v-deep .el-collapse-item__header{
     padding-left:10px;

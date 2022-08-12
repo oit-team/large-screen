@@ -1,14 +1,15 @@
 <template>
-  <div id="addRole" class="pageCommonStyle" >
-    <el-page-header @back="goBack" :content="title"></el-page-header>
+  <div id="addRole" class="pageCommonStyle">
+    <el-page-header :content="title" @back="goBack"></el-page-header>
     <el-divider></el-divider>
     <el-form
-      style="margin-top: 20px"
       ref="ruleForm"
+      style="margin-top: 20px"
       :rules="rules"
       :model="ruleForm"
       label-width="90px"
-      label-position="left">
+      label-position="left"
+    >
       <el-form-item label="作者名称" prop="authorName">
         <el-input v-model="ruleForm.authorName" placeholder="请输入作者名称" style="width:60%;"></el-input>
       </el-form-item>
@@ -18,7 +19,8 @@
           type="date"
           value-format="yyyy-MM-dd"
           format="yyyy-MM-dd"
-          placeholder="请选择作者生日">
+          placeholder="请选择作者生日"
+        >
         </el-date-picker>
       </el-form-item>
       <el-form-item label="作者类型" prop="category">
@@ -28,22 +30,25 @@
         <el-input v-model="ruleForm.briefIntro" type="textarea" rows="6" placeholder="请输入作者简介" style="width:60%;"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">保存</el-button>
-        <el-button size="small" icon="el-icon-refresh" v-if="!editFlag" @click="resetForm('ruleForm')">重置</el-button>
+        <el-button size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">
+          保存
+        </el-button>
+        <el-button v-if="!editFlag" size="small" icon="el-icon-refresh" @click="resetForm('ruleForm')">
+          重置
+        </el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'addAuthor',
+  name: 'AddAuthor',
   props: {},
   data() {
     return {
       editFlag: false,
-      id:'',
+      id: '',
       title: '',
       UserId: '',
       ruleForm: {
@@ -51,7 +56,7 @@ export default {
         briefIntro: null,
         authorName: '',
         category: '',
-        id:'',
+        id: '',
       },
       rules: {
         authorName: [
@@ -66,6 +71,7 @@ export default {
       },
     }
   },
+  watch: {},
   created() {
     if (this.$route.query.item) {
       this.title = '编辑作者'
@@ -78,7 +84,6 @@ export default {
   },
   mounted() {},
   activated() {},
-  watch: {},
   methods: {
     isUnique() {
       return false
@@ -90,7 +95,7 @@ export default {
       // getAuthorInfoById
       const _this = this
       const con = {
-        id:id
+        id,
       }
       const jsonParam = _this.GLOBAL.paramJson(con)
       _this.$axios.post(_this.Api.getAuthorInfoById, jsonParam).then((res) => {
@@ -105,9 +110,7 @@ export default {
             type: 'warning',
           })
         }
-      }).catch(err => {
-        console.log(err)
-      })
+      }).catch((err) => {})
     },
     submitForm(formName) {
       const _this = this
@@ -137,9 +140,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch(err => {
-              console.log(err)
-            })
+            }).catch((err) => {})
           } else {
             const jsonParam = _this.GLOBAL.paramJson(con)
             _this.$axios.post(_this.Api.insertAuthorInfo, jsonParam).then((res) => {
@@ -156,9 +157,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch(err => {
-              console.log(err)
-            })
+            }).catch((err) => {})
           }
         }
       })
@@ -169,6 +168,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
   #addRole{
     min-height: calc(100% - 10px);

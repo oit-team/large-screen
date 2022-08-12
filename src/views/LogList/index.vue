@@ -9,7 +9,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'LogInfo',
 
@@ -70,9 +69,8 @@ export default {
           pageSize: 20,
           ...this.form,
         }))
-        .then(res => {
+        .then((res) => {
           if (res.data.head.status !== 0) return Promise.reject(res)
-          const data = res.data.body
           this.pageNum++
         })
         .catch($state.fail)
@@ -84,7 +82,7 @@ export default {
           createId: this.createId,
           ...params,
         }))
-        .then(res => {
+        .then((res) => {
           if (res.data.head.status !== 0) return Promise.reject(res)
           this.data = res.data.body
           this.$refs.table.doLayout()

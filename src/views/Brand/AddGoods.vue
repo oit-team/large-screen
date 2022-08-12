@@ -1,72 +1,75 @@
 <template>
-  <div class="pageCommonStyle" id="addGoods">
-    <el-page-header @back="goBack" :content="title"></el-page-header>
+  <div id="addGoods" class="pageCommonStyle">
+    <el-page-header :content="title" @back="goBack"></el-page-header>
     <el-divider></el-divider>
     <el-form
-      style="margin-top: 20px"
       ref="ruleForm"
+      style="margin-top: 20px"
       :rules="rules"
       :model="ruleForm"
       label-width="98px"
-      label-position="right">
-      <div class='goodsFormBox'>
-        <div class='baseInfoBox'>
-          <el-collapse v-model="activeName" >
-              <el-collapse-item title="基础信息" name="1">
-                <el-form-item label="商品名称" prop="goodsName">
-                  <el-input v-model="ruleForm.goodsName" placeholder="请输入商品名称" style="width:96%;"></el-input>
-                </el-form-item>
-                <el-form-item label="作者编号" prop="authorId">
-                  <!-- <el-input v-model="ruleForm.authorId" placeholder="请输入作者编号" style="width:96%;"></el-input> -->
-                  <el-select v-model="ruleForm.authorId" filterable placeholder="请选择作者" style="width:96%;">
-                      <el-option
-                        v-for="item in authorList"
-                        :key="item.id"
-                        :label="item.authorName"
-                        :value="item.id">
-                      </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="商品风格" prop="goodsStyle">
-                  <el-input v-model="ruleForm.goodsStyle" placeholder="请输入商品风格" style="width:96%;"></el-input>
-                </el-form-item>
-                <el-form-item label="商品类型" prop="goodsCategory">
-                  <el-select v-model="ruleForm.goodsCategory" placeholder="请选择商品类型" style="width:96%;">
-                      <el-option
-                        v-for="item in goodsTypeList"
-                        :key="item.id"
-                        :label="item.dictitemDisplayName"
-                        :value="item.id">
-                      </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="商品价格" prop="price">
-                  <el-input v-model="ruleForm.price" placeholder="请输入商品价格" style="width:96%;"></el-input>
-                </el-form-item>
-              </el-collapse-item>
-              <el-collapse-item title="配置信息" name="2">
-                <el-form-item label="商品尺寸" prop="goodsSize">
-                  <el-input v-model="ruleForm.goodsSize" placeholder="请输入商品尺寸" style="width:96%;"></el-input>
-                </el-form-item>
-                <el-form-item label="商品材质" prop="goodsMaterials">
-                  <el-input v-model="ruleForm.goodsMaterials" placeholder="请输入商品材质" style="width:96%;"></el-input>
-                </el-form-item>
-                <el-form-item label="外观描述" prop="appearanceDescription">
-                  <el-input v-model="ruleForm.appearanceDescription" placeholder="请输入外观描述" style="width:96%;"></el-input>
-                </el-form-item>
-                <el-form-item label="商品标签" prop="goodsLabel">
-                  <el-input v-model="ruleForm.goodsLabel" placeholder="请输入商品标签" style="width:96%;"></el-input>
-                </el-form-item>
-                <el-form-item label="适用场景" prop="purposes">
-                  <el-input v-model="ruleForm.purposes" placeholder="请输入适用场景" style="width:96%;"></el-input>
-                </el-form-item>
-                <el-form-item label="注意事项" prop="mattersNeeding">
-                  <el-input v-model="ruleForm.mattersNeeding" placeholder="请输入注意事项" style="width:96%;"></el-input>
-                </el-form-item>
-              </el-collapse-item>
-            </el-collapse>
+      label-position="right"
+    >
+      <div class="goodsFormBox">
+        <div class="baseInfoBox">
+          <el-collapse v-model="activeName">
+            <el-collapse-item title="基础信息" name="1">
+              <el-form-item label="商品名称" prop="goodsName">
+                <el-input v-model="ruleForm.goodsName" placeholder="请输入商品名称" style="width:96%;"></el-input>
+              </el-form-item>
+              <el-form-item label="作者编号" prop="authorId">
+                <!-- <el-input v-model="ruleForm.authorId" placeholder="请输入作者编号" style="width:96%;"></el-input> -->
+                <el-select v-model="ruleForm.authorId" filterable placeholder="请选择作者" style="width:96%;">
+                  <el-option
+                    v-for="item in authorList"
+                    :key="item.id"
+                    :label="item.authorName"
+                    :value="item.id"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="商品风格" prop="goodsStyle">
+                <el-input v-model="ruleForm.goodsStyle" placeholder="请输入商品风格" style="width:96%;"></el-input>
+              </el-form-item>
+              <el-form-item label="商品类型" prop="goodsCategory">
+                <el-select v-model="ruleForm.goodsCategory" placeholder="请选择商品类型" style="width:96%;">
+                  <el-option
+                    v-for="item in goodsTypeList"
+                    :key="item.id"
+                    :label="item.dictitemDisplayName"
+                    :value="item.id"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="商品价格" prop="price">
+                <el-input v-model="ruleForm.price" placeholder="请输入商品价格" style="width:96%;"></el-input>
+              </el-form-item>
+            </el-collapse-item>
+            <el-collapse-item title="配置信息" name="2">
+              <el-form-item label="商品尺寸" prop="goodsSize">
+                <el-input v-model="ruleForm.goodsSize" placeholder="请输入商品尺寸" style="width:96%;"></el-input>
+              </el-form-item>
+              <el-form-item label="商品材质" prop="goodsMaterials">
+                <el-input v-model="ruleForm.goodsMaterials" placeholder="请输入商品材质" style="width:96%;"></el-input>
+              </el-form-item>
+              <el-form-item label="外观描述" prop="appearanceDescription">
+                <el-input v-model="ruleForm.appearanceDescription" placeholder="请输入外观描述" style="width:96%;"></el-input>
+              </el-form-item>
+              <el-form-item label="商品标签" prop="goodsLabel">
+                <el-input v-model="ruleForm.goodsLabel" placeholder="请输入商品标签" style="width:96%;"></el-input>
+              </el-form-item>
+              <el-form-item label="适用场景" prop="purposes">
+                <el-input v-model="ruleForm.purposes" placeholder="请输入适用场景" style="width:96%;"></el-input>
+              </el-form-item>
+              <el-form-item label="注意事项" prop="mattersNeeding">
+                <el-input v-model="ruleForm.mattersNeeding" placeholder="请输入注意事项" style="width:96%;"></el-input>
+              </el-form-item>
+            </el-collapse-item>
+          </el-collapse>
         </div>
-        
+
         <div class="fileInfoBox">
           <el-form-item label="商品图片">
             <el-upload
@@ -78,15 +81,18 @@
               :file-list="fileList"
               :on-change="uploadChange"
               list-type="picture-card"
-              accept='image/jpeg,image/jpg'
+              accept="image/jpeg,image/jpg"
               :before-upload="beforeUploadImg"
               :on-exceed="handleExceed"
               :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove">
+              :on-remove="handleRemove"
+            >
               <i class="el-icon-plus"></i>
             </el-upload>
           </el-form-item>
-          <p class="tip">*最多可以上传6张图片(按住Ctrl或Alt键选择多张图片上传)，仅支持jpg格式</p>
+          <p class="tip">
+            *最多可以上传6张图片(按住Ctrl或Alt键选择多张图片上传)，仅支持jpg格式
+          </p>
           <el-form-item label="商品视频">
             <el-upload
               :action="uploadUrl"
@@ -96,25 +102,32 @@
               multiple
               :show-file-list="false"
               list-type="picture-card"
-              accept='.mp4,.mov'
-              :class="videoSrc?'el-upload-video':''"
+              accept=".mp4,.mov"
+              :class="videoSrc ? 'el-upload-video' : ''"
               :before-upload="beforeUploadVideo"
               :on-success="VideoUploadSuccess"
             >
               <video
+                v-if="videoSrc"
                 style=""
-                v-if='videoSrc'
                 class="avatar video-avatar"
                 :src="videoSrc"
-                controls="controls">
+                controls="controls"
+              >
                 您的浏览器不支持视频播放
               </video>
-              <el-progress v-if="!videoSrc&&uploadVideoFlag" type="circle" :percentage="perValue"></el-progress>
-              <i v-if="!videoSrc&&!uploadVideoFlag" class="el-icon-plus"></i>
+              <el-progress v-if="!videoSrc && uploadVideoFlag" type="circle" :percentage="perValue"></el-progress>
+              <i v-if="!videoSrc && !uploadVideoFlag" class="el-icon-plus"></i>
             </el-upload>
-            <div v-if="videoSrc" style="margin-top:10px"> <el-button @click="delVideo">删除视频</el-button> </div>
+            <div v-if="videoSrc" style="margin-top:10px">
+              <el-button @click="delVideo">
+                删除视频
+              </el-button>
+            </div>
           </el-form-item>
-          <p class="tip">*最多可以上传1个视频,推荐格式mp4</p>
+          <p class="tip">
+            *最多可以上传1个视频,推荐格式mp4
+          </p>
           <el-form-item label="视频贴图">
             <el-upload
               :action="uploadUrl"
@@ -125,21 +138,28 @@
               :file-list="videoImgList"
               :on-change="VideouploadChange"
               list-type="picture-card"
-              accept='image/jpeg,image/jpg'
+              accept="image/jpeg,image/jpg"
               :before-upload="beforeUploadImg"
               :on-exceed="handleVideoExceed"
               :on-preview="handlePictureCardPreview"
-              :on-remove="handleVideoImgRemove">
+              :on-remove="handleVideoImgRemove"
+            >
               <i class="el-icon-plus"></i>
             </el-upload>
           </el-form-item>
-          <p class="tip">*最多可以上传1张图片，仅支持jpg格式</p>
+          <p class="tip">
+            *最多可以上传1张图片，仅支持jpg格式
+          </p>
         </div>
       </div>
-      
+
       <el-form-item class="buttonBox">
-        <el-button size="small" icon="el-icon-check" v-if="flag != 'read'" type="primary" @click="submitForm('ruleForm')">保存</el-button>
-        <el-button size="small" icon="el-icon-refresh" v-if="!editFlag" @click="resetForm('ruleForm')">重置</el-button>
+        <el-button v-if="flag != 'read'" size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">
+          保存
+        </el-button>
+        <el-button v-if="!editFlag" size="small" icon="el-icon-refresh" @click="resetForm('ruleForm')">
+          重置
+        </el-button>
       </el-form-item>
     </el-form>
     <el-dialog :visible.sync="dialogVisible" :show-close="true" :before-close="handleClose">
@@ -149,7 +169,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'AddGoods',
   props: {},
@@ -158,10 +177,10 @@ export default {
       dialogVisible: false,
       dialogImageUrl: '',
       uploadVideoFlag: false,
-      perValue:0,
+      perValue: 0,
       videoSrc: '',
       goodsTypeList: [],
-      authorList:[],
+      authorList: [],
       uploadUrl: '',
       uploadData: {
         totalSize: '',
@@ -173,11 +192,11 @@ export default {
         noThumb: '',
       },
       headersData: {
-        token: ''
+        token: '',
       },
-      activeName: '1', //折叠面板展开
-      fileList: [], //商品图片上传
-      videoImgList: [], //视频贴图上传
+      activeName: '1', // 折叠面板展开
+      fileList: [], // 商品图片上传
+      videoImgList: [], // 视频贴图上传
       timerType: '',
       TreeMenuList: [],
       editFlag: false,
@@ -213,9 +232,10 @@ export default {
           { required: true, message: '请输入商品价格', trigger: 'blur' },
         ],
       },
-      flag:'',
+      flag: '',
     }
   },
+  watch: {},
   created() {
     if (this.$route.query.item) {
       this.title = '编辑商品'
@@ -232,12 +252,11 @@ export default {
       this.ruleForm.mattersNeeding = this.$route.query.item.mattersNeeding
       this.ruleForm.goodsLabel = this.$route.query.item.goodsLabel
       this.ruleForm.goodsCategory = Number(this.$route.query.item.goodsCategory)
-      this.fileList = this.$route.query.item.mainImage?this.setFileList(this.$route.query.item.mainImage):[]
+      this.fileList = this.$route.query.item.mainImage ? this.setFileList(this.$route.query.item.mainImage) : []
       this.videoSrc = this.$route.query.item.video
-      this.videoImgList = this.$route.query.item.videoImage?this.setFileList([{'resUrl':this.$route.query.item.videoImage}]):[]
+      this.videoImgList = this.$route.query.item.videoImage ? this.setFileList([{ resUrl: this.$route.query.item.videoImage }]) : []
       if (this.$route.query.flag) {
         this.flag = this.$route.query.flag
-        console.log(this.flag)
       }
     } else {
       this.title = '新增商品'
@@ -251,7 +270,6 @@ export default {
     this.getAuthorList()
   },
   activated() {},
-  watch: {},
   methods: {
     handleClose() {
       this.dialogVisible = false
@@ -267,7 +285,7 @@ export default {
       }
       const jsonParam = _this.GLOBAL.paramJson(con)
       _this.$axios.post(_this.Api.getAuthorInfoList, jsonParam).then((res) => {
-        if(res.data.head.status === 0) {
+        if (res.data.head.status === 0) {
           _this.authorList = res.data.body.resultList
         } else {
           _this.$message({
@@ -275,7 +293,6 @@ export default {
             type: 'warning',
           })
         }
-       
       })
     },
     getGoodsType() {
@@ -290,16 +307,16 @@ export default {
     setFileList(res) {
       const imgList = []
       res.forEach((item) => {
-        const NameIndex = item.resUrl.lastIndexOf("/");
-        const name = item.resUrl.substring(NameIndex+1);
-        imgList.push({'name':name,'url':item.resUrl})
+        const NameIndex = item.resUrl.lastIndexOf('/')
+        const name = item.resUrl.substring(NameIndex + 1)
+        imgList.push({ name, url: item.resUrl })
       })
       return imgList
     },
     getImgList(imgList) {
-      let mainImage = []
+      const mainImage = []
       imgList.forEach((item) => {
-        if(item.response){
+        if (item.response) {
           mainImage.push(item.response.fileUrl)
         } else {
           mainImage.push(item.url)
@@ -336,7 +353,7 @@ export default {
                   message: '编辑任务成功',
                   type: 'success',
                 })
-                _this.$bus.$emit('detailShow','')
+                _this.$bus.$emit('detailShow', '')
                 _this.$router.back()
               } else {
                 _this.$message({
@@ -344,9 +361,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch(err => {
-              console.log(err)
-            })
+            }).catch((err) => {})
           } else {
             const jsonParam = _this.GLOBAL.paramJson(con)
             _this.$axios.post(_this.Api.addGoodsInfo, jsonParam).then((res) => {
@@ -363,9 +378,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch(err => {
-              console.log(err)
-            })
+            }).catch((err) => {})
           }
         }
       })
@@ -374,94 +387,94 @@ export default {
       this.$refs[formName].resetFields()
     },
     handleRemove(file, fileList) {
-      this.fileList = fileList;
+      this.fileList = fileList
     },
     handleVideoImgRemove(file, fileList) {
       this.videoImgList = fileList
     },
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
     },
-    //上传图片
-    beforeUploadImg(file){
-      this.uploadData.totalSize = parseInt(file.size/1024)
+    // 上传图片
+    beforeUploadImg(file) {
+      this.uploadData.totalSize = parseInt(file.size / 1024)
       this.uploadData.endPos = file.size
       this.uploadData.fileType = '0'
-      const pointIndex = file.name.lastIndexOf(".");
-      const fileType = file.name.substring(pointIndex+1);   //获取到文件后缀名
-      const isJPG = (fileType === "jpg");
-      const isLt4M = file.size / 1024 / 1024 < 4;
+      const pointIndex = file.name.lastIndexOf('.')
+      const fileType = file.name.substring(pointIndex + 1) // 获取到文件后缀名
+      const isJPG = (fileType === 'jpg')
+      const isLt4M = file.size / 1024 / 1024 < 4
       const hour = Math.floor(Date.now() / (1000 * 60 * 60))
-      const md5FileName = `${ this.md5(file.name + hour).toString() }.${ fileType }`
+      const md5FileName = `${this.md5(file.name + hour).toString()}.${fileType}`
       this.uploadData.fname = md5FileName
       if (!isJPG) {
-        this.$message.error("上传图片只能是 JPG 格式!");
+        this.$message.error('上传图片只能是 JPG 格式!')
         return false
       }
       if (!isLt4M) {
-        this.$message.error("上传图片大小不能超过 4MB!");
+        this.$message.error('上传图片大小不能超过 4MB!')
         return false
       }
-      return isJPG && isLt4M;
+      return isJPG && isLt4M
     },
     handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 6 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      this.$message.warning(`当前限制选择 6 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
     },
     handleVideoExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
     },
     uploadChange(files, fileList) {
-      this.fileList = fileList;
+      this.fileList = fileList
     },
     VideouploadChange(files, fileList) {
       this.videoImgList = fileList
     },
     uploadVideoProcess(event, file, fileList) {
-      this.uploadVideoFlag = true;
-      this.perValue = file.percentage.toFixed(0) * 1;
+      this.uploadVideoFlag = true
+      this.perValue = file.percentage.toFixed(0) * 1
     },
-    beforeUploadVideo(file){
+    beforeUploadVideo(file) {
       this.delVideo()
-      this.uploadData.totalSize = parseInt(file.size/1024)
+      this.uploadData.totalSize = parseInt(file.size / 1024)
       this.uploadData.endPos = file.size
       this.uploadData.fileType = '1'
-      const pointIndex = file.name.lastIndexOf(".");
-      const fileType = file.name.substring(pointIndex+1);   //获取到文件后缀名
-      const isVideo = (fileType === "mp4" || fileType === "mov");
-      const isLt4M = file.size / 1024 / 1024 < 50;
+      const pointIndex = file.name.lastIndexOf('.')
+      const fileType = file.name.substring(pointIndex + 1) // 获取到文件后缀名
+      const isVideo = (fileType === 'mp4' || fileType === 'mov')
+      const isLt4M = file.size / 1024 / 1024 < 50
       const hour = Math.floor(Date.now() / (1000 * 60 * 60))
-      const md5FileName = `${ this.md5(file.name + hour).toString() }.${ fileType }`
+      const md5FileName = `${this.md5(file.name + hour).toString()}.${fileType}`
       this.uploadData.fname = md5FileName
       if (!isVideo) {
-        this.$message.error("上传视频只能是 mp4，mov 格式!");
+        this.$message.error('上传视频只能是 mp4，mov 格式!')
         return false
       }
       if (!isLt4M) {
-        this.$message.error("上传视频大小不能超过 50MB!");
+        this.$message.error('上传视频大小不能超过 50MB!')
         return false
       }
-      return isVideo && isLt4M;
+      return isVideo && isLt4M
     },
     VideoUploadError() {
-      
+
     },
-    VideoUploadSuccess(res,file){
-      // this.isShowUploadVideo = true;
-      this.uploadVideoFlag = false;
-      this.perValue = 0;
+    VideoUploadSuccess(res, file) {
+      this.uploadVideoFlag = false
+      this.perValue = 0
       if (res.status === 0) {
         this.videoSrc = res.fileUrl
       } else {
-        this.$message.error('上传失败');
+        this.$message.error('上传失败')
       }
     },
     delVideo() {
       this.videoSrc = ''
-    }
+    },
   },
 }
 </script>
+
 <style lang="scss" scoped>
   .tip{
     color:red;
@@ -469,7 +482,7 @@ export default {
   #addGoods{
     min-height: 82vh;
     text-align: left;
-  
+
     //商品基础信息
     .goodsFormBox{
       width:100%;
@@ -533,7 +546,6 @@ export default {
       vertical-align: top;
     }
 
-  
     // 商品尺码
     .goodsSizeBox{
       // border:2px solid green;

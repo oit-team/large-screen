@@ -1,70 +1,78 @@
 <template>
   <div id="customerList" class="pageCommonStyle" style="height:100%;display: flex;flex-direction: column;">
-    <vc-search
+    <VcSearch
       ref="child"
-      :headTitArr='headTitArr'
-      :pageNum='pageNum'
-      :pageSize='pageSize'
-      :requestUrl='requestUrl'
-      @changeLoading='changeLoad'
-      @sendData='showChildData'/>
-   <div class="operateBtn" style="display: inline-block;">
-      <el-button type="primary" size="small" @click="exportFile">导出</el-button>
+      :head-tit-arr="headTitArr"
+      :page-num="pageNum"
+      :page-size="pageSize"
+      :request-url="requestUrl"
+      @changeLoading="changeLoad"
+      @sendData="showChildData"
+    />
+    <div class="operateBtn" style="display: inline-block;">
+      <el-button type="primary" size="small" @click="exportFile">
+        导出
+      </el-button>
     </div>
     <el-divider></el-divider>
     <el-table
-        v-loading="loading"
-        element-loading-text="拼命加载中..."
-        :data="tableData"
-        border
-        height="100%">
-        <el-table-column
-          show-overflow-tooltip
-          sortable
-          v-for="(item,index) in headTitArrNew"
-          :key="index"
-          :min-width="GLOBAL.minCellWidth"
-          :prop="item.fieldKey"
-          :label="item.fieldName">
-          <template scope="scopeStatus" v-if="item.fieldKey == 'state'">
-            <span v-if="scopeStatus.row.state == 0">所有</span>
-            <span v-else-if="scopeStatus.row.state == 1">待付款</span>
-            <span v-else-if="scopeStatus.row.state == 2">待收货</span>
-            <span v-else-if="scopeStatus.row.state == 3">已完成</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          align="center"
-          width="100">
-          <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" content="查看" placement="top">
-              <el-button
-                size="mini"
-                type="success"
-                icon="el-icon-view"
-                circle
-                @click="readShoppingItem(scope.row,scope.$index)"></el-button>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pageNum"
-        :page-sizes="[15, 20, 30]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
-      </el-pagination>
+      v-loading="loading"
+      element-loading-text="拼命加载中..."
+      :data="tableData"
+      border
+      height="100%"
+    >
+      <el-table-column
+        v-for="(item, index) in headTitArrNew"
+        :key="index"
+        show-overflow-tooltip
+        sortable
+        :min-width="GLOBAL.minCellWidth"
+        :prop="item.fieldKey"
+        :label="item.fieldName"
+      >
+        <template v-if="item.fieldKey == 'state'" scope="scopeStatus">
+          <span v-if="scopeStatus.row.state == 0">所有</span>
+          <span v-else-if="scopeStatus.row.state == 1">待付款</span>
+          <span v-else-if="scopeStatus.row.state == 2">待收货</span>
+          <span v-else-if="scopeStatus.row.state == 3">已完成</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        fixed="right"
+        label="操作"
+        align="center"
+        width="100"
+      >
+        <template slot-scope="scope">
+          <el-tooltip class="item" effect="dark" content="查看" placement="top">
+            <el-button
+              size="mini"
+              type="success"
+              icon="el-icon-view"
+              circle
+              @click="readShoppingItem(scope.row, scope.$index)"
+            ></el-button>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      :current-page="pageNum"
+      :page-sizes="[15, 20, 30]"
+      :page-size="100"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    >
+    </el-pagination>
   </div>
 </template>
 
 <script>
-import VcSearch from '../../components/basic/CommonSearch'
 import { downloadFile } from '@oit/utils'
+import VcSearch from '../../components/basic/CommonSearch'
 
 export default {
   components: {
@@ -87,9 +95,15 @@ export default {
       searchParams: {},
     }
   },
+  computed: {
+    headTitArrNew() {
+      return this.headTitArr.filter(item => !item.noTableShow)
+    },
+  },
+  watch: {},
   created() {
     this.requestUrl = this.Api.getAllShoppingOrder
-    if (sessionStorage.headTitString&&sessionStorage.headTitString.indexOf('@') != -1) {
+    if (sessionStorage.headTitString && sessionStorage.headTitString.includes('@')) {
       this.headTitArr = JSON.parse(sessionStorage.headTitString.split('@')[1])
     }
     this.dynamicParam = [
@@ -107,37 +121,31 @@ export default {
       },
     ]
   },
-  computed:{
-    headTitArrNew() {
-      return this.headTitArr.filter(item => !item.noTableShow)
-    },
-  },
   mounted() {
     this.pageNum = 1
-    this.dynamicParam.forEach(el => {
+    this.dynamicParam.forEach((el) => {
       if (el.key === 'pageNum') {
         el.value = this.pageNum
       }
     })
   },
   activated() {
-    if (sessionStorage.headTitString&&sessionStorage.headTitString.indexOf('@') != -1) {
+    if (sessionStorage.headTitString && sessionStorage.headTitString.includes('@')) {
       this.headTitArr = JSON.parse(sessionStorage.headTitString.split('@')[1])
     }
     const _this = this
     _this.$refs.child.resetSearch(_this.dynamicParam, _this.pageNum)
   },
-  watch: {},
   methods: {
     // 导出购物订单列表
-     exportFile() {
+    exportFile() {
       this.$axios
         .post(this.Api.getExportShoppingOrder, this.GLOBAL.paramJson({
           ...this.searchParams,
         }), {
           responseType: 'arraybuffer',
         })
-        .then(res => {
+        .then((res) => {
           const date = new Date().toLocaleDateString().replace(/\//g, '-')
           downloadFile(res.data, `购物订单${date}.xls`)
         })
@@ -171,7 +179,7 @@ export default {
     },
     handleSizeChange(val) {
       this.pageSize = val
-      this.dynamicParam.forEach(el => {
+      this.dynamicParam.forEach((el) => {
         if (el.key === 'pageSize') {
           el.value = this.pageSize
         }
@@ -180,7 +188,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.pageNum = val
-      this.dynamicParam.forEach(el => {
+      this.dynamicParam.forEach((el) => {
         if (el.key === 'pageNum') {
           el.value = this.pageNum
         }
@@ -193,6 +201,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scope>
 
 </style>

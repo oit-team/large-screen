@@ -23,7 +23,7 @@
             placeholder="请选择用户状态"
           >
             <el-option
-              v-for="(item,index) in statusList"
+              v-for="(item, index) in statusList"
               :key="index"
               :label="item.label"
               :value="item.key"
@@ -43,7 +43,7 @@
             placeholder="请选择推荐人"
           >
             <el-option
-              v-for="(item,index) in userList"
+              v-for="(item, index) in userList"
               :key="index"
               :label="item.nickName"
               :value="item.id"
@@ -78,7 +78,7 @@
           </el-input>
         </el-form-item>
         <!-- 总资产 -->
-         <el-form-item label="总资产" prop="totalAssets">
+        <el-form-item label="总资产" prop="totalAssets">
           <el-input
             style="width:100%;"
             type="number"
@@ -94,7 +94,6 @@
         <el-form-item label="密码" prop="passWord">
           <el-input v-model="ruleForm.passWord" style="width:100%;" placeholder="请输入新密码" show-password></el-input>
         </el-form-item>
-
       </div>
       <div style="width: 50%;display: inline-block;float: left;padding-left: 20px;">
         <el-form-item label="真实姓名">
@@ -126,7 +125,9 @@
         </el-form-item>
       </div>
       <div style="clear: both;text-align: center;">
-        <el-button size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">保存</el-button>
+        <el-button size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">
+          保存
+        </el-button>
         <!-- <el-button size="small" icon="el-icon-refresh" v-if="!editFlag" @click="resetForm('ruleForm')">重置</el-button> -->
       </div>
     </el-form>
@@ -139,55 +140,65 @@
       <el-tabs class="py-3 px-4" value="0">
         <el-tab-pane label="能量值/水滴">
           <el-form ref="valueForm" label-position="top" :model="lazyValueForm">
-            <el-form-item label="能量值" prop="bys" :rules="lazyValueForm.byAddType !== 6 ? absRule : null">
+            <el-form-item :label="lazyValueForm.byAddType === 5 ? `能量值(累计赠送:${ruleForm.giveBy})` : '能量值'" prop="bys" :rules="lazyValueForm.byAddType !== 6 ? absRule : null">
               <el-input
                 v-model="lazyValueForm.bys"
                 type="number"
                 placeholder="请输入能量值"
                 maxlength="10"
+                class="input-with-select"
                 @input="lazyValueForm.bys = formatNumber(lazyValueForm.bys)"
                 @click.native="drawer = true"
-                class="input-with-select"
               >
-                <el-select v-model="selectBys" style="width:80px" slot="prepend" placeholder="增加" v-if="lazyValueForm.byAddType === 6 ? true:false">
-                    <el-option
-                      v-for="item in selectByOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                  </el-select>
+                <el-select v-if="[5, 6].includes(lazyValueForm.byAddType)" slot="prepend" v-model="selectBys" style="width:80px" placeholder="增加">
+                  <el-option
+                    v-for="item in selectByOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
               </el-input>
             </el-form-item>
-            <el-form-item label="水滴" prop="integral" :rules="lazyValueForm.byAddType !== 6 ? absRule : null">
+            <el-form-item :label="lazyValueForm.byAddType === 5 ? `水滴(累计赠送:${ruleForm.giveIntegral})` : '水滴'" prop="integral" :rules="lazyValueForm.byAddType !== 6 ? absRule : null">
               <el-input
                 v-model="lazyValueForm.integral"
                 type="number"
                 placeholder="请输入水滴"
                 maxlength="10"
+                class="input-with-select"
                 @input="lazyValueForm.integral = formatNumber(lazyValueForm.integral)"
                 @click.native="drawer = true"
-                class="input-with-select"
               >
-                 <el-select v-model="selectIntegral" style="width:80px" slot="prepend" placeholder="增加" v-if="lazyValueForm.byAddType === 6 ? true:false">
-                     <el-option
-                      v-for="item in selectJfOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
+                <el-select v-if="[5, 6].includes(lazyValueForm.byAddType)" slot="prepend" v-model="selectIntegral" style="width:80px" placeholder="增加">
+                  <el-option
+                    v-for="item in selectJfOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
                   </el-option>
-                  </el-select>
+                </el-select>
               </el-input>
             </el-form-item>
             <el-form-item label="方式" prop="byAddType">
               <el-radio-group v-model="lazyValueForm.byAddType">
-                <el-radio :label="3" border>用户充值</el-radio>
-                <el-radio :label="5" border>平台赠送</el-radio>
-                <el-radio :label="6" border>平台更改</el-radio>
+                <el-radio :label="3" border>
+                  用户充值
+                </el-radio>
+                <el-radio :label="5" border>
+                  平台赠送
+                </el-radio>
+                <el-radio :label="6" border>
+                  平台更改
+                </el-radio>
               </el-radio-group>
             </el-form-item>
             <div>
-              <el-button class="w-full" type="primary" @click="confirmValue()">确定</el-button>
+              <el-button class="w-full" type="primary" @click="confirmValue()">
+                确定
+              </el-button>
             </div>
           </el-form>
         </el-tab-pane>
@@ -222,7 +233,7 @@
         </el-tab-pane>
       </el-tabs>
     </el-drawer>
-     <el-drawer
+    <el-drawer
       :visible.sync="drawer2"
       :before-close="handleClose"
       :with-header="false"
@@ -231,31 +242,31 @@
         <el-tab-pane label="已释放资产 / 冻结资产">
           <el-form ref="valueForm" label-position="top" :model="ruleForm">
             <el-form-item label="已释放资产" prop="bys">
-              <vc-input
+              <VcInput
                 v-model="ruleForm.currentAssets"
                 type="number"
                 placeholder="请输入已释放资产"
                 :formatter="formatter"
                 format-trigger="blur"
                 @click.native="drawer2 = true"
-                class="input-with-select"
               >
-              </vc-input>
+              </VcInput>
             </el-form-item>
             <el-form-item label="冻结资产" prop="freezingAssets">
-              <vc-input
+              <VcInput
                 v-model="ruleForm.frozenAssets"
                 type="number"
                 placeholder="请输入冻结资产"
                 :formatter="formatter"
                 format-trigger="blur"
                 @click.native="drawer2 = true"
-                class="input-with-select"
               >
-              </vc-input>
+              </VcInput>
             </el-form-item>
             <div>
-              <el-button class="w-full" type="primary" @click="confirmValue2()">确定</el-button>
+              <el-button class="w-full" type="primary" @click="confirmValue2()">
+                确定
+              </el-button>
             </div>
           </el-form>
         </el-tab-pane>
@@ -265,12 +276,12 @@
 </template>
 
 <script>
-import CryptoJS from '../../assets/js/CryptoJS'
 import { isEqual } from 'lodash'
 import { Input as VcInput } from '@oit/element-ui-extend'
+import CryptoJS from '../../assets/js/CryptoJS'
 
 export default {
-  name: 'addUser',
+  name: 'AddUser',
   components: {
     VcInput,
   },
@@ -279,20 +290,20 @@ export default {
     return {
       selectByOptions: [{
         value: '1',
-        label: '增加'
+        label: '增加',
       }, {
         value: '0',
-        label: '减少'
+        label: '减少',
       }],
       selectJfOptions: [{
         value: '1',
-        label: '增加'
+        label: '增加',
       }, {
         value: '0',
-        label: '减少'
+        label: '减少',
       }],
-      selectBys:'1', // 能量值选择正负
-      selectIntegral:'1', //水滴选择正负
+      selectBys: '1', // 能量值选择正负
+      selectIntegral: '1', // 水滴选择正负
       userList: '',
       passWord: '',
       editFlag: false,
@@ -314,8 +325,8 @@ export default {
         integral: '',
         recommender: '',
         totalAssets: '', // 总水滴
-        frozenAssets:'',
-        currentAssets:''
+        frozenAssets: '',
+        currentAssets: '',
       },
       lazyValueForm: {},
       valueForm: {
@@ -323,7 +334,7 @@ export default {
         integral: '',
         byAddType: 3,
         currentAssets: '',
-        frozenAssets: ''
+        frozenAssets: '',
 
       },
       rules: {
@@ -349,6 +360,11 @@ export default {
       recordList: [],
     }
   },
+  watch: {
+    drawer() {
+      if (this.drawer) this.lazyValueForm = { ...this.valueForm }
+    },
+  },
   created() {
     this.getUserList()
     if (this.$route.query.item) {
@@ -365,18 +381,13 @@ export default {
   activated() {
     this.pageNum = 1
   },
-  watch: {
-    drawer() {
-      if (this.drawer) this.lazyValueForm = { ...this.valueForm }
-    },
-  },
   methods: {
     // 输入能量值和水滴 取绝对值
     formatNumber(number) {
       return Math.abs(number).toString().substring(0, 10)
     },
     // 已释放资产和冻结资产
-    formatter(value){
+    formatter(value) {
       value = Math.max(0, +value)
       return value.toFixed(4)
     },
@@ -390,7 +401,7 @@ export default {
             pageSize: 20,
           }),
         )
-        .then(res => {
+        .then((res) => {
           if (res.data.head.status !== 0) return Promise.reject(res)
           const data = res.data.body
           this.recordList = this.pageNum === 1 ? data.resultList : [...this.recordList, ...data.resultList]
@@ -409,7 +420,7 @@ export default {
       const con = {
         userId: data.id,
         currentAssets: this.formatter(data.currentAssets),
-        frozenAssets: this.formatter(data.frozenAssets)
+        frozenAssets: this.formatter(data.frozenAssets),
       }
       const _this = this
       const jsonParam = _this.GLOBAL.paramJson(con)
@@ -425,9 +436,7 @@ export default {
             type: 'warning',
           })
         }
-      }).catch(err => {
-        console.log(err)
-      })
+      }).catch((err) => {})
     },
     getUserList() {
       const con = {
@@ -452,23 +461,23 @@ export default {
       const _this = this
       _this.$refs[formName].validate((valid) => {
         if (valid) {
-          let recommender = this.ruleForm.recommender == this.ruleForm.recommenderName ? '0' : this.ruleForm.recommender
+          const recommender = this.ruleForm.recommender == this.ruleForm.recommenderName ? '0' : this.ruleForm.recommender
           let valueForm = {}
           // 能量值和水滴
           if (this.valueForm.bys || this.valueForm.integral) {
-            const sureMinus = this.valueForm.byAddType === 6
+            const sureMinus = [5, 6].includes(this.valueForm.byAddType)
             valueForm = {
-              bys: sureMinus && this.selectBys==0 ? -this.valueForm.bys : this.valueForm.bys,
-              integral: sureMinus && this.selectIntegral==0 ? -this.valueForm.integral : this.valueForm.integral,
+              bys: sureMinus && this.selectBys == 0 ? -this.valueForm.bys : this.valueForm.bys,
+              integral: sureMinus && this.selectIntegral == 0 ? -this.valueForm.integral : this.valueForm.integral,
               byAddType: this.valueForm.byAddType,
             }
           }
           // 已释放资产和冻结资产
-          let con = {
-            recommender: recommender,
+          const con = {
+            recommender,
             ...valueForm,
-            frozenAssets:_this.ruleForm.frozenAssets,
-            currentAssets:_this.ruleForm.currentAssets
+            frozenAssets: _this.ruleForm.frozenAssets,
+            currentAssets: _this.ruleForm.currentAssets,
           }
           let encryPwd = ''
           if (_this.editFlag) {
@@ -492,9 +501,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch(err => {
-              console.log(err)
-            })
+            }).catch((err) => {})
           } else {
             const jsonParam = _this.GLOBAL.paramJson(con)
             _this.$axios.post(_this.Api.insertUser, jsonParam).then((res) => {
@@ -511,9 +518,7 @@ export default {
                   type: 'warning',
                 })
               }
-            }).catch(err => {
-              console.log(err)
-            })
+            }).catch((err) => {})
           }
         }
       })
@@ -540,11 +545,12 @@ export default {
         this.drawer2 = false
       } else {
         this.drawer = false
-        this.drawer2= false
+        this.drawer2 = false
       }
     },
   },
 }
 </script>
+
 <style lang="scss" scoped>
 </style>

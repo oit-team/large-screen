@@ -1,11 +1,11 @@
-//封装加解密方法
-import CryptoJS from "crypto-js";
+// 封装加解密方法
+import CryptoJS from 'crypto-js'
 /**
-  * 
+  *
   * 第一个参数word是待加密或者解密的字符串；
   * 第二个参数keyStr是aes加密需要用到的16位字符串的key,keyStr 的长度要不小于14位，否则解密时会显示空白；
-  * 
-  * 如果想对一个js对象加密，需要先把该对象转成json字符串。 
+  *
+  * 如果想对一个js对象加密，需要先把该对象转成json字符串。
   */
 export default {
   // // 加密
@@ -30,28 +30,27 @@ export default {
   //   return CryptoJS.enc.Utf8.stringify(decrypt).toString();
   // }
 
-
   // 加密
   encrypt(word, keyStr) {
-    keyStr = keyStr ? keyStr : "F7FA3CB95EFDB120";
-    let key = CryptoJS.enc.Utf8.parse(keyStr);
-    let srcs = CryptoJS.enc.Utf8.parse(word);
-    let encrypted = CryptoJS.AES.encrypt(srcs, key, {
+    keyStr = keyStr || 'F7FA3CB95EFDB120'
+    const key = CryptoJS.enc.Utf8.parse(keyStr)
+    const srcs = CryptoJS.enc.Utf8.parse(word)
+    const encrypted = CryptoJS.AES.encrypt(srcs, key, {
       mode: CryptoJS.mode.ECB,
-      padding: CryptoJS.pad.Pkcs7
-    });
-    return encrypted.toString();
+      padding: CryptoJS.pad.Pkcs7,
+    })
+    return encrypted.toString()
   },
   // 解密
   decrypt(word, keyStr) {
-    keyStr = keyStr ? keyStr : "F7FA3CB95EFDB120";
-    var key = CryptoJS.enc.Utf8.parse(keyStr);
-    var decrypt = CryptoJS.AES.decrypt(word, key, {
+    keyStr = keyStr || 'F7FA3CB95EFDB120'
+    const key = CryptoJS.enc.Utf8.parse(keyStr)
+    const decrypt = CryptoJS.AES.decrypt(word, key, {
       mode: CryptoJS.mode.ECB,
-      padding: CryptoJS.pad.Pkcs7
-    });
-    return CryptoJS.enc.Utf8.stringify(decrypt).toString();
-  }
+      padding: CryptoJS.pad.Pkcs7,
+    })
+    return CryptoJS.enc.Utf8.stringify(decrypt).toString()
+  },
 
   // let encJson = cryptoJS.AES.encrypt(JSON.stringify(newUserInfo), 'aes').toString();
   // //对加密数据进行base64处理, 原理：就是先将字符串转换为utf8字符数组，再转换为base64数据
@@ -62,6 +61,4 @@ export default {
   // //解密数据
   // let decJson = cryptoJS.AES.decrypt(decData, 'aes').toString(cryptoJS.enc.Utf8);
 
-
-
-};
+}

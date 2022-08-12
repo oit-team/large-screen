@@ -1,24 +1,22 @@
 <template>
   <div id="customerList" class="pageCommonStyle" style="height:100%">
-    <el-tabs v-model="activeName" @tab-click="handleClick" style="height:100%;display:flex;flex-direction:column">
-      <el-tab-pane label="购物订单" name="ShoppingOrder" id="shoppingOrder" style="height:100%">
-        <vc-shoppingOrder></vc-shoppingOrder>
+    <el-tabs v-model="activeName" style="height:100%;display:flex;flex-direction:column" @tab-click="handleClick">
+      <el-tab-pane id="shoppingOrder" label="购物订单" name="ShoppingOrder" style="height:100%">
+        <VcShoppingOrder></VcShoppingOrder>
       </el-tab-pane>
       <el-tab-pane label="竞拍订单" name="AuctionOrder" style="height:100%">
-        <vc-auctionOrder></vc-auctionOrder>
+        <VcAuctionOrder></VcAuctionOrder>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import VcSearch from '../../components/basic/CommonSearch'
 import VcShoppingOrder from './ShoppingOrder'
 import VcAuctionOrder from './AuctionOrder'
 
 export default {
   components: {
-    VcSearch,
     VcShoppingOrder,
     VcAuctionOrder,
   },
@@ -29,15 +27,15 @@ export default {
       activeName: 'ShoppingOrder',
     }
   },
-  created() {
+  computed: {
   },
-  computed:{
+  watch: {},
+  created() {
   },
   mounted() {
   },
   activated() {
   },
-  watch: {},
   methods: {
     handleClick(val) {
     },

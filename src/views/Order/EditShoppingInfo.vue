@@ -1,26 +1,39 @@
 <template>
-  <div id="addRole" class="pageCommonStyle" >
-    <el-page-header @back="goBack" :content="title"></el-page-header>
+  <div id="addRole" class="pageCommonStyle">
+    <el-page-header :content="title" @back="goBack"></el-page-header>
     <el-divider></el-divider>
     <div class="content">
       <el-descriptions>
-        <el-descriptions-item label="用户名称">{{ruleForm.userName}}</el-descriptions-item>
-        <el-descriptions-item label="用户昵称">{{ruleForm.nickName}}</el-descriptions-item>
-        <el-descriptions-item label="订单编号">{{ruleForm.orderCode}}</el-descriptions-item>
-        <el-descriptions-item label="商品数量">{{ruleForm.goodsNum}}</el-descriptions-item>
-        <el-descriptions-item label="订单金额">{{ruleForm.totalAmount}}</el-descriptions-item>
-        <el-descriptions-item label="创建时间">{{ruleForm.createTime}}</el-descriptions-item>
-        <el-descriptions-item label="支付时间">{{ruleForm.paymentTime}}</el-descriptions-item>
+        <el-descriptions-item label="用户名称">
+          {{ ruleForm.userName }}
+        </el-descriptions-item>
+        <el-descriptions-item label="用户昵称">
+          {{ ruleForm.nickName }}
+        </el-descriptions-item>
+        <el-descriptions-item label="订单编号">
+          {{ ruleForm.orderCode }}
+        </el-descriptions-item>
+        <el-descriptions-item label="商品数量">
+          {{ ruleForm.goodsNum }}
+        </el-descriptions-item>
+        <el-descriptions-item label="订单金额">
+          {{ ruleForm.totalAmount }}
+        </el-descriptions-item>
+        <el-descriptions-item label="创建时间">
+          {{ ruleForm.createTime }}
+        </el-descriptions-item>
+        <el-descriptions-item label="支付时间">
+          {{ ruleForm.paymentTime }}
+        </el-descriptions-item>
         <el-descriptions-item label="订单状态">
           <span v-if="ruleForm.state == 0">所有</span>
           <span v-if="ruleForm.state == 1">待付款</span>
           <span v-if="ruleForm.state == 2">待收货</span>
           <span v-if="ruleForm.state == 3">已完成</span>
         </el-descriptions-item>
-        
       </el-descriptions>
       <div class="InfoContent">
-  <!--      <el-collapse v-model="activeNames" @change="handleChange">
+        <!--      <el-collapse v-model="activeNames" @change="handleChange">
           <el-collapse-item v-for="(item,index) in ruleForm.orderDetailed" :title="item.goodsName" :name="index">
             <div class="itemInfo">
               <div class="imgBox">
@@ -46,7 +59,7 @@
             </div>
           </el-collapse-item>
         </el-collapse> -->
-        <div class="itemBox" v-for="(item,index) in ruleForm.orderDetailed">
+        <div v-for="(item, index) in ruleForm.orderDetailed" class="itemBox">
           <!-- <div class="itemTitle">{{item.goodsName}}</div> -->
           <div class="itemInfo">
             <div class="imgBox">
@@ -55,19 +68,20 @@
                   v-if="item.resUrl"
                   style="width: 100px; height: 100px"
                   fit="scale-down"
-                  :src="item.resUrl"></el-image>
-                <span v-else='item.resUrl' style="color:#BFBFBF">暂无图片</span>
+                  :src="item.resUrl"
+                ></el-image>
+                <span v-else="item.resUrl" style="color:#BFBFBF">暂无图片</span>
               </div>
               <div class="right">
-                <span>{{item.goodsName}}</span>
-                <span>{{item.goodsCode}}</span>
+                <span>{{ item.goodsName }}</span>
+                <span>{{ item.goodsCode }}</span>
               </div>
             </div>
             <div>
-              <span>商品数量:{{item.goodsNum}}</span>
+              <span>商品数量:{{ item.goodsNum }}</span>
             </div>
             <div>
-              <span>付款金额:{{item.paymentNum}}</span>
+              <span>付款金额:{{ item.paymentNum }}</span>
             </div>
           </div>
         </div>
@@ -79,23 +93,23 @@
 <script>
 import CryptoJS from '../../assets/js/CryptoJS'
 export default {
-  name: 'addUser',
+  name: 'AddUser',
   props: {},
   data() {
     return {
       stateOptions: [
         {
           value: 0,
-          label: '所有'
-        },{
+          label: '所有',
+        }, {
           value: 1,
-          label: '待付款'
-        },{
+          label: '待付款',
+        }, {
           value: 2,
-          label: '待收货'
-        },{
+          label: '待收货',
+        }, {
           value: 3,
-          label: '已完成'
+          label: '已完成',
         },
       ],
       title: '购物订单详情',
@@ -113,6 +127,7 @@ export default {
       },
     }
   },
+  watch: {},
   created() {
     if (this.$route.query.item) {
       // this.ruleForm = this.$route.query.item
@@ -121,7 +136,6 @@ export default {
   },
   mounted() {},
   activated() {},
-  watch: {},
   methods: {
     handleChange(val) {
     },
@@ -146,7 +160,7 @@ export default {
             type: 'warning',
           })
         }
-      }).catch(err => {
+      }).catch((err) => {
         console.log(err)
       })
     },
@@ -156,6 +170,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
   ::v-deep .el-collapse-item__header{
     padding-left:10px;

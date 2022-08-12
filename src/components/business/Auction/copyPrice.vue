@@ -7,52 +7,60 @@
       :modal-append-to-body="true"
       :before-close="handleClose"
       :visible="goodsDrawer"
-      :direction="direction">
-        <div class="operateBtn">
-          <el-button size="small" @click='CopyPrice'  icon="el-icon-plus" type="primary">复制价格</el-button>
-        </div>
-        <el-divider></el-divider>
-        <el-table
-          v-loading="loading"
-          element-loading-text="拼命加载中..."
-          :data="tableData"
-          :row-key="getRowKey"
-          border
-          height="100%"
-          ref="elTable">
-          <el-table-column label="选择" align="center" width="65">
-            <template scope="scope">
-              <el-radio v-model="radio"
+      :direction="direction"
+    >
+      <div class="operateBtn">
+        <el-button size="small" icon="el-icon-plus" type="primary" @click="CopyPrice">
+          复制价格
+        </el-button>
+      </div>
+      <el-divider></el-divider>
+      <el-table
+        ref="elTable"
+        v-loading="loading"
+        element-loading-text="拼命加载中..."
+        :data="tableData"
+        :row-key="getRowKey"
+        border
+        style="width: 100%"
+      >
+        </el-table-column>
+        <el-table-column label="选择" align="center" width="65">
+          <template scope="scope">
+            <el-radio
+              v-model="radio"
               :label="scope.row.goodsCode"
-              @change.native="getCurrentRow(scope.row)">
-              {{""}}
-              </el-radio>
-            </template>
-          </el-table-column>
-          <el-table-column
-            show-overflow-tooltip
-            sortable
-            v-for="(item,index) in headTitArrNew"
-            :key="index"
-            :min-width="GLOBAL.minCellWidth"
-            :prop="item.fieldKey"
-            :label="item.fieldName">
-            <template slot-scope="scope">
-              <span v-if='item.fieldKey=="status"'>
-                <span style="color: #FF0000;" v-if="scope.row.status === 0">未上架</span>
-                <span style="color: #42B983;" v-else>已上架</span>
-              </span>
-              <span class="imgBox" v-else-if='item.fieldKey=="resUrl"'>
-                <img style="display:block;margin:0 auto;"  v-if='scope.row.mainImage&&scope.row.mainImage.length>0&&scope.row.mainImage[0].resUrl' :src="scope.row.mainImage[0].resUrl" alt="">
-                <img style="display:block;margin:0 auto;"  v-else-if='scope.row.resUrl' :src="scope.row.resUrl" alt="">
-                <span v-else>无</span>
-              </span>
-              <div v-else>
-                <span>{{scope.row[(item.fieldKey)]}}</span>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
+              @change.native="getCurrentRow(scope.row)"
+            >
+              {{ "" }}
+            </el-radio>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-for="(item, index) in headTitArrNew"
+          :key="index"
+          show-overflow-tooltip
+          sortable
+          :min-width="GLOBAL.minCellWidth"
+          :prop="item.fieldKey"
+          :label="item.fieldName"
+        >
+          <template slot-scope="scope">
+            <span v-if="item.fieldKey == &quot;status&quot;">
+              <span v-if="scope.row.status === 0" style="color: #FF0000;">未上架</span>
+              <span v-else style="color: #42B983;">已上架</span>
+            </span>
+            <span v-else-if="item.fieldKey == &quot;resUrl&quot;" class="imgBox">
+              <img v-if="scope.row.mainImage && scope.row.mainImage.length > 0 && scope.row.mainImage[0].resUrl" style="display:block;margin:0 auto;" :src="scope.row.mainImage[0].resUrl" alt="">
+              <img v-else-if="scope.row.resUrl" style="display:block;margin:0 auto;" :src="scope.row.resUrl" alt="">
+              <span v-else>无</span>
+            </span>
+            <div v-else>
+              <span>{{ scope.row[(item.fieldKey)] }}</span>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-drawer>
   </div>
 </template>
@@ -61,22 +69,22 @@
 import VcSearch from '../../basic/CommonSearch'
 
 export default {
-  name: 'copyPrice',
+  name: 'CopyPrice',
   components: {
     VcSearch,
   },
   data() {
     return {
-      currGoods:'',
-      radio:'',
-      goodsDrawer:false,
+      currGoods: '',
+      radio: '',
+      goodsDrawer: false,
       direction: 'rtl',
       loading: true,
       tableData: [],
       headTitArr: [],
     }
   },
-  computed:{
+  computed: {
     headTitArrNew() {
       return this.headTitArr.filter(item => !item.noTableShow)
     },
@@ -115,14 +123,14 @@ export default {
     changeLoad(val) {
       this.loading = val
     },
-    handleOpen(res,data) {
+    handleOpen(res, data) {
       this.goodsDrawer = true
-      const goodsList = data.filter(item => item.goodsCode != res.goodsCode&&item.price instanceof Array)
-      this.tableData = goodsList;
-      this.loading = false;
+      const goodsList = data.filter(item => item.goodsCode != res.goodsCode && Array.isArray(item.price))
+      this.tableData = goodsList
+      this.loading = false
       this.currGoods = res
     },
-    CopyPrice(){
+    CopyPrice() {
       const radioGoods = this.tableData.find(item => item.goodsCode == this.radio)
       this.currGoods.price = radioGoods.price
       this.currGoods.startingPrice = radioGoods.startingPrice
@@ -134,7 +142,7 @@ export default {
       this.handleClose()
     },
     getCurrentRow(row) {
-    }
+    },
   },
 }
 </script>

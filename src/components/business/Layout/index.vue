@@ -1,9 +1,9 @@
 <template>
   <el-container class="page-container" direction="vertical">
-    <vc-header :menuList='menuList' :activeIndex='activeIndex'/>
+    <VcHeader :menu-list="menuList" :active-index="activeIndex" />
     <el-container class="overflow-hidden">
-      <vc-aside/>
-      <vc-main id="main" class="scrollbar"/>
+      <VcAside />
+      <VcMain id="main" class="scrollbar" />
     </el-container>
   </el-container>
 </template>
@@ -54,7 +54,6 @@ export default {
           }
         }
       })
-
     },
     // 本地存储菜单路径，用户判断用户是否有权限进入
     // 存储各个页面按钮权限

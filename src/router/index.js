@@ -195,12 +195,12 @@ const routes = [
       {
         path: 'withdraw/list',
         name: 'WithdrawList',
-        component: () => import('@/views/Withdraw/List')
+        component: () => import('@/views/Withdraw/List'),
       },
       {
         path: 'coupons/list',
         name: 'CouponsList',
-        component: () => import('@/views/Coupons/List')
+        component: () => import('@/views/Coupons/List'),
       },
     ],
   },

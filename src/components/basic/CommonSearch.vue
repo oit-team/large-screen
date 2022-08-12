@@ -4,77 +4,96 @@
       <div class="searchBox">
         <div class="itemBox">
           <div v-for="(item, index) in headArr" :key="index">
-            <div class="searchItem" v-if="!item.noSearchShow">
-              <div v-if="item.fieldType=='文本'">
-                <div v-if="item.fieldType=='文本'" class="searchTit">{{item.fieldName}}</div>
+            <div v-if="!item.noSearchShow" class="searchItem">
+              <div v-if="item.fieldType == '文本'">
+                <div v-if="item.fieldType == '文本'" class="searchTit">
+                  {{ item.fieldName }}
+                </div>
                 <el-input
-                  v-if="item.fieldType=='文本'"
-                  placeholder="请输入搜索内容"
+                  v-if="item.fieldType == '文本'"
                   v-model="item.searchValKey"
-                  prefix-icon='el-icon-search'
+                  placeholder="请输入搜索内容"
+                  prefix-icon="el-icon-search"
+                  clearable
                   @keyup.enter.native="clickSearch()"
-                  clearable>
+                >
                 </el-input>
               </div>
-              <div v-if="item.fieldType=='值列'">
-                <div v-if="item.fieldType=='值列'" class="searchTit">{{item.fieldName}}</div>
-                <el-select v-if="item.fieldType=='值列'"
-                  clearable
+              <div v-if="item.fieldType == '值列'">
+                <div v-if="item.fieldType == '值列'" class="searchTit">
+                  {{ item.fieldName }}
+                </div>
+                <el-select
+                  v-if="item.fieldType == '值列'"
                   v-model="item.searchValKey"
+                  clearable
                   placeholder="请选择"
-                  @keydown.enter.native="clickSearch()">
+                  @keydown.enter.native="clickSearch()"
+                >
                   <el-option
                     v-for="i in item.fieldAttr"
                     :key="i.optionKey"
                     :label="i.optionValue"
-                    :value="i.optionKey">
+                    :value="i.optionKey"
+                  >
                   </el-option>
                 </el-select>
               </div>
-              <div v-if="item.fieldType=='日期'">
-                <div v-if="item.fieldType=='日期'" class="searchTit">{{item.fieldName}}</div>
+              <div v-if="item.fieldType == '日期'">
+                <div v-if="item.fieldType == '日期'" class="searchTit">
+                  {{ item.fieldName }}
+                </div>
                 <el-date-picker
-                  v-if="item.fieldType=='日期'"
+                  v-if="item.fieldType == '日期'"
                   v-model="item.searchValKey"
                   type="daterange"
                   value-format="yyyy-MM-dd"
                   range-separator="-"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
-                  @change="onChange">
+                  @change="onChange"
+                >
                 </el-date-picker>
               </div>
-              <div v-if="item.fieldType=='时间'">
-                <div v-if="item.fieldType=='时间'" class="searchTit">{{item.fieldName}}</div>
+              <div v-if="item.fieldType == '时间'">
+                <div v-if="item.fieldType == '时间'" class="searchTit">
+                  {{ item.fieldName }}
+                </div>
                 <el-time-picker
-                  v-if="item.fieldType=='时间'"
-                  is-range
+                  v-if="item.fieldType == '时间'"
                   v-model="item.searchValKey"
+                  is-range
                   value-format="HH:mm"
                   range-separator="-"
                   start-placeholder="开始时间"
                   end-placeholder="结束时间"
                   placeholder="选择时间范围"
-                  >
+                >
                 </el-time-picker>
               </div>
-              <div v-if="item.fieldType=='日期时间'">
-                <div v-if="item.fieldType=='日期时间'" class="searchTit">{{item.fieldName}}</div>
+              <div v-if="item.fieldType == '日期时间'">
+                <div v-if="item.fieldType == '日期时间'" class="searchTit">
+                  {{ item.fieldName }}
+                </div>
                 <el-date-picker
-                  v-if="item.fieldType=='日期时间'"
-                  type="datetime"
+                  v-if="item.fieldType == '日期时间'"
                   v-model="item.searchValKey"
+                  type="datetime"
                   value-format="yyyy-MM-dd HH:mm:ss"
                   placeholder="选择日期时间"
-                  >
+                >
                 </el-date-picker>
               </div>
             </div>
           </div>
         </div>
         <div class="searchBtnBox">
-          <el-button size="small" icon="el-icon-refresh" type="primary" @click="clickSearch()">查询</el-button>
-          <el-button size="small" icon="el-icon-close" type="info" @click="clearSearch()">清空</el-button>
+          <el-button size="small" icon="el-icon-refresh" type="primary" @click="clickSearch()">
+            查询
+          </el-button>
+          <el-button size="small" icon="el-icon-close" type="info" @click="clearSearch()">
+            清空
+          </el-button>
         </div>
         <div v-if="foldFlag" class="moreBtn" @click="clickMore">
           <i v-if="foldFlag" class="el-icon-caret-bottom"></i>
@@ -171,7 +190,7 @@ export default {
     },
     searchList(PageNum) {
       if (PageNum) {
-        this.pMsg.forEach(el => {
+        this.pMsg.forEach((el) => {
           if (el.key === 'pageNum') {
             el.value = PageNum
           }
@@ -179,7 +198,7 @@ export default {
       }
       this.$emit('changeLoading', true)
       let con1 = ''
-      this.headArr.forEach(el => {
+      this.headArr.forEach((el) => {
         if (el.searchValKey) {
           if (el.fieldType === '日期') {
             con1 += `"start${el.fieldKey}":"${el.searchValKey[0]}","end${el.fieldKey}":"${el.searchValKey[1]}",`
@@ -200,7 +219,7 @@ export default {
           con2 += `"${this.pMsg[i].key}":"${this.pMsg[i].value}",`
         }
       }
-      for (let i in this.OtherData) {
+      for (const i in this.OtherData) {
         con2 += `"${i}":"${this.OtherData[i]}",`
       }
       const con4 = null
@@ -222,13 +241,13 @@ export default {
         _this.$axios.post(_this.curRequestUrl, jsonParam).then((res) => {
           _this.$emit('changeLoading', false)
           if (res.data.head.status === 0) {
-            if(res.data.body.result){
+            if (res.data.body.result) {
               _this.tableData = res.data.body.result
-            } else if(res.data.body.resultList) {
+            } else if (res.data.body.resultList) {
               _this.tableData = res.data.body.resultList
-            } else if(res.data.body.usersList) {
+            } else if (res.data.body.usersList) {
               _this.tableData = res.data.body.usersList
-            } else if(res.data.body.allResultList) {
+            } else if (res.data.body.allResultList) {
               _this.tableData = res.data.body.allResultList
             }
             if (_this.tableData.length === 0) {
@@ -238,7 +257,7 @@ export default {
                 type: 'success',
               })
             }
-            if(res.data.body.totalCount) {
+            if (res.data.body.totalCount) {
               _this.total = res.data.body.totalCount
             } else if (res.data.body.count) {
               _this.total = res.data.body.count
@@ -251,15 +270,15 @@ export default {
     clearSearch(curCmd) {
       const PageNum = curCmd || 1
       this.$emit('changeLoading', true)
-      this.pMsg.forEach(el => {
+      this.pMsg.forEach((el) => {
         if (el.key === 'pageNum') {
           el.value = PageNum
         }
       })
       let con1 = ''
-      this.headArr.forEach(el => {
+      this.headArr.forEach((el) => {
         if (el.searchValKey) {
-          this.$set(el,'searchValKey','')
+          this.$set(el, 'searchValKey', '')
           if (el.fieldType === '日期') {
             con1 += `"start${el.fieldKey}":"${el.searchValKey[0]}","end${el.fieldKey}":"${el.searchValKey[1]}",`
           } else {
@@ -296,13 +315,13 @@ export default {
       _this.$axios.post(_this.curRequestUrl, jsonParam).then((res) => {
         _this.$emit('changeLoading', false)
         if (res.data.head.status === 0) {
-          if(res.data.body.result){
+          if (res.data.body.result) {
             _this.tableData = res.data.body.result
-          } else if(res.data.body.resultList) {
+          } else if (res.data.body.resultList) {
             _this.tableData = res.data.body.resultList
-          } else if(res.data.body.usersList) {
+          } else if (res.data.body.usersList) {
             _this.tableData = res.data.body.usersList
-          } else if(res.data.body.allResultList) {
+          } else if (res.data.body.allResultList) {
             _this.tableData = res.data.body.allResultList
           }
           if (_this.tableData.length === 0) {
@@ -312,7 +331,7 @@ export default {
               type: 'success',
             })
           }
-          if(res.data.body.totalCount) {
+          if (res.data.body.totalCount) {
             _this.total = res.data.body.totalCount
           } else if (res.data.body.count) {
             _this.total = res.data.body.count
@@ -324,6 +343,7 @@ export default {
   },
 }
 </script>
+
 <style scoped lang="scss">
 .common-search{
     position: relative;

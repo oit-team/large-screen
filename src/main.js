@@ -2,13 +2,13 @@ import Vue from 'vue'
 import axios from 'axios'
 import VueRouter from 'vue-router'
 import md5 from 'md5'
+import moment from 'moment'
+import { TablePage } from '@oit/element-ui-extend'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import globalFun from './assets/js/globalFun'
 import Api from './assets/js/Api'
-import moment from 'moment'
-import { TablePage } from '@oit/element-ui-extend'
 import './components/registry'
 import './plugins'
 import './styles/index.scss'
@@ -25,7 +25,7 @@ Vue.use(TablePage, {
     if (sessionStorage.headTitString) {
       return JSON.parse(sessionStorage.headTitString)
     }
-  }
+  },
 })
 Vue.config.productionTip = false
 // 以下6行代码是为了解决报错：重复跳转当前路由--NavigationDuplicated: Navigating to current location ("/xxx") is not allowed
@@ -73,86 +73,85 @@ router.beforeEach((to, from, next) => {
 })
 // 请求拦截器
 axios.interceptors.request.use(
-    config => {
-        if (!config.headers['userId']) {
-            config.headers['userId'] = sessionStorage.userId;
-        }
-        if (!config.headers['token']) {
-            config.headers['token'] = sessionStorage.accessToken;
-        }
-        return config;
-    },
-    function(error) {
-        // 对请求错误做些什么
-        return Promise.reject(error);
+  (config) => {
+    if (!config.headers.userId) {
+      config.headers.userId = sessionStorage.userId
     }
-);
+    if (!config.headers.token) {
+      config.headers.token = sessionStorage.accessToken
+    }
+    return config
+  },
+  (error) => {
+    // 对请求错误做些什么
+    return Promise.reject(error)
+  },
+)
 
 // 响应拦截器
 axios.interceptors.response.use((response) => {
-    // 处理请求200的操作，默认不需要操作，可直接返回 return 返回正确信息调用接口时可以直接promise then 取到正确信息
-    // console.log("response===",response)
-    // if (response.data.head.status !== 0) return Promise.reject(response)
-    return response;
+  // 处理请求200的操作，默认不需要操作，可直接返回 return 返回正确信息调用接口时可以直接promise then 取到正确信息
+  // console.log("response===",response)
+  // if (response.data.head.status !== 0) return Promise.reject(response)
+  return response
 }, (error) => {
-    if (!error.response) {
-        // console.log('网络超时，或者请求响应不成功，无返回状态')
-        /**
+  if (!error.response) {
+    // console.log('网络超时，或者请求响应不成功，无返回状态')
+    /**
          * MODIFY 网络错误应当reject而不是resolve
          * before: Promise.resolve(error)
          * after: Promise.reject(error)
          */
-        return Promise.reject(error);
-    }
-    // 处理状态码操作
-    switch (error.response.status) {
-        case 401:
-            // console.log('token缺失，需要重新登录');
-            if (error.response.data && error.response.data.code == '3001') {
-                Vue.prototype.$message({
-                    message: '版本有升级,请重新登录',
-                    type: 'warning'
-                });
-                sessionStorage.clear();
-                localStorage.clear();
-                router.replace({
-                    path: '/login'
-                })
-
-            } else {
-                //  未授权
-                Vue.prototype.$message({
-                    message: '发现未认证的请求，拒绝访问',
-                    type: 'warning'
-                });
-            }
-            return Promise.reject(error);
-        case 403: // token过期接口直接返回403
-            // console.log('token过期，需要重新登录');
-            Vue.prototype.$message({
-                message: '会话超时,已注销,请重新登录',
-                type: 'warning'
-            });
-            sessionStorage.clear();
-            localStorage.clear();
-            router.replace({
-                path: '/login'
-            })
-            return Promise.reject(error);
-        case 400:
-            // console.log('--------400------')
-            break;
-        case 404:
-            // console.log('------404-----')
-            break;
-        case 500:
-            // console.log('--------500-------');
-            break;
-        default:
-            return Promise.reject(error);
-    }
-    // return error 返回错误
-  return Promise.reject(error);
+    return Promise.reject(error)
+  }
+  // 处理状态码操作
+  switch (error.response.status) {
+    case 401:
+      // console.log('token缺失，需要重新登录');
+      if (error.response.data && error.response.data.code == '3001') {
+        Vue.prototype.$message({
+          message: '版本有升级,请重新登录',
+          type: 'warning',
+        })
+        sessionStorage.clear()
+        localStorage.clear()
+        router.replace({
+          path: '/login',
+        })
+      } else {
+        //  未授权
+        Vue.prototype.$message({
+          message: '发现未认证的请求，拒绝访问',
+          type: 'warning',
+        })
+      }
+      return Promise.reject(error)
+    case 403: // token过期接口直接返回403
+      // console.log('token过期，需要重新登录');
+      Vue.prototype.$message({
+        message: '会话超时,已注销,请重新登录',
+        type: 'warning',
+      })
+      sessionStorage.clear()
+      localStorage.clear()
+      router.replace({
+        path: '/login',
+      })
+      return Promise.reject(error)
+    case 400:
+      // console.log('--------400------')
+      break
+    case 404:
+      // console.log('------404-----')
+      break
+    case 500:
+      // console.log('--------500-------');
+      break
+    default:
+      return Promise.reject(error)
+  }
+  // return error 返回错误
+  return Promise.reject(error)
 })
 new Vue({
   router,

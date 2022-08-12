@@ -5,8 +5,8 @@ const getGoodsList = `${api}/goods/goods/getGoodsList`
 const getGoodsCategory = `${api}/goods/goods/getGoodsCategory`
 const addGoodsInfo = `${api}/goods/goods/addGoodsInfo`
 const updateGoodsInfo = `${api}/goods/goods/updateGoodsInfo`
-const updateGoodsStatusById = `${api}/goods/goods/updateGoodsStatusById` //商品上下架
-const deleteGoodsInfo = `${api}/goods/goods/deleteGoodsInfo` //删除商品
+const updateGoodsStatusById = `${api}/goods/goods/updateGoodsStatusById` // 商品上下架
+const deleteGoodsInfo = `${api}/goods/goods/deleteGoodsInfo` // 删除商品
 const uploadFile = `${api}/system/file/uploadFile`
 const getTreeMenuList = `${api}/system/menu/getTreeMenuList`
 const getConferenceHall = `${api}/order/conferenceHall/getConferenceHall`// 查询拍卖场次信息
@@ -40,23 +40,23 @@ const updateStatus = `${api}/system/user/updateStatus`// 修改用户状态
 const updateUserById = `${api}/system/user/updateUserById`// 修改用户信息
 const getUserById = `${api}/system/user/getUserById`// 修改用户信息
 
-const getRoleList =  `${api}/system/role/getRoleList`// 获取角色列表
-const deleteCharacters =  `${api}/system/role/delRoleById`// 删除角色
-const getCharacterTree =  `${api}/system/menu/getTreeMenuList`// 获取菜单树列表
-const addCharacter =  `${api}/system/role/insertRole`// 获取菜单树列表
-const updateCharacter =  `${api}/system/role/updateRoleById`// 获取菜单树列表
-const getRoleUserList =  `${api}/system/role/getRoleUserList`// 获取角色绑定用户
-const addUserAndRole =  `${api}/system/user/addUserAndRole`// 用户角色绑定
+const getRoleList = `${api}/system/role/getRoleList`// 获取角色列表
+const deleteCharacters = `${api}/system/role/delRoleById`// 删除角色
+const getCharacterTree = `${api}/system/menu/getTreeMenuList`// 获取菜单树列表
+const addCharacter = `${api}/system/role/insertRole`// 获取菜单树列表
+const updateCharacter = `${api}/system/role/updateRoleById`// 获取菜单树列表
+const getRoleUserList = `${api}/system/role/getRoleUserList`// 获取角色绑定用户
+const addUserAndRole = `${api}/system/user/addUserAndRole`// 用户角色绑定
 
 const getUpdateInfoList = `${api}/system/user/getUpdateInfoList`// 查询日志记录列表
 
-const getDictitemInfoAllMethod =  `${api}/goods/dictitemInfo/dictitemInfoAllMethod`// 查询用户配置资产比例
-const updateDictitemInfoAllMethod =  `${api}/goods/dictitemInfo/dictitemInfoAllMethod`// 修改用户配置资产比例
-const addDictitemInfoAllMethod =  `${api}/goods/dictitemInfo/dictitemInfoAllMethod`// 修改用户配置资产比例
+const getDictitemInfoAllMethod = `${api}/goods/dictitemInfo/dictitemInfoAllMethod`// 查询用户配置资产比例
+const updateDictitemInfoAllMethod = `${api}/goods/dictitemInfo/dictitemInfoAllMethod`// 修改用户配置资产比例
+const addDictitemInfoAllMethod = `${api}/goods/dictitemInfo/dictitemInfoAllMethod`// 修改用户配置资产比例
 
-const getExportShoppingOrder =  `${api}/order/order/getExportShoppingOrder`// 导出购物订单
-const getExportUser =  `${api}/system/user/getExportUser`// 导出用户列表
-const getExportWithdrawRecord =  `${api}/order/withdraw/getExportWithdrawRecord`// 导出提现列表
+const getExportShoppingOrder = `${api}/order/order/getExportShoppingOrder`// 导出购物订单
+const getExportUser = `${api}/system/user/getExportUser`// 导出用户列表
+const getExportWithdrawRecord = `${api}/order/withdraw/getExportWithdrawRecord`// 导出提现列表
 const getAllShoppingOrder = `${api}/order/order/getAllShoppingOrder`// 查/order/order/getExportWithdrawRecord询订单列表
 const getAllShoppingOrderDetailed = `${api}/order/order/getAllShoppingOrderDetailed`// 查询订单详情
 const getAllAuction = `${api}/order/auctionOrder/getAllAuction`// 查询竞拍订单列表

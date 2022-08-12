@@ -1,5 +1,5 @@
 <template>
-  <div id="customerList" class="pageCommonStyle" style="height:100%;display: flex;flex-direction: column;">
+  <div id="customerList" class="pageCommonStyle h-full flex flex-col">
     <VcSearch
       ref="child"
       :head-tit-arr="headTitArr"

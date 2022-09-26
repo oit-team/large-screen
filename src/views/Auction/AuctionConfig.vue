@@ -202,7 +202,7 @@
                 label="序号"
                 width="55"
               >
-                <template slot-scope="scope">
+                <template #default="scope">
                   <span>{{ scope.$index + 1 }}</span>
                 </template>
               </el-table-column>
@@ -210,7 +210,7 @@
                 label="平台分润"
                 align="center"
               >
-                <template slot-scope="scope">
+                <template #default="scope">
                   <el-input
                     :ref="`platformRevenue${scope.$index}`"
                     v-model="scope.row.platformRevenue"
@@ -225,7 +225,7 @@
                 label="扣除水滴"
                 align="center"
               >
-                <template slot-scope="scope">
+                <template #default="scope">
                   <el-input
                     :ref="`deductPoints${scope.$index}`"
                     v-model="scope.row.deductPoints"
@@ -240,7 +240,7 @@
                 label="应付定金"
                 align="center"
               >
-                <template slot-scope="scope">
+                <template #default="scope">
                   <el-input
                     :ref="`deposit${scope.$index}`"
                     v-model="scope.row.deposit"
@@ -255,7 +255,7 @@
                 label="个人分润"
                 align="center"
               >
-                <template slot-scope="scope">
+                <template #default="scope">
                   <el-input
                     :ref="`personalIncome${scope.$index}`"
                     v-model="scope.row.personalIncome"
@@ -270,7 +270,7 @@
                 label="竞拍价"
                 align="center"
               >
-                <template slot-scope="scope">
+                <template #default="scope">
                   <el-input
                     :ref="`biddingPriceInput${scope.$index}`"
                     v-model="scope.row.biddingPrice"
@@ -285,7 +285,7 @@
                 label="溢价"
                 align="center"
               >
-                <template slot-scope="scope">
+                <template #default="scope">
                   <el-input
                     :ref="`premiumPrice${scope.$index}`"
                     v-model="scope.row.premiumPrice"

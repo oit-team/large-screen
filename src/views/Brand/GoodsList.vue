@@ -31,7 +31,7 @@
         :prop="item.fieldKey"
         :label="item.fieldName"
       >
-        <template slot-scope="scope">
+        <template #default="scope">
           <span v-if="item.fieldKey == &quot;status&quot;" class="imgBox">
             <span v-if="scope.row.status === 0" style="color: #FF0000;">未上架</span>
             <span v-else style="color: #42B983;">已上架</span>
@@ -50,7 +50,7 @@
         label="操作"
         width="166"
       >
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-tooltip class="item" effect="dark" content="查看" placement="top">
             <el-button
               size="mini"

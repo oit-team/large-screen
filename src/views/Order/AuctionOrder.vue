@@ -33,7 +33,7 @@
         :prop="item.fieldKey"
         :label="item.fieldName"
       >
-        <template v-if="item.fieldKey == 'state'" scope="scopeStatus">
+        <template v-if="item.fieldKey == 'state'" #default="scopeStatus">
           <span>{{ scopeStatus.row.stateName }}</span>
         </template>
       </el-table-column>
@@ -43,7 +43,7 @@
         align="center"
         width="100"
       >
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-tooltip class="item" effect="dark" content="查看" placement="top">
             <el-button
               size="mini"

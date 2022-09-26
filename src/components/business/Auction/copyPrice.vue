@@ -25,7 +25,7 @@
         height="100%"
       >
         <el-table-column label="选择" align="center" width="65">
-          <template scope="scope">
+          <template #default="scope">
             <el-radio
               v-model="radio"
               :label="scope.row.goodsCode"
@@ -44,7 +44,7 @@
           :prop="item.fieldKey"
           :label="item.fieldName"
         >
-          <template slot-scope="scope">
+          <template #default="scope">
             <span v-if="item.fieldKey == &quot;status&quot;">
               <span v-if="scope.row.status === 0" style="color: #FF0000;">未上架</span>
               <span v-else style="color: #42B983;">已上架</span>

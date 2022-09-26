@@ -45,7 +45,7 @@
         label="操作"
         width="128"
       >
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-tooltip v-if="scope.row.menuType !== 2" class="item" effect="dark" content="编辑" placement="top">
             <el-button
               size="mini"

@@ -35,11 +35,11 @@
         :prop="item.fieldKey"
         :label="item.fieldName"
       >
-        <template v-if="item.fieldKey == 'status'" scope="scopeStatus">
+        <template v-if="item.fieldKey == 'status'" #default="scopeStatus">
           <span v-if="scopeStatus.row.status == 1" style="color: red;">禁用</span>
           <span v-else-if="scopeStatus.row.status == 0" style="color: #67C23A;">启用</span>
         </template>
-        <template v-else-if="item.fieldKey === 'sex'" scope="scopeSex">
+        <template v-else-if="item.fieldKey === 'sex'" #default="scopeSex">
           <span v-if="scopeSex.row.sex == 0">男</span>
           <span v-else-if="scopeSex.row.sex == 1">女</span>
           <span v-else-if="scopeSex.row.sex == -1">暂无</span>
@@ -50,7 +50,7 @@
         label="操作"
         width="100"
       >
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-tooltip class="item" effect="dark" content="编辑" placement="top">
             <el-button
               size="mini"

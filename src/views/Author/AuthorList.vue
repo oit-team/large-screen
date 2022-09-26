@@ -37,7 +37,7 @@
         label="操作"
         width="100"
       >
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-tooltip class="item" effect="dark" content="编辑" placement="top">
             <el-button
               size="mini"

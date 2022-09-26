@@ -7,9 +7,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@oit/element-ui-extend": "0.3.2-beta.0",
-    "@oit/utils": "^0.1.0",
-    "@oit/vue-components": "^0.1.0",
+    "@oit/element-ui-extend": "link:./@oit/element-ui-extend",
+    "@oit/utils": "link:./@oit/utils",
+    "@oit/vue-components": "link:./@oit/vue-components",
     "async-validator": "^4.0.7",
     "axios": "^0.26.0",
     "core-js": "^3.6.5",
@@ -28,7 +28,9 @@
   "devDependencies": {
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.17.12",
     "@babel/plugin-proposal-optional-chaining": "^7.17.12",
-    "@oit/eslint-config": "^0.3.2",
+    "@oit/eslint-config": "link:./@oit/eslint-config",
+    "@oit/eslint-config-basic": "link:./@oit/eslint-config-basic",
+    "@oit/eslint-config-vue": "link:./@oit/eslint-config-vue",
     "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
     "@vue/babel-preset-jsx": "^1.2.4",
     "@vue/cli-plugin-babel": "~5.0.8",
@@ -44,6 +46,9 @@
   },
   "eslintConfig": {
     "extends": "@oit",
+    "ignorePatterns": [
+      "@oit"
+    ],
     "rules": {
       "n/handle-callback-err": "off",
       "vue/custom-event-name-casing": "off",

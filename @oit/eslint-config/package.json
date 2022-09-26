@@ -1,0 +1,16 @@
+{
+  "name": "@oit/eslint-config",
+  "version": "0.3.2",
+  "author": "qiuxu <uxuip@outlook.com>",
+  "license": "MIT",
+  "main": "index.js",
+  "peerDependencies": {
+    "eslint": ">=7.4.0"
+  },
+  "dependencies": {
+    "@oit/eslint-config-vue": "0.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.19.0"
+  }
+}

@@ -1,0 +1,31 @@
+.vc-split {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #f2f2f2;
+  user-select: none;
+}
+
+.vc-split__line {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  max-height: 0;
+  margin: 0 -15px;
+  font-size: 20px;
+
+  i {
+    //transform: translateY(-10px);
+    position: relative;
+    top: -10px;
+    cursor: row-resize;
+  }
+}
+
+.vc-split__after {
+  flex: 1;
+}
+
+.vc-split__after, .vc-split__before {
+  overflow: auto;
+}

@@ -1,0 +1,61 @@
+.search-form {
+  @apply relative py-2 mb-2 rounded-lg border;
+}
+.search-form .el-form {
+  @apply flex-1 px-2 grid gap-2;
+  max-height: calc(36px * 3 + 20px);
+  overflow: auto;
+}
+.search-form .el-form.el-form--responsive {
+  @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5;
+}
+.search-form .el-form.el-form--expand {
+  @apply grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4;
+}
+.search-form .el-form-item {
+  @apply mb-0;
+}
+.search-form .el-form-item__content {
+  @apply flex;
+}
+.search-form .el-form-item__label {
+  @apply flex justify-end items-center h-full leading-none;
+  min-width: calc(4em + 10px);
+}
+.search-form .el-input {
+  @apply flex overflow-hidden;
+}
+.search-form .el-input__prefix,
+.search-form .el-input__suffix,
+.search-form i {
+  @apply inline-flex justify-center items-center;
+}
+.search-form .el-range__close-icon {
+  position: absolute;
+  right: 5px;
+}
+.search-form .el-date-editor,
+.search-form .el-select,
+.search-form .el-cascader {
+  @apply flex-1;
+}
+.search-form .search-action {
+  @apply flex justify-center mt-2 whitespace-nowrap;
+}
+.search-form .search-collapse {
+  @apply absolute right-2 bottom-px px-1 border border-t-0 transform translate-y-full cursor-pointer rounded-b-lg bg-white select-none z-10;
+}
+.search-form .el-form-item__label {
+  padding-right: 10px;
+}
+.search-form.search-form--collapsed {
+  @apply flex;
+}
+.search-form.search-form--collapsed .el-form {
+  @apply sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4
+      overflow-hidden;
+  height: 36px;
+}
+.search-form.search-form--collapsed .search-action {
+  @apply mt-0 mr-2;
+}

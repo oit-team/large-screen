@@ -1,11 +1,11 @@
 import { router } from '@oit/legacy'
 import appRouter from '@/router'
+import '@oit/legacy/dist/style.css'
 
 router.beforeEach((to, from, next) => {
-  console.log(to, from, appRouter)
+  console.log('legacy', to, from)
   if (!to.matched.length) {
-    if (appRouter.currentRoute.path !== to.path) appRouter.push(to.path)
-    return
+    if (appRouter.currentRoute.path !== to.path) appRouter.replace('/404')
   }
   next()
 })

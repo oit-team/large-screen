@@ -2,6 +2,7 @@ import path from 'path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue2'
 import Unocss from 'unocss/vite'
+import { presetUno } from 'unocss'
 import Components from 'unplugin-vue-components/vite'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
@@ -13,6 +14,7 @@ import {
 
 const config = defineConfig({
   resolve: {
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
     alias: {
       '@': `${path.resolve(__dirname, 'src')}`,
     },
@@ -24,7 +26,9 @@ const config = defineConfig({
 
   plugins: [
     vue(),
-    Unocss(),
+    Unocss({
+      preset: [presetUno()],
+    }),
     Components({
       resolvers: [
         ElementUiResolver({
@@ -48,6 +52,13 @@ const config = defineConfig({
 
   server: {
     port: 3333,
+    proxy: {
+      '/api': {
+        target: 'http://192.168.9.65:8089',
+        changeOrigin: true,
+        rewrite: path => path.replace('/api', ''),
+      },
+    },
   },
 })
 

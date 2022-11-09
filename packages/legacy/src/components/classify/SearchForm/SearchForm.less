@@ -1,0 +1,92 @@
+@form-item-height: 36px;
+@label-padding-right: 10px;
+
+.search-form {
+  @apply relative py-2 mb-2 rounded-lg border;
+
+  .el-form {
+    @apply
+      flex-1
+      px-2
+      grid
+      gap-2;
+    max-height: calc(@form-item-height * 3 + 20px); // 表单项高度3倍+间距
+    overflow: auto;
+
+    &.el-form--responsive {
+      @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5;
+    }
+
+    &.el-form--expand {
+      @apply grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4;
+    }
+  }
+
+  .el-form-item {
+    @apply mb-0;
+  }
+
+  .el-form-item__content {
+    @apply flex;
+  }
+
+  .el-form-item__label {
+    @apply flex justify-end items-center h-full leading-none;
+    min-width: calc(4em + @label-padding-right);
+  }
+
+  .el-input {
+    @apply flex overflow-hidden;
+  }
+
+  .el-input__prefix, .el-input__suffix, i {
+    @apply inline-flex justify-center items-center;
+  }
+
+  .el-range__close-icon {
+    position: absolute;
+    right: 5px;
+  }
+
+  // 自适应宽度
+  .el-date-editor, .el-select, .el-cascader {
+    @apply flex-1;
+  }
+
+  .search-action {
+    @apply flex justify-center mt-2 whitespace-nowrap;
+  }
+
+  .search-collapse {
+    @apply
+      absolute right-2 bottom-px
+      px-1
+      border border-t-0
+      transform translate-y-full
+      cursor-pointer
+      rounded-b-lg
+      bg-white
+      select-none
+      z-10;
+  }
+
+  .el-form-item__label {
+    padding-right: @label-padding-right;
+  }
+}
+
+// 折叠样式
+.search-form.search-form--collapsed {
+  @apply flex;
+
+  .el-form {
+    @apply
+      sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4
+      overflow-hidden;
+    height: @form-item-height;
+  }
+
+  .search-action {
+    @apply mt-0 mr-2;
+  }
+}

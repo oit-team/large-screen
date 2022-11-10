@@ -15,7 +15,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log('main', to, from)
+  console.info('main', to, from)
   if (isLogin()) {
     // Loading.service({
     //   text: '加载中...',

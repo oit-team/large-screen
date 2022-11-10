@@ -9,9 +9,9 @@
     "dev": "cross-env NODE_ENV=development vite --host",
     "build": "vite build",
     "build:dev": "vite build -w",
-    "lint": "eslint \"**/*.{vue,ts,js}\" --fix",
+    "lint": "eslint \"**/*.{vue,ts,js,json}\" --fix",
     "fix:sass": "sass-migrator division node_modules/**/*.scss",
-    "prepare": "husky install && npm run fix:sass"
+    "prepare": "npm run fix:sass"
   },
   "dependencies": {
     "@unocss/reset": "^0.46.2",
@@ -23,27 +23,19 @@
     "lodash-es": "^4.17.21",
     "vue": "^2.7.8",
     "vue-router": "^3.5.4",
-    "vuex": "3"
+    "vuex": "^3"
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "^17.2.0",
     "@iconify/json": "^2.1.83",
-    "@oit/eslint-config-vue-ts": "^0.4.3",
     "@types/node": "^18.11.9",
     "@vitejs/plugin-vue2": "^1.1.2",
     "@vitejs/plugin-vue2-jsx": "^1.0.3",
     "autoprefixer": "^10.4.13",
-    "commitlint": "^17.2.0",
-    "cross-env": "^7.0.3",
-    "eslint": "^8.20.0",
-    "husky": "^8.0.1",
     "less": "^4.1.3",
-    "lint-staged": "^13.0.3",
     "postcss": "^8.4.18",
     "sass": "^1.55.0",
     "sass-migrator": "^1.7.1",
     "tailwindcss": "^3.2.2",
-    "typescript": "^4.7.4",
     "unocss": "^0.46.2",
     "unplugin-auto-import": "^0.10.1",
     "unplugin-icons": "^0.14.7",
@@ -53,19 +45,11 @@
     "vue-template-compiler": "^2.7.8",
     "vue-template-es2015-compiler": "^1.9.1"
   },
-  "lint-staged": {
-    "*.{vue,js,ts,json}": [
-      "cross-env NODE_ENV=production npm run lint"
-    ]
-  },
-  "commitlint": {
-    "extends": "@commitlint/config-conventional"
-  },
   "eslintConfig": {
-    "extends": "@oit/vue-ts",
     "rules": {
       "vue/custom-event-name-casing": "off",
-      "@typescript-eslint/no-unused-vars": "warn"
+      "@typescript-eslint/no-unused-vars": "warn",
+      "no-console": ["warn", { "allow": ["warn", "error", "info"] }]
     }
   }
 }

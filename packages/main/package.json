@@ -3,9 +3,9 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development vite --host",
     "build": "vite build",
-    "lint": "eslint \"**/*.{vue,ts,js}\" --fix",
+    "lint": "eslint \"**/*.{vue,ts,js,json}\" --fix",
     "fix:sass": "sass-migrator division node_modules/**/*.scss",
-    "prepare": "husky install && npm run fix:sass"
+    "prepare": "npm run fix:sass"
   },
   "dependencies": {
     "@oit/legacy": "link:../legacy",
@@ -17,21 +17,13 @@
     "element-ui": "^2.15.10",
     "vue": "^2.7.8",
     "vue-router": "^3.5.4",
-    "vuex": "3"
+    "vuex": "^3"
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "^17.2.0",
     "@iconify/json": "^2.1.83",
-    "@oit/eslint-config-vue-ts": "^0.4.4",
     "@vitejs/plugin-vue2": "^1.1.2",
-    "commitlint": "^17.2.0",
-    "cross-env": "^7.0.3",
-    "eslint": "^8.20.0",
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.3",
     "sass": "^1.55.0",
     "sass-migrator": "^1.7.1",
-    "typescript": "^4.7.4",
     "unocss": "^0.46.2",
     "unplugin-auto-import": "^0.10.1",
     "unplugin-icons": "^0.14.7",
@@ -40,16 +32,5 @@
     "vite-plugin-eslint": "^1.8.1",
     "vue-template-compiler": "^2.7.8",
     "vue-template-es2015-compiler": "^1.9.1"
-  },
-  "lint-staged": {
-    "*.{vue,js,ts,json}": [
-      "cross-env NODE_ENV=production npm run lint"
-    ]
-  },
-  "commitlint": {
-    "extends": "@commitlint/config-conventional"
-  },
-  "eslintConfig": {
-    "extends": "@oit/vue-ts"
   }
 }

@@ -32,7 +32,6 @@ export default defineComponent({
         userId: sessionStorage.getItem('userId'),
       })
       this.menuList = res.body.resultList
-      console.log(res)
     },
     change(id) {
       const item = this.menuMap[id]

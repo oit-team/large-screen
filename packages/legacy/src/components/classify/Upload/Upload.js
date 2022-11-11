@@ -1,10 +1,11 @@
-import axios from 'axios'
+import Axios from 'axios'
 import { Image, Upload } from 'element-ui'
 import Vue from 'vue'
 import { createNamespace, genSlots } from '../utils'
 import {
   getDefaultFormData, getDefaultHeaders, getDefaultUploadUrlByFileType, getFileItemDefault, mixin,
 } from './options'
+import axios from '@/api'
 
 const [name, bem] = createNamespace('upload')
 
@@ -73,6 +74,7 @@ export default {
   methods: {
     // 根据条件调用对应的上传
     handleHttpRequest(option) {
+      console.log(option)
       if (/^image\//.test(option.file.type)) {
         this.uploadImage(option)
       }
@@ -177,7 +179,7 @@ export default {
           upload.handleSuccess(res, rawFile)
         })
         .catch((err) => {
-          if (!axios.isCancel(err)) upload.handleError(err, rawFile)
+          if (!Axios.isCancel(err)) upload.handleError(err, rawFile)
         })
     },
     /**
@@ -188,7 +190,7 @@ export default {
      * @param {any} config.cancelKey 请求的key，用于取消请求
      */
     post(url, data, config) {
-      const CancelToken = axios.CancelToken
+      const CancelToken = Axios.CancelToken
       config.cancelToken = new CancelToken((cancel) => {
         this.uploadQueue.set(config.cancelKey, cancel)
       })

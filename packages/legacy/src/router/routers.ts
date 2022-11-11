@@ -44,6 +44,30 @@ export const routes: RouteConfig[] = [
       keepAlive: false,
     },
   },
+  {
+    path: '/live-stream/carousel-resources/upload',
+    name: 'CarouselResourcesUpload',
+    component: () => import ('@/views/LiveStream/CarouselResources/Upload.vue'),
+    meta: {
+      keepAlive: false,
+    },
+  },
+  {
+    path: '/live-stream/room/list',
+    name: 'LiveStreamRoomList',
+    component: () => import ('@/views/LiveStream/Room/List.vue'),
+    meta: {
+      keepAlive: true,
+    },
+  },
+  {
+    path: '/live-stream/room/update',
+    name: 'LiveStreamRoomUpdate',
+    component: () => import ('@/views/LiveStream/Room/Update.vue'),
+    meta: {
+      keepAlive: false,
+    },
+  },
   // 系统设置相关（角色管理、菜单管理、品牌入驻）
   {
     path: '/role/roleList',

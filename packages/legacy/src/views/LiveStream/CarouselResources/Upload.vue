@@ -107,7 +107,7 @@ export default {
             只能上传图片或视频文件，单次提交最多{{ uploadOption.limit }}个，且不得超过{{ maxMB }}MB
           </div>
         </vc-upload>
-        <ul class="overflow-y-auto flex-1 mb-2 space-y-1 upload-list">
+        <ul class="overflow-y-auto flex-1 mb-2 space-y-1 upload-list text-xs">
           <li
             v-for="(item, index) of uploadList"
             :key="item.uid"
@@ -124,7 +124,7 @@ export default {
               <span v-if="item.percentage > 0 && item.percentage < 100">{{ Math.floor(item.percentage) }}%</span>
               <span v-if="item.percentage >= 100" class="text-green-500">完成</span>
               <i
-                class="ml-1 w-4 h-4 text-xl text-red-400 rounded-lg el-icon-close hover:bg-gray-100 flex-center"
+                class="ml-1 w-4 h-4 text-xs text-red-400 rounded-lg el-icon-close hover:bg-gray-100 flex-center"
                 @click.stop="removeFile(index, item)"
               />
             </div>
@@ -135,7 +135,7 @@ export default {
           提交
         </el-button>
       </div>
-      <div class="flex overflow-hidden flex-1 ml-2 rounded-lg border flex-center">
+      <div class="flex overflow-hidden flex-1 ml-2 rounded-lg border flex-center justify-center items-center">
         <template v-if="selectedItem">
           <el-image
             v-if="/image/.test(selectedItem.raw.type)"
@@ -160,6 +160,10 @@ export default {
 .upload-list {
   width: 360px;
 }
+::v-deep
+  .page-header .el-page-header__content{
+    font-size: 16px;
+  }
 </style>
 
 <style lang="less">

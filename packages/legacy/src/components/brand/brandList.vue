@@ -250,6 +250,14 @@ export default {
               </div>
               <div class="divH">
                 <div class="divL">
+                  所属行业：
+                </div>
+                <div class="divR">
+                  {{ item.brandInfo.industryName }}
+                </div>
+              </div>
+              <div class="divH">
+                <div class="divL">
                   管理员账号：
                 </div>
                 <div class="divR">

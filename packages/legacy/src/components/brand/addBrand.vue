@@ -1,4 +1,6 @@
 <script>
+import getIndustryAll from "@/api/brand";
+
 export default {
   name: 'AddBrand',
   components: {},
@@ -42,6 +44,7 @@ export default {
         gradeC: '',
         totalNumShop: '',
         telephone: '',
+        industryId: '',
       },
 
       // 选择
@@ -54,6 +57,9 @@ export default {
         address: [
           { required: true, message: '请输入公司地址', trigger: 'blur' },
           { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' },
+        ],
+        industryId: [
+          { required: true, message: '请选择所属行业', trigger: 'blur' },
         ],
         adminName: [
           { required: true, message: '请输入管理员名称，长度在 2 到 10 个字符', trigger: 'blur' },
@@ -77,6 +83,7 @@ export default {
           { required: true, message: '请输入店铺总数量', trigger: 'blur' },
         ],
       },
+      options: [],
 
     }
   },
@@ -88,6 +95,7 @@ export default {
   },
   mounted() {
     this.companyShow()
+    this.getIndustryAll()
   },
   activated() {},
   methods: {
@@ -140,6 +148,10 @@ export default {
       }).catch((err) => {
         console.log(err)
       })
+    },
+    async getIndustryAll() {
+      const res = await getIndustryAll()
+      this.options = res.body.resultList
     },
     // 返回
     goBack() {
@@ -365,21 +377,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const con = {
-          // adminName: "管理员名称",           必填
-          // brandName: "品牌名称",             必填
-          // orgId: "公司ID",                   必填
-          // mailbox: "邮箱（非必填）",
-          // contacts: "联系人（非必填）",
-          // telephone: "电话（非必填）",
-          // bueTime: "品牌到期时间",           必填
-          // gradeS: "S级人员数量",
-          // gradeA: "A级人员数量",
-          // gradeB: "B级人员数量",
-          // gradeC: "C级人员数量",
-          // totalNumShop: "店铺总数量"       必填
-          // :this.imageUrl
             brandLogo: this.ruleForm.brandLogo,
-
             orgId: this.tableRadio.orgId,
             adminName: this.ruleForm.adminName + this.ADMIN,
             brandName: this.ruleForm.brandName,
@@ -394,6 +392,7 @@ export default {
             gradeB: this.ruleForm.gradeB,
             gradeC: this.ruleForm.gradeC,
             totalNumShop: this.ruleForm.totalNumShop,
+            industryId: this.ruleForm.industryId,
           }
           // console.log('新增品牌参数',con)
           const jsonParam = _this.GLOBAL.g_paramJson(con)
@@ -431,49 +430,49 @@ export default {
 
 <template>
   <div id="addBrand" class="pageCommonStyle page-container text-sm">
-    <el-page-header content="新增品牌" @back="goBack" />
-    <el-divider />
-    <el-steps :active="activeStep" finish-status="success" simple style="margin:10px 0px;">
-      <el-step title="选择公司信息" />
-      <el-step title="填写品牌信息" />
-      <el-step title="填写品牌配置" />
-    </el-steps>
+    <ElPageHeader content="新增品牌" @back="goBack" />
+    <ElDivider />
+    <ElSteps :active="activeStep" finish-status="success" simple style="margin:10px 0px;">
+      <ElStep title="选择公司信息" />
+      <ElStep title="填写品牌信息" />
+      <ElStep title="填写品牌配置" />
+    </ElSteps>
     <div v-show="activeStep == 0" class="content">
       <div class="operateBtn">
-        <el-button size="small" icon="el-icon-plus" class="addBtnOnly" type="success" @click="addCompany()">
+        <ElButton size="small" icon="el-icon-plus" class="addBtnOnly" type="success" @click="addCompany()">
           新增公司
-        </el-button>
-        <el-drawer
+        </ElButton>
+        <ElDrawer
           ref="drawer"
           :title="ruleForm.orgId ? '编辑公司' : '新增公司'"
           :visible.sync="dialog"
           direction="rtl"
           custom-class="demo-drawer"
         >
-          <div class="demo-drawer__content">
-            <el-form ref="addRuleForm" :model="ruleForm" :rules="rules" label-width="80px">
-              <el-form-item label="公司名称" prop="orgName">
-                <el-input v-model="ruleForm.orgName" placeholder="请输入公司名称" autocomplete="off" />
-              </el-form-item>
-              <el-form-item label="公司地址" prop="address">
-                <el-input v-model="ruleForm.address" placeholder="请输入公司地址" autocomplete="off" />
-              </el-form-item>
-            </el-form>
-            <div class="demo-drawer__footer">
-              <el-button @click="cancelForm">
+          <div class="demo-drawer__content h-full p-4 flex flex-col justify-between">
+            <ElForm ref="addRuleForm" :model="ruleForm" :rules="rules" label-width="90px">
+              <ElFormItem label="公司名称" prop="orgName">
+                <ElInput v-model="ruleForm.orgName" placeholder="请输入公司名称" autocomplete="off" />
+              </ElFormItem>
+              <ElFormItem label="公司地址" prop="address">
+                <ElInput v-model="ruleForm.address" placeholder="请输入公司地址" autocomplete="off" />
+              </ElFormItem>
+            </ElForm>
+            <div class="demo-drawer__footer flex justify-around">
+              <ElButton @click="cancelForm">
                 取 消
-              </el-button>
-              <el-button v-if="ruleForm.orgId" type="primary" @click="handleClose('addRuleForm')">
+              </ElButton>
+              <ElButton v-if="ruleForm.orgId" type="primary" @click="handleClose('addRuleForm')">
                 保存
-              </el-button>
-              <el-button v-else type="primary" @click="handleClose('addRuleForm')">
+              </ElButton>
+              <ElButton v-else type="primary" @click="handleClose('addRuleForm')">
                 提交
-              </el-button>
+              </ElButton>
             </div>
           </div>
-        </el-drawer>
+        </ElDrawer>
       </div>
-      <el-table
+      <ElTable
         v-loading="loading"
         element-loading-text="小易拼命加载中..."
         element-loading-spinner="el-icon-loading"
@@ -486,73 +485,83 @@ export default {
         :cell-style="tableCellStyle"
         @current-change="clickChange"
       >
-        <el-table-column label="选择" width="55">
+        <ElTableColumn label="选择" width="55">
           <template slot-scope="scope">
-            <el-radio v-model="tableRadio" :label="scope.row">
+            <ElRadio v-model="tableRadio" :label="scope.row">
               <i />
-            </el-radio>
+            </ElRadio>
           </template>
-        </el-table-column>
-        <el-table-column
+        </ElTableColumn>
+        <ElTableColumn
           prop="orgName"
           label="公司名称"
         />
-        <el-table-column
+        <ElTableColumn
           prop="address"
           label="公司地址"
         />
-        <el-table-column
+        <ElTableColumn
           prop="createTime"
           label="创建时间"
         />
-        <el-table-column
+        <ElTableColumn
           fixed="right"
           label="操作"
           width="140"
         >
           <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" content="编辑公司" placement="top">
-              <el-button size="mini" type="primary" icon="el-icon-edit" class="editBtnOnly" circle @click="editRoleItem(scope.row, scope.$index)" />
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="删除公司" placement="top">
-              <el-button size="mini" type="danger" icon="el-icon-delete" class="delBtnOnly" circle @click="delRoleItem(scope.row, scope.$index)" />
-            </el-tooltip>
+            <ElTooltip class="item" effect="dark" content="编辑公司" placement="top">
+              <ElButton size="mini" type="primary" icon="el-icon-edit" class="editBtnOnly" circle @click="editRoleItem(scope.row, scope.$index)" />
+            </ElTooltip>
+            <ElTooltip class="item" effect="dark" content="删除公司" placement="top">
+              <ElButton size="mini" type="danger" icon="el-icon-delete" class="delBtnOnly" circle @click="delRoleItem(scope.row, scope.$index)" />
+            </ElTooltip>
           </template>
-        </el-table-column>
-      </el-table>
+        </ElTableColumn>
+      </ElTable>
     </div>
     <div v-show="activeStep == 1" class="content">
-      <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px">
-        <el-form-item label="品牌Logo">
+      <ElForm ref="ruleForm" :model="ruleForm" :rules="rules" label-width="120px">
+        <ElFormItem label="品牌Logo">
           <!-- action="http://192.168.9.71:8089/gdy/system/file/uploadFile" -->
-          <el-upload
+          <ElUpload
             class="avatar-uploader"
             action="#"
             :show-file-list="false"
             :http-request="changeFile"
           >
             <img v-if="imageUrl" :src="imageUrl" class="imgLogo">
-            <el-button class="upBtn">
+            <ElButton class="upBtn">
               上传品牌Logo
-            </el-button>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="品牌名称" prop="brandName">
-          <el-input v-model="ruleForm.brandName" placeholder="请输入品牌名称" autocomplete="off" style="width:60%;" />
-        </el-form-item>
-        <el-form-item label="品牌简称" prop="abbreviation">
-          <el-input v-model="ruleForm.abbreviation" placeholder="请输入品牌简称" autocomplete="off" style="width:60%;" />
-        </el-form-item>
-        <el-form-item label="管理员名称" prop="adminName">
-          <el-input v-model="ruleForm.adminName" maxlength="10" placeholder="请输入管理员名称" autocomplete="off" style="width:60%;">
+            </ElButton>
+          </ElUpload>
+        </ElFormItem>
+        <ElFormItem label="品牌名称" prop="brandName">
+          <ElInput v-model="ruleForm.brandName" placeholder="请输入品牌名称" autocomplete="off" style="width:60%;" />
+        </ElFormItem>
+        <ElFormItem label="品牌简称" prop="abbreviation">
+          <ElInput v-model="ruleForm.abbreviation" placeholder="请输入品牌简称" autocomplete="off" style="width:60%;" />
+        </ElFormItem>
+        <ElFormItem label="所属行业" prop="industryId">
+          <ElSelect v-model="ruleForm.industryId" placeholder="请选择所属行业">
+            <ElOption
+              v-for="item in options"
+              :key="item.industryId"
+              :label="item.industryName"
+              :value="item.industryId"
+            >
+            </ElOption>
+          </ElSelect>
+        </ElFormItem>
+        <ElFormItem label="管理员名称" prop="adminName">
+          <ElInput v-model="ruleForm.adminName" maxlength="10" placeholder="请输入管理员名称" autocomplete="off" style="width:60%;">
             <template slot="append">
               {{ ADMIN }}
             </template>
-          </el-input>
-        </el-form-item>
-
-        <el-form-item label="品牌入驻时间" prop="bueStartTime">
-          <el-date-picker
+          </ElInput>
+        </ElFormItem>
+        <ElFormItem label="品牌入驻时间" prop="bueStartTime">
+          <ElDatePicker
             v-model="ruleForm.bueStartTime"
             style="width:60%;"
             type="date"
@@ -560,9 +569,9 @@ export default {
             format="yyyy 年 MM 月 dd 日"
             value-format="yyyy-MM-dd"
           />
-        </el-form-item>
-        <el-form-item label="品牌到期时间" prop="bueEndTime">
-          <el-date-picker
+        </ElFormItem>
+        <ElFormItem label="品牌到期时间" prop="bueEndTime">
+          <ElDatePicker
             v-model="ruleForm.bueEndTime"
             style="width:60%;"
             type="date"
@@ -570,50 +579,50 @@ export default {
             format="yyyy 年 MM 月 dd 日"
             value-format="yyyy-MM-dd"
           />
-        </el-form-item>
-        <el-form-item label="联系人">
-          <el-input v-model="ruleForm.contacts" placeholder="请输入联系人" autocomplete="off" style="width:60%;" />
-        </el-form-item>
-        <el-form-item label="电 话">
-          <el-input v-model="ruleForm.telephone" placeholder="请输入电话" autocomplete="off" style="width:60%;" maxlength="11" oninput="value=value.replace(/[^\d]/g,'')" />
-        </el-form-item>
-        <el-form-item label="邮 箱">
-          <el-input v-model="ruleForm.mailbox" type="email" placeholder="请输入邮箱" autocomplete="off" style="width:60%;" />
-        </el-form-item>
-      </el-form>
+        </ElFormItem>
+        <ElFormItem label="联系人">
+          <ElInput v-model="ruleForm.contacts" placeholder="请输入联系人" autocomplete="off" style="width:60%;" />
+        </ElFormItem>
+        <ElFormItem label="电 话">
+          <ElInput v-model="ruleForm.telephone" placeholder="请输入电话" autocomplete="off" style="width:60%;" maxlength="11" oninput="value=value.replace(/[^\d]/g,'')" />
+        </ElFormItem>
+        <ElFormItem label="邮 箱">
+          <ElInput v-model="ruleForm.mailbox" type="email" placeholder="请输入邮箱" autocomplete="off" style="width:60%;" />
+        </ElFormItem>
+      </ElForm>
     </div>
     <div v-show="activeStep == 2" class="content">
       <h3 style="text-align:left;line-height:40px;">
         店铺&人员限制
       </h3>
-      <el-form ref="form" :model="ruleForm" :rules="rules" label-width="100px">
-        <el-form-item label="店铺总数量" prop="totalNumShop">
-          <el-input v-model="ruleForm.totalNumShop" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入店铺总数量" autocomplete="off" style="width:60%;" />
-        </el-form-item>
-        <el-form-item label="S级人员数量">
-          <el-input v-model="ruleForm.gradeS" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入S级人员数量" autocomplete="off" style="width:60%;" />
-        </el-form-item>
-        <el-form-item label="A级人员数量">
-          <el-input v-model="ruleForm.gradeA" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入A级人员数量" autocomplete="off" style="width:60%;" />
-        </el-form-item>
-        <el-form-item label="B级人员数量">
-          <el-input v-model="ruleForm.gradeB" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入B级人员数量" autocomplete="off" style="width:60%;" />
-        </el-form-item>
-        <el-form-item label="C级人员数量">
-          <el-input v-model="ruleForm.gradeC" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入C级人员数量" autocomplete="off" style="width:60%;" />
-        </el-form-item>
-      </el-form>
+      <ElForm ref="form" :model="ruleForm" :rules="rules" label-width="100px">
+        <ElFormItem label="店铺总数量" prop="totalNumShop">
+          <ElInput v-model="ruleForm.totalNumShop" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入店铺总数量" autocomplete="off" style="width:60%;" />
+        </ElFormItem>
+        <ElFormItem label="S级人员数量">
+          <ElInput v-model="ruleForm.gradeS" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入S级人员数量" autocomplete="off" style="width:60%;" />
+        </ElFormItem>
+        <ElFormItem label="A级人员数量">
+          <ElInput v-model="ruleForm.gradeA" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入A级人员数量" autocomplete="off" style="width:60%;" />
+        </ElFormItem>
+        <ElFormItem label="B级人员数量">
+          <ElInput v-model="ruleForm.gradeB" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入B级人员数量" autocomplete="off" style="width:60%;" />
+        </ElFormItem>
+        <ElFormItem label="C级人员数量">
+          <ElInput v-model="ruleForm.gradeC" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入C级人员数量" autocomplete="off" style="width:60%;" />
+        </ElFormItem>
+      </ElForm>
     </div>
     <div class="step">
-      <el-button style="margin-left:auto;" type="primary" plain :disabled="prevDisabled" @click="clickPerv()">
+      <ElButton style="margin-left:auto;" type="primary" plain :disabled="prevDisabled" @click="clickPerv()">
         上一步
-      </el-button>
-      <el-button v-if="activeStep < 2" type="primary" plain @click="clickNext('ruleForm')">
+      </ElButton>
+      <ElButton v-if="activeStep < 2" type="primary" plain @click="clickNext('ruleForm')">
         下一步
-      </el-button>
-      <el-button v-if="activeStep >= 2" type="primary" plain @click="regbrand('form')">
+      </ElButton>
+      <ElButton v-if="activeStep >= 2" type="primary" plain @click="regbrand('form')">
         提交
-      </el-button>
+      </ElButton>
     </div>
   </div>
 </template>
@@ -648,6 +657,10 @@ export default {
 
   /deep/.avatar-uploader .el-upload{
     display:flex;
+  }
+
+  /deep/.el-step__head{
+    display: flex;
   }
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;

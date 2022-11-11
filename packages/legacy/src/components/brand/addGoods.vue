@@ -968,50 +968,50 @@ export default {
 
 <template>
   <div id="addGoods" class="pageCommonStyle">
-    <ElPageHeader :content="title" @back="goBack" />
-    <ElDivider />
+    <el-page-header :content="title" @back="goBack" />
+    <el-divider />
 
-    <ElForm ref="ruleForm" class="demo-ruleForm" :model="ruleForm" :rules="rules" label-width="98px">
+    <el-form ref="ruleForm" class="demo-ruleForm" :model="ruleForm" :rules="rules" label-width="98px">
       <div class="goodsFormBox">
         <div class="baseInfoBox">
           <!-- accordion  每次只展开一个 -->
-          <ElCollapse v-model="activeName">
-            <ElCollapseItem title="基础信息" name="1">
-              <ElFormItem label="商品名称" prop="styleName">
-                <ElInput v-model.trim="ruleForm.styleName" style="width:96%;" maxlength="32" placeholder="请输入商品名称" />
-              </ElFormItem>
-              <ElFormItem label="商品编号" prop="styleNo">
-                <ElInput v-model.trim="ruleForm.styleNo" style="width:96%;" maxlength="32" placeholder="请输入商品编号" />
-              </ElFormItem>
+          <el-collapse v-model="activeName">
+            <el-collapse-item title="基础信息" name="1">
+              <el-form-item label="商品名称" prop="styleName">
+                <el-input v-model.trim="ruleForm.styleName" style="width:96%;" maxlength="32" placeholder="请输入商品名称" />
+              </el-form-item>
+              <el-form-item label="商品编号" prop="styleNo">
+                <el-input v-model.trim="ruleForm.styleNo" style="width:96%;" maxlength="32" placeholder="请输入商品编号" />
+              </el-form-item>
 
-              <ElFormItem label="商品颜色" prop="styleColor">
-                <ElInput v-model.trim="ruleForm.styleColor" style="width:96%;" maxlength="32" placeholder="请输入商品颜色" />
-              </ElFormItem>
-              <ElFormItem label="商品价格" prop="stylePrice">
-                <ElInput v-model.trim="ruleForm.stylePrice" style="width:96%;" maxlength="32" placeholder="请输入商品价格" />
-              </ElFormItem>
-              <ElFormItem label="商品类别" prop="styleCategory">
-                <ElSelect v-model="ruleForm.styleCategory" style="width:96%;" placeholder="请选择商品类别" @change="changeCate">
-                  <ElOption
+              <el-form-item label="商品颜色" prop="styleColor">
+                <el-input v-model.trim="ruleForm.styleColor" style="width:96%;" maxlength="32" placeholder="请输入商品颜色" />
+              </el-form-item>
+              <el-form-item label="商品价格" prop="stylePrice">
+                <el-input v-model.trim="ruleForm.stylePrice" style="width:96%;" maxlength="32" placeholder="请输入商品价格" />
+              </el-form-item>
+              <el-form-item label="商品类别" prop="styleCategory">
+                <el-select v-model="ruleForm.styleCategory" style="width:96%;" placeholder="请选择商品类别" @change="changeCate">
+                  <el-option
                     v-for="item in cateOptions"
                     :key="item.dicttimeDisplayName"
                     :label="item.dicttimeDisplayName"
                     :value="item.dicttimeDisplayName"
                   />
-                </ElSelect>
+                </el-select>
                 <!-- <el-input v-model="ruleForm.styleCategory" style="width:96%;" maxlength="32" placeholder="请输入商品类别"></el-input> -->
-              </ElFormItem>
-              <ElFormItem label="商品廓形" prop="styleFlowerPattern">
-                <ElInput v-model.trim="ruleForm.styleFlowerPattern" style="width:96%;" maxlength="32" placeholder="请输入商品廓形" />
-              </ElFormItem>
-              <ElFormItem label="商品材质" prop="styleFabric">
-                <ElInput v-model.trim="ruleForm.styleFabric" style="width:96%;" maxlength="64" placeholder="请输入商品材质" />
-              </ElFormItem>
-            </ElCollapseItem>
-            <ElCollapseItem title="配置信息" name="2">
+              </el-form-item>
+              <el-form-item label="商品廓形" prop="styleFlowerPattern">
+                <el-input v-model.trim="ruleForm.styleFlowerPattern" style="width:96%;" maxlength="32" placeholder="请输入商品廓形" />
+              </el-form-item>
+              <el-form-item label="商品材质" prop="styleFabric">
+                <el-input v-model.trim="ruleForm.styleFabric" style="width:96%;" maxlength="64" placeholder="请输入商品材质" />
+              </el-form-item>
+            </el-collapse-item>
+            <el-collapse-item title="配置信息" name="2">
               <!-- checkStrictly: true,  filterable -->
-              <ElFormItem label="波段/系列" prop="idList">
-                <ElCascader
+              <el-form-item label="波段/系列" prop="idList">
+                <el-cascader
                   ref="cascader"
                   v-model="ruleForm.idList"
                   style="width:96%;"
@@ -1020,37 +1020,37 @@ export default {
                   :props="{ children: 'children', value: 'id', label: 'name' }"
                   @change="handleChange"
                 />
-              </ElFormItem>
+              </el-form-item>
 
               <!-- recommendationLevel  '0' 非重点  ‘1’ 重点款 -->
-              <ElFormItem label="是否重点款" prop="recommendationLevel">
+              <el-form-item label="是否重点款" prop="recommendationLevel">
                 <!-- <el-input v-model="ruleForm.recommendationLevel" style="width:96%;" maxlength="10" placeholder="需要确认字段的详细代表含义"></el-input > -->
-                <ElSelect v-model="ruleForm.recommendationLevel" style="width:96%;" placeholder="请选择是否标记为重点款">
-                  <ElOption label="否" value="0" />
-                  <ElOption label="是" value="1" />
-                </ElSelect>
-              </ElFormItem>
-              <ElFormItem label="适用场合" prop="styleInfo">
-                <ElInput v-model.trim="ruleForm.styleInfo" style="width:96%;" maxlength="32" placeholder="请输入适用场合" />
-              </ElFormItem>
-              <ElFormItem label="商品标签">
-                <ElInput v-model.trim="addLabel" style="width:68%;" maxlength="32" placeholder="请添加商品标签" />
-                <ElButton @click="addGoodLabel(addLabel)">
+                <el-select v-model="ruleForm.recommendationLevel" style="width:96%;" placeholder="请选择是否标记为重点款">
+                  <el-option label="否" value="0" />
+                  <el-option label="是" value="1" />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="适用场合" prop="styleInfo">
+                <el-input v-model.trim="ruleForm.styleInfo" style="width:96%;" maxlength="32" placeholder="请输入适用场合" />
+              </el-form-item>
+              <el-form-item label="商品标签">
+                <el-input v-model.trim="addLabel" style="width:68%;" maxlength="32" placeholder="请添加商品标签" />
+                <el-button @click="addGoodLabel(addLabel)">
                   新增
-                </ElButton>
-              </ElFormItem>
+                </el-button>
+              </el-form-item>
               <div v-if="labelList.length > 0" class="labelList">
                 <div v-for="(item, i) in labelList" :key="i" class="labelItem">
                   <span>{{ item }}</span>
                   <i style="font-size:16px;margin-left:10px;" class="el-icon-circle-close" @click="delLabel(i)" />
                 </div>
               </div>
-            </ElCollapseItem>
-            <ElCollapseItem title="保养及卖点" name="3">
-              <ElFormItem label="洗涤保养">
+            </el-collapse-item>
+            <el-collapse-item title="保养及卖点" name="3">
+              <el-form-item label="洗涤保养">
                 <!-- <el-input type="textarea" :rows="5" v-model.trim="ruleForm.washMaintenance" style="width:96%;" placeholder="请输入内容"></el-input> -->
                 <!-- class='ql-editor' -->
-                <Quill
+                <quill
                   style="width:96%;"
 
                   :value="ruleForm.washMaintenance"
@@ -1058,43 +1058,43 @@ export default {
                   height="150px"
                   @changeVal="changeWashMaintenance"
                 />
-              </ElFormItem>
-              <ElFormItem label="面料卖点">
+              </el-form-item>
+              <el-form-item label="面料卖点">
                 <!-- <el-input type="textarea" :rows="5" v-model.trim="ruleForm.sellingPointFabric" style="width:96%;" placeholder="请输入内容"></el-input> -->
-                <Quill
+                <quill
                   style="width:96%;"
                   :value="ruleForm.sellingPointFabric"
                   :editor-setting="editorSetting"
                   height="150px"
                   @changeVal="changeSellingPointFabric"
                 />
-              </ElFormItem>
-              <ElFormItem label="设计卖点">
+              </el-form-item>
+              <el-form-item label="设计卖点">
                 <!-- <el-input type="textarea" :rows="5" v-model.trim="ruleForm.designSellingPoint" style="width:96%;" placeholder="请输入内容"></el-input> -->
-                <Quill
+                <quill
                   style="width:96%;"
                   :value="ruleForm.designSellingPoint"
                   :editor-setting="editorSetting"
                   height="150px"
                   @changeVal="changeDesignSellingPoint"
                 />
-              </ElFormItem>
-              <ElFormItem label="穿着卖点">
+              </el-form-item>
+              <el-form-item label="穿着卖点">
                 <!-- <el-input type="textarea" :rows="5" v-model.trim="ruleForm.wearSellingPoint" style="width:96%;" placeholder="请输入内容"></el-input> -->
-                <Quill
+                <quill
                   style="width:96%;"
                   :value="ruleForm.wearSellingPoint"
                   :editor-setting="editorSetting"
                   height="150px"
                   @changeVal="changeWearSellingPoint"
                 />
-              </ElFormItem>
-            </ElCollapseItem>
-          </ElCollapse>
+              </el-form-item>
+            </el-collapse-item>
+          </el-collapse>
         </div>
         <div class="fileInfoBox">
-          <ElFormItem label="商品图片">
-            <ElUpload
+          <el-form-item label="商品图片">
+            <el-upload
               action="#"
               multiple
               :limit="6"
@@ -1108,25 +1108,25 @@ export default {
               :on-remove="handleRemove"
             >
               <i class="el-icon-plus" />
-            </ElUpload>
-          </ElFormItem>
+            </el-upload>
+          </el-form-item>
           <p class="tip">
             *最多可以上传6张图片(按住Ctrl或Alt键选择多张图片上传)，推荐格式jpg或png
           </p>
 
-          <ElFormItem label="商品细节">
-            <VcUpload v-bind="uploadOption" ref="uploadImage">
+          <el-form-item label="商品细节">
+            <vc-upload v-bind="uploadOption" ref="uploadImage">
               <i class="el-icon-plus" />
-            </VcUpload>
-          </ElFormItem>
+            </vc-upload>
+          </el-form-item>
           <p class="tip">
             *最多可以上传6张图片(按住Ctrl或Alt键选择多张图片上传)，推荐格式jpg或png
           </p>
 
           <!-- https://www.cnblogs.com/1312mn/p/11233395.html  上传视频参考连接，本功能需要再完善 -->
           <!-- :on-progress="uploadVideoProcess" 自定义上传的时候貌似不生效 -->
-          <ElFormItem label="商品视频">
-            <ElUpload
+          <el-form-item label="商品视频">
+            <el-upload
               class="el-upload-video"
               action="#"
               accept=".mp4,.mov"
@@ -1143,7 +1143,7 @@ export default {
               >
                 您的浏览器不支持视频播放
               </video>
-              <ElProgress
+              <el-progress
                 v-if="!videoSrc && uploadVideoFlag"
                 type="circle"
                 :percentage="perValue"
@@ -1151,19 +1151,19 @@ export default {
               <div v-if="!videoSrc && !uploadVideoFlag" class="addVideoIcon">
                 <i class="el-icon-plus" style="font-size:28px;color:#888;" />
               </div>
-            </ElUpload>
+            </el-upload>
             <div v-if="videoSrc">
-              <ElButton @click="delVideo">
+              <el-button @click="delVideo">
                 删除视频
-              </ElButton>
+              </el-button>
             </div>
-          </ElFormItem>
+          </el-form-item>
           <p class="tip">
             *最多可以上传1个视频，大小限制在50M以内，推荐格式mp4
           </p>
 
-          <ElFormItem v-if="videoSrc" label="视频贴片">
-            <ElUpload
+          <el-form-item v-if="videoSrc" label="视频贴片">
+            <el-upload
               class="avatar-uploader"
               :show-file-list="false"
               action="#"
@@ -1175,48 +1175,48 @@ export default {
             >
               <img v-if="imageUrl" class="patchImage" :src="imageUrl">
               <i v-else class="el-icon-plus avatar-uploader-icon" />
-            </ElUpload>
+            </el-upload>
             <div v-if="imageUrl">
-              <ElButton @click="delVideoPatch">
+              <el-button @click="delVideoPatch">
                 删除视频贴片
-              </ElButton>
+              </el-button>
             </div>
-          </ElFormItem>
+          </el-form-item>
         </div>
       </div>
-    </ElForm>
-    <ElDialog :visible.sync="dialogVisible">
+    </el-form>
+    <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="">
-    </ElDialog>
+    </el-dialog>
     <!-- 以上为商品基础信息 -->
 
-    <ElDivider v-if="goodSizeFlag" />
+    <el-divider v-if="goodSizeFlag" />
 
     <div v-if="goodSizeFlag" class="goodsSizeBox">
       <div v-if="sizeInfo">
         <div style="margin:20px 0px;">
           <span style="margin-right:20px;">商品尺码</span>
-          <ElButton v-if="operateFlag != &quot;view&quot; && editSizeFlag" size="small" @click="editSizeConfirm">
+          <el-button v-if="operateFlag != &quot;view&quot; && editSizeFlag" size="small" @click="editSizeConfirm">
             <i class="el-icon-check" />确认
-          </ElButton>
-          <ElButton v-if="operateFlag != &quot;view&quot; && !editSizeFlag" size="small" @click="editSize">
+          </el-button>
+          <el-button v-if="operateFlag != &quot;view&quot; && !editSizeFlag" size="small" @click="editSize">
             <i class="el-icon-edit" />编辑
-          </ElButton>
+          </el-button>
         </div>
-        <ElTable
+        <el-table
           style="width: 100%"
           border
           :data="sizeInfo.resultMap"
           @current-change="changeRow"
         >
-          <ElTableColumn label="尺码\部位">
+          <el-table-column label="尺码\部位">
             <template slot-scope="scope">
               <span>
                 {{ scope.row.SIZE_NAME }}
               </span>
             </template>
-          </ElTableColumn>
-          <ElTableColumn
+          </el-table-column>
+          <el-table-column
             v-for="(item, index) in sizeInfo.sizeInfoVO.upTitle"
             :key="index" :label="item.value"
           >
@@ -1224,8 +1224,8 @@ export default {
               <input v-if="editSizeFlag" v-model="scope.row[item.key]" type="text" maxlength="8">
               <span v-else>{{ scope.row[item.key] }}</span>
             </template>
-          </ElTableColumn>
-        </ElTable>
+          </el-table-column>
+        </el-table>
         <div style="height:30px;" />
       </div>
       <div v-else>
@@ -1239,12 +1239,12 @@ export default {
     </div>
 
     <div class="saveBtnBox">
-      <ElButton v-if="operateFlag != &quot;view&quot;" size="small" icon="el-icon-check" type="primary" @click="saveGood('ruleForm')">
+      <el-button v-if="operateFlag != &quot;view&quot;" size="small" icon="el-icon-check" type="primary" @click="saveGood('ruleForm')">
         保存
-      </ElButton>
-      <ElButton v-if="operateFlag != &quot;view&quot;" size="small" icon="el-icon-position" type="primary" @click="releaseGood('ruleForm')">
+      </el-button>
+      <el-button v-if="operateFlag != &quot;view&quot;" size="small" icon="el-icon-position" type="primary" @click="releaseGood('ruleForm')">
         发布
-      </ElButton>
+      </el-button>
     </div>
   </div>
 </template>

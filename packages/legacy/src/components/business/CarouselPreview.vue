@@ -34,8 +34,8 @@ export default {
 </script>
 
 <template>
-  <ElTabs v-model="tabIndex" class="carousel" type="border-card">
-    <ElTabPane
+  <el-tabs v-model="tabIndex" class="carousel" type="border-card">
+    <el-tab-pane
       v-for="(item, index) of option"
       :key="index"
       class="flex-1 overflow-hidden"
@@ -43,15 +43,15 @@ export default {
     >
       <div class="flex flex-col h-full carousel-view">
         <div v-if="item.items[0]" class="overflow-hidden" :style="`flex-basis: ${item.divider * 100}%`">
-          <CarouselItemContent :item="item.items[0]" :map="fileMap" />
+          <carousel-item-content :item="item.items[0]" :map="fileMap" />
         </div>
         <div v-if="item.items[1]" class="overflow-hidden flex-1">
-          <CarouselItemContent :item="item.items[1]" :map="fileMap" />
+          <carousel-item-content :item="item.items[1]" :map="fileMap" />
         </div>
       </div>
-    </ElTabPane>
+    </el-tab-pane>
     <slot />
-  </ElTabs>
+  </el-tabs>
 </template>
 
 <style scoped lang="less">

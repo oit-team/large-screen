@@ -348,10 +348,10 @@ export default {
 </script>
 
 <template>
-  <PageContainer back-top>
-    <PageHeader :content="`${isEdit ? '编辑' : '新增'}房间`" />
+  <page-container back-top>
+    <page-header :content="`${isEdit ? '编辑' : '新增'}房间`" />
     <div class="flex">
-      <ElForm
+      <el-form
         ref="elForm"
         class="page-form"
         :model="formData"
@@ -361,27 +361,27 @@ export default {
         <div class="pb-2">
           基本信息
         </div>
-        <ElFormItem label="房间名称" prop="roomName">
-          <ElInput v-model="formData.roomName" clearable placeholder="请输入房间名称" />
-        </ElFormItem>
-        <ElFormItem label="日期" prop="time">
-          <ElDatePicker
+        <el-form-item label="房间名称" prop="roomName">
+          <el-input v-model="formData.roomName" clearable placeholder="请输入房间名称" />
+        </el-form-item>
+        <el-form-item label="日期" prop="time">
+          <el-date-picker
             v-model="formData.time" clearable end-placeholder="结束日期" format="yyyy/MM/dd HH:mm:ss"
             range-separator="-" start-placeholder="开始日期" type="datetimerange" value-format="yyyy/MM/dd HH:mm:ss"
           />
-        </ElFormItem>
-        <ElFormItem label="直播方式" prop="liveBroadcastType">
-          <ElSelect ref="liveBroadcastType" v-model="formData.liveBroadcastType" clearable placeholder="请选择直播方式">
-            <ElOption
+        </el-form-item>
+        <el-form-item label="直播方式" prop="liveBroadcastType">
+          <el-select ref="liveBroadcastType" v-model="formData.liveBroadcastType" clearable placeholder="请选择直播方式">
+            <el-option
               v-for="item in liveBroadcastTypeOptions"
               :key="item.typeValue"
               :label="item.typeName"
               :value="item.typeValue"
             />
-          </ElSelect>
-        </ElFormItem>
-        <ElFormItem label="主讲" prop="speaker">
-          <ElCascader
+          </el-select>
+        </el-form-item>
+        <el-form-item label="主讲" prop="speaker">
+          <el-cascader
             ref="speaker"
             v-model="formData.speaker"
             :disabled="!hasLiveBroadcastType"
@@ -390,7 +390,7 @@ export default {
             :props="speakerProps"
             clearable
           />
-        </ElFormItem>
+        </el-form-item>
         <!--        <el-form-item label="参与者" prop="participants"> -->
         <!--          <el-cascader -->
         <!--            v-model="formData.participants" -->
@@ -402,46 +402,46 @@ export default {
         <!--            clearable -->
         <!--          ></el-cascader> -->
         <!--        </el-form-item> -->
-        <ElFormItem label="附件" prop="resources">
-          <VcUpload v-bind="uploadOption" ref="upload">
-            <ElButton size="small" type="primary">
+        <el-form-item label="附件" prop="resources">
+          <vc-upload v-bind="uploadOption" ref="upload">
+            <el-button size="small" type="primary">
               点击上传
-            </ElButton>
+            </el-button>
             <div slot="tip" class="el-upload__tip">
               只能上传ppt/pptx文件，且不超过20MB
             </div>
-          </VcUpload>
-        </ElFormItem>
-        <ElFormItem size="large">
-          <ElButton icon="el-icon-check" type="primary" @click="submitForm">
+          </vc-upload>
+        </el-form-item>
+        <el-form-item size="large">
+          <el-button icon="el-icon-check" type="primary" @click="submitForm">
             保存
-          </ElButton>
-          <ElButton icon="el-icon-refresh-left" @click="resetForm">
+          </el-button>
+          <el-button icon="el-icon-refresh-left" @click="resetForm">
             重置
-          </ElButton>
-        </ElFormItem>
-      </ElForm>
+          </el-button>
+        </el-form-item>
+      </el-form>
 
       <div class="flex-1 px-1 lg:pl-2" style="min-width: 200px;">
         <div class="pb-2">
           参与者
         </div>
         <div class="flex pb-2">
-          <ElCheckbox
+          <el-checkbox
             class="px-2"
             :value="isCheckAll"
             border
             @click.native.prevent="switchCheckAll"
           >
             全选
-          </ElCheckbox>
-          <ElInput
+          </el-checkbox>
+          <el-input
             v-model="filterText"
             placeholder="搜索店铺数据"
             clearable
           />
         </div>
-        <ElTree
+        <el-tree
           ref="tree"
           :data="participantsOption"
           :props="participantsTreeProps"
@@ -455,7 +455,7 @@ export default {
         />
       </div>
     </div>
-  </PageContainer>
+  </page-container>
 </template>
 
 <style lang="less" scoped>

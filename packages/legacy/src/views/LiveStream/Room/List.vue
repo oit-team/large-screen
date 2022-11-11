@@ -153,13 +153,13 @@ export default {
 </script>
 
 <template>
-  <PageContainer>
-    <TablePage v-bind="tablePageOption" ref="page">
+  <page-container>
+    <table-page v-bind="tablePageOption" ref="page">
       <template slot="content:stateName" slot-scope="{ row }">
         <span :class="_stateClass(row.state)">{{ row.stateName }}</span>
       </template>
-    </TablePage>
-  </PageContainer>
+    </table-page>
+  </page-container>
 </template>
 
 <style scoped>

@@ -94,11 +94,11 @@ export default {
 </script>
 
 <template>
-  <PageContainer column>
-    <PageHeader content="上传文件" />
+  <page-container column>
+    <page-header content="上传文件" />
     <div class="flex overflow-hidden flex-1 mb-2">
       <div class="inline-flex flex-col h-full">
-        <VcUpload v-bind="uploadOption" ref="upload">
+        <vc-upload v-bind="uploadOption" ref="upload">
           <i class="el-icon-upload" />
           <div class="el-upload__text">
             将文件拖到此处，或<em>点击上传</em>
@@ -106,7 +106,7 @@ export default {
           <div class="el-upload__tip">
             只能上传图片或视频文件，单次提交最多{{ uploadOption.limit }}个，且不得超过{{ maxMB }}MB
           </div>
-        </VcUpload>
+        </vc-upload>
         <ul class="overflow-y-auto flex-1 mb-2 space-y-1 upload-list">
           <li
             v-for="(item, index) of uploadList"
@@ -128,16 +128,16 @@ export default {
                 @click.stop="removeFile(index, item)"
               />
             </div>
-            <ElProgress :show-text="false" :stroke-width="2" :percentage="item.percentage" />
+            <el-progress :show-text="false" :stroke-width="2" :percentage="item.percentage" />
           </li>
         </ul>
-        <ElButton type="primary" plain @click="submit()">
+        <el-button type="primary" plain @click="submit()">
           提交
-        </ElButton>
+        </el-button>
       </div>
       <div class="flex overflow-hidden flex-1 ml-2 rounded-lg border flex-center">
         <template v-if="selectedItem">
-          <ElImage
+          <el-image
             v-if="/image/.test(selectedItem.raw.type)"
             class="w-full h-full"
             :src="selectedItem.url"
@@ -150,10 +150,10 @@ export default {
             controls
           />
         </template>
-        <ElEmpty v-else description="未选中文件" />
+        <el-empty v-else description="未选中文件" />
       </div>
     </div>
-  </PageContainer>
+  </page-container>
 </template>
 
 <style scoped>

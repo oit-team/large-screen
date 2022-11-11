@@ -341,42 +341,42 @@ export default {
 
 <template>
   <div id="addBrand" class="pageCommonStyle">
-    <ElPageHeader content="编辑品牌" @back="goBack" />
-    <ElDivider />
+    <el-page-header content="编辑品牌" @back="goBack" />
+    <el-divider />
     <div class="content">
-      <ElForm ref="brandList" :model="brandList" :rules="rules" label-width="100px">
-        <ElFormItem label="品牌Logo">
-          <ElUpload
+      <el-form ref="brandList" :model="brandList" :rules="rules" label-width="100px">
+        <el-form-item label="品牌Logo">
+          <el-upload
             class="avatar-uploader"
             action="#"
             :show-file-list="false"
             :http-request="changeFile"
           >
             <img v-if="brandList.brandLogo" :src="brandList.brandLogo" class="imgLogo">
-            <ElButton v-if="brandList.brandLogo" class="upBtn">
+            <el-button v-if="brandList.brandLogo" class="upBtn">
               修改品牌Logo
-            </ElButton>
-            <ElButton v-else class="upBtn">
+            </el-button>
+            <el-button v-else class="upBtn">
               上传品牌Logo
-            </ElButton>
-          </ElUpload>
-        </ElFormItem>
-        <ElFormItem label="品牌状态">
-          <ElSwitch
+            </el-button>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="品牌状态">
+          <el-switch
             v-model="status"
             active-color="#4FD5AC"
             inactive-color="#e5e5e5"
           />
-        </ElFormItem>
-        <ElFormItem label="品牌名称" prop="brandName">
-          <ElInput v-model="brandList.brandName" placeholder="请输入品牌名称" autocomplete="off" style="width:60%;" />
-        </ElFormItem>
-        <ElFormItem label="品牌简称" prop="brandName">
-          <ElInput v-model="brandList.abbreviation" placeholder="请输入品牌简称" autocomplete="off" style="width:60%;" />
-        </ElFormItem>
+        </el-form-item>
+        <el-form-item label="品牌名称" prop="brandName">
+          <el-input v-model="brandList.brandName" placeholder="请输入品牌名称" autocomplete="off" style="width:60%;" />
+        </el-form-item>
+        <el-form-item label="品牌简称" prop="brandName">
+          <el-input v-model="brandList.abbreviation" placeholder="请输入品牌简称" autocomplete="off" style="width:60%;" />
+        </el-form-item>
 
-        <ElFormItem label="品牌入驻时间" prop="dueStartTime">
-          <ElDatePicker
+        <el-form-item label="品牌入驻时间" prop="dueStartTime">
+          <el-date-picker
             v-model="brandList.dueStartTime"
             style="width:60%;"
             type="date"
@@ -384,9 +384,9 @@ export default {
             format="yyyy 年 MM 月 dd 日"
             value-format="yyyy-MM-dd"
           />
-        </ElFormItem>
-        <ElFormItem label="品牌到期时间" prop="dueEndTime">
-          <ElDatePicker
+        </el-form-item>
+        <el-form-item label="品牌到期时间" prop="dueEndTime">
+          <el-date-picker
             v-model="brandList.dueEndTime"
             style="width:60%;"
             type="date"
@@ -394,52 +394,52 @@ export default {
             format="yyyy 年 MM 月 dd 日"
             value-format="yyyy-MM-dd"
           />
-        </ElFormItem>
-        <ElFormItem label="店铺总数量" prop="totalNumShop">
-          <ElInput v-model="brandList.totalNumShop" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入店铺总数量" autocomplete="off" style="width:60%;" />
-        </ElFormItem>
-        <ElFormItem label="S级人员数量">
-          <ElInput v-model="brandList.gradeS" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入S级人员数量" autocomplete="off" style="width:60%;" />
-        </ElFormItem>
-        <ElFormItem label="A级人员数量">
-          <ElInput v-model="brandList.gradeA" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入A级人员数量" autocomplete="off" style="width:60%;" />
-        </ElFormItem>
-        <ElFormItem label="B级人员数量">
-          <ElInput v-model="brandList.gradeB" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入B级人员数量" autocomplete="off" style="width:60%;" />
-        </ElFormItem>
-        <ElFormItem label="C级人员数量">
-          <ElInput v-model="brandList.gradeC" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入C级人员数量" autocomplete="off" style="width:60%;" />
-        </ElFormItem>
-        <ElFormItem label="联系人">
-          <ElInput v-model="brandList.contacts" placeholder="请输入联系人" autocomplete="off" style="width:60%;" />
-        </ElFormItem>
-        <ElFormItem label="电 话">
-          <ElInput v-model="brandList.telephone" placeholder="请输入电话" autocomplete="off" style="width:60%;" maxlength="11" oninput="value=value.replace(/[^\d]/g,'')" />
-        </ElFormItem>
-        <ElFormItem label="邮 箱">
-          <ElInput v-model="brandList.mailbox" placeholder="请输入邮箱" autocomplete="off" style="width:60%;" />
-        </ElFormItem>
-      </ElForm>
+        </el-form-item>
+        <el-form-item label="店铺总数量" prop="totalNumShop">
+          <el-input v-model="brandList.totalNumShop" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入店铺总数量" autocomplete="off" style="width:60%;" />
+        </el-form-item>
+        <el-form-item label="S级人员数量">
+          <el-input v-model="brandList.gradeS" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入S级人员数量" autocomplete="off" style="width:60%;" />
+        </el-form-item>
+        <el-form-item label="A级人员数量">
+          <el-input v-model="brandList.gradeA" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入A级人员数量" autocomplete="off" style="width:60%;" />
+        </el-form-item>
+        <el-form-item label="B级人员数量">
+          <el-input v-model="brandList.gradeB" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入B级人员数量" autocomplete="off" style="width:60%;" />
+        </el-form-item>
+        <el-form-item label="C级人员数量">
+          <el-input v-model="brandList.gradeC" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入C级人员数量" autocomplete="off" style="width:60%;" />
+        </el-form-item>
+        <el-form-item label="联系人">
+          <el-input v-model="brandList.contacts" placeholder="请输入联系人" autocomplete="off" style="width:60%;" />
+        </el-form-item>
+        <el-form-item label="电 话">
+          <el-input v-model="brandList.telephone" placeholder="请输入电话" autocomplete="off" style="width:60%;" maxlength="11" oninput="value=value.replace(/[^\d]/g,'')" />
+        </el-form-item>
+        <el-form-item label="邮 箱">
+          <el-input v-model="brandList.mailbox" placeholder="请输入邮箱" autocomplete="off" style="width:60%;" />
+        </el-form-item>
+      </el-form>
     </div>
     <div class="tableBox">
       <h3>功能付费授权</h3>
       <div>
-        <ElTable
+        <el-table
           :data="allPayMenuList"
           stripe
           border
         >
-          <ElTableColumn
+          <el-table-column
             prop="menuName"
             label="菜单名称"
             width="140"
           />
-          <ElTableColumn
+          <el-table-column
             prop="menuCode"
             label="菜单编码"
             width="140"
           />
-          <ElTableColumn
+          <el-table-column
             width="100"
             prop="type"
             label="所属类型"
@@ -447,12 +447,12 @@ export default {
             <template slot-scope="scope">
               <span>{{ scope.row.type | formatType }}</span>
             </template>
-          </ElTableColumn>
-          <ElTableColumn
+          </el-table-column>
+          <el-table-column
             label="付费可用时间"
           >
             <template slot-scope="scope">
-              <ElDatePicker
+              <el-date-picker
                 v-model="scope.row.serviceDate"
                 value-format="yyyy-MM-dd"
                 type="daterange"
@@ -462,18 +462,18 @@ export default {
                 @input="changeDate"
               />
             </template>
-          </ElTableColumn>
-        </ElTable>
+          </el-table-column>
+        </el-table>
       </div>
     </div>
 
     <div class="step">
-      <ElButton type="primary" @click="cancel">
+      <el-button type="primary" @click="cancel">
         取消
-      </ElButton>
-      <ElButton type="primary" @click="conserve('brandList')">
+      </el-button>
+      <el-button type="primary" @click="conserve('brandList')">
         保存
-      </ElButton>
+      </el-button>
     </div>
   </div>
 </template>

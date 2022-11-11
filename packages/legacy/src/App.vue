@@ -19,11 +19,11 @@ export default defineComponent({
 
 <template>
   <div id="legacy">
-    <Transition name="el-fade-in" mode="out-in">
-      <KeepAlive :include="include">
-        <RouterView />
-      </KeepAlive>
-    </Transition>
+    <transition name="el-fade-in" mode="out-in">
+      <keep-alive :include="include">
+        <router-view />
+      </keep-alive>
+    </transition>
   </div>
 </template>
 

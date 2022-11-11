@@ -228,7 +228,7 @@ export default {
 
 <template>
   <div class="table-page">
-    <SearchForm
+    <search-form
       v-bind="search"
       ref="search"
       :fields="innerFields"
@@ -240,7 +240,7 @@ export default {
       <div class="flex">
         <slot name="actions">
           <template v-for="(item, index) of actions">
-            <ElButton
+            <el-button
               v-if="!item.slot"
               :key="index"
               :icon="item.icon"
@@ -249,15 +249,15 @@ export default {
               @click="handleAction(item)"
             >
               {{ item.name }}
-            </ElButton>
+            </el-button>
             <slot v-else :name="`actions:${item.slot}`" />
           </template>
         </slot>
       </div>
-      <ElDivider />
+      <el-divider />
     </template>
 
-    <ElTable
+    <el-table
       ref="table"
       v-loading="loading"
       :data="table.data"
@@ -268,18 +268,18 @@ export default {
       @current-change="handleCurrentChange"
       @row-click="$emit('row-click', $event)"
     >
-      <ElTableColumn
+      <el-table-column
         v-if="table.selectionItem"
         align="center"
         width="50"
       >
         <template slot-scope="scope">
-          <ElRadio class="table-radio" :value="selectedItem" :label="scope.row">
+          <el-radio class="table-radio" :value="selectedItem" :label="scope.row">
             <span />
-          </ElRadio>
+          </el-radio>
         </template>
-      </ElTableColumn>
-      <ElTableColumn
+      </el-table-column>
+      <el-table-column
         v-if="table.selection"
         :selectable="table.selectable"
         align="center"
@@ -288,7 +288,7 @@ export default {
       />
       <template v-for="item in tableFields">
         <slot v-bind="item" :name="`column:${item.fieldKey}`">
-          <ElTableColumn
+          <el-table-column
             :label="item.fieldName"
             :prop="item.fieldKey"
             min-width="140"
@@ -300,10 +300,10 @@ export default {
                 {{ scope.row[item.fieldKey] }}
               </slot>
             </template>
-          </ElTableColumn>
+          </el-table-column>
         </slot>
       </template>
-      <ElTableColumn
+      <el-table-column
         v-if="table.actions && table.actions.buttons && table.actions.buttons.length"
         :width="(table.actions && table.actions.width) || 100"
         align="center"
@@ -312,14 +312,14 @@ export default {
       >
         <template slot-scope="scope">
           <slot v-bind="scope" name="rowActions">
-            <ElTooltip
+            <el-tooltip
               v-for="(btn, index) of table.actions.buttons"
               :key="index"
               :content="getContent(btn.tip, scope)"
               effect="dark"
               placement="top"
             >
-              <ElButton
+              <el-button
                 :class="btn.class"
                 :disabled="getContent(btn.disabled, scope)"
                 :icon="getContent(btn.icon, scope)"
@@ -328,13 +328,13 @@ export default {
                 size="mini"
                 @click="rowClick(btn, scope)"
               />
-            </ElTooltip>
+            </el-tooltip>
           </slot>
         </template>
-      </ElTableColumn>
-    </ElTable>
+      </el-table-column>
+    </el-table>
 
-    <ElPagination
+    <el-pagination
       ref="pager"
       :current-page.sync="innerPager.index"
       :page-size.sync="innerPager.size"

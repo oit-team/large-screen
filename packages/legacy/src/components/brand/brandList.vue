@@ -147,11 +147,11 @@ export default {
 <template>
   <div id="brandList" class="pageCommonStyle page-container text-sm">
     <div class="operateBtn">
-      <ElButton class="addBtnOnly" size="small" icon="el-icon-plus" type="success" @click="addBrand()">
+      <el-button class="addBtnOnly" size="small" icon="el-icon-plus" type="success" @click="addBrand()">
         新增品牌
-      </ElButton>
+      </el-button>
     </div>
-    <ElDivider />
+    <el-divider />
     <div class="content_body">
       <div class="content">
         <div
@@ -183,9 +183,9 @@ export default {
                 </div>
               </div>
               <div class="list_btn">
-                <ElTooltip class="item li" effect="dark" content="编辑品牌" placement="top">
+                <el-tooltip class="item li" effect="dark" content="编辑品牌" placement="top">
                   <i class="el-icon-edit editBtn" size="mini" type="primary" circle @click="editBrand(item)" />
-                </ElTooltip>
+                </el-tooltip>
                 <div class="delete el-icon-close" @click="delBrand(item)" />
               </div>
             </div>
@@ -351,7 +351,7 @@ export default {
               <div class="flex flex-col space-y-2">
                 <div>
                   商品：
-                  <ElButton
+                  <el-button
                     class="ml-1"
                     icon="el-icon-refresh"
                     circle
@@ -362,7 +362,7 @@ export default {
                 </div>
                 <div>
                   范围：
-                  <ElButton
+                  <el-button
                     class="ml-1"
                     icon="el-icon-refresh"
                     circle
@@ -373,7 +373,7 @@ export default {
                 </div>
                 <div>
                   规则：
-                  <ElButton
+                  <el-button
                     class="ml-1"
                     icon="el-icon-refresh"
                     circle

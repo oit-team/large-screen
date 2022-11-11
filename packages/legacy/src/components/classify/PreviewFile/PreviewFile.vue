@@ -45,7 +45,7 @@ export default {
 </script>
 
 <template>
-  <ElDialog
+  <el-dialog
     class="preview-file"
     :visible.sync="previewVisible"
     :title="previewItem ? previewItem.name : ''"
@@ -54,13 +54,13 @@ export default {
   >
     <template v-if="previewItem && lazy">
       <template v-if="previewItem.type === FILE_TYPE.IMAGE">
-        <ElImage class="file-res h-full" :src="previewItem.url" />
+        <el-image class="file-res h-full" :src="previewItem.url" />
       </template>
       <template v-if="previewItem.type === FILE_TYPE.VIDEO">
         <video class="file-res" controls :src="previewItem.url" />
       </template>
     </template>
-  </ElDialog>
+  </el-dialog>
 </template>
 
 <style scoped lang='less'>

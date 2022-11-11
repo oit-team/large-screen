@@ -2279,27 +2279,27 @@ export default {
 </script>
 
 <template>
-  <div id="brandInteManage" class="pageCommonStyle">
+  <div id="brandInteManage" class="pageCommonStyle page-container text-sm">
     <div class="leftTreeCon">
       <div class="btnBox">
-        <ElTooltip class="item" effect="dark" content="新增区域或店铺" placement="top">
-          <ElButton style="border-color: #FF8C7C;background: #FF8C7C;color:#fff;" class="delBtnOnly" icon="el-icon-plus" circle @click="addAreaOrShopFun" />
-        </ElTooltip>
-        <ElTooltip class="item" effect="dark" content="搜索" placement="top">
-          <ElButton type="primary" icon="el-icon-search" circle @click="changeOperate(1)" />
-        </ElTooltip>
-        <ElTooltip class="item" effect="dark" content="数据统计" placement="top">
-          <ElButton class="authBtnOnly" style="border-color: #FCCB02;background: #FCCB02;color:#fff;" icon="el-icon-s-data" circle @click="changeOperate(2)" />
-        </ElTooltip>
-        <ElTooltip class="item" effect="dark" content="导入店铺" placement="top">
-          <ElButton style="border-color: #4FD5AC;background: #4FD5AC;color:#fff;" class="addBtnOnly" icon="el-icon-download" circle @click="importList(&quot;1&quot;)" />
-        </ElTooltip>
-        <ElTooltip class="item" effect="dark" content="导出店铺" placement="top">
-          <ElButton style="border-color: #ADA3EE;background: #ADA3EE;color:#fff;" class="downLoadBtnOnly" icon="el-icon-upload2" circle @click="exportList('2')" />
-        </ElTooltip>
+        <el-tooltip class="item" effect="dark" content="新增区域或店铺" placement="top">
+          <el-button style="border-color: #FF8C7C;background: #FF8C7C;color:#fff;" class="delBtnOnly" icon="el-icon-plus" circle @click="addAreaOrShopFun" />
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="搜索" placement="top">
+          <el-button type="primary" icon="el-icon-search" circle @click="changeOperate(1)" />
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="数据统计" placement="top">
+          <el-button class="authBtnOnly" style="border-color: #FCCB02;background: #FCCB02;color:#fff;" icon="el-icon-s-data" circle @click="changeOperate(2)" />
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="导入店铺" placement="top">
+          <el-button style="border-color: #4FD5AC;background: #4FD5AC;color:#fff;" class="addBtnOnly" icon="el-icon-download" circle @click="importList(&quot;1&quot;)" />
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="导出店铺" placement="top">
+          <el-button style="border-color: #ADA3EE;background: #ADA3EE;color:#fff;" class="downLoadBtnOnly" icon="el-icon-upload2" circle @click="exportList('2')" />
+        </el-tooltip>
       </div>
       <div v-if="showPanel && operateLabel == 1" class="searchIpt">
-        <ElInput
+        <el-input
           v-model="filterText"
           placeholder="关键字过滤"
         />
@@ -2308,17 +2308,17 @@ export default {
         <div class="item">
           <div class="titleBox">
             <span class="titltTip" /><span>区域</span><span class="countNums">({{ orgCount }})</span>
-            <ElTooltip class="item" effect="dark" content="区域总数" placement="top">
+            <el-tooltip class="item" effect="dark" content="区域总数" placement="top">
               <i style="font-size:14px;" class="el-icon-question" />
-            </ElTooltip>
+            </el-tooltip>
           </div>
         </div>
         <div class="item">
           <div class="titleBox">
             <span class="titltTip" /><span>店铺</span><span class="countNums">({{ shopCountNum }})</span>
-            <ElTooltip class="item" effect="dark" content="SABC为店铺等级，其后数字为对应等级店铺数量" placement="top">
+            <el-tooltip class="item" effect="dark" content="SABC为店铺等级，其后数字为对应等级店铺数量" placement="top">
               <i style="font-size:14px;" class="el-icon-question" />
-            </ElTooltip>
+            </el-tooltip>
           </div>
           <div class="numMain">
             <span v-for="(item, index) in shopCount" :key="index" class="numsBox">
@@ -2331,9 +2331,9 @@ export default {
         <div class="item">
           <div class="titleBox">
             <span class="titltTip" /><span>用户</span><span class="countNums">({{ userCountNum }})</span>
-            <ElTooltip class="item" effect="dark" content="APP为app端用户，HOME为管家端用户，A+H为同时拥有APP和管家端权限的用户" placement="top">
+            <el-tooltip class="item" effect="dark" content="APP为app端用户，HOME为管家端用户，A+H为同时拥有APP和管家端权限的用户" placement="top">
               <i style="font-size:14px;" class="el-icon-question" />
-            </ElTooltip>
+            </el-tooltip>
           </div>
           <div class="numMain">
             <span v-for="(item, index) in userCount" :key="index" class="numsBox">
@@ -2345,7 +2345,7 @@ export default {
         </div>
       </div>
       <div ref="orgTree" class="orgTreeBox">
-        <ElTree
+        <el-tree
           v-if="orgList && orgList.length > 0"
           ref="tree"
           :data="orgList"
@@ -2373,7 +2373,7 @@ export default {
             <span>({{ data.member }})</span>
             <span v-if="data.isShop == &quot;2&quot;" style="margin-left:30px;" @click.stop="getTreeOrgList()"><i style="font-size:16px;" class="el-icon-refresh" /></span>
           </div>
-        </ElTree>
+        </el-tree>
         <div v-else>
           <div v-if="!orgListLoading" style="line-height:200px;">
             加载中...
@@ -2393,18 +2393,18 @@ export default {
         <div :class="activeTab == 1 ? 'active' : ''" class="tabItem" @click="clickUserTab(1)">
           用户列表
         </div>
-        <div :class="activeTab == 2 ? 'active' : ''" class="tabItem" @click="clickUserTab(2)">
+        <!-- <div :class="activeTab == 2 ? 'active' : ''" class="tabItem" @click="clickUserTab(2)">
           考核下发
         </div>
         <div :class="activeTab == 3 ? 'active' : ''" class="tabItem" @click="newClickUserTab(3)">
           设备管理
-        </div>
-        <div :class="activeTab == 4 ? 'active' : ''" class="tabItem" @click="newClickUserTab(4)">
+        </div> -->
+        <!-- <div :class="activeTab == 4 ? 'active' : ''" class="tabItem" @click="newClickUserTab(4)">
           终端搭配
-        </div>
+        </div> -->
       </div>
       <!-- 组件 -->
-      <CommonSearch
+      <common-search
         v-if="activeTab == 1 || activeTab == 2"
         ref="child"
         :head-tit-arr="headTitArr"
@@ -2420,23 +2420,23 @@ export default {
       <div v-if="activeTab == 1" class="userListBox">
         <div class="operateBtn">
           <!-- isShop  0 区域 1 店铺  2 品牌 -->
-          <ElButton v-if="isShop != '2'" size="small" icon="el-icon-plus" type="success" style="background-color:#4FD5AC;border-color: #4FD5AC;" class="addBtnOnly" @click="addUser">
+          <el-button v-if="isShop != '2'" size="small" icon="el-icon-plus" type="success" style="background-color:#4FD5AC;border-color: #4FD5AC;" class="addBtnOnly" @click="addUser">
             新增用户
-          </ElButton>
-          <ElTooltip class="item" effect="dark" content="只有管家用户和APP及管家用户才可以授权" placement="top-start">
-            <ElButton size="small" icon="el-icon-user" type="warning" class="authBtnOnly" @click="batchEmpower">
+          </el-button>
+          <el-tooltip class="item" effect="dark" content="只有管家用户和APP及管家用户才可以授权" placement="top-start">
+            <el-button size="small" icon="el-icon-user" type="warning" class="authBtnOnly" @click="batchEmpower">
               角色授权
-            </ElButton>
-          </ElTooltip>
-          <ElButton size="small" icon="el-icon-download" style="background:#4FD5AC;border-color: #4FD5AC;color:#fff;" class="addBtnOnly" @click="importList(&quot;2&quot;)">
+            </el-button>
+          </el-tooltip>
+          <el-button size="small" icon="el-icon-download" style="background:#4FD5AC;border-color: #4FD5AC;color:#fff;" class="addBtnOnly" @click="importList(&quot;2&quot;)">
             导入用户
-          </ElButton>
-          <ElButton size="small" icon="el-icon-upload2" style="background:#ADA3EE;border-color: #ADA3EE;color:#fff;" class="downLoadBtnOnly" @click="exportList('1')">
+          </el-button>
+          <el-button size="small" icon="el-icon-upload2" style="background:#ADA3EE;border-color: #ADA3EE;color:#fff;" class="downLoadBtnOnly" @click="exportList('1')">
             导出用户
-          </ElButton>
+          </el-button>
         </div>
-        <ElDivider />
-        <ElTable
+        <el-divider />
+        <el-table
           ref="multipleTable"
           v-loading="loading"
           element-loading-text="小易拼命加载中..."
@@ -2456,14 +2456,14 @@ export default {
           <template slot="empty">
             <p>{{ tableEmptyText }}</p>
           </template>
-          <ElTableColumn
+          <el-table-column
             type="selection"
             :reserve-selection="true"
             align="center"
             :selectable="selectable"
             width="55"
           />
-          <ElTableColumn
+          <el-table-column
             v-for="(item, index) in headTitArr"
             :key="index"
             show-overflow-tooltip
@@ -2472,38 +2472,38 @@ export default {
             :prop="item.fieldKey"
             :label="item.fieldName"
           />
-          <ElTableColumn
+          <el-table-column
             fixed="right"
             label="操作"
             style="border-lrft:none;"
             width="140"
           >
             <template slot-scope="scope">
-              <ElTooltip class="item" effect="dark" content="编辑用户" placement="top">
-                <ElButton size="mini" type="primary" class="editBtnOnly" icon="el-icon-edit" circle @click="editUser(scope.row, scope.$index)" />
-              </ElTooltip>
-              <ElTooltip class="item" effect="dark" content="删除用户" placement="top">
-                <ElButton size="mini" type="danger" class="delBtnOnly" icon="el-icon-delete" circle @click="delUser(scope.row, scope.$index)" />
-              </ElTooltip>
-              <ElTooltip class="item" effect="dark" content="禁用用户" placement="top">
-                <ElButton v-if="scope.row.status == '0'" class="addBtnOnly" size="mini" type="success" icon="el-icon-open" circle @click="setUserDisabled(scope.row, scope.$index)" />
-              </ElTooltip>
-              <ElTooltip class="item" effect="dark" content="启用用户" placement="top">
-                <ElButton v-if="scope.row.status == '1'" style="background-color:#ccc;border-color: #ccc;" size="mini" type="info" icon="el-icon-turn-off" circle @click="setUserDisabled(scope.row, scope.$index)" />
-              </ElTooltip>
+              <el-tooltip class="item" effect="dark" content="编辑用户" placement="top">
+                <el-button size="mini" type="primary" class="editBtnOnly" icon="el-icon-edit" circle @click="editUser(scope.row, scope.$index)" />
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="删除用户" placement="top">
+                <el-button size="mini" type="danger" class="delBtnOnly" icon="el-icon-delete" circle @click="delUser(scope.row, scope.$index)" />
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="禁用用户" placement="top">
+                <el-button v-if="scope.row.status == '0'" class="addBtnOnly" size="mini" type="success" icon="el-icon-open" circle @click="setUserDisabled(scope.row, scope.$index)" />
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="启用用户" placement="top">
+                <el-button v-if="scope.row.status == '1'" style="background-color:#ccc;border-color: #ccc;" size="mini" type="info" icon="el-icon-turn-off" circle @click="setUserDisabled(scope.row, scope.$index)" />
+              </el-tooltip>
             </template>
-          </ElTableColumn>
-        </ElTable>
+          </el-table-column>
+        </el-table>
       </div>
       <div v-if="activeTab == 2" class="examListBox">
         <div class="operateBtn">
-          <ElTooltip class="item" effect="dark" content="请先选择要进行任务下发的区域或者店铺哦" placement="top-start">
-            <ElButton size="small" icon="el-icon-user" type="warning" class="authBtnOnly" @click="batchIssueTaskFun()">
+          <el-tooltip class="item" effect="dark" content="请先选择要进行任务下发的区域或者店铺哦" placement="top-start">
+            <el-button size="small" icon="el-icon-user" type="warning" class="authBtnOnly" @click="batchIssueTaskFun()">
               任务下发
-            </ElButton>
-          </ElTooltip>
+            </el-button>
+          </el-tooltip>
         </div>
-        <ElTable
+        <el-table
           ref="taskTable"
           v-loading="loading"
           element-loading-text="小易拼命加载中..."
@@ -2522,13 +2522,13 @@ export default {
           <template slot="empty">
             <p>{{ tableEmptyText }}</p>
           </template>
-          <ElTableColumn
+          <el-table-column
             align="center"
             type="selection"
             width="50"
             :reserve-selection="true"
           />
-          <ElTableColumn
+          <el-table-column
             v-if="isShop != &quot;2&quot;"
             prop="issueFlag"
             label="下发记录"
@@ -2545,8 +2545,8 @@ export default {
                 {{ scope.row.issueFlag | issueFlagFormat }}
               </div>
             </template>
-          </ElTableColumn>
-          <ElTableColumn
+          </el-table-column>
+          <el-table-column
             v-for="(item, index) in headTitArr"
             :key="index"
             show-overflow-tooltip
@@ -2556,7 +2556,7 @@ export default {
             :label="item.fieldName"
           />
 
-          <ElTableColumn
+          <el-table-column
             fixed="right"
             label="操作"
             style="border-lrft:none;"
@@ -2564,29 +2564,29 @@ export default {
           >
             <!-- 任务详情：el-icon-notebook-2       考核详情：el-icon-s-data，颜色：#FCCB02 -->
             <template slot-scope="scope">
-              <ElTooltip class="item" effect="dark" content="考核详情" placement="top">
-                <ElButton size="mini" type="primary" icon="el-icon-s-data" circle class="editBtnOnly" @click="viewTaskAssessment(scope.row, scope.$index)" />
-              </ElTooltip>
-              <ElTooltip class="item" effect="dark" content="任务详情" placement="top">
-                <ElButton size="mini" type="primary" icon="el-icon-notebook-2" circle class="editBtnOnly" @click="viewTaskDetail(scope.row, scope.$index)" />
-              </ElTooltip>
-              <ElTooltip class="item" effect="dark" content="任务下发" placement="top">
-                <ElButton size="mini" icon="el-icon-bottom-right" circle class="authBtnOnly" style="border-color: #FCCB02;background: #FCCB02;color:#fff;" @click="issueTask(scope.row, scope.$index)" />
-              </ElTooltip>
+              <el-tooltip class="item" effect="dark" content="考核详情" placement="top">
+                <el-button size="mini" type="primary" icon="el-icon-s-data" circle class="editBtnOnly" @click="viewTaskAssessment(scope.row, scope.$index)" />
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="任务详情" placement="top">
+                <el-button size="mini" type="primary" icon="el-icon-notebook-2" circle class="editBtnOnly" @click="viewTaskDetail(scope.row, scope.$index)" />
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="任务下发" placement="top">
+                <el-button size="mini" icon="el-icon-bottom-right" circle class="authBtnOnly" style="border-color: #FCCB02;background: #FCCB02;color:#fff;" @click="issueTask(scope.row, scope.$index)" />
+              </el-tooltip>
             </template>
-          </ElTableColumn>
-        </ElTable>
+          </el-table-column>
+        </el-table>
       </div>
       <!-- 第三页 -->
       <div v-if="activeTab == 3" class="examListBox">
-        <ManagementPage ref="pages" :administrations="administration" />
+        <management-page ref="pages" :administrations="administration" />
       </div>
       <!-- 第四页 -->
       <div v-if="activeTab == 4" class="collBox" style="height:calc(100% - 30px)">
-        <CollocationPage ref="pages" :node-id="nodeId" :is-shop="isShop" />
+        <collocation-page ref="pages" :node-id="nodeId" :is-shop="isShop" />
       </div>
       <!-- 分页 -->
-      <ElPagination
+      <el-pagination
         v-if="activeTab == 1 || activeTab == 2"
         :current-page="pageNum"
         :page-sizes="[10, 20, 30]"
@@ -2598,215 +2598,215 @@ export default {
       />
     </div>
 
-    <ElDialog
+    <el-dialog
       title="操作"
       :visible.sync="handleClickFlag"
       center
       width="270px"
     >
-      <ElButton v-if="isShop == '0'" size="small" @click="clickAdd">
+      <el-button v-if="isShop == '0'" size="small" @click="clickAdd">
         新 增
-      </ElButton>
-      <ElButton size="small" @click="clickEdit">
+      </el-button>
+      <el-button size="small" @click="clickEdit">
         编 辑
-      </ElButton>
-      <ElButton size="small" @click="clickDel">
+      </el-button>
+      <el-button size="small" @click="clickDel">
         删 除
-      </ElButton>
-    </ElDialog>
+      </el-button>
+    </el-dialog>
 
     <!-- 新增、编辑店铺 -->
-    <ElDrawer
+    <el-drawer
       :title="editFlag ? '编辑' : '新增'"
       :visible.sync="shopDialog"
       :wrapper-closable="false"
       direction="rtl"
       size="40%"
     >
-      <div class="demo-drawer__content">
-        <ElTabs v-if="!editFlag" v-model="activeName" tab-position="top" style="height:auto;">
-          <ElTabPane :key="1" label="新增区域" name="area">
+      <div class="demo-drawer__content px-3 py-4">
+        <el-tabs v-if="!editFlag" v-model="activeName" tab-position="top" style="height:auto;">
+          <el-tab-pane :key="1" label="新增区域" name="area">
             <!-- 区域表单 -->
-            <ElForm ref="areaForm" :model="areaForm" :rules="areaRules">
-              <ElFormItem label="区域名称" :label-width="formLabelWidth" prop="areaName">
-                <ElInput v-model="areaForm.areaName" autocomplete="off" placeholder="请输入区域名称" />
-              </ElFormItem>
+            <el-form ref="areaForm" :model="areaForm" :rules="areaRules">
+              <el-form-item label="区域名称" :label-width="formLabelWidth" prop="areaName">
+                <el-input v-model="areaForm.areaName" autocomplete="off" placeholder="请输入区域名称" />
+              </el-form-item>
               <!-- <el-form-item label="区域编码" :label-width="formLabelWidth">
                 <el-input v-model="areaForm.areaCode" autocomplete="off"></el-input>
               </el-form-item> -->
-              <ElFormItem label="区域负责人" :label-width="formLabelWidth">
-                <ElSelect v-model="areaForm.dutyId" filterable placeholder="请选择区域负责人" @change="changeAreaManger">
-                  <ElOption
+              <el-form-item label="区域负责人" :label-width="formLabelWidth">
+                <el-select v-model="areaForm.dutyId" filterable placeholder="请选择区域负责人" @change="changeAreaManger">
+                  <el-option
                     v-for="item in areaManagerList"
                     :key="item.id"
                     :label="item.userName"
                     :value="item.id"
                   />
-                </ElSelect>
-              </ElFormItem>
-            </ElForm>
+                </el-select>
+              </el-form-item>
+            </el-form>
             <div class="demo-drawer__footer">
-              <ElButton size="small" @click="cancelAdd('areaForm')">
+              <el-button size="small" @click="cancelAdd('areaForm')">
                 取 消
-              </ElButton>
-              <ElButton size="small" type="primary" @click="conAddArea('areaForm')">
+              </el-button>
+              <el-button size="small" type="primary" @click="conAddArea('areaForm')">
                 确 认
-              </ElButton>
+              </el-button>
             </div>
-          </ElTabPane>
-          <ElTabPane :key="2" label="新增店铺" name="shop">
+          </el-tab-pane>
+          <el-tab-pane :key="2" label="新增店铺" name="shop">
             <!-- 店铺表单 -->
-            <ElForm ref="shopForm" :model="shopForm" :rules="shopRules">
-              <ElFormItem label="店铺名称" :label-width="formLabelWidth" prop="shopName">
-                <ElInput v-model="shopForm.shopName" autocomplete="off" placeholder="请输入店铺名称" />
-              </ElFormItem>
-              <ElFormItem label="店铺地址" :label-width="formLabelWidth" prop="address">
-                <ElInput v-model="shopForm.address" autocomplete="off" maxlength="32" placeholder="请输入店铺地址" />
-              </ElFormItem>
-              <ElFormItem label="店铺等级" :label-width="formLabelWidth" prop="gradeId">
-                <ElSelect v-model="shopForm.gradeId" placeholder="请选择店铺等级">
-                  <ElOption label="S" value="S" />
-                  <ElOption label="A" value="A" />
-                  <ElOption label="B" value="B" />
-                  <ElOption label="C" value="C" />
-                </ElSelect>
-              </ElFormItem>
+            <el-form ref="shopForm" :model="shopForm" :rules="shopRules">
+              <el-form-item label="店铺名称" :label-width="formLabelWidth" prop="shopName">
+                <el-input v-model="shopForm.shopName" autocomplete="off" placeholder="请输入店铺名称" />
+              </el-form-item>
+              <el-form-item label="店铺地址" :label-width="formLabelWidth" prop="address">
+                <el-input v-model="shopForm.address" autocomplete="off" maxlength="32" placeholder="请输入店铺地址" />
+              </el-form-item>
+              <el-form-item label="店铺等级" :label-width="formLabelWidth" prop="gradeId">
+                <el-select v-model="shopForm.gradeId" placeholder="请选择店铺等级">
+                  <el-option label="S" value="S" />
+                  <el-option label="A" value="A" />
+                  <el-option label="B" value="B" />
+                  <el-option label="C" value="C" />
+                </el-select>
+              </el-form-item>
 
-              <ElFormItem label="联系电话" :label-width="formLabelWidth" prop="telephone">
-                <ElInput v-model="shopForm.telephone" autocomplete="off" placeholder="请输入联系电话" />
-              </ElFormItem>
+              <el-form-item label="联系电话" :label-width="formLabelWidth" prop="telephone">
+                <el-input v-model="shopForm.telephone" autocomplete="off" placeholder="请输入联系电话" />
+              </el-form-item>
 
-              <ElFormItem label="开店日期" :label-width="formLabelWidth" prop="openDate">
-                <ElDatePicker
+              <el-form-item label="开店日期" :label-width="formLabelWidth" prop="openDate">
+                <el-date-picker
                   v-model="shopForm.openDate"
                   type="date"
                   value-format="yyyy-MM-dd"
                   placeholder="选择日期"
                 />
-              </ElFormItem>
-              <ElFormItem label="店铺编码" :label-width="formLabelWidth" prop="shopCode">
-                <ElInput v-model="shopForm.shopCode" autocomplete="off" placeholder="请输入店铺编码" />
-              </ElFormItem>
+              </el-form-item>
+              <el-form-item label="店铺编码" :label-width="formLabelWidth" prop="shopCode">
+                <el-input v-model="shopForm.shopCode" autocomplete="off" placeholder="请输入店铺编码" />
+              </el-form-item>
 
-              <ElFormItem label="所属区域" :label-width="formLabelWidth">
-                <ElSelect v-model="shopForm.orgStId" filterable placeholder="请选择所属区域" @change="changeArea">
-                  <ElOption
+              <el-form-item label="所属区域" :label-width="formLabelWidth">
+                <el-select v-model="shopForm.orgStId" filterable placeholder="请选择所属区域" @change="changeArea">
+                  <el-option
                     v-for="item in areaList"
                     :key="item.id"
                     :label="item.osName"
                     :value="item.id"
                   />
-                </ElSelect>
-              </ElFormItem>
-            </ElForm>
+                </el-select>
+              </el-form-item>
+            </el-form>
             <div class="demo-drawer__footer">
-              <ElButton size="small" @click="cancelAdd('shopForm')">
+              <el-button size="small" @click="cancelAdd('shopForm')">
                 取 消
-              </ElButton>
-              <ElButton size="small" type="primary" @click="conAddShop('shopForm')">
+              </el-button>
+              <el-button size="small" type="primary" @click="conAddShop('shopForm')">
                 确 认
-              </ElButton>
+              </el-button>
             </div>
-          </ElTabPane>
-        </ElTabs>
+          </el-tab-pane>
+        </el-tabs>
 
-        <ElTabs v-else v-model="activeName" tab-position="top" style="height:auto;">
-          <ElTabPane v-if="editArea" label="编辑区域" name="area">
+        <el-tabs v-else v-model="activeName" tab-position="top" style="height:auto;">
+          <el-tab-pane v-if="editArea" label="编辑区域" name="area">
             <!-- 区域表单 -->
-            <ElForm ref="areaForm" :model="areaForm" :rules="areaRules">
-              <ElFormItem label="区域编码" :label-width="formLabelWidth">
-                <ElInput v-model="areaForm.areaCode" disabled autocomplete="off" />
-              </ElFormItem>
-              <ElFormItem label="区域名称" :label-width="formLabelWidth" prop="areaName">
-                <ElInput v-model="areaForm.areaName" autocomplete="off" placeholder="请输入区域名称" />
-              </ElFormItem>
-              <ElFormItem label="区域负责人" :label-width="formLabelWidth">
-                <ElSelect v-model="areaForm.dutyId" filterable placeholder="请选择区域负责人" @change="changeAreaManger">
-                  <ElOption
+            <el-form ref="areaForm" :model="areaForm" :rules="areaRules">
+              <el-form-item label="区域编码" :label-width="formLabelWidth">
+                <el-input v-model="areaForm.areaCode" disabled autocomplete="off" />
+              </el-form-item>
+              <el-form-item label="区域名称" :label-width="formLabelWidth" prop="areaName">
+                <el-input v-model="areaForm.areaName" autocomplete="off" placeholder="请输入区域名称" />
+              </el-form-item>
+              <el-form-item label="区域负责人" :label-width="formLabelWidth">
+                <el-select v-model="areaForm.dutyId" filterable placeholder="请选择区域负责人" @change="changeAreaManger">
+                  <el-option
                     v-for="item in areaManagerList"
                     :key="item.id"
                     :label="item.userName"
                     :value="item.id"
                   />
-                </ElSelect>
-              </ElFormItem>
-            </ElForm>
+                </el-select>
+              </el-form-item>
+            </el-form>
             <div class="demo-drawer__footer">
-              <ElButton size="small" @click="cancelAdd('areaForm')">
+              <el-button size="small" @click="cancelAdd('areaForm')">
                 取 消
-              </ElButton>
-              <ElButton size="small" type="primary" @click="conEditAreaOrShop('areaForm')">
+              </el-button>
+              <el-button size="small" type="primary" @click="conEditAreaOrShop('areaForm')">
                 确 认
-              </ElButton>
+              </el-button>
             </div>
-          </ElTabPane>
-          <ElTabPane v-if="editShop" label="编辑店铺" name="shop">
+          </el-tab-pane>
+          <el-tab-pane v-if="editShop" label="编辑店铺" name="shop">
             <!-- 店铺表单 -->
-            <ElForm ref="shopForm" :model="shopForm" :rules="shopRules">
-              <ElFormItem label="店铺名称" :label-width="formLabelWidth" prop="shopName">
-                <ElInput v-model="shopForm.shopName" autocomplete="off" placeholder="请输入店铺名称" />
-              </ElFormItem>
-              <ElFormItem label="店铺地址" :label-width="formLabelWidth" prop="address">
-                <ElInput v-model="shopForm.address" autocomplete="off" maxlength="32" placeholder="请输入店铺地址" />
-              </ElFormItem>
-              <ElFormItem label="店铺等级" :label-width="formLabelWidth" prop="gradeId">
-                <ElSelect v-model="shopForm.gradeId" placeholder="请选择店铺等级">
-                  <ElOption label="S" value="S" />
-                  <ElOption label="A" value="A" />
-                  <ElOption label="B" value="B" />
-                  <ElOption label="C" value="C" />
-                </ElSelect>
-              </ElFormItem>
-              <ElFormItem label="联系电话" :label-width="formLabelWidth" prop="telephone">
-                <ElInput v-model="shopForm.telephone" autocomplete="off" placeholder="请输入店铺联系电话" />
-              </ElFormItem>
+            <el-form ref="shopForm" :model="shopForm" :rules="shopRules">
+              <el-form-item label="店铺名称" :label-width="formLabelWidth" prop="shopName">
+                <el-input v-model="shopForm.shopName" autocomplete="off" placeholder="请输入店铺名称" />
+              </el-form-item>
+              <el-form-item label="店铺地址" :label-width="formLabelWidth" prop="address">
+                <el-input v-model="shopForm.address" autocomplete="off" maxlength="32" placeholder="请输入店铺地址" />
+              </el-form-item>
+              <el-form-item label="店铺等级" :label-width="formLabelWidth" prop="gradeId">
+                <el-select v-model="shopForm.gradeId" placeholder="请选择店铺等级">
+                  <el-option label="S" value="S" />
+                  <el-option label="A" value="A" />
+                  <el-option label="B" value="B" />
+                  <el-option label="C" value="C" />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="联系电话" :label-width="formLabelWidth" prop="telephone">
+                <el-input v-model="shopForm.telephone" autocomplete="off" placeholder="请输入店铺联系电话" />
+              </el-form-item>
 
-              <ElFormItem label="开店日期" :label-width="formLabelWidth" prop="openDate">
-                <ElDatePicker
+              <el-form-item label="开店日期" :label-width="formLabelWidth" prop="openDate">
+                <el-date-picker
                   v-model="shopForm.openDate"
                   type="date"
                   value-format="yyyy-MM-dd"
                   placeholder="选择日期"
                 />
-              </ElFormItem>
-              <ElFormItem label="店铺编码" :label-width="formLabelWidth" prop="shopCode">
-                <ElInput v-model="shopForm.shopCode" autocomplete="off" placeholder="请输入店铺编码" />
-              </ElFormItem>
+              </el-form-item>
+              <el-form-item label="店铺编码" :label-width="formLabelWidth" prop="shopCode">
+                <el-input v-model="shopForm.shopCode" autocomplete="off" placeholder="请输入店铺编码" />
+              </el-form-item>
 
-              <ElFormItem label="所属区域" :label-width="formLabelWidth">
-                <ElSelect v-model="shopForm.orgStId" filterable placeholder="请选择所属区域" @change="changeArea">
-                  <ElOption
+              <el-form-item label="所属区域" :label-width="formLabelWidth">
+                <el-select v-model="shopForm.orgStId" filterable placeholder="请选择所属区域" @change="changeArea">
+                  <el-option
                     v-for="item in areaList"
                     :key="item.id"
                     :label="item.osName"
                     :value="item.id"
                   />
-                </ElSelect>
-              </ElFormItem>
-            </ElForm>
+                </el-select>
+              </el-form-item>
+            </el-form>
             <div class="demo-drawer__footer">
-              <ElButton size="small" @click="cancelAdd('shopForm')">
+              <el-button size="small" @click="cancelAdd('shopForm')">
                 取 消
-              </ElButton>
-              <ElButton size="small" type="primary" @click="conEditAreaOrShop('shopForm')">
+              </el-button>
+              <el-button size="small" type="primary" @click="conEditAreaOrShop('shopForm')">
                 确 认
-              </ElButton>
+              </el-button>
             </div>
-          </ElTabPane>
-        </ElTabs>
+          </el-tab-pane>
+        </el-tabs>
       </div>
-    </ElDrawer>
+    </el-drawer>
 
     <!-- 批量授权 -->
-    <ElDrawer
+    <el-drawer
       title="角色授权"
       :visible.sync="batchPowerFlag"
       :wrapper-closable="false"
       direction="rtl"
       size="40%"
     >
-      <div class="demo-drawer__content">
-        <ElTable
+      <div class="demo-drawer__content px-3 py-4">
+        <el-table
           ref="roleMultipleTable"
           :data="rolesList"
           tooltip-effect="dark"
@@ -2815,44 +2815,44 @@ export default {
           @select="changeSelectRole"
           @select-all="selectAllRole"
         >
-          <ElTableColumn
+          <el-table-column
             prop="id" align="center"
             type="selection"
             width="50"
           />
-          <ElTableColumn
+          <el-table-column
             prop="roleName"
             label="角色名"
             show-overflow-tooltip
           />
-          <ElTableColumn
+          <el-table-column
             prop="roleRemark"
             label="角色描述"
             show-overflow-tooltip
           />
-          <ElTableColumn
+          <el-table-column
             prop="roleCode"
             label="角色编码"
             show-overflow-tooltip
           />
-        </ElTable>
+        </el-table>
         <div class="roleTips">
           <i class="el-icon-magic-stick" style="font-size:16px;margin-right:6px;" />选择单用户时，可查看该用户已授权的角色。
         </div>
 
         <div style="margin-top: 20px">
-          <ElButton size="small" @click="cancelBatch()">
+          <el-button size="small" @click="cancelBatch()">
             取 消
-          </ElButton>
-          <ElButton size="small" type="primary" @click="confirmBatch()">
+          </el-button>
+          <el-button size="small" type="primary" @click="confirmBatch()">
             确 认
-          </ElButton>
+          </el-button>
         </div>
       </div>
-    </ElDrawer>
+    </el-drawer>
 
     <!-- 任务下发配置 -->
-    <ElDrawer
+    <el-drawer
       title="任务下发配置"
       :visible.sync="taskIssueFlag"
       :before-close="handleClose"
@@ -2860,10 +2860,10 @@ export default {
       direction="rtl"
       size="40%"
     >
-      <div class="demo-drawer__content">
-        <ElForm ref="taskForm" :model="taskForm" :rules="taskFormRules">
-          <ElFormItem label="任务时间" :label-width="formLabelWidth" prop="taskTime">
-            <ElDatePicker
+      <div class="demo-drawer__content px-3 py-4">
+        <el-form ref="taskForm" :model="taskForm" :rules="taskFormRules">
+          <el-form-item label="任务时间" :label-width="formLabelWidth" prop="taskTime">
+            <el-date-picker
               v-model="taskForm.taskTime"
               type="daterange"
               value-format="yyyy-MM-dd"
@@ -2872,20 +2872,20 @@ export default {
               end-placeholder="结束日期"
               @change="changeTaskTime"
             />
-          </ElFormItem>
-          <ElFormItem label="限制次数" :label-width="formLabelWidth" prop="limitTimes">
-            <ElInput v-model="taskForm.limitTimes" autocomplete="off" placeholder="请输入任务限制次数" />
-          </ElFormItem>
-          <ElFormItem label="选择全部" :label-width="formLabelWidth">
+          </el-form-item>
+          <el-form-item label="限制次数" :label-width="formLabelWidth" prop="limitTimes">
+            <el-input v-model="taskForm.limitTimes" autocomplete="off" placeholder="请输入任务限制次数" />
+          </el-form-item>
+          <el-form-item label="选择全部" :label-width="formLabelWidth">
             <!--            <el-switch v-model="taskForm.isAll"></el-switch> -->
-            <ElCheckbox v-model="taskForm.isAll" />
+            <el-checkbox v-model="taskForm.isAll" />
             ({{ drawerCount }}人 <span style="color:#e60012;">*只下发给APP终端用户</span>)
-          </ElFormItem>
+          </el-form-item>
 
-          <ElDivider />
+          <el-divider />
           <div v-if="!taskForm.isAll" class="handle-table">
-            <ElEmpty v-if="drawerTable.length === 0" description="描述文字" />
-            <ElTable
+            <el-empty v-if="drawerTable.length === 0" description="描述文字" />
+            <el-table
               v-else
               ref="multipleTable"
               v-loading="drawerLoading"
@@ -2898,28 +2898,28 @@ export default {
               class="w-full"
               @selection-change="drawerSelect"
             >
-              <ElTableColumn
+              <el-table-column
                 type="selection"
                 width="55"
               />
-              <ElTableColumn
+              <el-table-column
                 prop="userName"
                 label="账号"
                 width="200"
               />
-              <ElTableColumn
+              <el-table-column
                 prop="nickName"
                 label="真实姓名"
                 width="150"
               />
-              <ElTableColumn
+              <el-table-column
                 prop="telephone"
                 label="手机号"
                 show-overflow-tooltip
               />
-            </ElTable>
+            </el-table>
 
-            <ElPagination
+            <el-pagination
               v-if="drawerTable.length !== 0"
               :current-page="drawerForm.pageNum"
               :page-sizes="[20, 30, 40]"
@@ -2930,63 +2930,63 @@ export default {
               @current-change="drawerCurrentChange"
             />
           </div>
-        </ElForm>
+        </el-form>
 
         <div style="margin-top: 20px">
-          <ElButton size="small" @click="cancelTaskIssue('taskForm')">
+          <el-button size="small" @click="cancelTaskIssue('taskForm')">
             取 消
-          </ElButton>
-          <ElButton size="small" type="primary" @click="confirmTaskIssue('taskForm')">
+          </el-button>
+          <el-button size="small" type="primary" @click="confirmTaskIssue('taskForm')">
             确 认
-          </ElButton>
+          </el-button>
         </div>
       </div>
-    </ElDrawer>
+    </el-drawer>
 
     <!-- 导出模板字段列表,由用户自定义勾选 -->
-    <ElDrawer
+    <el-drawer
       title="请选择需要导出的字段"
       :visible.sync="exportModelFlag"
       :wrapper-closable="false"
       direction="rtl"
       size="30%"
     >
-      <div class="demo-drawer__content">
-        <ElCheckboxGroup v-model="checkList" @change="changeChecked">
+      <div class="demo-drawer__content px-3 py-4">
+        <el-checkbox-group v-model="checkList" @change="changeChecked">
           <div
             v-for="(item, index) in exportInfoList" :key="index"
             style="text-align:left;margin:6px 0px;"
           >
-            <ElCheckbox
+            <el-checkbox
               :label="item.columnName"
               true-label
             >
               {{ item.columnDesc }}
-            </ElCheckbox>
+            </el-checkbox>
           </div>
-        </ElCheckboxGroup>
+        </el-checkbox-group>
         <div style="margin-top: 20px">
-          <ElButton size="small" @click="cancelExport">
+          <el-button size="small" @click="cancelExport">
             取 消
-          </ElButton>
-          <ElButton size="small" type="primary" @click="confirmExport">
+          </el-button>
+          <el-button size="small" type="primary" @click="confirmExport">
             确 认
-          </ElButton>
+          </el-button>
         </div>
       </div>
-    </ElDrawer>
+    </el-drawer>
 
     <!-- 导入店铺/用户 -->
     <!-- :wrapperClosable='false' 设置是否隐藏‘点击遮罩层’事件 -->
-    <ElDrawer
+    <el-drawer
       :title="importFlag == 1 ? '导入店铺' : '导入用户'"
       :visible.sync="importShopFlag"
       direction="rtl"
       size="30%"
       :before-close="handleImportClose"
     >
-      <div class="demo-drawer__content">
-        <ElUpload
+      <div class="demo-drawer__content px-3 py-4">
+        <el-upload
           ref="upload"
           class="upload-demo"
           style="margin:30px 0px;"
@@ -3002,36 +3002,36 @@ export default {
           :auto-upload="false"
         >
           <template #trigger>
-            <ElButton size="small" type="primary">
+            <el-button size="small" type="primary">
               选取文件
-            </ElButton>
+            </el-button>
           </template>
           <template #tip>
             <div class="el-upload__tip">
               只能上传 .xlsx/.xls 文件，且不超过 1000kb
             </div>
           </template>
-        </ElUpload>
+        </el-upload>
         <div style="margin-top: 20px">
-          <ElButton size="small" type="success" @click="submitUpload">
+          <el-button size="small" type="success" @click="submitUpload">
             导入文件
-          </ElButton>
-          <ElButton size="small" @click="cancelImport">
+          </el-button>
+          <el-button size="small" @click="cancelImport">
             取消导入
-          </ElButton>
+          </el-button>
         </div>
       </div>
-    </ElDrawer>
+    </el-drawer>
 
     <!-- 导入excel时错误数据的展示 -->
-    <ElDrawer
+    <el-drawer
       title="导入错误数据展示"
       :visible.sync="importErrDataFlag"
       direction="rtl"
       size="40%"
       :before-close="handleImportErrClose"
     >
-      <div class="demo-drawer__content">
+      <div class="demo-drawer__content px-3 py-4">
         <ul class="errDataBox" style="text-align:left;">
           <li
             v-for="(item, index) in importErrData"
@@ -3043,12 +3043,12 @@ export default {
           </li>
         </ul>
         <div style="margin-top: 20px">
-          <ElButton size="small" @click="cancelErrData">
+          <el-button size="small" @click="cancelErrData">
             取消
-          </ElButton>
+          </el-button>
         </div>
       </div>
-    </ElDrawer>
+    </el-drawer>
   </div>
 </template>
 

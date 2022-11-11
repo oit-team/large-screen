@@ -226,13 +226,13 @@ export default {
 </script>
 
 <template>
-  <div class="flex page-container">
+  <div class="flex page-container text-sm">
     <div class="flex flex-col mr-2 mb-2 rounded-lg border brand-nav">
       <div class="flex p-1">
-        <ElInput v-model="search" clearable placeholder="关键字搜索" />
-        <ElTooltip content="刷新" placement="top">
-          <ElButton class="px-3 ml-1" icon="el-icon-refresh" @click="getBrandList" />
-        </ElTooltip>
+        <el-input v-model="search" clearable placeholder="关键字搜索" />
+        <el-tooltip content="刷新" placement="top">
+          <el-button class="px-3 ml-1" icon="el-icon-refresh" @click="getBrandList" />
+        </el-tooltip>
       </div>
       <div v-loading="navLoading" class="overflow-y-auto flex-1">
         <div
@@ -248,105 +248,105 @@ export default {
       </div>
     </div>
 
-    <DeviceTable
+    <device-table
       ref="page"
       :brand-id="brandIdNav"
       :option="tablePageOption"
       @selection-change="selectionChange"
     >
       <template slot="actions:ads">
-        <ElDropdown class="mx-2" split-button type="primary" size="small" @click="openAssignAds()">
+        <el-dropdown class="mx-2" split-button type="primary" size="small" @click="openAssignAds()">
           广告设置
-          <ElDropdownMenu slot="dropdown">
-            <ElDropdownItem
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item
               :disabled="selected.length > 1"
               @click.native="previewAds"
             >
               预览
-            </ElDropdownItem>
-            <ElDropdownItem @click.native="assignAds({ advId: 0 })">
+            </el-dropdown-item>
+            <el-dropdown-item @click.native="assignAds({ advId: 0 })">
               恢复默认
-            </ElDropdownItem>
-          </ElDropdownMenu>
-        </ElDropdown>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </template>
-    </DeviceTable>
+    </device-table>
 
-    <ElDrawer
+    <el-drawer
       :visible.sync="brandDrawerVisible"
       title="分配品牌"
     >
-      <ElForm ref="form" :model="form" :rules="assignFormRules">
-        <ElFormItem label="分配品牌" prop="brandIdAllot">
-          <ElSelect v-model="form.brandIdAllot" class="w-full">
-            <ElOption
+      <el-form ref="form" :model="form" :rules="assignFormRules">
+        <el-form-item label="分配品牌" prop="brandIdAllot">
+          <el-select v-model="form.brandIdAllot" class="w-full">
+            <el-option
               v-for="item of brandList"
               :key="item.brandId"
               :label="item.brandName"
               :value="item.brandId"
             />
-          </ElSelect>
-        </ElFormItem>
-        <ElFormItem label="更改设备类型" prop="devTypeId">
-          <VcCascader
+          </el-select>
+        </el-form-item>
+        <el-form-item label="更改设备类型" prop="devTypeId">
+          <vc-cascader
             ref="devInfo"
             v-model="form.devTypeId"
             class="w-full"
             :options="devInfoOptions"
             :props="{ emitPath: false }"
           />
-        </ElFormItem>
-        <ElFormItem label="轮播地址">
-          <ElInput v-model="devConfig.rotationUrl" disabled />
-        </ElFormItem>
-        <ElFormItem label="商品地址">
-          <ElInput v-model="devConfig.commodityModeUrl" disabled />
-        </ElFormItem>
-        <ElFormItem label="消息服务器地址">
-          <ElInput v-model="devConfig.lvsUrl" disabled />
-        </ElFormItem>
-        <ElFormItem label="页面最大停留时间">
-          <ElInput v-model="devConfig.maxIdleTime" disabled />
-        </ElFormItem>
-      </ElForm>
+        </el-form-item>
+        <el-form-item label="轮播地址">
+          <el-input v-model="devConfig.rotationUrl" disabled />
+        </el-form-item>
+        <el-form-item label="商品地址">
+          <el-input v-model="devConfig.commodityModeUrl" disabled />
+        </el-form-item>
+        <el-form-item label="消息服务器地址">
+          <el-input v-model="devConfig.lvsUrl" disabled />
+        </el-form-item>
+        <el-form-item label="页面最大停留时间">
+          <el-input v-model="devConfig.maxIdleTime" disabled />
+        </el-form-item>
+      </el-form>
       <div class="mt-2">
-        <ElButton @click="brandDrawerVisible = false">
+        <el-button @click="brandDrawerVisible = false">
           取 消
-        </ElButton>
-        <ElButton type="primary" @click="assignBrand()">
+        </el-button>
+        <el-button type="primary" @click="assignBrand()">
           确 定
-        </ElButton>
+        </el-button>
       </div>
-    </ElDrawer>
+    </el-drawer>
 
-    <ElDrawer
+    <el-drawer
       :visible.sync="areaDrawerVisible"
       title="分配店铺/区域"
     >
       <div>
-        <VcCascader ref="areaOrShop" class="w-full" data="area_or_shop" />
+        <vc-cascader ref="areaOrShop" class="w-full" data="area_or_shop" />
       </div>
       <div class="mt-2">
-        <ElButton @click="areaDrawerVisible = false">
+        <el-button @click="areaDrawerVisible = false">
           取 消
-        </ElButton>
-        <ElButton type="primary" @click="assignAreaOrShop">
+        </el-button>
+        <el-button type="primary" @click="assignAreaOrShop">
           确 定
-        </ElButton>
+        </el-button>
       </div>
-    </ElDrawer>
+    </el-drawer>
 
-    <ElDrawer :visible.sync="previewDrawerVisible" title="预览广告" size="500px">
+    <el-drawer :visible.sync="previewDrawerVisible" title="预览广告" size="500px">
       <div v-loading="!carouselMapCache[carouselPreviewId]" class="h-full">
-        <CarouselPreview
+        <carousel-preview
           v-if="previewDrawerVisible && carouselMapCache[carouselPreviewId]"
           :option="carouselMapCache[carouselPreviewId].rotationRules"
           :file-map="carouselMapCache[carouselPreviewId].resEntityMap"
         />
       </div>
-    </ElDrawer>
+    </el-drawer>
 
-    <CarouselListDrawer ref="carouselList" @submit="assignAds" />
+    <carousel-list-drawer ref="carouselList" @submit="assignAds" />
   </div>
 </template>
 

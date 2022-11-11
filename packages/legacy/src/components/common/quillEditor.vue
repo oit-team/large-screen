@@ -473,7 +473,7 @@ export default {
 
 <template>
   <div id="quillEditor">
-    <QuillEditor ref="myTextEditor" v-model="txt" class="editorStyle" :options="editorOption" />
+    <quill-editor ref="myTextEditor" v-model="txt" class="editorStyle" :options="editorOption" />
     <!-- @change="onEditorChange($event)" 监听内容变化的方法，可以试一下 -->
     <!-- 自定义上传图片 -->
     <!--
@@ -484,7 +484,7 @@ export default {
       :on-progress="uploadingImage"
      -->
     <div style="display:none;">
-      <ElUpload
+      <el-upload
         class="upload-demo"
         action="#"
         name="file"
@@ -494,8 +494,8 @@ export default {
         :on-success="handleSuccessImage"
         multiple
       >
-        <ElButton size="small" class="uploadImgBtn" type="primary" />
-      </ElUpload>
+        <el-button size="small" class="uploadImgBtn" type="primary" />
+      </el-upload>
     </div>
 
     <!--
@@ -510,17 +510,17 @@ export default {
       v-loading.fullscreen.lock="fullscreenLoading"
     -->
     <div style="display:none">
-      <ElUpload
+      <el-upload
         action="#"
         accept=".mp3,.aac,.m4a"
         :before-upload="beforeUploadAudio"
         :http-request="requestUploadAudio"
         :on-success="handleSuccessAudio"
       >
-        <ElButton size="small" class="uploadVoiceBtn" type="primary">
+        <el-button size="small" class="uploadVoiceBtn" type="primary">
           upload
-        </ElButton>
-      </ElUpload>
+        </el-button>
+      </el-upload>
     </div>
 
     <!--
@@ -529,16 +529,16 @@ export default {
       :on-progress="uploadingVideo"
      -->
     <div style="display:none">
-      <ElUpload
+      <el-upload
         action="#"
         accept=".mp4"
         :before-upload="beforeUploadVideo"
         :http-request="requestUploadVideo"
       >
-        <ElButton size="small" class="uploadVideoBtn" type="primary">
+        <el-button size="small" class="uploadVideoBtn" type="primary">
           upload
-        </ElButton>
-      </ElUpload>
+        </el-button>
+      </el-upload>
     </div>
   </div>
 </template>

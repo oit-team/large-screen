@@ -97,7 +97,7 @@ export default {
         @kindeditorChange：获取数据的事件 传回一个参数：数据
   -->
   <div class="kindeditor">
-    <Editor
+    <editor
       :id="id"
       :allow-image-remote="false"
       :min-height="minHeight"

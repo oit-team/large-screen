@@ -119,7 +119,7 @@ export default {
 
 <template>
   <div class="flex-1 flex overflow-hidden">
-    <DeviceTable
+    <device-table
       ref="page"
       :belonging="administrations"
       :option="tablePageOption"
@@ -127,26 +127,26 @@ export default {
       integrated
     />
 
-    <ElDrawer title="分配设备" :visible.sync="drawer" size="50%">
+    <el-drawer title="分配设备" :visible.sync="drawer" size="50%">
       <div class="yes">
-        <ElButton class="add" type="primary" @click="AddDevice">
+        <el-button class="add" type="primary" @click="AddDevice">
           确 定
-        </ElButton>
+        </el-button>
       </div>
 
       <div>
-        <ElTable style="width: 100%" :data="Unassigned" @selection-change="handleSelectionChange">
-          <ElTableColumn v-model="boolen" type="selection" width="55" />
-          <ElTableColumn
+        <el-table style="width: 100%" :data="Unassigned" @selection-change="handleSelectionChange">
+          <el-table-column v-model="boolen" type="selection" width="55" />
+          <el-table-column
             v-for="(item, i) in brandListNew"
             :key="i"
             :prop="item.fieldKey"
             show-overflow-tooltip
             :label="item.fieldName"
           />
-        </ElTable>
+        </el-table>
       </div>
-    </ElDrawer>
+    </el-drawer>
   </div>
 </template>
 

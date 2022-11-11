@@ -15,15 +15,15 @@ export default defineComponent({
 
 <template>
   <div>
-    <ElButton @click="$router.back()">
+    <el-button @click="$router.back()">
       返回
-    </ElButton>
+    </el-button>
     {{ message }}123
-    <ElButton @click="test()">
+    <el-button @click="test()">
       测试legacy
-    </ElButton>
-    <ElButton @click="$router.push('/home')">
+    </el-button>
+    <el-button @click="$router.push('/home')">
       home
-    </ElButton>
+    </el-button>
   </div>
 </template>

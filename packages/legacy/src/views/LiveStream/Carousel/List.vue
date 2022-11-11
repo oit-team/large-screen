@@ -131,17 +131,17 @@ export default {
 </script>
 
 <template>
-  <PageContainer>
-    <TablePage v-bind="tablePageOption" ref="page" auto>
+  <page-container>
+    <table-page v-bind="tablePageOption" ref="page" auto>
       <template slot="content:describe" slot-scope="{ row }">
-        <ElTag
+        <el-tag
           v-if="row.defaults === DEFAULT_STATE.YES"
           class="mr-1"
           size="small"
           type="primary"
         >
           默认
-        </ElTag>
+        </el-tag>
         <span>{{ row.describe }}</span>
       </template>
       <template slot="content:stateName" slot-scope="{ row }">
@@ -149,22 +149,22 @@ export default {
           :class="['text-red-400', 'text-green-400'][row.state]"
         >{{ row.stateName }}</span>
       </template>
-    </TablePage>
+    </table-page>
 
-    <ElDialog
+    <el-dialog
       title="操作"
       :visible.sync="dialogVisible"
       width="350px"
     >
       <span class="dialog-footer">
-        <ElButton @click="dialogVisible = false">取消</ElButton>
-        <ElTooltip content="发布为默认时，将在设备未设置广告时使用" placement="top">
-          <ElButton type="primary" plain @click="handlePublish(DEFAULT_STATE.YES)">发布且置为默认</ElButton>
-        </ElTooltip>
-        <ElButton type="primary" @click="handlePublish(DEFAULT_STATE.NO)">发布</ElButton>
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-tooltip content="发布为默认时，将在设备未设置广告时使用" placement="top">
+          <el-button type="primary" plain @click="handlePublish(DEFAULT_STATE.YES)">发布且置为默认</el-button>
+        </el-tooltip>
+        <el-button type="primary" @click="handlePublish(DEFAULT_STATE.NO)">发布</el-button>
       </span>
-    </ElDialog>
-  </PageContainer>
+    </el-dialog>
+  </page-container>
 </template>
 
 <style scoped>

@@ -649,7 +649,7 @@ export default {
 
 <template>
   <div id="goodsList" class="pageCommonStyle">
-    <CommonSearch
+    <common-search
       ref="child"
       :head-tit-arr="headTitArr"
       :page-num="pageNum"
@@ -663,22 +663,22 @@ export default {
     />
 
     <div class="operateBtn">
-      <ElButton size="small" icon="el-icon-plus" class="addBtnOnly" type="success" @click="addGoods">
+      <el-button size="small" icon="el-icon-plus" class="addBtnOnly" type="success" @click="addGoods">
         新增商品
-      </ElButton>
-      <ElButton size="small" icon="el-icon-download" style="background:#4FD5AC;border-color: #4FD5AC;color:#fff;" class="addBtnOnly" @click="clickImportGoods">
+      </el-button>
+      <el-button size="small" icon="el-icon-download" style="background:#4FD5AC;border-color: #4FD5AC;color:#fff;" class="addBtnOnly" @click="clickImportGoods">
         导入商品
-      </ElButton>
-      <ElButton size="small" icon="el-icon-upload2" style="background:#ADA3EE;border-color: #ADA3EE;color:#fff;" class="downLoadBtnOnly" @click="clickExportGoods">
+      </el-button>
+      <el-button size="small" icon="el-icon-upload2" style="background:#ADA3EE;border-color: #ADA3EE;color:#fff;" class="downLoadBtnOnly" @click="clickExportGoods">
         导出商品
-      </ElButton>
-      <ElButton size="small" icon="el-icon-download" style="background:#4FD5AC;border-color: #4FD5AC;color:#fff;" class="addBtnOnly" @click="clickImportStock">
+      </el-button>
+      <el-button size="small" icon="el-icon-download" style="background:#4FD5AC;border-color: #4FD5AC;color:#fff;" class="addBtnOnly" @click="clickImportStock">
         导入库存
-      </ElButton>
+      </el-button>
     </div>
-    <ElDivider />
+    <el-divider />
 
-    <ElTable
+    <el-table
       v-loading="loading"
       element-loading-text="小易拼命加载中..."
       element-loading-spinner="el-icon-loading"
@@ -693,7 +693,7 @@ export default {
       <template slot="empty">
         <p>{{ tableEmptyText }}</p>
       </template>
-      <ElTableColumn
+      <el-table-column
         v-for="(item, index) in headTitArr"
         :key="index"
         show-overflow-tooltip
@@ -716,8 +716,8 @@ export default {
           </div>
           <!-- <span v-else>{{scope.row[(item.fieldKey)]}}</span> -->
         </template>
-      </ElTableColumn>
-      <ElTableColumn
+      </el-table-column>
+      <el-table-column
         show-overflow-tooltip
         sortable
         :min-width="GLOBAL.minCellWidth"
@@ -725,39 +725,39 @@ export default {
         label="库存总数"
       />
 
-      <ElTableColumn
+      <el-table-column
         fixed="right"
         label="操作"
         style="border-lrft:none;"
         width="180"
       >
         <template slot-scope="scope">
-          <ElTooltip v-if="scope.row.status == &quot;GROUNDING&quot;" class="item" effect="dark" content="查看商品详情" placement="top">
-            <ElButton size="mini" type="primary" icon="el-icon-view" circle class="editBtnOnly" @click="viewGoodsItem(scope.row, scope.$index)" />
-          </ElTooltip>
-          <ElTooltip v-if="scope.row.status == &quot;NOTGROUNDING&quot;" class="item" effect="dark" content="编辑商品" placement="top">
-            <ElButton size="mini" type="primary" icon="el-icon-edit" circle class="editBtnOnly" @click="editGoodsItem(scope.row, scope.$index)" />
-          </ElTooltip>
-          <ElTooltip v-if="scope.row.status == &quot;NOTGROUNDING&quot;" class="item" effect="dark" content="删除商品" placement="top">
-            <ElButton size="mini" type="danger" icon="el-icon-delete" class="delBtnOnly" circle @click="delGoodsItem(scope.row, scope.$index)" />
-          </ElTooltip>
-          <ElTooltip v-if="scope.row.status == &quot;GROUNDING&quot;" class="item" effect="dark" content="已上架商品不可删除" placement="top">
-            <ElButton size="mini" icon="el-icon-delete" circle @click="noDelGoodsItem(scope.row, scope.$index)" />
-          </ElTooltip>
-          <ElTooltip v-if="scope.row.status == &quot;NOTGROUNDING&quot;" class="item" effect="dark" content="商品上架" placement="top">
-            <ElButton size="mini" class="authBtnOnly" style="border-color: #FCCB02;background: #FCCB02;color:#fff;" icon="el-icon-top" circle @click="putOnGoodsItem(scope.row, scope.$index)" />
-          </ElTooltip>
-          <ElTooltip v-if="scope.row.status == &quot;GROUNDING&quot;" class="item" effect="dark" content="商品下架" placement="top">
-            <ElButton size="mini" class="authBtnOnly" style="border-color: #FCCB02;background: #FCCB02;color:#fff;" icon="el-icon-bottom" circle @click="offGoodsItem(scope.row, scope.$index)" />
-          </ElTooltip>
-          <ElTooltip class="item" effect="dark" content="库存分布" placement="top">
-            <ElButton size="mini" class="authBtnOnly" style="border-color: #FCCB02;background: #FCCB02;color:#fff;" icon="el-icon-s-data" circle @click="viewGoodStock(scope.row, scope.$index)" />
-          </ElTooltip>
+          <el-tooltip v-if="scope.row.status == &quot;GROUNDING&quot;" class="item" effect="dark" content="查看商品详情" placement="top">
+            <el-button size="mini" type="primary" icon="el-icon-view" circle class="editBtnOnly" @click="viewGoodsItem(scope.row, scope.$index)" />
+          </el-tooltip>
+          <el-tooltip v-if="scope.row.status == &quot;NOTGROUNDING&quot;" class="item" effect="dark" content="编辑商品" placement="top">
+            <el-button size="mini" type="primary" icon="el-icon-edit" circle class="editBtnOnly" @click="editGoodsItem(scope.row, scope.$index)" />
+          </el-tooltip>
+          <el-tooltip v-if="scope.row.status == &quot;NOTGROUNDING&quot;" class="item" effect="dark" content="删除商品" placement="top">
+            <el-button size="mini" type="danger" icon="el-icon-delete" class="delBtnOnly" circle @click="delGoodsItem(scope.row, scope.$index)" />
+          </el-tooltip>
+          <el-tooltip v-if="scope.row.status == &quot;GROUNDING&quot;" class="item" effect="dark" content="已上架商品不可删除" placement="top">
+            <el-button size="mini" icon="el-icon-delete" circle @click="noDelGoodsItem(scope.row, scope.$index)" />
+          </el-tooltip>
+          <el-tooltip v-if="scope.row.status == &quot;NOTGROUNDING&quot;" class="item" effect="dark" content="商品上架" placement="top">
+            <el-button size="mini" class="authBtnOnly" style="border-color: #FCCB02;background: #FCCB02;color:#fff;" icon="el-icon-top" circle @click="putOnGoodsItem(scope.row, scope.$index)" />
+          </el-tooltip>
+          <el-tooltip v-if="scope.row.status == &quot;GROUNDING&quot;" class="item" effect="dark" content="商品下架" placement="top">
+            <el-button size="mini" class="authBtnOnly" style="border-color: #FCCB02;background: #FCCB02;color:#fff;" icon="el-icon-bottom" circle @click="offGoodsItem(scope.row, scope.$index)" />
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="库存分布" placement="top">
+            <el-button size="mini" class="authBtnOnly" style="border-color: #FCCB02;background: #FCCB02;color:#fff;" icon="el-icon-s-data" circle @click="viewGoodStock(scope.row, scope.$index)" />
+          </el-tooltip>
         </template>
-      </ElTableColumn>
-    </ElTable>
+      </el-table-column>
+    </el-table>
 
-    <ElPagination
+    <el-pagination
       :current-page="pageNum"
       :page-sizes="[10, 15, 20]"
       :page-size="100"
@@ -768,7 +768,7 @@ export default {
     />
 
     <!-- 导出商品 -->
-    <ElDrawer
+    <el-drawer
       title="请选择需要导出的字段"
       :visible.sync="exportModelFlag"
       :wrapper-closable="false"
@@ -776,32 +776,32 @@ export default {
       size="40%"
     >
       <div class="demo-drawer__content">
-        <ElCheckboxGroup v-model="checkList" @change="changeChecked">
+        <el-checkbox-group v-model="checkList" @change="changeChecked">
           <div
             v-for="(item, index) in exportInfoList" :key="index"
             style="text-align:left;margin:6px 0px;"
           >
-            <ElCheckbox
+            <el-checkbox
               :label="item.columnName"
               true-label
             >
               {{ item.columnDesc }}
-            </ElCheckbox>
+            </el-checkbox>
           </div>
-        </ElCheckboxGroup>
+        </el-checkbox-group>
         <div style="margin-top: 20px">
-          <ElButton size="small" @click="cancelExportGoods">
+          <el-button size="small" @click="cancelExportGoods">
             取 消
-          </ElButton>
-          <ElButton size="small" type="primary" @click="confirmExportGoods">
+          </el-button>
+          <el-button size="small" type="primary" @click="confirmExportGoods">
             确 认
-          </ElButton>
+          </el-button>
         </div>
       </div>
-    </ElDrawer>
+    </el-drawer>
 
     <!-- 导入商品 -->
-    <ElDrawer
+    <el-drawer
       :title="importType == 1 ? '导入商品' : '导入商品库存'"
       :visible.sync="importFlag"
       direction="rtl"
@@ -809,7 +809,7 @@ export default {
       :before-close="handleImportClose"
     >
       <div class="demo-drawer__content">
-        <ElUpload
+        <el-upload
           ref="upload"
           class="upload-demo"
           style="margin:30px 0px;"
@@ -823,32 +823,32 @@ export default {
           :auto-upload="false"
         >
           <template #trigger>
-            <ElButton size="small" type="primary">
+            <el-button size="small" type="primary">
               选取文件
-            </ElButton>
+            </el-button>
           </template>
           <template #tip>
             <div class="el-upload__tip">
               只能上传 .xlsx/.xls 文件，且不超过 1000kb
             </div>
           </template>
-        </ElUpload>
+        </el-upload>
         <div style="margin-top: 20px">
-          <ElButton v-if="importType == 1" size="small" type="success" @click="confirmImportGoods">
+          <el-button v-if="importType == 1" size="small" type="success" @click="confirmImportGoods">
             导入商品
-          </ElButton>
-          <ElButton v-if="importType == 2" size="small" type="success" @click="confirmImportStock">
+          </el-button>
+          <el-button v-if="importType == 2" size="small" type="success" @click="confirmImportStock">
             导入库存
-          </ElButton>
-          <ElButton size="small" @click="cancelImport">
+          </el-button>
+          <el-button size="small" @click="cancelImport">
             取消导入
-          </ElButton>
+          </el-button>
         </div>
       </div>
-    </ElDrawer>
+    </el-drawer>
 
     <!-- 导入excel时错误数据的展示 -->
-    <ElDrawer
+    <el-drawer
       title="导入错误数据展示"
       :visible.sync="importErrDataFlag"
       direction="rtl"
@@ -871,12 +871,12 @@ export default {
           </li>
         </ul>
         <div style="margin-top: 20px">
-          <ElButton size="small" @click="cancelErrData">
+          <el-button size="small" @click="cancelErrData">
             取消
-          </ElButton>
+          </el-button>
         </div>
       </div>
-    </ElDrawer>
+    </el-drawer>
   </div>
 </template>
 

@@ -311,37 +311,37 @@ export default ({
 
 <template>
   <div id="addUser" class="pageCommonStyle">
-    <ElBacktop target="#addUser" :visibility-height="200" :right="70" :bottom="100" />
-    <ElPageHeader :content="editFlag ? '编辑用户' : '新增用户'" @back="goBack" />
-    <ElDivider />
+    <el-backtop target="#addUser" :visibility-height="200" :right="70" :bottom="100" />
+    <el-page-header :content="editFlag ? '编辑用户' : '新增用户'" @back="goBack" />
+    <el-divider />
 
-    <ElForm ref="ruleForm" style="margin-top:20px;" :model="ruleForm" :rules="rules" label-width="106px" label-position="left" class="demo-ruleForm">
-      <ElFormItem label="用户名" prop="userName">
-        <ElInput v-model="ruleForm.userName" :disabled="editFlag" style="width:60%;" maxlength="20" placeholder="请选择用户名">
+    <el-form ref="ruleForm" style="margin-top:20px;" :model="ruleForm" :rules="rules" label-width="106px" label-position="left" class="demo-ruleForm">
+      <el-form-item label="用户名" prop="userName">
+        <el-input v-model="ruleForm.userName" :disabled="editFlag" style="width:60%;" maxlength="20" placeholder="请选择用户名">
           <template v-if="!editFlag && brandAbbreviation" slot="prepend">
             {{ brandAbbreviation }}
           </template>
-        </ElInput>
-      </ElFormItem>
-      <ElFormItem label="真实姓名" prop="nickName">
-        <ElInput v-model="ruleForm.nickName" style="width:60%;" maxlength="20" placeholder="请输入真实姓名" />
-      </ElFormItem>
+        </el-input>
+      </el-form-item>
+      <el-form-item label="真实姓名" prop="nickName">
+        <el-input v-model="ruleForm.nickName" style="width:60%;" maxlength="20" placeholder="请输入真实姓名" />
+      </el-form-item>
       <!-- <el-form-item label="头像" prop="headPortrait">
         <el-input v-model="ruleForm.headPortrait" style="width:60%;"  placeholder="请输入真实姓名"></el-input>
       </el-form-item> -->
-      <ElFormItem label="联系电话" prop="telephone">
-        <ElInput v-model="ruleForm.telephone" style="width:60%;" placeholder="请输入联系电话" />
-      </ElFormItem>
-      <ElFormItem label="账号类型" prop="accountType">
-        <ElSelect v-model="ruleForm.accountType" placeholder="请选择">
-          <ElOption label="APP用户" value="0" />
-          <ElOption label="高单易管家用户" value="1" />
-          <ElOption label="APP及管家用户" value="3" />
-        </ElSelect>
-      </ElFormItem>
+      <el-form-item label="联系电话" prop="telephone">
+        <el-input v-model="ruleForm.telephone" style="width:60%;" placeholder="请输入联系电话" />
+      </el-form-item>
+      <el-form-item label="账号类型" prop="accountType">
+        <el-select v-model="ruleForm.accountType" placeholder="请选择">
+          <el-option label="APP用户" value="0" />
+          <el-option label="高单易管家用户" value="1" />
+          <el-option label="APP及管家用户" value="3" />
+        </el-select>
+      </el-form-item>
 
-      <ElFormItem v-if="editFlag" label="所属店铺/区域">
-        <ElCascader
+      <el-form-item v-if="editFlag" label="所属店铺/区域">
+        <el-cascader
           ref="chooseOption"
           v-model="shopVal"
           style="width:60%;"
@@ -351,60 +351,60 @@ export default ({
           :props="{ checkStrictly: true, children: 'childrenList', value: 'id', label: 'osName' }"
           @change="changeShop"
         />
-      </ElFormItem>
+      </el-form-item>
 
-      <ElFormItem label="用户密码" prop="passWord">
-        <ElInput v-model="ruleForm.passWord" style="width:60%;" type="password" placeholder="用户密码" />
+      <el-form-item label="用户密码" prop="passWord">
+        <el-input v-model="ruleForm.passWord" style="width:60%;" type="password" placeholder="用户密码" />
         <div v-if="editFlag" class="pwdTip">
           <i class="el-icon-magic-stick" style="font-size:16px;margin-right:6px;color:#e60012;" />原密码不显示，若要修改请直接输入新密码保存即可
         </div>
         <div v-else class="pwdTip">
           <i class="el-icon-magic-stick" style="font-size:16px;margin-right:6px;color:#e60012;" />不填则为默认密码
         </div>
-      </ElFormItem>
-      <ElFormItem label="性别" prop="sex">
-        <ElSelect v-model="ruleForm.sex" placeholder="请选择">
-          <ElOption label="男" value="0" />
-          <ElOption label="女" value="1" />
-        </ElSelect>
-      </ElFormItem>
+      </el-form-item>
+      <el-form-item label="性别" prop="sex">
+        <el-select v-model="ruleForm.sex" placeholder="请选择">
+          <el-option label="男" value="0" />
+          <el-option label="女" value="1" />
+        </el-select>
+      </el-form-item>
 
-      <ElFormItem label="职位" prop="job">
-        <ElInput v-model="ruleForm.job" style="width:60%;" maxlength="20" placeholder="请输入职位" />
-      </ElFormItem>
+      <el-form-item label="职位" prop="job">
+        <el-input v-model="ruleForm.job" style="width:60%;" maxlength="20" placeholder="请输入职位" />
+      </el-form-item>
 
-      <ElFormItem label="出生日期" prop="birthDate">
-        <ElDatePicker
+      <el-form-item label="出生日期" prop="birthDate">
+        <el-date-picker
           v-model="ruleForm.birthDate"
           type="date"
           value-format="yyyy-MM-dd"
           placeholder="请选择日期"
         />
-      </ElFormItem>
-      <ElFormItem label="入职日期" prop="hireDate">
-        <ElDatePicker
+      </el-form-item>
+      <el-form-item label="入职日期" prop="hireDate">
+        <el-date-picker
           v-model="ruleForm.hireDate"
           type="date"
           value-format="yyyy-MM-dd"
           placeholder="请选择日期"
         />
-      </ElFormItem>
-      <ElFormItem label="地址" prop="address">
-        <ElInput v-model="ruleForm.address" style="width:60%;" maxlength="32" placeholder="请输入地址" />
-      </ElFormItem>
-      <ElFormItem label="个人签名" prop="autograph">
-        <ElInput v-model="ruleForm.autograph" style="width:60%;" maxlength="32" placeholder="请输入个人签名" />
-      </ElFormItem>
+      </el-form-item>
+      <el-form-item label="地址" prop="address">
+        <el-input v-model="ruleForm.address" style="width:60%;" maxlength="32" placeholder="请输入地址" />
+      </el-form-item>
+      <el-form-item label="个人签名" prop="autograph">
+        <el-input v-model="ruleForm.autograph" style="width:60%;" maxlength="32" placeholder="请输入个人签名" />
+      </el-form-item>
 
-      <ElFormItem>
-        <ElButton size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">
+      <el-form-item>
+        <el-button size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">
           保存
-        </ElButton>
-        <ElButton v-if="!editFlag" size="small" icon="el-icon-refresh" @click="resetForm('ruleForm')">
+        </el-button>
+        <el-button v-if="!editFlag" size="small" icon="el-icon-refresh" @click="resetForm('ruleForm')">
           重置
-        </ElButton>
-      </ElFormItem>
-    </ElForm>
+        </el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 

@@ -253,7 +253,7 @@ export default {
 
 <template>
   <div id="menuList" class="pageCommonStyle page-container text-sm">
-    <CommonSearch
+    <common-search
       ref="child"
       :head-tit-arr="headTitArr"
       :page-num="pageNum"
@@ -265,14 +265,14 @@ export default {
     />
 
     <div class="operateBtn">
-      <ElButton size="small" icon="el-icon-plus" class="addBtnOnly" type="success" @click="addMenu">
+      <el-button size="small" icon="el-icon-plus" class="addBtnOnly" type="success" @click="addMenu">
         新增菜单
-      </ElButton>
+      </el-button>
     </div>
 
-    <ElDivider />
+    <el-divider />
 
-    <ElTable
+    <el-table
       v-loading="loading"
       element-loading-text="小易拼命加载中..."
       element-loading-spinner="el-icon-loading"
@@ -287,7 +287,7 @@ export default {
       <template slot="empty">
         <p>{{ tableEmptyText }}</p>
       </template>
-      <ElTableColumn
+      <el-table-column
         v-for="(item, index) in headTitArr"
         :key="index"
         show-overflow-tooltip
@@ -296,7 +296,7 @@ export default {
         :min-width="GLOBAL.minCellWidth"
         :label="item.fieldName"
       />
-      <ElTableColumn
+      <el-table-column
         show-overflow-tooltip
         sortable
         :min-width="GLOBAL.minCellWidth"
@@ -306,26 +306,26 @@ export default {
         <template slot-scope="scope">
           <span>{{ scope.row.type | formatType }}</span>
         </template>
-      </ElTableColumn>
+      </el-table-column>
 
-      <ElTableColumn
+      <el-table-column
         fixed="right"
         label="操作"
         style="border-lrft:none;"
         width="140"
       >
         <template slot-scope="scope">
-          <ElTooltip class="item" effect="dark" content="编辑菜单" placement="top">
-            <ElButton size="mini" type="primary" icon="el-icon-edit" circle class="editBtnOnly" @click="editMenuItem(scope.row, scope.$index)" />
-          </ElTooltip>
-          <ElTooltip class="item" effect="dark" content="删除菜单" placement="top">
-            <ElButton size="mini" type="danger" icon="el-icon-delete" class="delBtnOnly" circle @click="delMenuItem(scope.row, scope.$index)" />
-          </ElTooltip>
+          <el-tooltip class="item" effect="dark" content="编辑菜单" placement="top">
+            <el-button size="mini" type="primary" icon="el-icon-edit" circle class="editBtnOnly" @click="editMenuItem(scope.row, scope.$index)" />
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="删除菜单" placement="top">
+            <el-button size="mini" type="danger" icon="el-icon-delete" class="delBtnOnly" circle @click="delMenuItem(scope.row, scope.$index)" />
+          </el-tooltip>
         </template>
-      </ElTableColumn>
-    </ElTable>
+      </el-table-column>
+    </el-table>
 
-    <ElPagination
+    <el-pagination
       :current-page="pageNum"
       :page-sizes="[15, 20, 30]"
       :page-size="100"

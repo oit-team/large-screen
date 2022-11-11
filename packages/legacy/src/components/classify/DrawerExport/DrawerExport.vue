@@ -73,38 +73,38 @@ export default {
 </script>
 
 <template>
-  <ElDrawer
+  <el-drawer
     title="请选择需要导出的字段"
     :visible.sync="show"
     direction="rtl"
   >
     <div class="mb-2">
-      <ElButton size="small" @click="checkList = [...exportInfoList]">
+      <el-button size="small" @click="checkList = [...exportInfoList]">
         全选
-      </ElButton>
-      <ElButton size="small" @click="checkList = []">
+      </el-button>
+      <el-button size="small" @click="checkList = []">
         全不选
-      </ElButton>
+      </el-button>
     </div>
-    <ElCheckboxGroup v-model="checkList">
-      <ElCheckbox
+    <el-checkbox-group v-model="checkList">
+      <el-checkbox
         v-for="(item, index) of exportInfoList"
         :key="index"
         class="block mt-1"
         :label="item"
       >
         {{ item.columnDesc }}
-      </ElCheckbox>
-    </ElCheckboxGroup>
+      </el-checkbox>
+    </el-checkbox-group>
     <div class="mt-4">
-      <ElButton @click="close">
+      <el-button @click="close">
         取 消
-      </ElButton>
-      <ElButton type="primary" :disabled="!loaded || !checkList.length" @click="confirm">
+      </el-button>
+      <el-button type="primary" :disabled="!loaded || !checkList.length" @click="confirm">
         确 认
-      </ElButton>
+      </el-button>
     </div>
-  </ElDrawer>
+  </el-drawer>
 </template>
 
 <style scoped>

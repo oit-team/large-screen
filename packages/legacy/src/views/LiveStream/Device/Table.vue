@@ -133,14 +133,14 @@ export default {
 
 <template>
   <div class="flex-1 overflow-hidden">
-    <TablePage v-bind="tablePageOption" ref="page" @selection-change="$emit('selection-change', $event)">
+    <table-page v-bind="tablePageOption" ref="page" @selection-change="$emit('selection-change', $event)">
       <template slot="actions:ads">
         <slot name="actions:ads" />
       </template>
       <template slot="content:devStateName" slot-scope="{ row }">
         <span :class="_stateClass(row.devState)">{{ row.devStateName }}</span>
       </template>
-    </TablePage>
+    </table-page>
   </div>
 </template>
 

@@ -11,32 +11,38 @@ export const routes: RouteConfig[] = [
     name: 'Home',
     component: () => import('@/views/Home.vue'),
   },
-  // 大屏相关
+  // 大屏相关(设备管理、商品展览、商品资源)
   {
-    path: '/live-stream',
-    component: Container,
-    children: [
-      {
-        path: 'device',
-        component: Container,
-        children: [
-          {
-            path: 'list',
-            component: () => import('@/views/LiveStream/Device/List.vue'),
-          },
-        ],
-      },
-      {
-        path: 'carousel-resources',
-        component: Container,
-        children: [
-          {
-            path: 'list',
-            component: () => import('@/views/LiveStream/CarouselResources/List.vue'),
-          },
-        ],
-      },
-    ],
+    path: '/live-stream/carousel-resources/list',
+    name: 'CarouselResourcesList',
+    component: () => import ('@/views/LiveStream/CarouselResources/List.vue'),
+    meta: {
+      keepAlive: false,
+    },
+  },
+  {
+    path: '/live-stream/carousel/list',
+    name: 'LiveStreamCarouselList',
+    component: () => import ('@/views/LiveStream/Carousel/List.vue'),
+    meta: {
+      keepAlive: false,
+    },
+  },
+  {
+    path: '/live-stream/device/list',
+    name: 'LiveStreamDeviceList',
+    component: () => import ('@/views/LiveStream/Device/List.vue'),
+    meta: {
+      keepAlive: true,
+    },
+  },
+  {
+    path: '/live-stream/carousel/update',
+    name: 'LiveStreamCarouselUpdate',
+    component: () => import ('@/views/LiveStream/Carousel/Update.vue'),
+    meta: {
+      keepAlive: false,
+    },
   },
   // 系统设置相关（角色管理、菜单管理、品牌入驻）
   {

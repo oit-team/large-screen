@@ -53,18 +53,18 @@ export default {
 </script>
 
 <template>
-  <PageContainer>
-    <TablePage v-bind="tablePageOption" auto @row-click="previewFile">
+  <page-container>
+    <table-page v-bind="tablePageOption" auto @row-click="previewFile">
       <template slot="content:resUrl" slot-scope="{ row }">
         <template v-if="row.resType === FILE_TYPE.IMAGE">
-          <ElImage class="file-res" :src="row.resUrl" fit="cover" />
+          <el-image class="file-res" :src="row.resUrl" fit="cover" />
         </template>
         <template v-if="row.resType === FILE_TYPE.VIDEO">
-          <ElImage class="file-res" :src="row.videoImg" fit="cover" />
+          <el-image class="file-res" :src="row.videoImg" fit="cover" />
         </template>
       </template>
-    </TablePage>
-  </PageContainer>
+    </table-page>
+  </page-container>
 </template>
 
 <style scoped lang="less">

@@ -100,18 +100,18 @@ export default {
 </script>
 
 <template>
-  <ElDrawer :visible.sync="visible" size="70%" title="选择广告">
+  <el-drawer :visible.sync="visible" size="70%" title="选择广告">
     <div v-if="visible" class="flex overflow-hidden h-full">
-      <TablePage v-bind="tablePageOption" ref="page" @current-change="selected = $event" />
+      <table-page v-bind="tablePageOption" ref="page" @current-change="selected = $event" />
 
-      <CarouselPreview class="ml-2" :option="carouselItemOption" :file-map="fileMap">
-        <ElEmpty v-if="!selected" description="未选择广告" />
-        <ElButton v-else class="mt-2" type="primary" @click="submit()">
+      <carousel-preview class="ml-2" :option="carouselItemOption" :file-map="fileMap">
+        <el-empty v-if="!selected" description="未选择广告" />
+        <el-button v-else class="mt-2" type="primary" @click="submit()">
           确定
-        </ElButton>
-      </CarouselPreview>
+        </el-button>
+      </carousel-preview>
     </div>
-  </ElDrawer>
+  </el-drawer>
 </template>
 
 <style scoped lang="less">

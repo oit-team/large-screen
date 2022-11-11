@@ -350,7 +350,7 @@ export default {
               <div v-if="item.fieldType == '文本'" class="searchTit">
                 {{ item.fieldName }}
               </div>
-              <ElInput
+              <el-input
                 v-if="item.fieldType == '文本'"
                 v-model="item.searchValKey"
                 placeholder="请输入搜索内容"
@@ -362,22 +362,22 @@ export default {
               <div v-if="item.fieldType == '值列'" class="searchTit">
                 {{ item.fieldName }}
               </div>
-              <ElSelect
+              <el-select
                 v-if="item.fieldType == '值列'" v-model="item.searchValKey"
                 clearable placeholder="请选择" @keydown.enter.native="clickSearch()"
               >
-                <ElOption
+                <el-option
                   v-for="i in item.fieldAttr"
                   :key="i.optionKey"
                   :label="i.optionValue"
                   :value="i.optionKey"
                 />
-              </ElSelect>
+              </el-select>
 
               <div v-if="item.fieldType == '日期'" class="searchTit">
                 {{ item.fieldName }}
               </div>
-              <ElDatePicker
+              <el-date-picker
                 v-if="item.fieldType == '日期'"
                 v-model="item.searchValKey"
                 type="daterange"
@@ -390,7 +390,7 @@ export default {
               <div v-if="item.fieldType == '时间'" class="searchTit">
                 {{ item.fieldName }}
               </div>
-              <ElTimePicker
+              <el-time-picker
                 v-if="item.fieldType == '时间'"
                 v-model="item.searchValKey"
                 is-range
@@ -408,7 +408,7 @@ export default {
               <div v-if="item.fieldType == '级联'" class="searchTit">
                 {{ item.fieldName }}
               </div>
-              <ElCascader
+              <el-cascader
                 v-if="item.fieldType == '级联'"
                 ref="cascader"
                 v-model="item.searchValKey"
@@ -434,12 +434,12 @@ export default {
           </div> -->
         </div>
         <div class="searchBtnBox">
-          <ElButton size="small" icon="el-icon-refresh" type="primary" @click="clickSearch">
+          <el-button size="small" icon="el-icon-refresh" type="primary" @click="clickSearch">
             查询
-          </ElButton>
-          <ElButton size="small" icon="el-icon-close" type="info" @click="clearSearch">
+          </el-button>
+          <el-button size="small" icon="el-icon-close" type="info" @click="clearSearch">
             清空
-          </ElButton>
+          </el-button>
         </div>
       </div>
 

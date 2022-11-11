@@ -222,7 +222,7 @@ export default {
       <ul>
         <li>
           <span>日期:</span>
-          <ElDatePicker
+          <el-date-picker
             v-model="pickerDate"
             value-format="yyyy-MM-dd"
             type="daterange"
@@ -260,7 +260,7 @@ export default {
       <ul class="infinite-list" style="overflow:auto">
         <li v-for="(item, index) in collImgList" :key="index">
           <div class="imageDiv">
-            <ElImage
+            <el-image
               style="width: 140px; height: 160px;float:left"
               :src="item.collImgUrlList[0]"
               fit="cover"
@@ -293,8 +293,8 @@ export default {
 
       <!-- <p v-if="loadMsg&&collImgList.length == 0">加载中...</p> -->
       <!-- <p v-if="isLoadData == false&&collImgList.length != 0">已经到底了~</p> -->
-      <ElEmpty v-if="collImgList.length == 0 && !loadMsg" description="暂无数据" />
-      <ElPagination
+      <el-empty v-if="collImgList.length == 0 && !loadMsg" description="暂无数据" />
+      <el-pagination
         class="pagination"
         :current-page="pageNum"
         :page-sizes="[30, 40, 50]"
@@ -306,7 +306,7 @@ export default {
         @current-change="handleCurrentChange"
       />
     </div>
-    <ElDrawer
+    <el-drawer
       title="审核详情"
       :visible.sync="drawer"
       direction="rtl"
@@ -318,7 +318,7 @@ export default {
         <p>审批原因:{{ item.remark }}</p>
         <p>审批时间:{{ item.createDate }}</p>
       </div>
-    </ElDrawer>
+    </el-drawer>
   </div>
 </template>
 

@@ -33,8 +33,6 @@ export default {
     }
   },
   created() {
-    console.log(this.editFlag)
-    // // console.log(this.$route.params.item)
     // if(this.$route.params.item){
     //   // console.log("编辑")
     //   this.title = "编辑角色"
@@ -47,8 +45,9 @@ export default {
     //   this.getHomeMenuList();//获取菜单树
     // }
 
-    // // console.log(this.$route.query.item)
+    console.log(this.$route.query.item)
     if (this.$route.query.item) {
+      console.log(this.$route.query)
       console.log('编辑')
       this.title = '编辑角色'
       this.editFlag = false
@@ -219,20 +218,20 @@ export default {
 
 <template>
   <div id="addRole" class="pageCommonStyle page-container text-sm">
-    <ElPageHeader :content="editFlag ? '新增角色' : '编辑角色'" @back="goBack" />
-    <ElDivider />
-    <ElForm ref="ruleForm" :model="ruleForm" :rules="rules" label-width="120px" class="demo-ruleForm">
-      <ElFormItem label="角色名称" prop="roleName">
-        <ElInput v-model="ruleForm.roleName" style="width:60%;" maxlength="10" placeholder="请选择角色名称" />
-      </ElFormItem>
+    <el-page-header :content="editFlag ? '新增角色' : '编辑角色'" @back="goBack" />
+    <el-divider />
+    <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="120px" class="demo-ruleForm">
+      <el-form-item label="角色名称" prop="roleName">
+        <el-input v-model="ruleForm.roleName" style="width:60%;" maxlength="10" placeholder="请选择角色名称" />
+      </el-form-item>
       <!-- <el-form-item label="角色编码" prop="roleCode">
         <el-input v-model="ruleForm.roleCode" style="width:60%;"  placeholder="请选择角色编码"></el-input>
       </el-form-item> -->
-      <ElFormItem label="角色描述" prop="roleRemark">
-        <ElInput v-model="ruleForm.roleRemark" style="width:60%;" maxlength="32" placeholder="请输入角色描述" />
-      </ElFormItem>
-      <ElFormItem label="菜单权限">
-        <ElTree
+      <el-form-item label="角色描述" prop="roleRemark">
+        <el-input v-model="ruleForm.roleRemark" style="width:60%;" maxlength="32" placeholder="请输入角色描述" />
+      </el-form-item>
+      <el-form-item label="菜单权限">
+        <el-tree
           ref="tree"
           :data="menuList"
           node-key="menuId"
@@ -241,16 +240,16 @@ export default {
           :props="defaultProps"
           :show-checkbox="true"
         />
-      </ElFormItem>
-      <ElFormItem>
-        <ElButton size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">
+      </el-form-item>
+      <el-form-item>
+        <el-button size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">
           保存
-        </ElButton>
-        <ElButton v-if="editFlag" size="small" icon="el-icon-refresh" @click="resetForm('ruleForm')">
+        </el-button>
+        <el-button v-if="editFlag" size="small" icon="el-icon-refresh" @click="resetForm('ruleForm')">
           重置
-        </ElButton>
-      </ElFormItem>
-    </ElForm>
+        </el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 

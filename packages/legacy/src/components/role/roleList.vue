@@ -214,7 +214,7 @@ export default {
   <div id="roleList" class="pageCommonStyle page-container text-sm">
     <!-- 操作框 -->
     <!-- :loading="loading" -->
-    <CommonSearch
+    <common-search
       ref="child"
       :head-tit-arr="headTitArr"
       :page-num="pageNum"
@@ -226,13 +226,13 @@ export default {
       @sendData="showChildData"
     />
     <div class="operateBtn">
-      <ElButton class="addBtnOnly" size="small" icon="el-icon-plus" type="success" @click="addRole">
+      <el-button class="addBtnOnly" size="small" icon="el-icon-plus" type="success" @click="addRole">
         新增角色
-      </ElButton>
+      </el-button>
     </div>
-    <ElDivider />
+    <el-divider />
     <!-- ref="tableRef" -->
-    <ElTable
+    <el-table
       ref="table"
       v-loading="loading"
       :style="GLOBAL.tableStyle"
@@ -248,7 +248,7 @@ export default {
       <template slot="empty">
         <p>{{ tableEmptyText }}</p>
       </template>
-      <ElTableColumn
+      <el-table-column
         v-for="(item, index) in headTitArr"
         :key="index"
         show-overflow-tooltip
@@ -258,26 +258,26 @@ export default {
         :label="item.fieldName"
       />
 
-      <ElTableColumn
+      <el-table-column
         fixed="right"
         label="操作"
         width="140"
       >
         <template slot-scope="scope">
-          <ElTooltip class="item" effect="dark" content="编辑角色" placement="top">
-            <ElButton class="editBtnOnly" size="mini" type="primary" icon="el-icon-edit" circle @click="editRoleItem(scope.row, scope.$index)" />
-          </ElTooltip>
-          <ElTooltip class="item" effect="dark" content="删除角色" placement="top">
-            <ElButton class="delBtnOnly" size="mini" type="danger" icon="el-icon-delete" circle @click="delRoleItem(scope.row, scope.$index)" />
-          </ElTooltip>
-          <ElTooltip class="item" effect="dark" content="角色授权" placement="top">
-            <ElButton class="authBtnOnly" size="mini" type="warning" icon="el-icon-thumb" circle @click="authUsers(scope.row)" />
-          </ElTooltip>
+          <el-tooltip class="item" effect="dark" content="编辑角色" placement="top">
+            <el-button class="editBtnOnly" size="mini" type="primary" icon="el-icon-edit" circle @click="editRoleItem(scope.row, scope.$index)" />
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="删除角色" placement="top">
+            <el-button class="delBtnOnly" size="mini" type="danger" icon="el-icon-delete" circle @click="delRoleItem(scope.row, scope.$index)" />
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="角色授权" placement="top">
+            <el-button class="authBtnOnly" size="mini" type="warning" icon="el-icon-thumb" circle @click="authUsers(scope.row)" />
+          </el-tooltip>
         </template>
-      </ElTableColumn>
-    </ElTable>
+      </el-table-column>
+    </el-table>
 
-    <ElPagination
+    <el-pagination
       background
       :current-page="pageNum"
       :page-sizes="[15, 20, 30]"

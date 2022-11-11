@@ -61,25 +61,25 @@ export default {
 
 <template>
   <div id="goodStock" class="pageCommonStyle">
-    <ElPageHeader content="查看库存分布" @back="goBack" />
-    <ElDivider />
+    <el-page-header content="查看库存分布" @back="goBack" />
+    <el-divider />
     <div class="operateBox">
-      <ElInput
+      <el-input
         v-model="searchKey"
         type="text"
         placeholder="请输入搜索关键词"
         @keyup.enter.native="clickSearch()"
       />
-      <ElButton size="small" type="primary" @click="clickSearch">
+      <el-button size="small" type="primary" @click="clickSearch">
         搜索
-      </ElButton>
-      <ElButton size="small" type="primary" @click="clearSearch">
+      </el-button>
+      <el-button size="small" type="primary" @click="clearSearch">
         清空搜索
-      </ElButton>
+      </el-button>
       <span class="shopCount">店铺总数：{{ shopCount }}</span>
       <span class="count">商品总库存：{{ count }}</span>
     </div>
-    <ElDivider />
+    <el-divider />
     <div class="stockContainerBox">
       <div v-if="tableData && tableData.length > 0" class="stockContainer">
         <div v-for="(item, index) in tableData" :key="index" class="itemBox">

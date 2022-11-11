@@ -128,10 +128,10 @@ export default defineComponent({
 <template>
   <!-- 把角色赋予用户 -->
   <div id="authUsersByRoleId" class="pageCommonStyle">
-    <ElPageHeader :content="pageTitle" @back="goBack" />
-    <ElDivider />
+    <el-page-header :content="pageTitle" @back="goBack" />
+    <el-divider />
     <!-- <div class="roleDesc">{{roleName}}--{{roleRemark}}</div> -->
-    <ElTransfer
+    <el-transfer
       v-model="associatedUser"
       filterable
       :data="allUserList"

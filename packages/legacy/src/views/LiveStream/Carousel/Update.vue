@@ -1,4 +1,4 @@
-<script>
+<script lang="jsx">
 import Vue from 'vue'
 import { pick, uniqueId } from 'lodash-es'
 import { DEFAULT_STATE, PUBLISHED_STATE } from './List'
@@ -428,14 +428,14 @@ export default {
               >
                 新增轮播页
               </el-button>
-              <el-button
+              {/* <el-button
                 class="rounded-none action-button"
                 type="primary"
                 icon="el-icon-picture-outline"
                 onClick={() => this.drawerCollocationVisible = true}
               >
                 选择搭配图
-              </el-button>
+              </el-button> */}
             </el-button-group>
           )
         },
@@ -520,12 +520,12 @@ export default {
 </script>
 
 <template>
-  <PageContainer class="flex overflow-hidden flex-col" back-top>
-    <PageHeader :content="`${isEdit ? '编辑' : '新增'}广告`" />
+  <page-container class="flex overflow-hidden flex-col" back-top>
+    <page-header :content="`${isEdit ? '编辑' : '新增'}广告`" />
 
     <div class="flex flex-1">
-      <ElTabs v-model="tab" class="flex overflow-hidden flex-col flex-1 mb-2" type="border-card">
-        <ElTabPane
+      <el-tabs v-model="tab" class="flex overflow-hidden flex-col flex-1 mb-2" type="border-card">
+        <el-tab-pane
           v-for="(item, index) of carouselList"
           :key="item._tempId"
           class="flex overflow-hidden h-full"
@@ -538,60 +538,60 @@ export default {
           <div class="flex flex-1 justify-center">
             <div class="flex flex-1 justify-end">
               <div class="flex flex-col justify-around mr-4">
-                <ElButtonGroup>
-                  <ElButton type="primary" plain :disabled="disabledEdit" @click="addContent(0)">
+                <el-button-group>
+                  <el-button type="primary" plain :disabled="disabledEdit" @click="addContent(0)">
                     {{ item.items[0] ? '替换' : '填充' }}上方
-                  </ElButton>
-                  <ElButton
+                  </el-button>
+                  <el-button
                     type="danger"
                     icon="el-icon-delete"
                     plain
                     :disabled="!item.items[0] || disabledEdit"
                     @click="removeContent(item, 0)"
                   />
-                </ElButtonGroup>
-                <ElButton type="info" :disabled="!allFilled || disabledEdit" @click="exchangeContent(item)">
+                </el-button-group>
+                <el-button type="info" :disabled="!allFilled || disabledEdit" @click="exchangeContent(item)">
                   交换位置
-                </ElButton>
-                <ElButtonGroup>
-                  <ElButton type="primary" plain :disabled="!item.items[0] || disabledEdit" @click="addContent(1)">
+                </el-button>
+                <el-button-group>
+                  <el-button type="primary" plain :disabled="!item.items[0] || disabledEdit" @click="addContent(1)">
                     {{ item.items[1] ? '替换' : '填充' }}下方
-                  </ElButton>
-                  <ElButton
+                  </el-button>
+                  <el-button
                     type="danger"
                     icon="el-icon-delete"
                     plain
                     :disabled="!item.items[1] || disabledEdit"
                     @click="removeContent(item, 1)"
                   />
-                </ElButtonGroup>
+                </el-button-group>
               </div>
             </div>
             <div class="carousel-preview border">
-              <VcSplit v-model="item.divider" :decimal="4" :disabled="disabledEdit">
+              <vc-split v-model="item.divider" :decimal="4" :disabled="disabledEdit">
                 <template v-if="item.items[0]" slot="before">
-                  <CarouselItemContent :item="item.items[0]" :map="fileMap" />
+                  <carousel-item-content :item="item.items[0]" :map="fileMap" />
                 </template>
                 <template v-if="item.items[1]" slot="after">
-                  <CarouselItemContent :item="item.items[1]" :map="fileMap" />
+                  <carousel-item-content :item="item.items[1]" :map="fileMap" />
                 </template>
-              </VcSplit>
+              </vc-split>
             </div>
             <div class="flex-1 flex flex-col pl-2 justify-between">
-              <ElForm ref="elForm" label-width="80px" :disabled="disabledEdit">
+              <el-form ref="elForm" label-width="80px" :disabled="disabledEdit">
                 <div class="mb-2 text-lg text-center">
                   轮播页配置
                 </div>
-                <ElFormItem label="位置">
-                  <ElInputNumber
+                <el-form-item label="位置">
+                  <el-input-number
                     :value="index + 1"
                     :min="1"
                     :max="carouselList.length"
                     @input="changeIndex($event - 1, index)"
                   />
-                </ElFormItem>
-                <ElFormItem label="分隔线">
-                  <ElInputNumber
+                </el-form-item>
+                <el-form-item label="分隔线">
+                  <el-input-number
                     v-model="divider"
                     controls-position="right"
                     clearable
@@ -600,10 +600,10 @@ export default {
                     :disabled="!allFilled"
                   />
                   <span class="ml-1">%</span>
-                </ElFormItem>
-                <ElFormItem label="停留时长">
+                </el-form-item>
+                <el-form-item label="停留时长">
                   <template v-if="!hasVideo">
-                    <ElInputNumber
+                    <el-input-number
                       v-model="duration"
                       controls-position="right"
                       clearable
@@ -614,38 +614,38 @@ export default {
                   <div v-else class="align-middle text-sm inline-block">
                     广告中存在视频，将以视频播放时长做为广告停留时长。
                   </div>
-                </ElFormItem>
-              </ElForm>
-              <ElDivider />
+                </el-form-item>
+              </el-form>
+              <el-divider />
 
               <!-- 商品关联搭配 -->
               <div class="reletiveMatch flex flex-col p-1">
                 <div>
-                  <ElButton type="primary" icon="el-icon-plus" size="small" plain :disabled="item.goods.length === 5" @click="clickToSelectMatchGoods">
+                  <el-button type="primary" icon="el-icon-plus" size="small" plain :disabled="item.goods.length === 5" @click="clickToSelectMatchGoods">
                     选择商品
-                  </ElButton>
+                  </el-button>
                 </div>
 
                 <div v-if="!item.goods.length" class="flex justify-center items-center">
-                  <ElEmpty description="暂无关联搭配，点击选择商品添加吧" :image-size="60" class="flex-1" />
+                  <el-empty description="暂无关联搭配，点击选择商品添加吧" :image-size="60" class="flex-1" />
                 </div>
                 <div v-else class="matchGoodsList flex-1 grid grid-cols-5 py-2 mt-2">
                   <div v-for="(goodsId, index) in item.goods" :key="index" class="matchGoodsItem box-border flex flex-col justify-center items-center">
                     <div class="itemImage">
-                      <ElImage
+                      <el-image
                         style="width:100%;height:100%"
                         :src="fileGoods[goodsId].resUrl"
                         fit="contain"
                       />
                     </div>
-                    <ElTooltip class="w-full text-center text-xs overflow-hidden" style="width:80%" effect="light" placement="bottom">
+                    <el-tooltip class="w-full text-center text-xs overflow-hidden" style="width:80%" effect="light" placement="bottom">
                       <div slot="content">
                         {{ fileGoods[goodsId].styleNo }}
                       </div>
-                      <ElButton class="textToolTipBtn text-black truncate" type="text">
+                      <el-button class="textToolTipBtn text-black truncate" type="text">
                         {{ fileGoods[goodsId].styleNo }}
-                      </ElButton>
-                    </ElTooltip>
+                      </el-button>
+                    </el-tooltip>
                     <div class="deleteSelectedGoodsItem" @click="deleteSelectedGoodsItem(item.goods, goodsId)">
                       <i class="el-icon-close" />
                     </div>
@@ -655,9 +655,9 @@ export default {
               </div>
             </div>
           </div>
-        </ElTabPane>
-      </ElTabs>
-      <ElForm
+        </el-tab-pane>
+      </el-tabs>
+      <el-form
         ref="form"
         class="p-2 mb-2 ml-2 rounded border"
         :model="formData"
@@ -668,35 +668,35 @@ export default {
         <div class="mb-2 text-lg text-center">
           广告配置
         </div>
-        <ElFormItem label="标题" prop="describe">
-          <ElInput v-model="formData.describe" placeholder="请输入标题" clearable />
-        </ElFormItem>
-        <ElFormItem label="广告类型" prop="advertsType">
-          <ElSelect v-model="formData.advertsType">
-            <ElOption :value="0" label="大屏广告机" />
-          </ElSelect>
-        </ElFormItem>
-        <ElFormItem size="large">
-          <ElButton type="primary" icon="el-icon-check" @click="saveItem">
+        <el-form-item label="标题" prop="describe">
+          <el-input v-model="formData.describe" placeholder="请输入标题" clearable />
+        </el-form-item>
+        <el-form-item label="广告类型" prop="advertsType">
+          <el-select v-model="formData.advertsType">
+            <el-option :value="0" label="大屏广告机" />
+          </el-select>
+        </el-form-item>
+        <el-form-item size="large">
+          <el-button type="primary" icon="el-icon-check" @click="saveItem">
             保存
-          </ElButton>
-        </ElFormItem>
-      </ElForm>
+          </el-button>
+        </el-form-item>
+      </el-form>
     </div>
-    <ElDrawer :visible.sync="drawerVisible" size="40%">
-      <TablePage v-bind="tablePageOption" ref="fileTable" auto auto-layout>
+    <el-drawer :visible.sync="drawerVisible" size="40%">
+      <table-page v-bind="tablePageOption" ref="fileTable" auto auto-layout>
         <template slot="content:resUrl" slot-scope="{ row }">
           <template v-if="row.resType === FILE_TYPE.IMAGE">
-            <ElImage class="file-res" :src="row.resUrl" fit="cover" />
+            <el-image class="file-res" :src="row.resUrl" fit="cover" />
           </template>
           <template v-if="row.resType === FILE_TYPE.VIDEO">
-            <ElImage class="file-res" :src="row.videoImg" fit="cover" />
+            <el-image class="file-res" :src="row.videoImg" fit="cover" />
           </template>
         </template>
-      </TablePage>
-    </ElDrawer>
+      </table-page>
+    </el-drawer>
 
-    <ElDrawer :visible.sync="drawerCollocationVisible" size="40%">
+    <!-- <ElDrawer :visible.sync="drawerCollocationVisible" size="40%">
       <TablePage v-bind="tablePageCollocationOption" ref="collocationTable" auto auto-layout :fields="collocationFields">
         <template #content:startcreateTime="{ row }">
           <ElDatePicker
@@ -711,20 +711,20 @@ export default {
           <ElImage class="file-res" :src="row.collImgUrl" fit="cover" />
         </template>
       </TablePage>
-    </ElDrawer>
+    </ElDrawer> -->
 
     <!-- 点击选择商品相关联搭配 -->
-    <ElDrawer :visible.sync="drawerMatchGoodsVisible" size="40%">
-      <TablePage v-bind="tablePageMatchGoodsOption" ref="matchGoodsTable" auto auto-layout :fields="matchGoodsFields">
+    <el-drawer :visible.sync="drawerMatchGoodsVisible" size="40%">
+      <table-page v-bind="tablePageMatchGoodsOption" ref="matchGoodsTable" auto auto-layout :fields="matchGoodsFields">
         <template #content:resUrl="{ row }">
-          <ElImage v-if="row.resUrl" class="file-res" :src="row.resUrl" fit="cover" />
+          <el-image v-if="row.resUrl" class="file-res" :src="row.resUrl" fit="cover" />
           <div v-else class="file-res flex justify-center items-center">
             暂无图片
           </div>
         </template>
-      </TablePage>
-    </ElDrawer>
-  </PageContainer>
+      </table-page>
+    </el-drawer>
+  </page-container>
 </template>
 
 <style lang="less" scoped>

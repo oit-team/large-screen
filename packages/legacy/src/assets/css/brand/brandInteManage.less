@@ -1,0 +1,206 @@
+#brandInteManage{
+  @deep:~">>>";
+  // height: calc(100vh - 180px);
+  // width:100%;
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  padding-left: 10px;
+  // background-color: pink;
+  // overflow: hidden;
+  @{deep} .el-tooltip {
+    padding: 7px 7px!important;
+
+  }
+  @{deep} .el-tooltip .el-button--small{
+    padding: 9px 15px;
+  }
+  @{deep} .el-collapse {
+    border-top: none;
+    border-bottom: none;
+  }
+  @{deep} .el-collapse-item__header {
+    height: 40px;
+    line-height: 40px;
+    border:none;
+  }
+  @{deep} .el-collapse-item__wrap {
+    border-bottom: none;
+  }
+  @{deep} .el-collapse-item__content {
+    padding-bottom: 0px;
+  }
+  @{deep} .el-drawer__body {
+    overflow-y: auto;
+  }
+  .leftTreeCon{
+    width: 210px;
+    display: flex;
+    flex-direction: column;
+    // background-color: pink;
+    .btnBox{
+      margin:6px 0px 12px;
+    }
+    .statisticsBox{
+      width:100%;
+      margin:0px 0px 10px 0px;
+      border:1px solid #eee;
+      border-radius: 8px;
+      padding:0px 6px;
+      box-sizing: border-box;
+      .item{
+        padding:4px 4px 12px 4px;
+        text-align: left;
+        .titleBox{
+          display: flex;
+          align-items: center;
+
+          .titltTip{
+            display: inline-block;
+            width:5px;
+            height:14px;
+            margin-right:6px;
+            background-color: #1978FE;
+
+          }
+          .countNums{
+            color:#1978FE;
+          }
+
+
+        }
+        .numMain{
+          margin:10px 0px 0px 0px;
+          .numItemBox{
+            font-size: 12px;
+            display: inline-block;
+            margin-right:10px;
+            margin-bottom:4px;
+            width:44px;
+            height: 44px;
+            border: 1px solid #ccc;
+            border-radius:10px;
+            text-align: center;
+            line-height: 20px;
+            .userTip{
+              font-size: 10px;
+            }
+            .numBox{
+              color:#1978FE;
+            }
+          }
+        }
+      }
+    }
+    .searchIpt{
+      width:94%;
+      height: 40px;
+      margin: 6px auto;
+      box-sizing: border-box;
+    }
+    .orgTreeBox{
+      width:100%;
+      height: 76vh;
+      overflow: auto;
+      box-sizing: border-box;
+      @{deep} .el-tree{
+        min-width:100%;
+        padding-right:6px;
+        display:inline-block;
+        margin-bottom: 6px;
+        .el-tree-node__content {
+          height: 38px;
+        }
+      }
+      @{deep} .el-tree-node:focus>.el-tree-node__content{
+        color: #1978FE;//节点的字体颜色
+      }
+
+      @{deep} .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
+        background-color: #C5DDFF;
+        color: #1978FE;
+      }
+      @{deep} .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content:hover {
+        background-color: #F5F7FA;
+      }
+
+    }
+  }
+
+  .rightListCon{
+    flex:1;
+    overflow: hidden;
+    margin-left:10px;
+    .userTabBox{
+      display: flex;
+      border-bottom:1px solid #ddd;
+      margin-bottom:6px;
+      .tabItem{
+        border-bottom:2px solid transparent;
+        margin-right:20px;
+        height: 34px;
+        line-height: 34px;
+        font-size: 14px!important;
+        cursor: pointer;
+      }
+      .active{
+        color:#409EFF;
+        border-bottom:2px solid #409EFF;
+      }
+    }
+    .userListBox{
+      flex:1;
+      overflow: auto;
+      // margin-left:10px;
+      // background-color: pink;
+
+      .operateBtn{
+        margin-bottom:10px;
+        display:flex;
+        #authBtn{
+          padding:9px 15px!important;
+        }
+      }
+    }
+    .examListBox{
+      flex:1;
+      overflow: hidden;
+      margin-left:10px;
+      // background-color: pink;
+
+      .operateBtn{
+        margin-bottom:10px;
+        display:flex;
+        #authBtn{
+          padding:9px 15px!important;
+        }
+      }
+    }
+  }
+
+
+  @{deep} .el-dialog--center .el-dialog__body {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  @{deep} .el-drawer__body .el-select {
+    width: 100%;
+  }
+  @{deep} .el-date-editor.el-input, .el-date-editor.el-input__inner {
+    width: 100%;
+  }
+  @{deep} .el-form-item__label {
+    text-align: left;
+  }
+  @{deep} .demo-drawer__content .el-tooltip{
+    padding:0px 10px!important;
+  }
+  .roleTips{
+    text-align: left;
+    padding-left:12px;
+    line-height: 50px;
+    color:#e60012;
+  }
+
+}

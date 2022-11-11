@@ -47,14 +47,15 @@ const config = defineConfig({
       ],
       dts: 'src/auto-imports.d.ts',
     }),
-    Eslint(),
+    // Eslint(),
   ],
 
   server: {
     port: 3333,
     proxy: {
       '/api': {
-        target: 'http://192.168.9.65:8089',
+        target: 'http://192.168.9.67:9092',
+        // target: 'http://192.168.9.65:8089',
         changeOrigin: true,
         rewrite: path => path.replace('/api', ''),
       },

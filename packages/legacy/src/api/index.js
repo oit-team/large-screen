@@ -17,7 +17,7 @@ const axios = Axios.create(axiosConfig)
  */
 axios.interceptors.request.use((config) => {
   config.headers.userId = sessionStorage.userId
-  config.headers.token = sessionStorage.accessToken
+  config.headers.token = sessionStorage.token
 
   return config
 }, (error) => {

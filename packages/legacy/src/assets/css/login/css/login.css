@@ -1,0 +1,78 @@
+#login {
+  width: 100%;
+  height: 100%;
+}
+#login .login_head {
+  width: 100%;
+  height: 100%;
+  min-width: 1024px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#login .login_head .content_logo {
+  width: 60%;
+  height: 40px;
+  margin-bottom: 40px;
+}
+#login .login_head .content {
+  box-shadow: 0 0 30px 0 #c3d3ea;
+  border-radius: 4px;
+  width: 60%;
+  min-width: 900px;
+  height: 70%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#login .login_head .content .contentLeft {
+  height: 100%;
+  border-right: 0.5px solid rgba(119, 175, 253, 0.3);
+  object-fit: cover;
+}
+#login .login_head .content .contentLeft img {
+  width: 100%;
+  height: 100%;
+}
+#login .login_head .content .contentRight {
+  width: 50%;
+  padding: 0 40px;
+  border-radius: 15px;
+}
+#login .login_head .content .contentRight .right {
+  width: 80%;
+}
+#login .login_head .content .contentRight .right .right_title {
+  width: 100%;
+  border-bottom: 2px solid #1978FE;
+  color: #1978FE;
+  text-align: left;
+  height: 60px;
+  line-height: 60px;
+  font-family: PingFangSC-Semibold;
+  font-size: 20px;
+  letter-spacing: 0;
+  font-weight: 600;
+  margin: 20px 0;
+}
+#login .login_head .content .contentRight .right .el-input {
+  width: 100%;
+  margin: 10px 0;
+}
+#login .login_head .content .contentRight .right /deep/ .el-input__inner:focus {
+  border-color: #1978FE;
+}
+#login .login_head .content .contentRight .right /deep/ .loginBtn .btn_submit {
+  width: 100%;
+  height: 48px;
+  cursor: pointer;
+  background-color: #1978FE;
+  border-color: #1978FE;
+  font-size: 20px;
+  margin: 40px 0;
+}
+#login >>> .el-form-item {
+  margin-bottom: 0px;
+}

@@ -20,8 +20,9 @@ declare module '@vue/runtime-core' {
     ElMain: typeof import('element-ui/lib/main')['default']
     ElMenu: typeof import('element-ui/lib/menu')['default']
     ElMenuItem: typeof import('element-ui/lib/menu-item')['default']
-    ElMenuItemGroup: typeof import('element-ui/lib/menu-item-group')['default']
     ElSubmenu: typeof import('element-ui/lib/submenu')['default']
+    ElTable: typeof import('element-ui/lib/table')['default']
+    ElTableColumn: typeof import('element-ui/lib/table-column')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

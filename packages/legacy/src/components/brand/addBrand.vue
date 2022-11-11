@@ -550,16 +550,6 @@ export default {
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item label="品牌所属行业">
-          <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
 
         <el-form-item label="品牌入驻时间" prop="bueStartTime">
           <el-date-picker

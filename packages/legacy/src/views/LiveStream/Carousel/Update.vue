@@ -399,7 +399,6 @@ export default {
       this.$set(this.fileMap, res.id, {
         resUrl: res.resUrl,
       })
-
       const target = index
       const item = this.carouselItem
       item.goods = goods
@@ -428,14 +427,6 @@ export default {
               >
                 新增轮播页
               </el-button>
-              {/* <el-button
-                class="rounded-none action-button"
-                type="primary"
-                icon="el-icon-picture-outline"
-                onClick={() => this.drawerCollocationVisible = true}
-              >
-                选择搭配图
-              </el-button> */}
             </el-button-group>
           )
         },
@@ -520,9 +511,8 @@ export default {
 </script>
 
 <template>
-  <page-container class="flex overflow-hidden flex-col" back-top>
+  <page-container class="h-full flex overflow-hidden flex-col" back-top>
     <page-header :content="`${isEdit ? '编辑' : '新增'}广告`" />
-
     <div class="flex flex-1">
       <el-tabs v-model="tab" class="flex overflow-hidden flex-col flex-1 mb-2" type="border-card">
         <el-tab-pane
@@ -579,7 +569,7 @@ export default {
             </div>
             <div class="flex-1 flex flex-col pl-2 justify-between">
               <el-form ref="elForm" label-width="80px" :disabled="disabledEdit">
-                <div class="mb-2 text-lg text-center">
+                <div class="mb-2 text-sm text-center">
                   轮播页配置
                 </div>
                 <el-form-item label="位置">
@@ -629,7 +619,7 @@ export default {
                 <div v-if="!item.goods.length" class="flex justify-center items-center">
                   <el-empty description="暂无关联搭配，点击选择商品添加吧" :image-size="60" class="flex-1" />
                 </div>
-                <div v-else class="matchGoodsList flex-1 grid grid-cols-5 py-2 mt-2">
+                <div v-else class="matchGoodsList flex-1 grid grid-cols-5 py-2 mt-2 text-xs">
                   <div v-for="(goodsId, index) in item.goods" :key="index" class="matchGoodsItem box-border flex flex-col justify-center items-center">
                     <div class="itemImage">
                       <el-image
@@ -650,8 +640,8 @@ export default {
                       <i class="el-icon-close" />
                     </div>
                   </div>
+                  <span class="self-end">{{ item.goods.length }}/5</span>
                 </div>
-                <span class="self-end">{{ item.goods.length }}/5</span>
               </div>
             </div>
           </div>
@@ -665,7 +655,7 @@ export default {
         label-width="80px"
         :disabled="disabledEdit"
       >
-        <div class="mb-2 text-lg text-center">
+        <div class="mb-2 text-sm text-center">
           广告配置
         </div>
         <el-form-item label="标题" prop="describe">
@@ -684,7 +674,7 @@ export default {
       </el-form>
     </div>
     <el-drawer :visible.sync="drawerVisible" size="40%">
-      <table-page v-bind="tablePageOption" ref="fileTable" auto auto-layout>
+      <table-page v-bind="tablePageOption" ref="fileTable" class="mx-3 mb-5" auto auto-layout>
         <template slot="content:resUrl" slot-scope="{ row }">
           <template v-if="row.resType === FILE_TYPE.IMAGE">
             <el-image class="file-res" :src="row.resUrl" fit="cover" />
@@ -695,23 +685,6 @@ export default {
         </template>
       </table-page>
     </el-drawer>
-
-    <!-- <ElDrawer :visible.sync="drawerCollocationVisible" size="40%">
-      <TablePage v-bind="tablePageCollocationOption" ref="collocationTable" auto auto-layout :fields="collocationFields">
-        <template #content:startcreateTime="{ row }">
-          <ElDatePicker
-            v-model="row.startcreateTime"
-            type="daterange"
-            range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-          />
-        </template>
-        <template #content:collImgUrl="{ row }">
-          <ElImage class="file-res" :src="row.collImgUrl" fit="cover" />
-        </template>
-      </TablePage>
-    </ElDrawer> -->
 
     <!-- 点击选择商品相关联搭配 -->
     <el-drawer :visible.sync="drawerMatchGoodsVisible" size="40%">
@@ -728,6 +701,17 @@ export default {
 </template>
 
 <style lang="less" scoped>
+::v-deep{
+  .el-page-header__content{
+    font-size: 16px;
+  }
+  .el-divider--horizontal{
+    margin: 10px 0;
+  }
+  .el-tabs__content{
+    height: 100%;
+  }
+}
 .carousel-box {
   display: flex;
   flex-direction: column;

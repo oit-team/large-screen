@@ -7,7 +7,7 @@ export default defineComponent({
   }),
   watch: {
     $route() {
-      const name = this.$route.matched.at(-1).components.default.name
+      const name = this.$route.matched.at(-1)?.components?.default.name
       const keepAlive = this.$route.meta.keepAlive
       if (keepAlive && name) {
         this.include = [...new Set([...this.include, name])]

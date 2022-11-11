@@ -312,25 +312,23 @@ export default {
       >
         <template slot-scope="scope">
           <slot v-bind="scope" name="rowActions">
-            <template>
-              <ElTooltip
-                v-for="(btn, index) of table.actions.buttons"
-                :key="index"
-                :content="getContent(btn.tip, scope)"
-                effect="dark"
-                placement="top"
-              >
-                <ElButton
-                  :class="btn.class"
-                  :disabled="getContent(btn.disabled, scope)"
-                  :icon="getContent(btn.icon, scope)"
-                  :type="getContent(btn.type, scope)"
-                  circle
-                  size="mini"
-                  @click="rowClick(btn, scope)"
-                />
-              </ElTooltip>
-            </template>
+            <ElTooltip
+              v-for="(btn, index) of table.actions.buttons"
+              :key="index"
+              :content="getContent(btn.tip, scope)"
+              effect="dark"
+              placement="top"
+            >
+              <ElButton
+                :class="btn.class"
+                :disabled="getContent(btn.disabled, scope)"
+                :icon="getContent(btn.icon, scope)"
+                :type="getContent(btn.type, scope)"
+                circle
+                size="mini"
+                @click="rowClick(btn, scope)"
+              />
+            </ElTooltip>
           </slot>
         </template>
       </ElTableColumn>

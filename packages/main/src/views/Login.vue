@@ -36,10 +36,10 @@ export default defineComponent({
 <template>
   <div>
     <ElForm ref="form" :model="form" label-width="100px">
-      <ElFormItem label="密码" prop="pass">
+      <ElFormItem label="用户名" prop="pass">
         <ElInput v-model="form.userName" type="username" />
       </ElFormItem>
-      <ElFormItem label="确认密码" prop="password">
+      <ElFormItem label="密码" prop="password">
         <ElInput v-model="form.passWord" type="password" />
       </ElFormItem>
       <ElFormItem>

@@ -1,0 +1,189 @@
+#brandInteManage {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  padding-left: 10px;
+}
+#brandInteManage >>> .el-tooltip {
+  padding: 7px 7px!important;
+}
+#brandInteManage >>> .el-tooltip .el-button--small {
+  padding: 9px 15px;
+}
+#brandInteManage >>> .el-collapse {
+  border-top: none;
+  border-bottom: none;
+}
+#brandInteManage >>> .el-collapse-item__header {
+  height: 40px;
+  line-height: 40px;
+  border: none;
+}
+#brandInteManage >>> .el-collapse-item__wrap {
+  border-bottom: none;
+}
+#brandInteManage >>> .el-collapse-item__content {
+  padding-bottom: 0px;
+}
+#brandInteManage >>> .el-drawer__body {
+  overflow-y: auto;
+}
+#brandInteManage .leftTreeCon {
+  width: 210px;
+  display: flex;
+  flex-direction: column;
+}
+#brandInteManage .leftTreeCon .btnBox {
+  margin: 6px 0px 12px;
+}
+#brandInteManage .leftTreeCon .statisticsBox {
+  width: 100%;
+  margin: 0px 0px 10px 0px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 0px 6px;
+  box-sizing: border-box;
+}
+#brandInteManage .leftTreeCon .statisticsBox .item {
+  padding: 4px 4px 12px 4px;
+  text-align: left;
+}
+#brandInteManage .leftTreeCon .statisticsBox .item .titleBox {
+  display: flex;
+  align-items: center;
+}
+#brandInteManage .leftTreeCon .statisticsBox .item .titleBox .titltTip {
+  display: inline-block;
+  width: 5px;
+  height: 14px;
+  margin-right: 6px;
+  background-color: #1978FE;
+}
+#brandInteManage .leftTreeCon .statisticsBox .item .titleBox .countNums {
+  color: #1978FE;
+}
+#brandInteManage .leftTreeCon .statisticsBox .item .numMain {
+  margin: 10px 0px 0px 0px;
+}
+#brandInteManage .leftTreeCon .statisticsBox .item .numMain .numItemBox {
+  font-size: 12px;
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 4px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 20px;
+}
+#brandInteManage .leftTreeCon .statisticsBox .item .numMain .numItemBox .userTip {
+  font-size: 10px;
+}
+#brandInteManage .leftTreeCon .statisticsBox .item .numMain .numItemBox .numBox {
+  color: #1978FE;
+}
+#brandInteManage .leftTreeCon .searchIpt {
+  width: 94%;
+  height: 40px;
+  margin: 6px auto;
+  box-sizing: border-box;
+}
+#brandInteManage .leftTreeCon .orgTreeBox {
+  width: 100%;
+  height: 76vh;
+  overflow: auto;
+  box-sizing: border-box;
+}
+#brandInteManage .leftTreeCon .orgTreeBox >>> .el-tree {
+  min-width: 100%;
+  padding-right: 6px;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+#brandInteManage .leftTreeCon .orgTreeBox >>> .el-tree .el-tree-node__content {
+  height: 38px;
+}
+#brandInteManage .leftTreeCon .orgTreeBox >>> .el-tree-node:focus > .el-tree-node__content {
+  color: #1978FE;
+}
+#brandInteManage .leftTreeCon .orgTreeBox >>> .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+  background-color: #C5DDFF;
+  color: #1978FE;
+}
+#brandInteManage .leftTreeCon .orgTreeBox >>> .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content:hover {
+  background-color: #F5F7FA;
+}
+
+#brandInteManage .rightListCon {
+  display: flex;
+  overflow: hidden;
+  flex: 1;
+  flex-direction: column;
+  margin-left: 10px;
+}
+#brandInteManage .rightListCon .userTabBox {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 6px;
+}
+#brandInteManage .rightListCon .userTabBox .tabItem {
+  border-bottom: 2px solid transparent;
+  margin-right: 20px;
+  height: 34px;
+  line-height: 34px;
+  font-size: 14px!important;
+  cursor: pointer;
+}
+#brandInteManage .rightListCon .userTabBox .active {
+  color: #409EFF;
+  border-bottom: 2px solid #409EFF;
+}
+#brandInteManage .rightListCon .userListBox {
+  position: relative;
+  overflow: auto;
+  flex: 1;
+}
+#brandInteManage .rightListCon .userListBox .operateBtn {
+  margin-bottom: 10px;
+  display: flex;
+}
+#brandInteManage .rightListCon .userListBox .operateBtn #authBtn {
+  padding: 9px 15px!important;
+}
+#brandInteManage .rightListCon .examListBox {
+  display: flex;
+  overflow: auto;
+  flex: 1;
+  flex-direction: column;
+}
+#brandInteManage .rightListCon .examListBox .operateBtn {
+  margin-bottom: 10px;
+  display: flex;
+}
+#brandInteManage .rightListCon .examListBox .operateBtn #authBtn {
+  padding: 9px 15px!important;
+}
+#brandInteManage >>> .el-dialog--center .el-dialog__body {
+  display: flex;
+  justify-content: space-around;
+}
+#brandInteManage >>> .el-drawer__body .el-select {
+  width: 100%;
+}
+#brandInteManage >>> .el-date-editor.el-input,
+#brandInteManage .el-date-editor.el-input__inner {
+  width: 100%;
+}
+#brandInteManage >>> .el-form-item__label {
+  text-align: left;
+}
+#brandInteManage >>> .demo-drawer__content .el-tooltip {
+  padding: 0px 10px!important;
+}
+#brandInteManage .roleTips {
+  text-align: left;
+  padding-left: 12px;
+  line-height: 50px;
+  color: #e60012;
+}

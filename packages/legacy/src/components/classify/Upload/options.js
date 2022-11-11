@@ -117,7 +117,7 @@ export function getDefaultFormData(data, option) {
  * @return {{userId: string, token: string}}
  */
 export const getDefaultHeaders = () => ({
-  token: sessionStorage.accessToken,
+  token: sessionStorage.token,
   userId: sessionStorage.userId,
 })
 

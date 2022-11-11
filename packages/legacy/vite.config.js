@@ -21,6 +21,7 @@ const config = defineConfig({
 
   build: {
     minify: true,
+    sourcemap: true,
     lib: {
       // Could also be a dictionary or array of multiple entry points
       entry: path.resolve(__dirname, 'src/main.ts'),
@@ -32,9 +33,7 @@ const config = defineConfig({
     rollupOptions: {
       // 确保外部化处理那些你不想打包进库的依赖
       external: [
-        'vue',
-        'vue-router',
-        'element-ui',
+        // 'element-ui',
         'lodash-es',
         'axios',
       ],
@@ -43,8 +42,8 @@ const config = defineConfig({
   },
 
   plugins: [
-    vue(),
     VueJsx(),
+    vue(),
     // Components({
     //   resolvers: [
     //     // ElementUiResolver({

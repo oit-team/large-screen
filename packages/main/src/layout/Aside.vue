@@ -5,6 +5,7 @@ import { collapse, toggleCollapse } from './control'
 import { getTreeMenuList } from '@/api/common'
 
 export default defineComponent({
+
   data: () => ({
     menuList: [],
     active: '',
@@ -46,7 +47,7 @@ export default defineComponent({
   <ElAside class="relative flex flex-col border-r" width="auto">
     <ElMenu class="flex-1 flex flex-col overflow-auto border-none" :collapse="collapse" @select="change">
       <template v-for="item in menuList">
-        <Component :is="item.childrenMenu ? 'ElSubmenu' : 'ElMenuItem'" :key="item.menuId" :index="item.menuId">
+        <ElSubmenu v-if="item.childrenMenu" :key="item.menuId" :index="item.menuId">
           <template #title>
             <i :class="item.menuImg" />
             <span>{{ item.menuName }}</span>
@@ -56,7 +57,13 @@ export default defineComponent({
               {{ sub.menuName }}
             </ElMenuItem>
           </template>
-        </Component>
+        </ElSubmenu>
+        <ElMenuItem v-else :key="item.menuId" :index="item.menuId">
+          <template #title>
+            <i :class="item.menuImg" />
+            <span>{{ item.menuName }}</span>
+          </template>
+        </ElMenuItem>
       </template>
     </ElMenu>
 

@@ -7,11 +7,6 @@ Vue.use(Vuex)
 
 let updateUserDataPromise = null
 
-// eslint-disable-next-line import/no-mutable-exports
-let test
-
-export { test }
-
 export default new Vuex.Store({
   state: {
     userData: {},
@@ -20,7 +15,6 @@ export default new Vuex.Store({
   mutations: {
     setUserData(state, data) {
       state.userData = data
-      test = data
     },
   },
   actions: {

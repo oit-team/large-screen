@@ -48,7 +48,8 @@ export default {
 </template>
 
 <style lang="scss">
-html, #app {
+html,
+#app {
   height: 100vh;
   width: 100vw;
   overflow: hidden;

@@ -101,7 +101,7 @@ export default {
 
 <template>
   <el-drawer :visible.sync="visible" size="70%" title="选择广告">
-    <div v-if="visible" class="flex overflow-hidden h-full">
+    <div v-if="visible" class="flex overflow-hidden h-full p-4">
       <table-page v-bind="tablePageOption" ref="page" @current-change="selected = $event" />
 
       <carousel-preview class="ml-2" :option="carouselItemOption" :file-map="fileMap">

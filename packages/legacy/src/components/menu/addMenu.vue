@@ -213,17 +213,17 @@ export default {
 
 <template>
   <div id="addMenu" class="p-6 text-sm">
-    <ElBacktop target="#addMenu" :visibility-height="200" :right="70" :bottom="100" />
+    <el-backtop target="#addMenu" :visibility-height="200" :right="70" :bottom="100" />
 
-    <ElPageHeader :content="editFlag ? '编辑菜单' : '新增菜单'" @back="goBack" />
-    <ElDivider />
-    <ElForm ref="ruleForm" style="margin-top:20px;" :model="ruleForm" :rules="rules" label-width="110px" :label-position="labelPosition" class="demo-ruleForm">
-      <ElFormItem label="菜单名称" prop="menuName">
-        <ElInput v-model="ruleForm.menuName" style="width:60%;" placeholder="请选择菜单名称" />
-      </ElFormItem>
-      <ElFormItem label="父菜单">
+    <el-page-header :content="editFlag ? '编辑菜单' : '新增菜单'" @back="goBack" />
+    <el-divider />
+    <el-form ref="ruleForm" style="margin-top:20px;" :model="ruleForm" :rules="rules" label-width="110px" :label-position="labelPosition" class="demo-ruleForm">
+      <el-form-item label="菜单名称" prop="menuName">
+        <el-input v-model="ruleForm.menuName" style="width:60%;" placeholder="请选择菜单名称" />
+      </el-form-item>
+      <el-form-item label="父菜单">
         <!--  value-key="id"     -->
-        <ElSelect
+        <el-select
           v-model="pMenu"
           filterable
           :disabled="editFlag"
@@ -232,64 +232,64 @@ export default {
           style="width:60%;"
           @change="changePmenu"
         >
-          <ElOption
+          <el-option
             v-for="(item, index) in menuOption"
             :key="index"
             :label="item.menuName"
             :value="item"
           />
-        </ElSelect>
-      </ElFormItem>
+        </el-select>
+      </el-form-item>
 
-      <ElFormItem label="访问路径" prop="menuUrl">
-        <ElInput v-model="ruleForm.menuUrl" style="width:60%;" placeholder="请选择菜单访问路径" />
-      </ElFormItem>
-      <ElFormItem label="菜单编码" prop="menuCode">
-        <ElInput v-model="ruleForm.menuCode" style="width:60%;" placeholder="请选择菜单编码" />
-      </ElFormItem>
-      <ElFormItem label="菜单描述" prop="menuRemark">
-        <ElInput v-model="ruleForm.menuRemark" style="width:60%;" placeholder="请输入菜单描述" />
-      </ElFormItem>
-      <ElFormItem label="菜单图标" prop="menuImg">
-        <ElInput v-model="ruleForm.menuImg" style="width:60%;" placeholder="请选择菜单Icon相应的name" />
-      </ElFormItem>
-      <ElFormItem label="菜单排序" prop="orderBy">
-        <ElInput v-model="ruleForm.orderBy" style="width:60%;" placeholder="请输入菜单排序(数字类型)" />
-      </ElFormItem>
+      <el-form-item label="访问路径" prop="menuUrl">
+        <el-input v-model="ruleForm.menuUrl" style="width:60%;" placeholder="请选择菜单访问路径" />
+      </el-form-item>
+      <el-form-item label="菜单编码" prop="menuCode">
+        <el-input v-model="ruleForm.menuCode" style="width:60%;" placeholder="请选择菜单编码" />
+      </el-form-item>
+      <el-form-item label="菜单描述" prop="menuRemark">
+        <el-input v-model="ruleForm.menuRemark" style="width:60%;" placeholder="请输入菜单描述" />
+      </el-form-item>
+      <el-form-item label="菜单图标" prop="menuImg">
+        <el-input v-model="ruleForm.menuImg" style="width:60%;" placeholder="请选择菜单Icon相应的name" />
+      </el-form-item>
+      <el-form-item label="菜单排序" prop="orderBy">
+        <el-input v-model="ruleForm.orderBy" style="width:60%;" placeholder="请输入菜单排序(数字类型)" />
+      </el-form-item>
 
-      <ElFormItem label="所属类型" prop="type">
-        <ElSelect
+      <el-form-item label="所属类型" prop="type">
+        <el-select
           v-model="ruleForm.type"
           placeholder="请确认付费菜单类型"
           style="width:60%;"
           @change="changePayType"
         >
-          <ElOption label="APP" value="1" />
-          <ElOption label="HOME" value="0" />
-        </ElSelect>
-      </ElFormItem>
+          <el-option label="APP" value="1" />
+          <el-option label="HOME" value="0" />
+        </el-select>
+      </el-form-item>
 
-      <ElFormItem label="是否需付费" prop="isPay">
-        <ElSelect
+      <el-form-item label="是否需付费" prop="isPay">
+        <el-select
           v-model="ruleForm.isPay"
           placeholder="请确认该菜单类型"
           style="width:60%;"
           @change="changeIsPay"
         >
-          <ElOption label="付费" :value="1" />
-          <ElOption label="免费" :value="0" />
-        </ElSelect>
-      </ElFormItem>
+          <el-option label="付费" :value="1" />
+          <el-option label="免费" :value="0" />
+        </el-select>
+      </el-form-item>
 
-      <ElFormItem>
-        <ElButton size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">
+      <el-form-item>
+        <el-button size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">
           保存
-        </ElButton>
-        <ElButton v-if="!editFlag" size="small" icon="el-icon-refresh" @click="resetForm('ruleForm')">
+        </el-button>
+        <el-button v-if="!editFlag" size="small" icon="el-icon-refresh" @click="resetForm('ruleForm')">
           重置
-        </ElButton>
-      </ElFormItem>
-    </ElForm>
+        </el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 

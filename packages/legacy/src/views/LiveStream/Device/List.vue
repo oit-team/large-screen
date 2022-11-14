@@ -276,46 +276,48 @@ export default {
       :visible.sync="brandDrawerVisible"
       title="分配品牌"
     >
-      <el-form ref="form" :model="form" :rules="assignFormRules">
-        <el-form-item label="分配品牌" prop="brandIdAllot">
-          <el-select v-model="form.brandIdAllot" class="w-full">
-            <el-option
-              v-for="item of brandList"
-              :key="item.brandId"
-              :label="item.brandName"
-              :value="item.brandId"
+      <div class="w-full box-border px-6 pb-2">
+        <el-form ref="form" :model="form" :rules="assignFormRules">
+          <el-form-item label="分配品牌" prop="brandIdAllot">
+            <el-select v-model="form.brandIdAllot" class="w-full">
+              <el-option
+                v-for="item of brandList"
+                :key="item.brandId"
+                :label="item.brandName"
+                :value="item.brandId"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="更改设备类型" prop="devTypeId">
+            <vc-cascader
+              ref="devInfo"
+              v-model="form.devTypeId"
+              class="w-full"
+              :options="devInfoOptions"
+              :props="{ emitPath: false }"
             />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="更改设备类型" prop="devTypeId">
-          <vc-cascader
-            ref="devInfo"
-            v-model="form.devTypeId"
-            class="w-full"
-            :options="devInfoOptions"
-            :props="{ emitPath: false }"
-          />
-        </el-form-item>
-        <el-form-item label="轮播地址">
-          <el-input v-model="devConfig.rotationUrl" disabled />
-        </el-form-item>
-        <el-form-item label="商品地址">
-          <el-input v-model="devConfig.commodityModeUrl" disabled />
-        </el-form-item>
-        <el-form-item label="消息服务器地址">
-          <el-input v-model="devConfig.lvsUrl" disabled />
-        </el-form-item>
-        <el-form-item label="页面最大停留时间">
-          <el-input v-model="devConfig.maxIdleTime" disabled />
-        </el-form-item>
-      </el-form>
-      <div class="mt-2">
-        <el-button @click="brandDrawerVisible = false">
-          取 消
-        </el-button>
-        <el-button type="primary" @click="assignBrand()">
-          确 定
-        </el-button>
+          </el-form-item>
+          <el-form-item label="轮播地址">
+            <el-input v-model="devConfig.rotationUrl" disabled />
+          </el-form-item>
+          <el-form-item label="商品地址">
+            <el-input v-model="devConfig.commodityModeUrl" disabled />
+          </el-form-item>
+          <el-form-item label="消息服务器地址">
+            <el-input v-model="devConfig.lvsUrl" disabled />
+          </el-form-item>
+          <el-form-item label="页面最大停留时间">
+            <el-input v-model="devConfig.maxIdleTime" disabled />
+          </el-form-item>
+        </el-form>
+        <div class="mt-2">
+          <el-button @click="brandDrawerVisible = false">
+            取 消
+          </el-button>
+          <el-button type="primary" @click="assignBrand()">
+            确 定
+          </el-button>
+        </div>
       </div>
     </el-drawer>
 
@@ -323,16 +325,18 @@ export default {
       :visible.sync="areaDrawerVisible"
       title="分配店铺/区域"
     >
-      <div>
-        <vc-cascader ref="areaOrShop" class="w-full" data="area_or_shop" />
-      </div>
-      <div class="mt-2">
-        <el-button @click="areaDrawerVisible = false">
-          取 消
-        </el-button>
-        <el-button type="primary" @click="assignAreaOrShop">
-          确 定
-        </el-button>
+      <div class="w-full box-border px-4">
+        <div>
+          <vc-cascader ref="areaOrShop" class="w-full" data="area_or_shop" clearable />
+        </div>
+        <div class="mt-2">
+          <el-button @click="areaDrawerVisible = false">
+            取 消
+          </el-button>
+          <el-button type="primary" @click="assignAreaOrShop">
+            确 定
+          </el-button>
+        </div>
       </div>
     </el-drawer>
 

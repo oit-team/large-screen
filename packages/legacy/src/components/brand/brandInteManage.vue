@@ -1511,6 +1511,10 @@ export default {
       if (pageNum) {
         this.pageNum = pageNum
       }
+      if (total === 0) {
+        this.total = 0
+        this.pageNum = 1
+      }
     },
     changeLoad(val) {
       // console.log("----userList----val------",val);

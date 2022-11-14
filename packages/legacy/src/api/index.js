@@ -1,16 +1,6 @@
-import Axios from 'axios'
+import axios from 'axios'
 import { Message } from 'element-ui'
 import API_STATUS from '@/api/API_STATUS'
-
-// axios配置
-const axiosConfig = {
-  // 请求超时时间
-  timeout: 180000,
-  baseURL: process.env.NODE_ENV === 'production' ? './gdy' : '/api',
-}
-
-// 创建axios实例
-const axios = Axios.create(axiosConfig)
 
 /**
  * 请求拦截器

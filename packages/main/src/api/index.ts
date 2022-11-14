@@ -1,4 +1,4 @@
-import Axios from 'axios'
+import axios from 'axios'
 import Vue from 'vue'
 import { Message } from 'element-ui'
 import type { ApiErrorOptions } from './ApiError'
@@ -9,11 +9,7 @@ function createApiError(options: ApiErrorOptions) {
   return new ApiError(options).reject()
 }
 
-const axios = Axios.create({
-  // 请求超时时间
-  timeout: 60000,
-  baseURL: '/api',
-})
+axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? './gdy' : '/api'
 
 // 添加请求拦截器
 axios.interceptors.request.use((config) => {

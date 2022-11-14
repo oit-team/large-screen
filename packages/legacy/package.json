@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development vite --host",
     "build": "vite build",
-    "build:dev": "vite build -w",
+    "build:dev": "cross-env NODE_ENV=development vite build -w",
     "lint": "eslint \"**/*.{vue,ts,js,json}\" --fix",
     "fix:sass": "sass-migrator division node_modules/**/*.scss",
     "prepare": "npm run fix:sass"

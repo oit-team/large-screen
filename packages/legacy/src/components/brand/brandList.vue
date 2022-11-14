@@ -17,14 +17,9 @@ export default {
   watch: {},
   created() {},
   mounted() {
-    console.log(321)
   },
   activated() {
-    console.log(123)
     this.brandShow()
-  },
-  deactivated() {
-    console.log(222)
   },
   methods: {
     initialize(i, brandInfo, cmd, data) {

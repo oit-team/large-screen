@@ -23,7 +23,6 @@ export default {
       loading: false,
 
       tableData: [],
-      // tableData: Array(6).fill(item),
       headTitArr: [],
       pageNum: 0,
       pageSize: 15,
@@ -32,37 +31,6 @@ export default {
       searchVal1: '',
 
       foldFlag: true, // true  折叠   false  展开
-
-      // headTitArr: [
-      //   // {
-      //   //   dbField: "MENU_NAME",
-      //   //   fieldKey: "menuName",
-      //   //   fieldName: "菜单名称",
-      //   //   fieldType: "文本",
-      //   //   searchValKey:''
-      //   // },
-      //   // {
-      //   //   dbField: "MENU_IMG",
-      //   //   fieldKey: "menuImg",
-      //   //   fieldName: "图标",
-      //   //   fieldType: "下拉框",
-      //   //   searchValKey:''
-      //   // },
-      //   // {
-      //   //   dbField: "MENU_REMARK",
-      //   //   fieldKey: "menuRemark",
-      //   //   fieldName: "菜单编码",
-      //   //   fieldType: "日期",
-      //   //   searchValKey:''
-      //   // },
-      //   // {
-      //   //   dbField: "MENU_IMG",
-      //   //   fieldKey: "menuImg",
-      //   //   fieldName: "图标",
-      //   //   fieldType: "时间",
-      //   //   searchValKey:''
-      //   // }
-      // ],
 
       height: '160px',
       requestUrl: '/menu/getAllMenuList', // 请求列表url
@@ -76,7 +44,6 @@ export default {
     $route(to, from) {},
   },
   created() {
-    console.log(sessionStorage.headTitString)
     if (sessionStorage.headTitString) {
       this.headTitArr = JSON.parse(sessionStorage.headTitString)
     }

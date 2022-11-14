@@ -23,7 +23,6 @@ export default {
     $route(to, from) {},
   },
   created() {
-    console.log(this)
     if (sessionStorage.headTitString) {
       this.headTitArr = JSON.parse(sessionStorage.headTitString)
     }
@@ -185,9 +184,7 @@ export default {
       })
     },
     handleSizeChange(val) {
-      // console.log(`每页 ${val} 条`);
       this.pageSize = val
-      // this.pageNum = 2;
       this.dynamicParam.forEach((el) => {
         if (el.key == 'pageSize') {
           el.value = this.pageSize
@@ -196,9 +193,7 @@ export default {
       this.$refs.child.parentMsgs(this.dynamicParam)
     },
     handleCurrentChange(val) {
-      // console.log(`当前页: ${val}`);
       this.pageNum = val
-      // this.pageNum = 2;
       this.dynamicParam.forEach((el) => {
         if (el.key == 'pageNum') {
           el.value = this.pageNum

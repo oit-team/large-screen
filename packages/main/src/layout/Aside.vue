@@ -45,7 +45,7 @@ export default defineComponent({
 
 <template>
   <ElAside class="relative flex flex-col border-r" width="auto">
-    <ElMenu class="flex-1 flex flex-col overflow-auto border-none" :collapse="collapse" @select="change">
+    <ElMenu class="flex-1 flex flex-col overflow-auto border-none" :collapse="collapse" unique-opened @select="change">
       <template v-for="item in menuList">
         <ElSubmenu v-if="item.childrenMenu" :key="item.menuId" :index="item.menuId">
           <template #title>

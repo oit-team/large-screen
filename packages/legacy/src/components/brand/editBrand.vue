@@ -1,4 +1,6 @@
 <script>
+import getIndustryAll from "@/api/brand";
+
 export default {
   name: 'AddBrand',
   components: {},
@@ -45,6 +47,9 @@ export default {
         brandName: [
           { required: true, message: '请输入品牌名称', trigger: 'blur' },
           { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' },
+        ],
+        industryId: [
+          { required: true, message: '请选择所属行业', trigger: 'blur' },
         ],
         dueStartTime: [
           { required: true, message: '请选择到期时间', trigger: 'blur' },
@@ -122,7 +127,6 @@ export default {
   },
   created() {},
   mounted() {
-    // console.log(this.$route.query.item)
     this.brandList = this.$route.query.item
     if (this.brandList.brandState) {
       this.status = false
@@ -133,6 +137,7 @@ export default {
     // this.getAllPayMenuList();
     this.getShowMenus()
 
+    this.getIndustryAll()
     // this.changeDate()
   },
   activated() {},
@@ -225,6 +230,10 @@ export default {
           })
         }
       })
+    },
+    async getIndustryAll() {
+      const res = await getIndustryAll()
+      this.options = res.body.resultList
     },
     // 获取已选择日期的菜单并格式化为传参需要的格式
     changeDate() {
@@ -340,11 +349,11 @@ export default {
 </script>
 
 <template>
-  <div id="addBrand" class="pageCommonStyle">
+  <div id="addBrand" class="pageCommonStyle pt-4 px-4">
     <el-page-header content="编辑品牌" @back="goBack" />
     <el-divider />
     <div class="content">
-      <el-form ref="brandList" :model="brandList" :rules="rules" label-width="100px">
+      <el-form ref="brandList" :model="brandList" :rules="rules" label-width="120px">
         <el-form-item label="品牌Logo">
           <el-upload
             class="avatar-uploader"
@@ -373,6 +382,17 @@ export default {
         </el-form-item>
         <el-form-item label="品牌简称" prop="brandName">
           <el-input v-model="brandList.abbreviation" placeholder="请输入品牌简称" autocomplete="off" style="width:60%;" />
+        </el-form-item>
+        <el-form-item label="所属行业" prop="industryId">
+          <el-select v-model="brandList.industryId" placeholder="请选择所属行业">
+            <el-option
+              v-for="item in options"
+              :key="item.industryId"
+              :label="item.industryName"
+              :value="item.industryId"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
 
         <el-form-item label="品牌入驻时间" prop="dueStartTime">

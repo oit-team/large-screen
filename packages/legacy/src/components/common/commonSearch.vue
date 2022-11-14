@@ -214,7 +214,6 @@ export default {
 
       // 最终请求参数，将json字符串转化为json对象
       con = JSON.parse(con3)
-      // console.log("最终参数：",con)
 
       if (this.curRequestUrl) {
         const _this = this
@@ -230,7 +229,7 @@ export default {
               _this.tableEmptyText = '暂无数据'
             }
             _this.total = res.data.body.count
-            _this.$emit('sendData', _this.tableData, _this.total, _this.tableEmptyText)
+            _this.$emit('sendData', _this.tableData, res.data.body.count, _this.tableEmptyText, Number(con.pageNum))
           }
           else {
             _this.$message({

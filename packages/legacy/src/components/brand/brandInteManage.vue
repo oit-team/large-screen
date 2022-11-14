@@ -227,7 +227,7 @@ export default {
     // test.testFun();
     // this.$refs.brandRightCon.height;
     this.serverName = this.GLOBAL.system_manager_server
-    this.brandTitArr = localStorage.headTitString.split('@')
+    this.brandTitArr = sessionStorage.headTitString.split('@')
     if (sessionStorage.headTitString.includes('@')) {
       this.brandTitArr = sessionStorage.headTitString.split('@')
       sessionStorage.headTitString = this.brandTitArr[0]
@@ -307,12 +307,8 @@ export default {
     }, 1000)
   },
   mounted() {
-    // console.log("==综合管理===mounted==");
-    // this.getTreeOrgList();
     this.getAreaListByBrandId()
     this.getAreaManager()
-    // this.getExportInfo();
-    // this.getStatisticData();
 
     // // 同菜单和角色列表不同，初始化的时候先传递参数不要执行请求用户列表，点击查询再请求
     this.pageNum = 1
@@ -1549,14 +1545,14 @@ export default {
       this.$refs.child.parentMsgs(this.dynamicParam)
     },
     drawerCurrentChange(val) {
-      console.log(val)
+      // console.log(val)
       this.drawerForm.pageNum = val
       this.getUserList()
     },
     drawerSizeChange(val) {
       this.drawerForm.pageSize = val
       this.getUserList()
-      console.log(val)
+      // console.log(val)
     },
     // 表格公共样式函数
     rowClass({ row, rowIndex }) {
@@ -2371,7 +2367,7 @@ export default {
           <div slot-scope="{ node, data }" class="custom-tree-node">
             <span>{{ data.osName }}</span>
             <span>({{ data.member }})</span>
-            <span v-if="data.isShop == &quot;2&quot;" style="margin-left:30px;" @click.stop="getTreeOrgList()"><i style="font-size:16px;" class="el-icon-refresh" /></span>
+            <span v-if="data.isShop == '2'" style="margin-left:30px;" @click.stop="getTreeOrgList()"><i style="font-size:16px;" class="el-icon-refresh" /></span>
           </div>
         </el-tree>
         <div v-else>
@@ -2453,9 +2449,9 @@ export default {
           @select="changeSelectUser"
           @select-all="selectAllUser"
         >
-          <template slot="empty">
-            <p>{{ tableEmptyText }}</p>
-          </template>
+<!--          <template slot="empty">-->
+<!--            <p>{{ tableEmptyText }}</p>-->
+<!--          </template>-->
           <el-table-column
             type="selection"
             :reserve-selection="true"
@@ -2475,7 +2471,7 @@ export default {
           <el-table-column
             fixed="right"
             label="操作"
-            style="border-lrft:none;"
+            style="border-left:none;"
             width="140"
           >
             <template slot-scope="scope">

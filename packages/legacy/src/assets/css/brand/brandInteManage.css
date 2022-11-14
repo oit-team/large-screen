@@ -187,3 +187,17 @@
   line-height: 50px;
   color: #e60012;
 }
+>>> .el-drawer__header{
+  text-align: center;
+}
+.demo-drawer__footer{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+>>> .el-table__empty-block{
+  height: 60vh!important;
+  border: none;
+  text-align: left;
+}

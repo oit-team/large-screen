@@ -310,7 +310,7 @@ export default ({
 </script>
 
 <template>
-  <div id="addUser" class="pageCommonStyle">
+  <div id="addUser" class="pageCommonStyle p-4">
     <el-backtop target="#addUser" :visibility-height="200" :right="70" :bottom="100" />
     <el-page-header :content="editFlag ? '编辑用户' : '新增用户'" @back="goBack" />
     <el-divider />

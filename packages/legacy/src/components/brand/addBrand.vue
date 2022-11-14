@@ -135,7 +135,7 @@ export default {
       const con = {}
       const jsonParam = _this.GLOBAL.g_paramJson(con)
       _this.$axios.post(`${_this.GLOBAL.system_manager_server}/company/getCompanyList`, jsonParam).then((res) => {
-        console.log('查询公司列表==========', res.data.body)
+        // console.log('查询公司列表==========', res.data.body)
         if (res.data.head.status == 0) {
           this.brandData = res.data.body.companyList
         }

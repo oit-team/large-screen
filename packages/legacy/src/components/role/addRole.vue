@@ -33,7 +33,7 @@ export default {
     }
   },
   created() {
-    console.log(this.$route.query)
+    // console.log(this.$route.query)
     if (this.$route.query.item) {
       this.title = '编辑角色'
       this.editFlag = false

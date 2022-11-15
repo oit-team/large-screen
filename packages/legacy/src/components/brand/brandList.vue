@@ -355,43 +355,6 @@ export default {
                 </div>
               </div>
             </div>
-            <div v-if="item.select == 4" class="list_list_box">
-              <div class="flex flex-col space-y-2">
-                <div>
-                  商品：
-                  <el-button
-                    class="ml-1"
-                    icon="el-icon-refresh"
-                    circle
-                    size="mini"
-                    type="primary"
-                    @click="initialize(0, item.brandInfo, 10001, { brandId: item.brandInfo.id })"
-                  />
-                </div>
-                <div>
-                  范围：
-                  <el-button
-                    class="ml-1"
-                    icon="el-icon-refresh"
-                    circle
-                    size="mini"
-                    type="primary"
-                    @click="initialize(1, item.brandInfo, 10001, { brandId: item.brandInfo.id })"
-                  />
-                </div>
-                <div>
-                  规则：
-                  <el-button
-                    class="ml-1"
-                    icon="el-icon-refresh"
-                    circle
-                    size="mini"
-                    type="primary"
-                    @click="initialize(2, item.brandInfo, 10002)"
-                  />
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

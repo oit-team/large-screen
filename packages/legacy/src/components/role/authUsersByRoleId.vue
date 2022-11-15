@@ -156,14 +156,5 @@ export default defineComponent({
     line-height: 32px;
     text-align: left;
   }
-  ::v-deep .el-transfer-panel{
-    width: 34%;
-  }
-  ::v-deep .el-transfer-panel__body{
-    height: 60vh;
-  }
-  ::v-deep .el-transfer-panel__list.is-filterable{
-    height: 60vh;
-  }
 }
 </style>

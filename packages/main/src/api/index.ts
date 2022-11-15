@@ -9,7 +9,7 @@ function createApiError(options: ApiErrorOptions) {
   return new ApiError(options).reject()
 }
 
-axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? './gdy' : '/api'
+axios.defaults.baseURL = '/api'
 
 // 添加请求拦截器
 axios.interceptors.request.use((config) => {

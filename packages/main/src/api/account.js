@@ -7,8 +7,6 @@ export function login(params) {
   })
 }
 
-export function getCheckUserInfo() {
-  return post('system/user/getCheckUserInfo', {
-    token: getToken(),
-  })
+export function getTokenUser() {
+  return post('system/user/getTokenUser')
 }

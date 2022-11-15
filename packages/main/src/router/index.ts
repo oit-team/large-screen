@@ -14,13 +14,27 @@ const router = new VueRouter({
   routes,
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   console.info('main', to, from)
-  if (isLogin()) {
-    // Loading.service({
-    //   text: '加载中...',
-    // })
-    // store.dispatch('updateUserData')
+  // 路由验证，meta.auth为false时不验证
+  const auth = [...to.matched].reverse().every(item => item.meta?.auth === undefined || item.meta?.auth)
+  if (auth) {
+    if (!isLogin()) return next('/login')
+    if (from === VueRouter.START_LOCATION) {
+      const loading = Loading.service({
+        text: '加载中...',
+      })
+      // 获取用户数据
+      store.dispatch('updateUserData')
+        .then(next)
+        .catch((err) => {
+          next('/login')
+          return Promise.reject(err)
+        })
+        .finally(() => loading.close())
+
+      return
+    }
   }
   // 旧项目路由转发
   if (to.name === 'Legacy' && to.name === from.name && to.path !== from.path) {

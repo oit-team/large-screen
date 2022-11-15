@@ -1,5 +1,12 @@
 import type { RouteConfig } from 'vue-router'
+import { defineComponent } from 'vue'
 import Layout from '@/layout/index.vue'
+
+const Container = defineComponent({
+  render(h) {
+    return h('keep-alive', [h('router-view')])
+  },
+})
 
 export const routes: RouteConfig[] = [
   {
@@ -8,7 +15,11 @@ export const routes: RouteConfig[] = [
   },
   {
     path: '/login',
+    name: 'Login',
     component: () => import('@/views/Login.vue'),
+    meta: {
+      auth: false,
+    },
   },
   {
     path: '',
@@ -18,6 +29,24 @@ export const routes: RouteConfig[] = [
         path: '/home',
         name: 'Home',
         component: () => import('@/views/Home.vue'),
+      },
+      {
+        path: '/product',
+        component: Container,
+        children: [
+          {
+            path: 'new',
+            component: () => import('@/views/Product/Update.vue'),
+          },
+          {
+            path: 'list',
+            component: () => import('@/views/Product/List.vue'),
+          },
+          {
+            path: ':id',
+            component: () => import('@/views/Product/Update.vue'),
+          },
+        ],
       },
       {
         path: '/404',

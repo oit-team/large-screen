@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getCheckUserInfo } from '../api/account'
+import { getTokenUser } from '../api/account'
+import { clearToken } from '@/utils/auth'
 import router from '@/router'
 
 Vue.use(Vuex)
@@ -20,14 +21,8 @@ export default new Vuex.Store({
   actions: {
     // 更新用户数据，单例模式
     updateUserData(ctx) {
-      if (!updateUserDataPromise) updateUserDataPromise = getCheckUserInfo()
+      if (!updateUserDataPromise) updateUserDataPromise = getTokenUser()
       return updateUserDataPromise
-        .then((res) => {
-          const token = res.body.accessToken
-          localStorage.setItem('token', token)
-          ctx.commit('setUserData', res.body.resultList)
-          return res
-        })
         .catch((err) => {
           err.message = '登录过期，请重新登录'
           ctx.dispatch('logout')
@@ -39,7 +34,7 @@ export default new Vuex.Store({
     },
     logout(ctx, toLogin = true) {
       ctx.commit('setUserData', {})
-      localStorage.removeItem('token')
+      clearToken()
       toLogin && router.push({ name: 'Login' })
     },
   },

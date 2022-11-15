@@ -44,6 +44,7 @@ const config = defineConfig({
     // Icons(),
     AutoImport({
       imports: [
+        'vue',
         '@vueuse/core',
       ],
       dts: 'src/auto-imports.d.ts',

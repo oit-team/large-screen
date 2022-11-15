@@ -2453,9 +2453,9 @@ export default {
           @select="changeSelectUser"
           @select-all="selectAllUser"
         >
-<!--          <template slot="empty">-->
-<!--            <p>{{ tableEmptyText }}</p>-->
-<!--          </template>-->
+          <!--          <template slot="empty"> -->
+          <!--            <p>{{ tableEmptyText }}</p> -->
+          <!--          </template> -->
           <el-table-column
             type="selection"
             :reserve-selection="true"

@@ -1,5 +1,5 @@
 <script>
-import getIndustryAll from "@/api/brand";
+import getIndustryAll from '@/api/brand'
 
 export default {
   name: 'AddBrand',
@@ -390,8 +390,7 @@ export default {
               :key="item.industryId"
               :label="item.industryName"
               :value="item.industryId"
-            >
-            </el-option>
+            />
           </el-select>
         </el-form-item>
 

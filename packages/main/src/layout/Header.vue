@@ -26,8 +26,11 @@ export default defineComponent({
   methods: {
     async getBrandsList() {
       const params = {}
-      const res = await getBrands(params)
-      this.brandList = res.body.resultMap
+      getBrands(params).then((res) => {
+        this.brandList = res.body.resultMap
+      }).catch(() => {
+        sessionStorage.removeItem('brandId')
+      })
     },
 
     async changeBrand(item) {
@@ -71,7 +74,7 @@ export default defineComponent({
         </div>
       </div>
       <div class="userAcountInfo h-full flex justify-between items-center box-border">
-        <div v-if="brandList" class="brandInfo px-6 mr-2">
+        <div v-if="userData.isMenagerRole > 0" class="brandInfo px-6 mr-2">
           <ElPopover
             placement="top-start"
             width="200"
@@ -109,8 +112,8 @@ export default defineComponent({
               </div>
             </div>
             <div slot="reference" class="flex justify-center items-center">
-              <img class="px-2" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt="" width="45" height="45">
-              <span>{{ userData.username }}</span>
+              <img class="px-2" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt="" width="50" height="50">
+              <span>{{ userData.userName }}</span>
             </div>
           </ElPopover>
         </div>

@@ -8,3 +8,9 @@ export function getTreeMenuList(params) {
     cmd: 10008,
   })
 }
+
+export function dictitemInfoAllMethod(params) {
+  return post('/goods/dictitemInfo/dictitemInfoAllMethod', params, {
+    cmd: 100009,
+  })
+}

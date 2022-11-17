@@ -4,12 +4,17 @@
     "dev": "cross-env NODE_ENV=development vite --host",
     "build": "vite build",
     "lint": "eslint \"**/*.{vue,ts,js,json}\" --fix",
-    "fix:sass": "sass-migrator division node_modules/**/*.scss",
+    "fix:sass": "node scripts/fix.mjs && sass-migrator division node_modules/**/*.scss",
     "prepare": "npm run fix:sass"
   },
   "dependencies": {
+    "@formily/core": "^2.2.11",
+    "@formily/element": "^2.2.11",
+    "@formily/vue": "^2.2.11",
+    "@oit/element-ui-extend": "0.3.8-beta.3",
     "@oit/legacy": "link:../legacy",
     "@unocss/reset": "^0.46.2",
+    "@vue/composition-api": "^1.7.1",
     "@vueuse/core": "^9.0.0",
     "axios": "^1.1.3",
     "core-js": "^3.24.0",
@@ -22,6 +27,7 @@
   },
   "devDependencies": {
     "@iconify/json": "^2.1.83",
+    "@types/lodash-es": "^4.17.6",
     "@vitejs/plugin-vue2": "^1.1.2",
     "sass": "^1.55.0",
     "sass-migrator": "^1.7.1",
@@ -33,5 +39,11 @@
     "vite-plugin-eslint": "^1.8.1",
     "vue-template-compiler": "^2.7.8",
     "vue-template-es2015-compiler": "^1.9.1"
+  },
+  "eslintConfig": {
+    "rules": {
+      "vue/no-unused-components": "warn",
+      "vue/no-reserved-component-names": "warn"
+    }
   }
 }

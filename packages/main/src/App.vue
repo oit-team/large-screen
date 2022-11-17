@@ -4,7 +4,7 @@ export default {
     return {
       lastTime: null, // 最后一次点击的时间
       currentTime: null, // 当前点击的时间
-      timeOut: 5 * 60 * 1000, // 设置超时时间:40分钟
+      timeOut: 15 * 60 * 1000, // 设置超时时间
     }
   },
   created() {

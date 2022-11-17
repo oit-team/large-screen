@@ -173,9 +173,6 @@ export default {
                 <div class="tit" :class="item.select == 3 ? 'active' : ''" @click="showActive(3, item)">
                   品牌配置
                 </div>
-                <div class="tit" :class="item.select == 4 ? 'active' : ''" @click="showActive(4, item)">
-                  初始化
-                </div>
               </div>
               <div class="list_btn">
                 <el-tooltip class="item li" effect="dark" content="编辑品牌" placement="top">
@@ -249,6 +246,14 @@ export default {
                 </div>
                 <div class="divR">
                   {{ item.brandInfo.industryName }}
+                </div>
+              </div>
+              <div class="divH">
+                <div class="divL">
+                  所属类型：
+                </div>
+                <div class="divR">
+                  {{ item.brandInfo.brandTypeName }}
                 </div>
               </div>
               <div class="divH">

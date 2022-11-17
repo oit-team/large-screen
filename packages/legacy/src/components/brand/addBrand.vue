@@ -32,6 +32,7 @@ export default {
         address: '',
         adminName: '',
         brandName: '',
+        brandType: '',
         abbreviation: '',
         brandLogo: '',
         bueStartTime: '',
@@ -68,6 +69,9 @@ export default {
         brandName: [
           { required: true, message: '请输入品牌名称', trigger: 'blur' },
           { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' },
+        ],
+        brandType: [
+          { required: true, message: '请输入品牌类型', trigger: 'blur' },
         ],
         abbreviation: [
           { required: true, message: '请输入品牌简称', trigger: 'blur' },
@@ -381,6 +385,7 @@ export default {
             orgId: this.tableRadio.orgId,
             adminName: this.ruleForm.adminName + this.ADMIN,
             brandName: this.ruleForm.brandName,
+            brandType: this.ruleForm.brandType,
             abbreviation: this.ruleForm.abbreviation,
             contacts: this.ruleForm.contacts,
             telephone: this.ruleForm.telephone,
@@ -558,6 +563,12 @@ export default {
               {{ ADMIN }}
             </template>
           </el-input>
+        </el-form-item>
+        <el-form-item label="品牌类型" prop="brandType">
+          <el-select v-model="ruleForm.brandType" placeholder="请选择品牌类型">
+            <el-option label="品牌" value="0" />
+            <el-option label="商场" value="1" />
+          </el-select>
         </el-form-item>
         <el-form-item label="品牌入驻时间" prop="bueStartTime">
           <el-date-picker

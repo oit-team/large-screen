@@ -51,6 +51,9 @@ export default {
         industryId: [
           { required: true, message: '请选择所属行业', trigger: 'blur' },
         ],
+        brandType: [
+          { required: true, message: '请选择所属类型', trigger: 'blur' },
+        ],
         dueStartTime: [
           { required: true, message: '请选择到期时间', trigger: 'blur' },
         ],
@@ -181,7 +184,7 @@ export default {
     getShowMenus() {
       const _this = this
       const params = {
-        brandId: this.$route.query.item.id,
+        // brandId: this.$route.query.item.id,
       }
       const jsonParam = this.GLOBAL.g_paramJson(params)
       _this.$axios.post(`${_this.GLOBAL.system_manager_server}/menu/getPayMenu`, jsonParam).then((res) => {
@@ -319,7 +322,7 @@ export default {
     updateServerDate() {
       const _this = this
       const con = {
-        brandId: this.$route.query.item.id,
+        // brandId: this.$route.query.item.id,
         menuList: this.checkedMenuArr,
       }
       const jsonParam = _this.GLOBAL.g_paramJson(con)
@@ -382,6 +385,12 @@ export default {
         </el-form-item>
         <el-form-item label="品牌简称" prop="brandName">
           <el-input v-model="brandList.abbreviation" placeholder="请输入品牌简称" autocomplete="off" style="width:60%;" />
+        </el-form-item>
+        <el-form-item label="品牌类型" prop="brandType">
+          <el-select v-model="brandList.brandType" placeholder="请选择品牌类型">
+            <el-option label="品牌" :value="0" />
+            <el-option label="商场" :value="1" />
+          </el-select>
         </el-form-item>
         <el-form-item label="所属行业" prop="industryId">
           <el-select v-model="brandList.industryId" placeholder="请选择所属行业">

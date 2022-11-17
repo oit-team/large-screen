@@ -1,5 +1,6 @@
 <script>
-import VcUpload from '@/components/classify/Upload'
+// 引入图片视频分片
+import { Upload } from '@oit/element-ui-extend'
 import { addAdvertsRes } from '@/api/liveStream'
 import FILE_TYPE from '@/enums/FILE_TYPE'
 
@@ -9,7 +10,7 @@ export default {
   name: 'CarouselResourcesUpdate',
 
   components: {
-    VcUpload,
+    VcUpload: Upload,
   },
 
   data: () => ({
@@ -75,7 +76,7 @@ export default {
         else if (/image/.test(type)) {
           return {
             resName: item.name,
-            resUrl: item.response.data.data.fileUrls[0].fileUrl,
+            resUrl: item.response.data.fileUrl,
             resType: FILE_TYPE.IMAGE,
           }
         }
@@ -98,7 +99,7 @@ export default {
     <page-header content="上传文件" />
     <div class="flex overflow-hidden flex-1 mb-2">
       <div class="inline-flex flex-col h-full">
-        <vc-upload v-bind="uploadOption" ref="upload">
+        <vc-upload v-bind="uploadOption" ref="upload" action="/api/system/file/uploadFile">
           <i class="el-icon-upload" />
           <div class="el-upload__text">
             将文件拖到此处，或<em>点击上传</em>

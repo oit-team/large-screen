@@ -1,5 +1,9 @@
 <script setup>
 import Footer from './Footer.vue'
+
+defineProps({
+  isReload: Boolean,
+})
 </script>
 
 <template>
@@ -8,7 +12,7 @@ import Footer from './Footer.vue'
       <div class="bg-white rounded-lg h-full">
         <Transition name="el-fade-in" mode="out-in">
           <KeepAlive>
-            <RouterView class="h-full overflow-auto" />
+            <RouterView v-if="isReload" class="h-full overflow-auto" />
           </KeepAlive>
         </Transition>
       </div>

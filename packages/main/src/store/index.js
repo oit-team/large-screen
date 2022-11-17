@@ -27,6 +27,9 @@ export default new Vuex.Store({
           ctx.commit('setUserData', res.body)
           return res
         })
+        .then((res) => {
+          ctx.commit('setUserData', res.body)
+        })
         .catch((err) => {
           err.message = '登录过期，请重新登录'
           ctx.dispatch('logout')

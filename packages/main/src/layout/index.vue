@@ -2,6 +2,14 @@
 import Aside from './Aside.vue'
 import Header from './Header.vue'
 import Main from './Main.vue'
+
+const isReload = ref(true)
+function viewReload() {
+  isReload.value = false
+  setTimeout(() => isReload.value = true)
+}
+
+provide('viewReload', viewReload)
 </script>
 
 <template>
@@ -9,7 +17,7 @@ import Main from './Main.vue'
     <Header />
     <ElContainer class="overflow-hidden">
       <Aside />
-      <Main />
+      <Main :is-reload="isReload" />
     </ElContainer>
   </ElContainer>
 </template>

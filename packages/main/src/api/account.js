@@ -10,3 +10,11 @@ export function login(params) {
 export function getTokenUser() {
   return post('system/user/getTokenUser')
 }
+
+export function getBrands() {
+  return post('system/brand/getBrands')
+}
+
+export function updatePassWord(params) {
+  return post('system/user/updatePassWord', params)
+}

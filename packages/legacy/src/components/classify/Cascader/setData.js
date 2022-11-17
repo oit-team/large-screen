@@ -15,7 +15,12 @@ export function setAreaOrShop() {
 
   this.innerOptions = lazyData[DATA_TYPES.AREA_OR_SHOP].innerOptions
 
-  getTreeOrgList(sessionStorage.brandId).then((res) => {
+  // getTreeOrgList(sessionStorage.brandId).then((res) => {
+  //   this.innerOptions = res.body.orgList[0].childrenList
+
+  //   lazyData[DATA_TYPES.AREA_OR_SHOP].innerOptions = this.innerOptions
+  // })
+  getTreeOrgList().then((res) => {
     this.innerOptions = res.body.orgList[0].childrenList
 
     lazyData[DATA_TYPES.AREA_OR_SHOP].innerOptions = this.innerOptions

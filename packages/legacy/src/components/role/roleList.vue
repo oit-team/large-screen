@@ -37,7 +37,7 @@ export default {
     this.dynamicParam = [
       { key: 'pageNum', value: this.pageNum, isTrue: true, msg: '请确认pageNum.' },
       { key: 'pageSize', value: this.pageSize, isTrue: true, msg: '请确认pageSize.' },
-      { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
+      // { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
     ]
   },
   mounted() {

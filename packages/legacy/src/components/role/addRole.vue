@@ -168,7 +168,7 @@ export default {
               roleRemark: this.ruleForm.roleRemark,
               userId: sessionStorage.userId,
               roleId: this.ruleForm.roleId,
-              brandId: sessionStorage.brandId,
+              // brandId: sessionStorage.brandId,
               menuIds: this.menuIds.toString(),
             }
             const jsonParam = _this.GLOBAL.g_paramJson(con)

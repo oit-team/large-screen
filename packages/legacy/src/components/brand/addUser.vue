@@ -33,10 +33,11 @@ export default ({
         autograph: '',
       },
       rules: {
-        userName: [
-          { required: true, message: '请输入用户名称', trigger: 'blur' },
-          { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' },
-        ],
+        // 用户名改为后台生成 不让新增时候自己编辑
+        // userName: [
+        //   { required: true, message: '请输入用户名称', trigger: 'blur' },
+        //   { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' },
+        // ],
         nickName: [
           { required: true, message: '请输入用户真实姓名', trigger: 'blur' },
           { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' },
@@ -120,7 +121,7 @@ export default ({
     getShopAndAreaList() {
       const _this = this
       const con = {
-        brandId: sessionStorage.brandId,
+        // brandId: sessionStorage.brandId,
       }
 
       const jsonParam = _this.GLOBAL.g_paramJson(con)
@@ -210,13 +211,13 @@ export default ({
                   type: 'success',
                 })
                 if (_this.ruleForm.accountType == '0') {
-                  _this.ruleForm.accountTypeMsg = 'APP用户'
+                  _this.ruleForm.accountTypeMsg = '小程序用户'
                 }
                 if (_this.ruleForm.accountType == '1') {
                   _this.ruleForm.accountTypeMsg = '管家用户'
                 }
                 if (_this.ruleForm.accountType == '3') {
-                  _this.ruleForm.accountTypeMsg = 'APP及管家用户'
+                  _this.ruleForm.accountTypeMsg = '小程序及管家用户'
                 }
                 if (_this.ruleForm.sex == '1') {
                   _this.ruleForm.sexMsg = '女'
@@ -252,12 +253,12 @@ export default ({
               curUserName = _this.ruleForm.userName
             }
             const con = {
-              brandId: sessionStorage.brandId,
+              // brandId: sessionStorage.brandId,
               type: _this.nodeType, // 1=店铺;0=区域
               orgStId: _this.nodeId, // 所属组织ID（店铺或区域ID）
               userId: sessionStorage.userId,
               // userName: _this.ruleForm.userName,
-              userName: curUserName,
+              // userName: curUserName,
 
               // passWord:_this.ruleForm.passWord,
               passWord: encryPwd,
@@ -316,7 +317,7 @@ export default ({
     <el-divider />
 
     <el-form ref="ruleForm" style="margin-top:20px;" :model="ruleForm" :rules="rules" label-width="106px" label-position="left" class="demo-ruleForm">
-      <el-form-item label="用户名" prop="userName">
+      <el-form-item v-if="editFlag" label="用户名" prop="userName">
         <el-input v-model="ruleForm.userName" :disabled="editFlag" style="width:60%;" maxlength="20" placeholder="请选择用户名">
           <template v-if="!editFlag && brandAbbreviation" slot="prepend">
             {{ brandAbbreviation }}
@@ -334,9 +335,9 @@ export default ({
       </el-form-item>
       <el-form-item label="账号类型" prop="accountType">
         <el-select v-model="ruleForm.accountType" placeholder="请选择">
-          <el-option label="APP用户" value="0" />
-          <el-option label="高单易管家用户" value="1" />
-          <el-option label="APP及管家用户" value="3" />
+          <el-option label="小程序用户" value="0" />
+          <el-option label="管家用户" value="1" />
+          <el-option label="小程序及管家用户" value="3" />
         </el-select>
       </el-form-item>
 

@@ -38,7 +38,7 @@ export default {
       administration: {
         id: '',
         isShop: '',
-        brandId: '',
+        // brandId: '',
       },
       serverName: '',
       operateLabel: 1, // 1 搜索  2 查看统计数据
@@ -246,7 +246,7 @@ export default {
     this.dynamicParam = [
       { key: 'pageNum', value: this.pageNum, isTrue: true, msg: '请确认pageNum.' },
       { key: 'pageSize', value: this.pageSize, isTrue: true, msg: '请确认pageSize.' },
-      { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
+      // { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
       { key: 'orgStId', value: this.orgStId, isTrue: true, msg: '请先选择区域或者店铺.' },
       { key: 'type', value: this.isShop, isTrue: true, msg: '请先选择区域或者店铺.' },
     ]
@@ -255,17 +255,19 @@ export default {
     const _this = this
     setTimeout(() => {
       _this.curCheckedKey = _this.orgList[0].id
+      console.log(_this.curCheckedKey)
       _this.nodeId = _this.orgList[0].id
       _this.orgStId = _this.nodeId
       _this.isShop = _this.orgList[0].isShop
 
       _this.$refs.tree.setCurrentKey(_this.curCheckedKey)
+      console.log(_this.$refs.tree)
 
       _this.loading = true
       _this.dynamicParam = [
         { key: 'pageNum', value: _this.pageNum, isTrue: true, msg: '请确认pageNum.' },
         { key: 'pageSize', value: _this.pageSize, isTrue: true, msg: '请确认pageSize.' },
-        { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
+        // { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
         { key: 'orgStId', value: _this.orgStId, isTrue: true, msg: '请先选择区域或者店铺.' },
         { key: 'type', value: _this.isShop, isTrue: true, msg: '请先选择区域或者店铺.' },
       ]
@@ -514,7 +516,7 @@ export default {
           const con = {
             rowList: this.rowList,
             param: {
-              brandId: sessionStorage.brandId,
+              // brandId: sessionStorage.brandId,
               orgStId: _this.nodeId ? String(_this.nodeId) : _this.nodeId, // 防止将null也转化为字符串了
               // "parentId":_this.nodeParentId
               path: _this.path,
@@ -611,7 +613,7 @@ export default {
         const formData = new FormData() //  用FormData存放上传文件
         // // console.log("this.fileList====",this.fileList)
         formData.append('file', this.fileList[0].raw)
-        formData.append('brandId', sessionStorage.brandId)
+        // formData.append('brandId', sessionStorage.brandId)
         // if(this.importFlag=='1'){}
         formData.append('code', this.importFlag) // 1 店铺  2 用户
         formData.append('userId', sessionStorage.userId)
@@ -722,7 +724,7 @@ export default {
         this.dynamicParam = [
           { key: 'pageNum', value: this.pageNum, isTrue: true, msg: '请确认pageNum.' },
           { key: 'pageSize', value: this.pageSize, isTrue: true, msg: '请确认pageSize.' },
-          { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
+          // { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
           { key: 'orgStId', value: this.orgStId, isTrue: true, msg: '请先选择区域或者店铺.' },
           { key: 'type', value: this.isShop, isTrue: true, msg: '请先选择区域或者店铺.' },
         ]
@@ -1017,7 +1019,7 @@ export default {
     getStatisticData() {
       const _this = this
       const con = {
-        brandId: sessionStorage.brandId,
+        // brandId: sessionStorage.brandId,
       }
       const jsonParam = _this.GLOBAL.g_paramJson(con)
       _this.$axios.post(`${_this.GLOBAL.system_manager_server}/brand/SumCount`, jsonParam).then((res) => {
@@ -1184,7 +1186,7 @@ export default {
         pageNum: 1,
         pageSize: 20,
         id: curUserId,
-        brandId: sessionStorage.brandId,
+        // brandId: sessionStorage.brandId,
       }
       const jsonParam = _this.GLOBAL.g_paramJson(con)
       _this.$axios.post(`${_this.GLOBAL.system_manager_server}/role/getRoleList`, jsonParam).then((res) => {
@@ -1352,7 +1354,7 @@ export default {
     getAreaListByBrandId() {
       const _this = this
       const con = {
-        brandId: sessionStorage.brandId,
+        // brandId: sessionStorage.brandId,
       }
       const jsonParam = _this.GLOBAL.g_paramJson(con)
       _this.$axios.post(`${_this.GLOBAL.system_manager_server}/org/getOrgByBrandId`, jsonParam).then((res) => {
@@ -1373,7 +1375,7 @@ export default {
       const _this = this
       const con = {
         isDuty: '0',
-        brandId: sessionStorage.brandId,
+        // brandId: sessionStorage.brandId,
       }
       const jsonParam = _this.GLOBAL.g_paramJson(con)
       _this.$axios.post(`${_this.GLOBAL.system_manager_server}/user/getUsers`, jsonParam).then((res) => {
@@ -1570,7 +1572,7 @@ export default {
     getTreeOrgList() {
       const _this = this
       const con = {
-        brandId: sessionStorage.brandId,
+        // brandId: sessionStorage.brandId,
       }
 
       const jsonParam = _this.GLOBAL.g_paramJson(con)
@@ -1857,7 +1859,7 @@ export default {
         this.dynamicParam = [
           { key: 'pageNum', value: this.pageNum, isTrue: true, msg: '请确认pageNum.' },
           { key: 'pageSize', value: this.pageSize, isTrue: true, msg: '请确认pageSize.' },
-          { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
+          // { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
           { key: 'orgStId', value: this.orgStId, isTrue: true, msg: '请先选择区域或者店铺.' },
           { key: 'type', value: this.isShop, isTrue: true, msg: '请先选择区域或者店铺.' },
         ]
@@ -2079,7 +2081,7 @@ export default {
           // // console.log("--------path-------",path)
           const _this = this
           const con = {
-            brandId: sessionStorage.brandId,
+            // brandId: sessionStorage.brandId,
             deptName: _this.areaForm.areaName,
             deptCode: _this.areaForm.areaCode,
             dutyId: _this.areaForm.dutyId,
@@ -2141,7 +2143,7 @@ export default {
           }
 
           const con = {
-            brandId: sessionStorage.brandId,
+            // brandId: sessionStorage.brandId,
             shopName: _this.shopForm.shopName,
             address: _this.shopForm.address,
             gradeId: _this.shopForm.gradeId,
@@ -2390,9 +2392,9 @@ export default {
     <div style="width:0.5px;background-color:#ddd;margin-left:6px;" />
     <div ref="brandRightCon" class="rightListCon">
       <div class="userTabBox">
-        <div :class="activeTab == 1 ? 'active' : ''" class="tabItem" @click="clickUserTab(1)">
+        <!-- <div :class="activeTab == 1 ? 'active' : ''" class="tabItem" @click="clickUserTab(1)">
           用户列表
-        </div>
+        </div> -->
         <!-- <div :class="activeTab == 2 ? 'active' : ''" class="tabItem" @click="clickUserTab(2)">
           考核下发
         </div>
@@ -2420,7 +2422,7 @@ export default {
       <div v-if="activeTab == 1" class="userListBox">
         <div class="operateBtn">
           <!-- isShop  0 区域 1 店铺  2 品牌 -->
-          <el-button v-if="isShop != '2'" size="small" icon="el-icon-plus" type="success" style="background-color:#4FD5AC;border-color: #4FD5AC;" class="addBtnOnly" @click="addUser">
+          <el-button v-if="isShop === '1'" size="small" icon="el-icon-plus" type="success" style="background-color:#4FD5AC;border-color: #4FD5AC;" class="addBtnOnly" @click="addUser">
             新增用户
           </el-button>
           <el-tooltip class="item" effect="dark" content="只有管家用户和APP及管家用户才可以授权" placement="top-start">

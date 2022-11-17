@@ -43,7 +43,7 @@ export default defineComponent({
       const _this = this
       const con = {
         roleId: _this.roleId, // 角色ID	query	string
-        brandId: sessionStorage.brandId, // 品牌ID	query	string
+        // brandId: sessionStorage.brandId, // 品牌ID	query	string
       }
       const jsonParam = _this.GLOBAL.g_paramJson(con)
       // console.log(con)

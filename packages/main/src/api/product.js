@@ -17,3 +17,11 @@ export function getProductAll(params) {
 export function getProductIndex() {
   return post('/goods/product/getProductIndex')
 }
+
+export function updateProductInfo(params) {
+  return post('/goods/product/updateProductInfo', params)
+}
+
+export function updateProductState(params) {
+  return post('/goods/product/updateProductState', params)
+}

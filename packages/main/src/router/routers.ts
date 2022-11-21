@@ -4,7 +4,7 @@ import Layout from '@/layout/index.vue'
 
 const Container = defineComponent({
   render(h) {
-    return h('keep-alive', [h('router-view')])
+    return h('router-view')
   },
 })
 
@@ -31,22 +31,22 @@ export const routes: RouteConfig[] = [
         component: () => import('@/views/Home.vue'),
       },
       {
-        path: '/product',
-        component: Container,
-        children: [
-          {
-            path: 'new',
-            component: () => import('@/views/Product/Update.vue'),
-          },
-          {
-            path: 'list',
-            component: () => import('@/views/Product/List.vue'),
-          },
-          {
-            path: ':id',
-            component: () => import('@/views/Product/Update.vue'),
-          },
-        ],
+        path: '/product/list',
+        component: () => import('@/views/Product/List.vue'),
+        meta: {
+          keepAlive: true,
+        },
+      },
+      {
+        path: '/product/new',
+        component: () => import('@/views/Product/Update.vue'),
+      },
+      {
+        path: '/product/edit/:id',
+        component: () => import('@/views/Product/Update.vue'),
+        meta: {
+          edit: true,
+        },
       },
       {
         path: '/404',

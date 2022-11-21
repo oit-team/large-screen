@@ -93,7 +93,7 @@ importers:
       '@formily/element': ^2.2.11
       '@formily/vue': ^2.2.11
       '@iconify/json': ^2.1.83
-      '@oit/element-ui-extend': 0.3.8-beta.3
+      '@oit/element-ui-extend': 0.3.8-beta.9
       '@oit/legacy': link:../legacy
       '@types/lodash-es': ^4.17.6
       '@unocss/reset': ^0.46.2
@@ -122,7 +122,7 @@ importers:
       '@formily/core': 2.2.12
       '@formily/element': 2.2.12_euryrssseef75acupcz4olz5pe
       '@formily/vue': 2.2.12_ugk432boennyisqo4tgx5zxzca
-      '@oit/element-ui-extend': 0.3.8-beta.3_4jtkgfu5ezps5mwidvw4zjor3m
+      '@oit/element-ui-extend': 0.3.8-beta.9_4jtkgfu5ezps5mwidvw4zjor3m
       '@oit/legacy': link:../legacy
       '@unocss/reset': 0.46.3
       '@vue/composition-api': 1.7.1_vue@2.7.13
@@ -913,14 +913,15 @@ packages:
       fastq: 1.13.0
     dev: true
 
-  /@oit/element-ui-extend/0.3.8-beta.3_4jtkgfu5ezps5mwidvw4zjor3m:
-    resolution: {integrity: sha512-URMYL9YOPQo45B4reFB5s3u8LsRv6x8fCFAIZ0P54kXQBGAhywxpGjXVVu5U2w4k+LZIbhyKIVp1j0yH2VUf3w==}
+  /@oit/element-ui-extend/0.3.8-beta.9_4jtkgfu5ezps5mwidvw4zjor3m:
+    resolution: {integrity: sha512-BBqDHhORvvWA1mN71t5xDT7jnd7kqT3Jq+0MV/uea9iSO5iwXvXeQwBELzy4+Aq+r9wypZDcO66++Vy/Mvd4Og==}
     peerDependencies:
       element-ui: ^2.15.9
       sass: ^1.53.0
       sass-loader: ^13.0.2
     dependencies:
       element-ui: 2.15.10_vue@2.7.13
+      md5: 2.3.0
       sass: 1.56.0
     dev: false
 
@@ -1915,6 +1916,10 @@ packages:
     resolution: {integrity: sha512-mKKUkUbhPpQlCOfIuZkvSEgktjPFIsZKRRbC6KWVEMvlzblj3i3asQv5ODsrwt0N3pHAEvjP8KTQPHkp0+6jOg==}
     dev: true
 
+  /charenc/0.0.2:
+    resolution: {integrity: sha512-yrLQ/yVUFXkzg7EDQsPieE/53+0RlaWTs+wBrvW36cyilJ2SaDWfl4Yj7MtLTXleV9uEKefbAGUPv2/iWSooRA==}
+    dev: false
+
   /chokidar/3.5.3:
     resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
     engines: {node: '>= 8.10.0'}
@@ -2143,6 +2148,10 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
+
+  /crypt/0.0.2:
+    resolution: {integrity: sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==}
+    dev: false
 
   /crypto-js/4.1.1:
     resolution: {integrity: sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==}
@@ -3499,6 +3508,10 @@ packages:
       has-tostringtag: 1.0.0
     dev: true
 
+  /is-buffer/1.1.6:
+    resolution: {integrity: sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==}
+    dev: false
+
   /is-builtin-module/3.2.0:
     resolution: {integrity: sha512-phDA4oSGt7vl1n5tJvTWooWWAsXLY+2xCnxNqvKhGEzujg+A43wPlPOyDg3C8XQHN+6k/JTQWJ/j0dQh/qr+Hw==}
     engines: {node: '>=6'}
@@ -3902,6 +3915,14 @@ packages:
     resolution: {integrity: sha512-hdN1wVrZbb29eBGiGjJbeP8JbKjq1urkHJ/LIP/NY48MZ1QVXUsQBV1G1zvYFHn1XE06cwjBsOI2K3Ulnj1YXQ==}
     engines: {node: '>=8'}
     dev: true
+
+  /md5/2.3.0:
+    resolution: {integrity: sha512-T1GITYmFaKuO91vxyoQMFETst+O71VUPEU3ze5GNzDm0OWdP8v1ziTaAEPUr/3kLsY3Sftgz242A1SetQiDL7g==}
+    dependencies:
+      charenc: 0.0.2
+      crypt: 0.0.2
+      is-buffer: 1.1.6
+    dev: false
 
   /mdast-util-from-markdown/0.8.5:
     resolution: {integrity: sha512-2hkTXtYYnr+NubD/g6KGBS/0mFmBcifAsI0yIWRiRo0PjVs6SSOSOdtzbp6kSGnShDN6G5aWZpKQ2lWRy27mWQ==}

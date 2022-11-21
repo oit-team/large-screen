@@ -27,6 +27,8 @@ export default defineComponent({
       sessionStorage.setItem('userId', userData.id)
       sessionStorage.setItem('brandId', userData.brandId)
 
+      await this.$store.dispatch('updateUserData')
+
       this.$router.push('/home')
     },
   },

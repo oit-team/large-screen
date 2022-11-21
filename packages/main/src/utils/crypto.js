@@ -1,7 +1,4 @@
-import AES from 'crypto-js/aes'
-import utf8 from 'crypto-js/enc-utf8'
-import pkcs7 from 'crypto-js/pad-pkcs7'
-import ecbMode from 'crypto-js/mode-ecb'
+import * as crypto from 'crypto-js'
 
 const KEY = 'F7FA3CB95EFDB120'
 
@@ -14,11 +11,11 @@ export default {
    */
   encrypt(word, keyStr) {
     keyStr = keyStr || KEY
-    const key = utf8.parse(keyStr)
-    const str = utf8.parse(word)
-    const encrypted = AES.encrypt(str, key, {
-      mode: ecbMode,
-      padding: pkcs7,
+    const key = crypto.enc.Utf8.parse(keyStr)
+    const str = crypto.enc.Utf8.parse(word)
+    const encrypted = crypto.AES.encrypt(str, key, {
+      mode: crypto.mode.ECB,
+      padding: crypto.pad.Pkcs7,
     })
     return encrypted.toString()
   },

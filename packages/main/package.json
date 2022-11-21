@@ -3,6 +3,8 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development vite --host",
     "build": "vite build",
+    "build:watch": "vite build -w",
+    "preview": "vite preview --host",
     "lint": "eslint \"**/*.{vue,ts,js,json}\" --fix",
     "fix:sass": "node scripts/fix.mjs && sass-migrator division node_modules/**/*.scss",
     "prepare": "npm run fix:sass"
@@ -11,7 +13,7 @@
     "@formily/core": "^2.2.11",
     "@formily/element": "^2.2.11",
     "@formily/vue": "^2.2.11",
-    "@oit/element-ui-extend": "0.3.8-beta.3",
+    "@oit/element-ui-extend": "0.3.8-beta.9",
     "@oit/legacy": "link:../legacy",
     "@unocss/reset": "^0.46.2",
     "@vue/composition-api": "^1.7.1",

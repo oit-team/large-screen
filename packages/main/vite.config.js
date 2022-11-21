@@ -21,7 +21,11 @@ const config = defineConfig({
   },
 
   build: {
-    minify: true,
+    minify: false,
+    commonjsOptions: {
+      defaultIsModuleExports: false,
+      esmExternals: true,
+    },
   },
 
   plugins: [

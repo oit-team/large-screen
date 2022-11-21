@@ -99,7 +99,7 @@ export default {
     <page-header content="上传文件" />
     <div class="flex overflow-hidden flex-1 mb-2">
       <div class="inline-flex flex-col h-full">
-        <vc-upload v-bind="uploadOption" ref="upload" action="/api/system/file/uploadFile">
+        <vc-upload v-bind="uploadOption" ref="upload" action="/system/file/uploadFile">
           <i class="el-icon-upload" />
           <div class="el-upload__text">
             将文件拖到此处，或<em>点击上传</em>

@@ -1,9 +1,10 @@
 <script>
+import { Upload } from '@oit/element-ui-extend'
 import getIndustryAll from '@/api/brand'
 
 export default {
   name: 'AddBrand',
-  components: {},
+  components: { VcUpload: Upload },
   filters: {
     formatType(val) {
       return val == '0' ? 'HOME' : 'APP'
@@ -122,8 +123,26 @@ export default {
       ],
       checkedMenuArr: [], // 已选择日期的菜单列表
       payedMenuList: [], // 已付费菜单列表
+      uploadFileList: [],
 
     }
+  },
+  computed: {
+    uploadOption() {
+      return {
+        drag: true,
+        showFileList: true,
+        multiple: false,
+        maxSize: 1024 * 10,
+        limit: 1,
+        chunkSize: 1024 * 5,
+        check: true,
+        accept: 'image/*',
+        onSuccess: (...e) => {
+          this.brandList.brandLogo = e[0].data.fileUrl
+        },
+      }
+    },
   },
   watch: {
 
@@ -131,6 +150,7 @@ export default {
   created() {},
   mounted() {
     this.brandList = this.$route.query.item
+    console.log(this.brandList)
     if (this.brandList.brandState) {
       this.status = false
     }
@@ -150,41 +170,41 @@ export default {
       this.$router.go(-1)
     },
     // 图片上传获取地址
-    changeFile(file, fileList) {
-      const loading = this.$loading({
-        lock: true,
-        text: '小易拼命上传中...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)',
-        target: document.querySelector('.mainBody'),
-      })
+    // changeFile(file, fileList) {
+    //   const loading = this.$loading({
+    //     lock: true,
+    //     text: '小易拼命上传中...',
+    //     spinner: 'el-icon-loading',
+    //     background: 'rgba(0, 0, 0, 0.7)',
+    //     target: document.querySelector('.mainBody'),
+    //   })
 
-      const _this = this
-      // this.imageUrl = URL.createObjectURL(file.raw);
-      const reader = new FileReader()
-      reader.readAsDataURL(file.file)
-      reader.onload = function () {
-        // console.log(reader.result)//base64
-        const con = {
-          files: reader.result,
-          fileType: 0, // 0:图片，1：视频，2：音频
-          userId: sessionStorage.userId,
-        }
-        // {headers: {"Content-Type": "multipart/form-data",},}
-        _this.$axios.post(`${_this.GLOBAL.system_manager_server}/file/uploadFile`, con).then((res) => {
-          // console.log('图片地址：',res.data.data)
-          // console.log(res.data.data.fileUrls[0].fileUrl)
-          _this.brandList.brandLogo = res.data.data.fileUrls[0].fileUrl
+    //   const _this = this
+    //   // this.imageUrl = URL.createObjectURL(file.raw);
+    //   const reader = new FileReader()
+    //   reader.readAsDataURL(file.file)
+    //   reader.onload = function () {
+    //     // console.log(reader.result)//base64
+    //     const con = {
+    //       files: reader.result,
+    //       fileType: 0, // 0:图片，1：视频，2：音频
+    //       userId: sessionStorage.userId,
+    //     }
+    //     // {headers: {"Content-Type": "multipart/form-data",},}
+    //     _this.$axios.post(`${_this.GLOBAL.system_manager_server}/file/uploadFile`, con).then((res) => {
+    //       // console.log('图片地址：',res.data.data)
+    //       // console.log(res.data.data.fileUrls[0].fileUrl)
+    //       _this.brandList.brandLogo = res.data.data.fileUrls[0].fileUrl
 
-          loading.close()
-        })
-      }
-    },
+    //       loading.close()
+    //     })
+    //   }
+    // },
     // 获取已付费菜单
     getShowMenus() {
       const _this = this
       const params = {
-        // brandId: this.$route.query.item.id,
+        brandId: this.$route.query.item.id,
       }
       const jsonParam = this.GLOBAL.g_paramJson(params)
       _this.$axios.post(`${_this.GLOBAL.system_manager_server}/menu/getPayMenu`, jsonParam).then((res) => {
@@ -346,7 +366,9 @@ export default {
         }
       })
     },
-
+    test(...e) {
+      console.log(e)
+    },
   },
 }
 </script>
@@ -356,22 +378,22 @@ export default {
     <el-page-header content="编辑品牌" @back="goBack" />
     <el-divider />
     <div class="content">
-      <el-form ref="brandList" :model="brandList" :rules="rules" label-width="120px">
+      <el-form ref="brandList" v-model="brandList" :rules="rules" label-width="120px">
         <el-form-item label="品牌Logo">
-          <el-upload
+          <!-- 上传品牌logo -->
+          <vc-upload
+            v-bind="uploadOption" ref="upload" action="/system/file/uploadFile"
             class="avatar-uploader"
-            action="#"
             :show-file-list="false"
-            :http-request="changeFile"
           >
-            <img v-if="brandList.brandLogo" :src="brandList.brandLogo" class="imgLogo">
+            <img v-if="brandList.brandLogo || uploadFileList.fileUrl" :src="brandList.brandLogo" class="imgLogo">
             <el-button v-if="brandList.brandLogo" class="upBtn">
               修改品牌Logo
             </el-button>
             <el-button v-else class="upBtn">
               上传品牌Logo
             </el-button>
-          </el-upload>
+          </vc-upload>
         </el-form-item>
         <el-form-item label="品牌状态">
           <el-switch
@@ -556,6 +578,14 @@ export default {
   }
   /deep/.avatar-uploader .el-upload{
     display:flex;
+  }
+  ::v-deep{
+    .el-upload-dragger{
+      display: flex;
+      justify-content: space-between;
+      width: 20%;
+      height: 50px;
+    }
   }
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;

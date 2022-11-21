@@ -8,15 +8,6 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     FormilyForm: typeof import('./components/FormilyForm.vue')['default']
-    ElAside: typeof import('element-ui/lib/aside')['default']
-    ElAvatar: typeof import('element-ui/lib/avatar')['default']
-    ElContainer: typeof import('element-ui/lib/container')['default']
-    ElFooter: typeof import('element-ui/lib/footer')['default']
-    ElHeader: typeof import('element-ui/lib/header')['default']
-    ElMain: typeof import('element-ui/lib/main')['default']
-    ElMenu: typeof import('element-ui/lib/menu')['default']
-    ElMenuItem: typeof import('element-ui/lib/menu-item')['default']
-    ElSubmenu: typeof import('element-ui/lib/submenu')['default']
     ResetPassword: typeof import('./components/header/resetPassword.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

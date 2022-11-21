@@ -24,7 +24,7 @@ const config = defineConfig({
     sourcemap: true,
     lib: {
       // Could also be a dictionary or array of multiple entry points
-      entry: path.resolve(__dirname, 'src/main.ts'),
+      entry: path.resolve(__dirname, 'src/main.js'),
       name: 'legacy',
       formats: ['es'],
       // the proper extensions will be added

@@ -1,9 +1,10 @@
 <script>
+import { Upload } from '@oit/element-ui-extend'
 import getIndustryAll from '@/api/brand'
 
 export default {
   name: 'AddBrand',
-  components: {},
+  components: { VcUpload: Upload },
   filters: {
     formatType(val) {
       return val == '0' ? 'HOME' : 'APP'
@@ -91,6 +92,25 @@ export default {
 
     }
   },
+  computed: {
+    uploadOption() {
+      return {
+        drag: true,
+        showFileList: true,
+        multiple: false,
+        maxSize: 1024 * 10,
+        limit: 1,
+        chunkSize: 1024 * 5,
+        check: true,
+        accept: 'image/*',
+        onSuccess: (...e) => {
+          this.imageUrl = e[0].data.fileUrl
+          this.ruleForm.brandLogo = e[0].data.fileUrl
+        },
+      }
+    },
+  },
+
   watch: {
 
   },
@@ -529,17 +549,16 @@ export default {
       <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="120px">
         <el-form-item label="品牌Logo">
           <!-- action="http://192.168.9.71:8089/gdy/system/file/uploadFile" -->
-          <el-upload
+          <vc-upload
+            v-bind="uploadOption" ref="upload" action="/system/file/uploadFile"
             class="avatar-uploader"
-            action="#"
             :show-file-list="false"
-            :http-request="changeFile"
           >
             <img v-if="imageUrl" :src="imageUrl" class="imgLogo">
             <el-button class="upBtn">
               上传品牌Logo
             </el-button>
-          </el-upload>
+          </vc-upload>
         </el-form-item>
         <el-form-item label="品牌名称" prop="brandName">
           <el-input v-model="ruleForm.brandName" placeholder="请输入品牌名称" autocomplete="off" style="width:60%;" />
@@ -667,6 +686,14 @@ export default {
 
   /deep/.avatar-uploader .el-upload{
     display:flex;
+  }
+  ::v-deep{
+    .el-upload-dragger{
+      display: flex;
+      justify-content: space-between;
+      width: 20%;
+      height: 50px;
+    }
   }
 
   /deep/.el-step__head{

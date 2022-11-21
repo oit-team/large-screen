@@ -12,6 +12,7 @@ onMounted(() => {
       userId: userData.id,
       brandId: userData.brandId,
     },
+    store,
   })
 })
 

@@ -127,7 +127,7 @@ export default defineComponent({
 
 <template>
   <!-- 把角色赋予用户 -->
-  <div id="authUsersByRoleId" class="pageCommonStyle page-container">
+  <div id="authUsersByRoleId" class="pageCommonStyle page-container justify-center items-center">
     <el-page-header :content="pageTitle" @back="goBack" />
     <el-divider />
     <!-- <div class="roleDesc">{{roleName}}--{{roleRemark}}</div> -->
@@ -137,7 +137,8 @@ export default defineComponent({
       :data="allUserList"
       :props="{ key: 'id', label: 'userName' }"
       :render-content="renderFunc"
-      class="flex justify-center"
+      style="height: 85%"
+      class="flex justify-center items-center"
       :titles="['未授权用户', '已授权用户']"
       :button-texts="['取消', '授权']"
       :left-default-checked="leftDefaultChecked"
@@ -155,6 +156,12 @@ export default defineComponent({
   .roleDesc{
     line-height: 32px;
     text-align: left;
+  }
+}
+::v-deep{
+  .el-transfer-panel{
+    width: 30%;
+    height: 100%;
   }
 }
 </style>

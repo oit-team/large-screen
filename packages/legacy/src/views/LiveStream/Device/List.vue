@@ -50,6 +50,9 @@ export default {
   }),
 
   computed: {
+    userData() {
+      return this.$store.state.userData
+    },
     searchList() {
       const allBrand = {
         brandId: '',
@@ -114,7 +117,7 @@ export default {
               .then(() => this.updateSelectedDeviceInfo({ devState: DEV_STATE.SCRAP }))
           },
         },
-      ].filter(item => !item.auth || sessionStorage.brandList !== undefined) // 权限验证，brandList不存在则视为无权限
+      ].filter(item => !item.auth || this.userData.isMenagerRole > 0) // 权限验证，brandList不存在则视为无权限
     },
   },
 

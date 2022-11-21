@@ -246,7 +246,7 @@ export default {
     this.dynamicParam = [
       { key: 'pageNum', value: this.pageNum, isTrue: true, msg: '请确认pageNum.' },
       { key: 'pageSize', value: this.pageSize, isTrue: true, msg: '请确认pageSize.' },
-      // { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
+      { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
       { key: 'orgStId', value: this.orgStId, isTrue: true, msg: '请先选择区域或者店铺.' },
       { key: 'type', value: this.isShop, isTrue: true, msg: '请先选择区域或者店铺.' },
     ]
@@ -267,7 +267,7 @@ export default {
       _this.dynamicParam = [
         { key: 'pageNum', value: _this.pageNum, isTrue: true, msg: '请确认pageNum.' },
         { key: 'pageSize', value: _this.pageSize, isTrue: true, msg: '请确认pageSize.' },
-        // { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
+        { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
         { key: 'orgStId', value: _this.orgStId, isTrue: true, msg: '请先选择区域或者店铺.' },
         { key: 'type', value: _this.isShop, isTrue: true, msg: '请先选择区域或者店铺.' },
       ]
@@ -311,6 +311,7 @@ export default {
   mounted() {
     this.getAreaListByBrandId()
     this.getAreaManager()
+    // this.$root.$on('switchBrand', () => this.getTreeOrgList())
 
     // // 同菜单和角色列表不同，初始化的时候先传递参数不要执行请求用户列表，点击查询再请求
     this.pageNum = 1
@@ -324,8 +325,9 @@ export default {
     // parentMsg 只传参，不调方法;parentMsgs 传参，且调方法
   },
   activated() {
+    this.getAreaManager()
     // console.log("==综合管理==activated====")
-    // this.getTreeOrgList();
+    // this.getTreeOrgList()
     this.clickNodeFlag = false
     // // console.log("sessionStorage.headTitString-----",sessionStorage.headTitString)
     if (sessionStorage.headTitString) {
@@ -516,7 +518,7 @@ export default {
           const con = {
             rowList: this.rowList,
             param: {
-              // brandId: sessionStorage.brandId,
+              brandId: sessionStorage.brandId,
               orgStId: _this.nodeId ? String(_this.nodeId) : _this.nodeId, // 防止将null也转化为字符串了
               // "parentId":_this.nodeParentId
               path: _this.path,
@@ -613,7 +615,7 @@ export default {
         const formData = new FormData() //  用FormData存放上传文件
         // // console.log("this.fileList====",this.fileList)
         formData.append('file', this.fileList[0].raw)
-        // formData.append('brandId', sessionStorage.brandId)
+        formData.append('brandId', sessionStorage.brandId)
         // if(this.importFlag=='1'){}
         formData.append('code', this.importFlag) // 1 店铺  2 用户
         formData.append('userId', sessionStorage.userId)
@@ -724,7 +726,7 @@ export default {
         this.dynamicParam = [
           { key: 'pageNum', value: this.pageNum, isTrue: true, msg: '请确认pageNum.' },
           { key: 'pageSize', value: this.pageSize, isTrue: true, msg: '请确认pageSize.' },
-          // { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
+          { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
           { key: 'orgStId', value: this.orgStId, isTrue: true, msg: '请先选择区域或者店铺.' },
           { key: 'type', value: this.isShop, isTrue: true, msg: '请先选择区域或者店铺.' },
         ]
@@ -1019,7 +1021,7 @@ export default {
     getStatisticData() {
       const _this = this
       const con = {
-        // brandId: sessionStorage.brandId,
+        brandId: sessionStorage.brandId,
       }
       const jsonParam = _this.GLOBAL.g_paramJson(con)
       _this.$axios.post(`${_this.GLOBAL.system_manager_server}/brand/SumCount`, jsonParam).then((res) => {
@@ -1859,7 +1861,7 @@ export default {
         this.dynamicParam = [
           { key: 'pageNum', value: this.pageNum, isTrue: true, msg: '请确认pageNum.' },
           { key: 'pageSize', value: this.pageSize, isTrue: true, msg: '请确认pageSize.' },
-          // { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
+          { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
           { key: 'orgStId', value: this.orgStId, isTrue: true, msg: '请先选择区域或者店铺.' },
           { key: 'type', value: this.isShop, isTrue: true, msg: '请先选择区域或者店铺.' },
         ]

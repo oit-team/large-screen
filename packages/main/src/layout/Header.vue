@@ -28,6 +28,10 @@ export default defineComponent({
       const params = {}
       getBrands(params).then((res) => {
         this.brandList = res.body.resultMap
+        const brandInfo = this.brandList.find((i) => {
+          return i.brandId === +sessionStorage.getItem('brandId')
+        })
+        this.brandName = brandInfo.brandName
       }).catch(() => {
         sessionStorage.removeItem('brandId')
       })
@@ -39,6 +43,9 @@ export default defineComponent({
       sessionStorage.setItem('brandId', item.brandId)
       // 页面加载
       this.viewReload()
+
+      // 切换品牌时要同时调用菜单接口
+      this.$root.$emit('switchBrand', item)
     },
 
     logOut() {

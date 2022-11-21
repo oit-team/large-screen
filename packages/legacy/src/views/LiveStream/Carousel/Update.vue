@@ -101,11 +101,23 @@ export default {
     matchGoodsFields: [{
       fieldName: '商品款号',
       fieldType: '文本',
+      fieldKey: 'productNo',
+      noTableShow: true,
+    }, {
+      fieldName: '商品名称',
+      fieldType: '文本',
+      fieldKey: 'productName',
+      noTableShow: true,
+    }, {
+      fieldName: '商品款号',
+      fieldType: '文本',
       fieldKey: 'styleNo',
+      noSearchShow: true,
     }, {
       fieldName: '商品名称',
       fieldType: '文本',
       fieldKey: 'styleName',
+      noSearchShow: true,
     }, {
       fieldName: '商品图片',
       fieldType: '文本',
@@ -262,7 +274,11 @@ export default {
 
       this.carouselList = config.map((item) => {
         item._tempId = uniqueId()
+        // if (!this.goodsDetailData.advertsStyles.length) {
+        //   item.goods = []
+        // }
         item.goods = item.goods || []
+
         return item
       })
       this.tab = this.carouselList[0]._tempId
@@ -270,11 +286,9 @@ export default {
       this.goodsDetailData.resEntityList.forEach((item) => {
         this.$set(this.fileMap, item.id, item)
       })
-
       this.goodsDetailData.advertsStyles.forEach((item) => {
         this.$set(this.fileGoods, item.styleId, item)
       })
-
       this.disabledDefault = this.goodsDetailData.defaults === DEFAULT_STATE.YES && this.goodsDetailData.state === PUBLISHED_STATE.PUBLISHED
     },
 
@@ -395,13 +409,15 @@ export default {
         res = {},
         goods = [],
       } = option
+
       // 缓存
       this.$set(this.fileMap, res.id, {
         resUrl: res.resUrl,
       })
       const target = index
       const item = this.carouselItem
-      item.goods = goods
+      if (goods.length != 0) item.goods = goods
+
       const type = ['image', 'video'][res.resType]
 
       // 首次设置底部内容时，调整分割线
@@ -461,7 +477,6 @@ export default {
         if (this.carouselItem.items[0]) this.addItem({
           goods,
         })
-
         this.setContent(0, {
           goods,
           res: {
@@ -640,8 +655,8 @@ export default {
                       <i class="el-icon-close" />
                     </div>
                   </div>
-                  <span class="self-end">{{ item.goods.length }}/5</span>
                 </div>
+                <span class="self-end text-xs text-gray-400">{{ item.goods.length }}/5</span>
               </div>
             </div>
           </div>
@@ -702,14 +717,19 @@ export default {
 
 <style lang="less" scoped>
 ::v-deep{
+  .el-drawer__body{
+    padding: 0 10px;
+  }
   .el-page-header__content{
     font-size: 16px;
   }
   .el-divider--horizontal{
     margin: 10px 0;
   }
-  .el-tabs__content{
+
+  .el-tabs--border-card > .el-tabs__content{
     height: 100%;
+    padding: 0px;
   }
 }
 .carousel-box {

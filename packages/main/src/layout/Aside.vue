@@ -24,6 +24,9 @@ export default defineComponent({
 
   mounted() {
     this.getTreeMenuList()
+
+    // 对于切换品牌做出回应
+    this.$root.$on('switchBrand', () => this.getTreeMenuList())
   },
 
   methods: {

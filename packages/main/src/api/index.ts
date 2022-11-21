@@ -21,12 +21,12 @@ axios.interceptors.request.use((config) => {
 
 // 添加响应拦截器
 axios.interceptors.response.use((response) => {
-  if (response.data.head?.status !== 0) {
+  if (response.headers['content-type']?.includes('application/json') && response.data.head?.status !== 0) {
     return createApiError({
-      url: response?.config.url,
+      url: response.config.url,
       response,
-      message: response.data.head.msg,
-      code: response.data.head.status,
+      message: response.data?.head?.msg,
+      code: response.data?.head?.status,
       status: response.status,
     })
   }

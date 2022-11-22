@@ -204,7 +204,7 @@ export default {
     cancel(formName) {
       this.startTime = ''
       this.checkedImg = []
-      this.videoSrc = []
+      this.videoSrc = ''
       this.$refs[formName].resetFields()
     },
   },

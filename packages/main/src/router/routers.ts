@@ -48,6 +48,18 @@ export const routes: RouteConfig[] = [
           edit: true,
         },
       },
+      // 奖池
+      {
+        path: '/jackpot/merchant',
+        name: 'JackpotList',
+        component: () => import('@/views/Jackpot/List.vue'),
+      },
+      // 新增奖池
+      {
+        path: '/jackpot/addJackpot',
+        name: 'AddJackpot',
+        component: () => import('@/views/Jackpot/Update.vue'),
+      },
       {
         path: '/404',
         component: () => import('@/views/404.vue'),

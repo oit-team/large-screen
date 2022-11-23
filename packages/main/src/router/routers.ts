@@ -60,6 +60,12 @@ export const routes: RouteConfig[] = [
         name: 'AddJackpot',
         component: () => import('@/views/Jackpot/Update.vue'),
       },
+      // 公共奖池
+      {
+        path: '/jackpot/public',
+        name: 'PublicList',
+        component: () => import('@/views/PublicJackpot/PublicList.vue'),
+      },
       {
         path: '/404',
         component: () => import('@/views/404.vue'),

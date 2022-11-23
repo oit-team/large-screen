@@ -1,10 +1,20 @@
 <script>
-import { getJackpotStyleAll } from '@/api/jackpot'
+import { deleteJackpotInfo, getJackpotStyleAll, updateJackpotByState } from '@/api/jackpot'
+
+// 上下架状态
+export const PUTAWAY_STATE = {
+  // 下架
+  SOLDOUT: 0,
+  // 上架
+  PUTAWAY: 2,
+}
+
 export default {
   name: 'MyJackpot',
   data: () => ({
+    PUTAWAY_STATE,
     data: {},
-
+    selectedIds: [],
   }),
 
   computed: {
@@ -14,19 +24,21 @@ export default {
         actions: [
           {
             name: '新增奖券',
-            type: 'success',
+            type: 'primary',
             click: this.addJackpot,
           },
           {
             name: '加入公共奖池',
-            type: 'success',
+            type: 'primary',
           },
           {
-            name: '上/下架',
-            type: 'success',
+            slot: 'multiple',
           },
         ],
         table: {
+          rowKey: 'ROW_ID',
+          reserveSelection: true,
+          selection: true,
           data: this.data.resultList,
           actions: {
             width: 180,
@@ -41,18 +53,21 @@ export default {
                 }),
               },
               {
+                tip: ({ row }) => ['上架'][row.jackpotState] || '下架',
+                type: 'success',
+                icon: ({ row }) => ['el-icon-top'][row.jackpotState] || 'el-icon-bottom',
+                click: this.upOrDownInfo,
+              },
+              {
                 tip: '删除',
                 type: 'danger',
                 icon: 'el-icon-delete',
-              },
-              {
-                tip: '上/下架',
-                type: 'success',
-                icon: 'el-icon-sort',
+                click: this.deleteJackpotInfo,
+                disabled: ({ row }) => row.jackpotState === PUTAWAY_STATE.PUTAWAY,
               },
               {
                 tip: '审批记录',
-                type: 'info',
+                type: 'primary',
                 icon: 'el-icon-notebook-2',
               },
             ],
@@ -65,25 +80,73 @@ export default {
     },
   },
   mounted() {
-    this.loadData()
   },
 
   activated() {
   },
 
   methods: {
-    async loadData() {
+    async loadData(params) {
       const res = await getJackpotStyleAll({
-        pageNum: 1,
-        pageSize: 10,
+        ...params,
         jackpotType: 1,
       })
       this.data = res.body
     },
+
     addJackpot() {
       this.$router.push({
         name: 'AddJackpot',
+        query: { jackpotType: 'jackpot' },
       })
+    },
+
+    async deleteJackpotInfo({ row }) {
+      await deleteJackpotInfo({
+        productId: row.jackpotId,
+      })
+      this.$message.success('删除成功！')
+      this.$refs.table.loadData()
+    },
+
+    // 上下架
+    async updateJackpotByState(jackpotState, jackpotId) {
+      await updateJackpotByState({
+        jackpotId: (Array.isArray(jackpotId)) ? jackpotId : [jackpotId],
+        jackpotState,
+      })
+    },
+
+    // 当前行上下架
+    async upOrDownInfo({ row }) {
+      // 如果状态为0：下架 2：上架
+      const jackpotType = row.jackpotState === PUTAWAY_STATE.SOLDOUT ? '上架' : '下架'
+      const jackpotState = row.jackpotState === PUTAWAY_STATE.SOLDOUT ? PUTAWAY_STATE.PUTAWAY : PUTAWAY_STATE.SOLDOUT
+
+      await this.$confirm(`确定要${jackpotType}该条信息吗？`, '提示', { type: 'warning' })
+      await this.updateJackpotByState(jackpotState, row.jackpotId)
+
+      this.$message.success(`${jackpotType}成功！`)
+      this.$refs.table.loadData()
+    },
+
+    // 批量上下架
+    async handleMultiple(state) {
+      if (this.$refs.table.selected.length === 0) {
+        this.$message({
+          message: '请至少选择其中一项数据！',
+          type: 'warning',
+        })
+        return
+      }
+      const selectedIds = this.$refs.table.selected.map(({ jackpotId }) => jackpotId)
+      const jackpotState = state === 0 ? PUTAWAY_STATE.PUTAWAY : PUTAWAY_STATE.SOLDOUT
+      const jackpotType = state === 0 ? '上架' : '下架'
+
+      await this.updateJackpotByState(jackpotState, selectedIds)
+      this.$message.success(`${jackpotType}成功！`)
+      this.$refs.table.loadData()
+      this.$refs.table.clearSelection()
     },
   },
 }
@@ -95,6 +158,19 @@ export default {
       <TablePage v-bind="tablePageOption" ref="table" auto>
         <template #content:impUrl="{ row }">
           <ElImage v-if="row.impUrl" :src="row.impUrl" class="file-res" fit="cover" />
+        </template>
+        <template slot="actions:multiple">
+          <ElDropdown class="mx-2" split-button type="primary" size="small" @click="handleMultiple">
+            批量上/下架
+            <ElDropdownMenu slot="dropdown">
+              <ElDropdownItem @click.native="handleMultiple(0)">
+                上架
+              </ElDropdownItem>
+              <ElDropdownItem @click.native="handleMultiple(1)">
+                下架
+              </ElDropdownItem>
+            </ElDropdownMenu>
+          </ElDropdown>
         </template>
       </TablePage>
     </div>

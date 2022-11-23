@@ -1,7 +1,7 @@
 <script>
-import VcCommonJackpot from './commonJackpot'
-import VcMyJackpot from './myJackpot'
-import VcPurchaseJackpot from './purchaseJackpot'
+import VcCommonJackpot from './CommonJackpot'
+import VcMyJackpot from './MyJackpot'
+import VcPurchaseJackpot from './PurchaseJackpot'
 export default {
   name: 'JackpotList',
   components: {

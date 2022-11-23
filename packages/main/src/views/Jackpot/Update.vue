@@ -14,7 +14,7 @@ export default {
       vouchersName: '', // 名称
       jackpotInventory: '', // 库存
       jackpotPrice: '', // 价格
-      effectiveType: '0', // 有效期
+      effectiveType: 1, // 有效期
       effectiveDay: '',
       effectiveStart: '',
       effectiveEnd: '',
@@ -67,7 +67,7 @@ export default {
         accept: 'video/*',
         onSuccess: (...e) => {
           this.videoSrc = e[0].data.fileUrl
-          this.form.jackpotVideo.push(this.videoSrc)
+          this.$set(this.form, 'jackpotVideo', [this.videoSrc])
         },
         onError: (e, file) => {
           this.$message.error(`${file.name} 上传失败，请重试！`)
@@ -91,12 +91,20 @@ export default {
     },
   },
   mounted() {
-    const jackpotId = this.$route.query.jackpotId
-    if (jackpotId) {
-      this.jackpotId = jackpotId
+    const jackpot = this.$route.query
+
+    if (jackpot.jackpotId) {
+      this.jackpotId = jackpot.jackpotId
       this.isEdit = true
       this.getJackpotDetail()
     }
+
+    // if (jackpot.jackpotType === 'jackpot') {
+    //   this.$set(this.form, 'jackpotType', 1)
+    // }
+    // else {
+    //   this.$set(this.form, 'jackpotType', 0)
+    // }
   },
 
   activated() {
@@ -108,7 +116,7 @@ export default {
     },
     delVideo() {
       this.videoSrc = ''
-      this.form.jackpotVideo = []
+      this.$set(this.form, 'jackpotVideo', [])
     },
     changeRadio() {
       if (this.form.effectiveType === 0) {
@@ -116,18 +124,11 @@ export default {
       }
       if (this.form.effectiveType === 1) {
         this.form.effectiveDay = null
+        // this.$set(this.form, 'effectiveDay', null)
       }
     },
     // 新增
     addJackpotStyle() {
-      const upload = this.$refs.upload
-
-      if (!upload.checkUploadDone())
-        return this.$message.warning('请等待文件上传完成')
-
-      const files = this.$refs.upload.getUploadResults()
-
-      files.forEach((item) => { this.form.jackpotImp.push(item.url) })
       addJackpotStyle({
         ...this.form,
       }).then((res) => {
@@ -148,13 +149,6 @@ export default {
 
     // 编辑
     updateJackpotStyle() {
-      const upload = this.$refs.upload
-
-      if (!upload.checkUploadDone())
-        return this.$message.warning('请等待文件上传完成')
-
-      const files = this.$refs.upload.getUploadResults()
-
       updateJackpotStyle({
         ...this.form,
       }).then((res) => {
@@ -183,7 +177,7 @@ export default {
         this.startTime = [this.form.effectiveStart, this.form.effectiveEnd]
 
         this.checkedImg = res.body.jackpotImp.map(item => ({ url: item }))
-        this.videoSrc = res.body.jackpotVideo[0]
+        if (res.body.jackpotVideo) this.videoSrc = res.body.jackpotVideo[0]
       }).catch((err) => {
         this.$message({
           message: err.message,
@@ -193,13 +187,27 @@ export default {
     },
 
     // 提交
-    onSubmit(formName) {
+    async onSubmit(formName) {
       if (this.startTime.length) {
         [this.form.effectiveStart, this.form.effectiveEnd] = this.startTime
       }
+      const upload = this.$refs.upload
+
+      if (!upload.checkUploadDone())
+        return this.$message.warning('请等待文件上传完成')
+
+      const files = this.$refs.upload.getUploadResults()
+      this.form.jackpotImp = []
+      files.forEach((item) => { this.form.jackpotImp.push(item.url) })
+      if (!files) {
+        this.$message({
+          message: '图片不能为空！',
+          type: 'warning',
+        })
+        return
+      }
       // 提交保存
-      this.isEdit ? this.updateJackpotStyle() : this.addJackpotStyle()
-      this.$refs[formName].resetFields()
+      await this.isEdit ? this.updateJackpotStyle() : this.addJackpotStyle()
     },
     cancel(formName) {
       this.startTime = ''

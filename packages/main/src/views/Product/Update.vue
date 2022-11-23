@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router/composables'
 import { Message } from 'element-ui'
-import { addProductInfo, getProductAttrAndInfo, updateProductInfo } from '@/api/product'
+import { addProductInfo, getGoodsTypeConfig, getProductAttrAndInfo, updateProductInfo } from '@/api/product'
 import store from '@/store'
 import router from '@/router'
 
@@ -52,16 +52,35 @@ async function updateProductInfoData(form: any) {
   })
 }
 
-function submitForm(form: any) {
-  isEdit ? updateProductInfoData(form) : addProductInfoData(form)
-  Message.success('保存成功')
-  router.back()
+async function submitForm() {
+  formRef.value.form.submit(async (form: any) => {
+    await (isEdit ? updateProductInfoData(form) : addProductInfoData(form))
+    Message.success('保存成功')
+    router.back()
+  })
+}
+
+async function getGoodsTypeConfigData(field: any) {
+  field.loading = true
+  const res = await getGoodsTypeConfig().finally(() => {
+    field.loading = false
+  })
+  field.dataSource = res.body?.result?.map((item: any) => ({
+    label: item.dicttimeDisplayName,
+    value: item.dictitemCode,
+  }))
 }
 </script>
 
 <template>
   <div>
-    <PageHeader :content="isEdit ? '编辑商品' : '新增商品'" />
-    <FormilyForm ref="formRef" class="px-4 pb-4" :config="config" @submit="submitForm" />
+    <PageHeader :content="isEdit ? '编辑商品' : '新增商品'">
+      <template #actions>
+        <ElButton type="primary" @click="submitForm()">
+          保存
+        </ElButton>
+      </template>
+    </PageHeader>
+    <FormilyForm ref="formRef" class="px-4 pb-4" :config="config" :scope="{ getGoodsTypeConfigData }" />
   </div>
 </template>

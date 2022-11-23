@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createForm } from '@formily/core'
 import type { ISchema } from '@formily/vue'
-import { FormProvider, createSchemaField, useField, useFieldSchema, useForm } from '@formily/vue'
+import { FormProvider, createSchemaField, useField } from '@formily/vue'
 import {
   ArrayCards,
   ArrayItems,
@@ -14,8 +14,6 @@ import {
   Form,
   FormButtonGroup,
   FormCollapse,
-  FormDialog,
-  FormDrawer,
   FormGrid,
   FormItem,
   FormLayout,
@@ -34,12 +32,8 @@ import {
   TimePicker,
   Transfer,
 } from '@formily/element'
-import { Button } from 'element-ui'
-import Vue from 'vue'
 import type { PropType } from 'vue'
 import { Upload as CustomUpload } from '@oit/element-ui-extend'
-import { dictitemInfoAllMethod } from '@/api/common'
-import { getToken } from '@/utils/auth'
 
 const props = defineProps({
   scope: {
@@ -53,29 +47,44 @@ const props = defineProps({
     }>,
     default: () => ({}),
   },
+  effects: {
+    type: Function,
+    default: () => {},
+  },
 })
 
 const Upload = defineComponent({
   inheritAttrs: false,
   setup() {
-    const fieldRef = useField()
-    return () => {
+    const fieldRef = useField<any>()
+    const initialValue = fieldRef.value.initialValue || []
+
+    return function (this: any) {
       return h(CustomUpload, {
+        ref: 'upload',
         props: {
           action: '/api/system/file/uploadFile',
           listType: 'picture-card',
+          fileKeyMap: {
+            uid: 'resId',
+            url: 'thumbUrl',
+          },
           ...fieldRef.value.componentProps,
+          fileList: initialValue,
           onChange: (file: any, _files: any) => {
             const files = _files
-              .filter((item: any) => item.response)
               .map((item: any) => {
-                file.url = item.response.data.thumbUrl
-                const data = item.response.data
+                const data = item.response?.data || item._data
+                if (!data) return null
+
+                item.url = data.thumbUrl
                 return {
                   fileUrl: data.fileUrl,
                   thumbUrl: data.thumbUrl,
                 }
               })
+              .filter((item: any) => item)
+
             fieldRef.value.setValue(files)
           },
         },
@@ -121,27 +130,11 @@ const { SchemaField } = createSchemaField({
   },
 })
 
-const formCreated = ref(createForm())
-
-function useDictionary(type: string) {
-  return async (field: any) => {
-    field.loading = true
-    const res = await dictitemInfoAllMethod({
-      brandId: '1',
-      type,
-      userId: '0',
-    }).finally(() => {
-      field.loading = false
-    })
-    field.dataSource = res.body?.result?.map((item: any) => ({
-      label: item.dicttimeDisplayName,
-      value: item.dictitemCode,
-    }))
-  }
-}
+const formCreated = ref(createForm({
+  // effects: props.effects as any,
+}))
 
 const fieldScope = {
-  useDictionary,
   ...props.scope,
 }
 
@@ -154,11 +147,6 @@ defineExpose({
   <FormProvider ref="formRef" class="rounded-lg p-2" :form="formCreated">
     <FormLayout :label-col="6" :wrapper-col="10">
       <SchemaField :schema="config.schema" :scope="fieldScope" />
-      <FormButtonGroup>
-        <Submit @submit="$listeners.submit">
-          提交
-        </Submit>
-      </FormButtonGroup>
     </FormLayout>
   </FormProvider>
 </template>

@@ -25,3 +25,11 @@ export function updateProductInfo(params) {
 export function updateProductState(params) {
   return post('/goods/product/updateProductState', params)
 }
+
+export function deleteProductInfo(params) {
+  return post('/goods/product/deleteProductInfo', params)
+}
+
+export function getGoodsTypeConfig() {
+  return post('/goods/dictitemInfo/getGoodsTypeConfig')
+}

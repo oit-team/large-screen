@@ -5,5 +5,8 @@ defineProps({
 </script>
 
 <template>
-  <ElPageHeader class="py-3 px-4" :content="content" @back="$router.back()" />
+  <div class="flex p-3 items-center">
+    <ElPageHeader class="flex-1" :content="content" @back="$router.back()" />
+    <slot name="actions" />
+  </div>
 </template>

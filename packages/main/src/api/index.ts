@@ -63,10 +63,16 @@ export function post(url: string, params: any = {}, config: any = {}) {
   return axios.post(url, formattedParams).then((res: any) => res.data)
 }
 
+window.addEventListener('unhandledrejection', ({ reason }: any) => {
+  if (reason instanceof ApiError) {
+    // 处理接口错误
+    reason.message && Message.warning(reason.message)
+  }
+})
+
 Vue.config.errorHandler = (err, vm) => {
   if (err instanceof ApiError) {
-    // 处理接口错误
-    Message.warning(err.message)
+    Promise.reject(err)
   }
 
   console.error(err)

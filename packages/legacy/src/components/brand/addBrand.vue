@@ -53,7 +53,7 @@ export default {
       tableRadio: '',
       rules: {
         brandLogo: [
-          { required: true, message: '请上传品牌Logo', trigger: 'trigger' },
+          { required: true, message: '请上传品牌Logo', trigger: 'blur' },
         ],
         orgName: [
           { required: true, message: '请输入公司名称', trigger: 'blur' },

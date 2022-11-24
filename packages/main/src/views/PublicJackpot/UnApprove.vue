@@ -76,6 +76,9 @@ export default {
   },
 
   methods: {
+    reload() {
+      this.$refs.table.loadData()
+    },
     async loadData(params) {
       const res = await getJackpotStyles({
         ...params,
@@ -94,7 +97,7 @@ export default {
     soldOut({ row }) {
       this.drawer = true
       this.selectjackpotId = row.jackpotId
-      this.checkState = 1
+      this.checkState = 0
     },
     // 当前行上下架
     async upOrDownInfo({ row }) {
@@ -138,7 +141,7 @@ export default {
 <template>
   <div class="h-full">
     <div class="p-2 h-full">
-      <TablePage v-bind="tablePageOption" ref="table" auto>
+      <TablePage v-bind="tablePageOption" ref="table">
         <template #content:impUrl="{ row }">
           <ElImage v-if="row.impUrl" :src="row.impUrl" class="file-res" fit="cover" />
         </template>
@@ -151,7 +154,7 @@ export default {
           <ElFormItem v-if="checkState === 2" prop="jackpotBuyPrice" label="采购价格">
             <ElInput v-model="form.jackpotBuyPrice" />
           </ElFormItem>
-          <ElFormItem v-if="checkState === 1" prop="jackpotNote" label="审核原因">
+          <ElFormItem v-if="checkState === 0" prop="jackpotNote" label="审核原因">
             <ElInput v-model="form.jackpotNote" />
           </ElFormItem>
         </ElForm>

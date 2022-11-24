@@ -11,26 +11,27 @@ export default {
     activeName: 'publicJackpot',
   }),
 
-  activated() {
-  },
-
-  methods: {
-
-    handleClick(tab, event) {
-      // console.log(tab, event)
+  watch: {
+    activeName: {
+      immediate: true,
+      async handler() {
+        await this.$nextTick()
+        this.$refs[this.activeName].reload()
+      },
     },
   },
+
 }
 </script>
 
 <template>
   <div class="h-full flex flex-col overflow-hidden page-container">
-    <ElTabs v-model="activeName" style="height:100%" class="flex flex-col flex-1" @tab-click="handleClick">
+    <ElTabs v-model="activeName" style="height:100%" class="flex flex-col flex-1">
       <ElTabPane label="已审批" name="publicJackpot" lazy>
-        <VcApprove />
+        <VcApprove ref="publicJackpot" />
       </ElTabPane>
       <ElTabPane label="未审批" name="second" lazy>
-        <VcUnApprove />
+        <VcUnApprove ref="second" />
       </ElTabPane>
     </ElTabs>
   </div>

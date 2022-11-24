@@ -29,9 +29,6 @@ export default {
         //   },
         // ],
         table: {
-          // rowKey: 'ROW_ID',
-          // reserveSelection: true,
-          // selection: true,
           data: this.data.resultList,
           actions: {
             width: 180,
@@ -54,11 +51,10 @@ export default {
   mounted() {
   },
 
-  activated() {
-    this.$refs.table.loadData()
-  },
-
   methods: {
+    reload() {
+      this.$refs.table.loadData()
+    },
     async loadData(params) {
       const res = await getJackpotStyles({
         ...params,
@@ -70,7 +66,7 @@ export default {
     addJackpot() {
       this.$router.push({
         name: 'AddJackpot',
-        query: { jackpotType: 'publicJackpot' },
+        // query: { jackpotType: 'publicJackpot' },
       })
     },
 
@@ -101,7 +97,7 @@ export default {
 <template>
   <div class="h-full">
     <div class="p-2 h-full">
-      <TablePage v-bind="tablePageOption" ref="table" auto>
+      <TablePage v-bind="tablePageOption" ref="table">
         <template #content:impUrl="{ row }">
           <ElImage v-if="row.impUrl" :src="row.impUrl" class="file-res" fit="cover" />
         </template>

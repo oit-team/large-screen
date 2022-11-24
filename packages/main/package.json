@@ -13,7 +13,7 @@
     "@formily/core": "^2.2.11",
     "@formily/element": "^2.2.11",
     "@formily/vue": "^2.2.11",
-    "@oit/element-ui-extend": "0.3.8-beta.12",
+    "@oit/element-ui-extend": "0.3.8-beta.14",
     "@oit/legacy": "link:../legacy",
     "@unocss/reset": "^0.46.2",
     "@vue/composition-api": "^1.7.1",

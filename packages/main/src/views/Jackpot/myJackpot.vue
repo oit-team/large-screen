@@ -5,14 +5,37 @@ import { deleteJackpotInfo, getJackpotStyleAll, updateJackpotByState } from '@/a
 export const PUTAWAY_STATE = {
   // 下架
   SOLDOUT: 0,
+  // 审批中
+  CHECKING: 1,
   // 上架
   PUTAWAY: 2,
+}
+
+export const PUTAWAY_STATE_TIPS = {
+  [PUTAWAY_STATE.SOLDOUT]: '上架',
+  [PUTAWAY_STATE.CHECKING]: '审批',
+  [PUTAWAY_STATE.PUTAWAY]: '下架',
+}
+
+export const PUTAWAY_STATE_TEXT = {
+  [PUTAWAY_STATE.SOLDOUT]: '下架',
+  [PUTAWAY_STATE.CHECKING]: '审批',
+  [PUTAWAY_STATE.PUTAWAY]: '上架',
+}
+
+export const PUTAWAY_STATE_ICON = {
+  [PUTAWAY_STATE.SOLDOUT]: 'el-icon-top',
+  [PUTAWAY_STATE.CHECKING]: 'el-icon-reading',
+  [PUTAWAY_STATE.PUTAWAY]: 'el-icon-bottom',
 }
 
 export default {
   name: 'MyJackpot',
   data: () => ({
     PUTAWAY_STATE,
+    PUTAWAY_STATE_TIPS,
+    PUTAWAY_STATE_TEXT,
+    PUTAWAY_STATE_ICON,
     data: {},
     selectedIds: [],
   }),
@@ -51,12 +74,14 @@ export default {
                   name: 'AddJackpot',
                   query: { jackpotId: row.jackpotId },
                 }),
+                disabled: ({ row }) => row.jackpotState !== PUTAWAY_STATE.SOLDOUT,
               },
               {
-                tip: ({ row }) => ['上架'][row.jackpotState] || '下架',
+                tip: ({ row }) => PUTAWAY_STATE_TIPS[row.jackpotState],
                 type: 'success',
-                icon: ({ row }) => ['el-icon-top'][row.jackpotState] || 'el-icon-bottom',
+                icon: ({ row }) => PUTAWAY_STATE_ICON[row.jackpotState],
                 click: this.upOrDownInfo,
+                disabled: ({ row }) => row.jackpotState !== PUTAWAY_STATE.SOLDOUT,
               },
               {
                 tip: '删除',
@@ -65,11 +90,11 @@ export default {
                 click: this.deleteJackpotInfo,
                 disabled: ({ row }) => row.jackpotState === PUTAWAY_STATE.PUTAWAY,
               },
-              {
-                tip: '审批记录',
-                type: 'primary',
-                icon: 'el-icon-notebook-2',
-              },
+              // {
+              //   tip: '审批记录',
+              //   type: 'primary',
+              //   icon: 'el-icon-notebook-2',
+              // },
             ],
           },
         },
@@ -80,9 +105,6 @@ export default {
     },
   },
   mounted() {
-  },
-
-  activated() {
   },
 
   methods: {
@@ -97,7 +119,6 @@ export default {
     addJackpot() {
       this.$router.push({
         name: 'AddJackpot',
-        query: { jackpotType: 'jackpot' },
       })
     },
 
@@ -119,9 +140,8 @@ export default {
 
     // 当前行上下架
     async upOrDownInfo({ row }) {
-      // 如果状态为0：下架 2：上架
-      const jackpotType = row.jackpotState === PUTAWAY_STATE.SOLDOUT ? '上架' : '下架'
-      const jackpotState = row.jackpotState === PUTAWAY_STATE.SOLDOUT ? PUTAWAY_STATE.PUTAWAY : PUTAWAY_STATE.SOLDOUT
+      const jackpotState = row.jackpotState
+      const jackpotType = PUTAWAY_STATE_TIPS[row.jackpotState]
 
       await this.$confirm(`确定要${jackpotType}该条信息吗？`, '提示', { type: 'warning' })
       await this.updateJackpotByState(jackpotState, row.jackpotId)
@@ -140,10 +160,9 @@ export default {
         return
       }
       const selectedIds = this.$refs.table.selected.map(({ jackpotId }) => jackpotId)
-      const jackpotState = state === 0 ? PUTAWAY_STATE.PUTAWAY : PUTAWAY_STATE.SOLDOUT
-      const jackpotType = state === 0 ? '上架' : '下架'
+      const jackpotType = PUTAWAY_STATE_TEXT[state]
 
-      await this.updateJackpotByState(jackpotState, selectedIds)
+      await this.updateJackpotByState(state, selectedIds)
       this.$message.success(`${jackpotType}成功！`)
       this.$refs.table.loadData()
       this.$refs.table.clearSelection()
@@ -160,13 +179,18 @@ export default {
           <ElImage v-if="row.impUrl" :src="row.impUrl" class="file-res" fit="cover" />
         </template>
         <template slot="actions:multiple">
-          <ElDropdown class="mx-2" split-button type="primary" size="small" @click="handleMultiple">
-            批量上/下架
+          <ElDropdown class="mx-2">
+            <ElButton type="primary" size="small">
+              批量管理<i class="el-icon-arrow-down el-icon--right" />
+            </ElButton>
             <ElDropdownMenu slot="dropdown">
-              <ElDropdownItem @click.native="handleMultiple(0)">
+              <ElDropdownItem @click.native="handleMultiple(2)">
                 上架
               </ElDropdownItem>
               <ElDropdownItem @click.native="handleMultiple(1)">
+                审批
+              </ElDropdownItem>
+              <ElDropdownItem @click.native="handleMultiple(0)">
                 下架
               </ElDropdownItem>
             </ElDropdownMenu>

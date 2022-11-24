@@ -1,12 +1,6 @@
 <script>
+import { PUTAWAY_STATE } from './MyJackpot'
 import { deleteJackpotInfo, getJackpotStyleAll, updateJackpotByState } from '@/api/jackpot'
-// 上下架状态
-export const PUTAWAY_STATE = {
-  // 下架
-  SOLDOUT: 0,
-  // 上架
-  PUTAWAY: 2,
-}
 
 export default {
   name: 'CommonJackpot',
@@ -43,18 +37,21 @@ export default {
                   name: 'AddJackpot',
                   query: { jackpotId: row.jackpotId },
                 }),
+                disabled: ({ row }) => row.jackpotState !== PUTAWAY_STATE.SOLDOUT,
               },
               {
                 tip: '删除',
                 type: 'danger',
                 icon: 'el-icon-delete',
                 click: this.deleteJackpotInfo,
+                disabled: ({ row }) => row.jackpotState !== PUTAWAY_STATE.SOLDOUT,
               },
               {
-                tip: '下架',
+                tip: ({ row }) => row.jackpotState === 0 ? '上架' : row.jackpotState === 1 ? '审批' : row.jackpotState === 2 ? '下架' : '',
                 type: 'success',
-                icon: 'el-icon-bottom',
+                icon: ({ row }) => row.jackpotState === 0 ? 'el-icon-top' : row.jackpotState === 1 ? 'el-icon-reading' : row.jackpotState === 2 ? 'el-icon-bottom' : '',
                 click: this.upOrDownInfo,
+                disabled: ({ row }) => row.jackpotState !== PUTAWAY_STATE.PUTAWAY,
               },
               {
                 tip: '审批记录',

@@ -93,7 +93,7 @@ importers:
       '@formily/element': ^2.2.11
       '@formily/vue': ^2.2.11
       '@iconify/json': ^2.1.83
-      '@oit/element-ui-extend': 0.3.8-beta.12
+      '@oit/element-ui-extend': 0.3.8-beta.14
       '@oit/legacy': link:../legacy
       '@types/lodash-es': ^4.17.6
       '@unocss/reset': ^0.46.2
@@ -122,7 +122,7 @@ importers:
       '@formily/core': 2.2.12
       '@formily/element': 2.2.12_euryrssseef75acupcz4olz5pe
       '@formily/vue': 2.2.12_ugk432boennyisqo4tgx5zxzca
-      '@oit/element-ui-extend': 0.3.8-beta.12_4jtkgfu5ezps5mwidvw4zjor3m
+      '@oit/element-ui-extend': 0.3.8-beta.14_4jtkgfu5ezps5mwidvw4zjor3m
       '@oit/legacy': link:../legacy
       '@unocss/reset': 0.46.3
       '@vue/composition-api': 1.7.1_vue@2.7.13
@@ -913,8 +913,8 @@ packages:
       fastq: 1.13.0
     dev: true
 
-  /@oit/element-ui-extend/0.3.8-beta.12_4jtkgfu5ezps5mwidvw4zjor3m:
-    resolution: {integrity: sha512-6sNSsao8HsLYdHQJPthZZ0oOOnqjGA3GtI15tZiCTVQTuSCZL/AWbDZT3LmAFBNK03MzT02KwIYaI3syS2t41w==}
+  /@oit/element-ui-extend/0.3.8-beta.14_4jtkgfu5ezps5mwidvw4zjor3m:
+    resolution: {integrity: sha512-o4XtYR168U280EaOrJAcWTp04zVWvPCViZZ5arFQifVjjRCosAOHl9pTULQNd4lGeryk0UDj+tvM2v6U9GGA9Q==}
     peerDependencies:
       element-ui: ^2.15.9
       sass: ^1.53.0

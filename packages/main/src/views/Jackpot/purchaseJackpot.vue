@@ -1,12 +1,7 @@
 <script>
+import { PUTAWAY_STATE, PUTAWAY_STATE_ICON, PUTAWAY_STATE_TEXT, PUTAWAY_STATE_TIPS } from './MyJackpot'
 import { deleteJackpotInfo, getJackpotStyleAll, updateJackpotByState } from '@/api/jackpot'
-// 上下架状态
-export const PUTAWAY_STATE = {
-  // 下架
-  SOLDOUT: 0,
-  // 上架
-  PUTAWAY: 2,
-}
+
 export default {
   name: 'MyJackpot',
   data: () => ({
@@ -23,7 +18,6 @@ export default {
           {
             name: '采购奖券',
             type: 'primary',
-            click: this.addMenu,
           },
           {
             slot: 'multiple',
@@ -38,9 +32,9 @@ export default {
             width: 180,
             buttons: [
               {
-                tip: ({ row }) => ['上架'][row.jackpotState] || '下架',
+                tip: ({ row }) => PUTAWAY_STATE_TIPS[row.jackpotState],
                 type: 'success',
-                icon: ({ row }) => ['el-icon-top'][row.jackpotState] || 'el-icon-bottom',
+                icon: ({ row }) => PUTAWAY_STATE_ICON[row.jackpotState],
                 click: this.upOrDownInfo,
               },
               {
@@ -58,11 +52,6 @@ export default {
         },
       }
     },
-  },
-  mounted() {
-  },
-
-  activated() {
   },
 
   methods: {
@@ -97,8 +86,8 @@ export default {
     // 当前行上下架
     async upOrDownInfo({ row }) {
       // 如果状态为0：下架 2：上架
-      const jackpotType = row.jackpotState === PUTAWAY_STATE.SOLDOUT ? '上架' : '下架'
-      const jackpotState = row.jackpotState === PUTAWAY_STATE.SOLDOUT ? PUTAWAY_STATE.PUTAWAY : PUTAWAY_STATE.SOLDOUT
+      const jackpotState = row.jackpotState
+      const jackpotType = PUTAWAY_STATE_TIPS[row.jackpotState]
 
       await this.$confirm(`确定要${jackpotType}该条信息吗？`, '提示', { type: 'warning' })
       await this.updateJackpotByState(jackpotState, row.jackpotId)
@@ -117,10 +106,9 @@ export default {
         return
       }
       const selectedIds = this.$refs.table.selected.map(({ jackpotId }) => jackpotId)
-      const jackpotState = state === 0 ? PUTAWAY_STATE.PUTAWAY : PUTAWAY_STATE.SOLDOUT
-      const jackpotType = state === 0 ? '上架' : '下架'
+      const jackpotType = PUTAWAY_STATE_TEXT[state]
 
-      await this.updateJackpotByState(jackpotState, selectedIds)
+      await this.updateJackpotByState(state, selectedIds)
       this.$message.success(`${jackpotType}成功！`)
       this.$refs.table.loadData()
       this.$refs.table.clearSelection()
@@ -137,13 +125,18 @@ export default {
           <ElImage v-if="row.impUrl" :src="row.impUrl" class="file-res" fit="cover" />
         </template>
         <template slot="actions:multiple">
-          <ElDropdown class="mx-2" split-button type="primary" size="small" @click="handleMultiple">
-            批量上/下架
+          <ElDropdown class="mx-2">
+            <ElButton type="primary" size="small">
+              批量管理<i class="el-icon-arrow-down el-icon--right" />
+            </ElButton>
             <ElDropdownMenu slot="dropdown">
-              <ElDropdownItem @click.native="handleMultiple(0)">
+              <ElDropdownItem @click.native="handleMultiple(2)">
                 上架
               </ElDropdownItem>
               <ElDropdownItem @click.native="handleMultiple(1)">
+                审批
+              </ElDropdownItem>
+              <ElDropdownItem @click.native="handleMultiple(0)">
                 下架
               </ElDropdownItem>
             </ElDropdownMenu>

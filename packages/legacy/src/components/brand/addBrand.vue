@@ -52,6 +52,9 @@ export default {
       // 选择
       tableRadio: '',
       rules: {
+        brandLogo: [
+          { required: true, message: '请上传品牌Logo', trigger: 'trigger' },
+        ],
         orgName: [
           { required: true, message: '请输入公司名称', trigger: 'blur' },
           { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' },
@@ -547,7 +550,7 @@ export default {
     </div>
     <div v-show="activeStep == 1" class="content">
       <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="120px">
-        <el-form-item label="品牌Logo">
+        <el-form-item label="品牌Logo" prop="brandLogo">
           <!-- action="http://192.168.9.71:8089/gdy/system/file/uploadFile" -->
           <vc-upload
             v-bind="uploadOption" ref="upload" action="/system/file/uploadFile"
@@ -690,9 +693,9 @@ export default {
   ::v-deep{
     .el-upload-dragger{
       display: flex;
-      justify-content: space-between;
-      width: 20%;
-      height: 50px;
+      width: 18%;
+      height: 40px;
+      border: 0;
     }
   }
 

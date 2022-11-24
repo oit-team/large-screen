@@ -45,8 +45,15 @@ export default {
       brandArr: [],
       brandList: {},
       rules: {
+        brandLogo: [
+          { required: true, message: '请上传品牌logo', trigger: 'blur' },
+        ],
         brandName: [
           { required: true, message: '请输入品牌名称', trigger: 'blur' },
+          { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' },
+        ],
+        abbreviation: [
+          { required: true, message: '请输入品牌简称', trigger: 'blur' },
           { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' },
         ],
         industryId: [
@@ -56,7 +63,7 @@ export default {
           { required: true, message: '请选择所属类型', trigger: 'blur' },
         ],
         dueStartTime: [
-          { required: true, message: '请选择到期时间', trigger: 'blur' },
+          { required: true, message: '请选择入驻时间', trigger: 'blur' },
         ],
         dueEndTime: [
           { required: true, message: '请选择到期时间', trigger: 'blur' },
@@ -134,12 +141,16 @@ export default {
         showFileList: true,
         multiple: false,
         maxSize: 1024 * 10,
-        limit: 1,
+        limit: 2,
         chunkSize: 1024 * 5,
         check: true,
         accept: 'image/*',
         onSuccess: (...e) => {
+          this.brandList.brandLogo = ''
           this.brandList.brandLogo = e[0].data.fileUrl
+        },
+        onError: (e, file) => {
+          this.$message.error(`${file.name} 上传失败，请重试！`)
         },
       }
     },
@@ -277,6 +288,7 @@ export default {
     cancel() {
       this.$router.go(-1)
     },
+
     // 保存
     conserve(formName) {
       // 上传文件，包括音频、视频、图片文件 文件类型，0:图片，1：视频，2：音频
@@ -378,8 +390,8 @@ export default {
     <el-page-header content="编辑品牌" @back="goBack" />
     <el-divider />
     <div class="content">
-      <el-form ref="brandList" v-model="brandList" :rules="rules" label-width="120px">
-        <el-form-item label="品牌Logo">
+      <el-form ref="brandList" :model="brandList" :rules="rules" label-width="120px">
+        <el-form-item label="品牌Logo" prop="brandLogo">
           <!-- 上传品牌logo -->
           <vc-upload
             v-bind="uploadOption" ref="upload" action="/system/file/uploadFile"
@@ -405,7 +417,7 @@ export default {
         <el-form-item label="品牌名称" prop="brandName">
           <el-input v-model="brandList.brandName" placeholder="请输入品牌名称" autocomplete="off" style="width:60%;" />
         </el-form-item>
-        <el-form-item label="品牌简称" prop="brandName">
+        <el-form-item label="品牌简称" prop="abbreviation">
           <el-input v-model="brandList.abbreviation" placeholder="请输入品牌简称" autocomplete="off" style="width:60%;" />
         </el-form-item>
         <el-form-item label="品牌类型" prop="brandType">
@@ -582,9 +594,9 @@ export default {
   ::v-deep{
     .el-upload-dragger{
       display: flex;
-      justify-content: space-between;
-      width: 20%;
-      height: 50px;
+      width: 18%;
+      height: 40px;
+      border: 0;
     }
   }
   .avatar-uploader .el-upload {

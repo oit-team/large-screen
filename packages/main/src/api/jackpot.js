@@ -38,3 +38,7 @@ export function getJackpotStyles(params) {
 export function updateJackpotAuditState(params) {
   return post('/jackpot/jackpotInfo/updateJackpotAuditState', params)
 }
+
+export function getJacpotAuditList(params) {
+  return post('/jackpot/procurement/getJacpotAuditList', params)
+}

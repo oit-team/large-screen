@@ -10,6 +10,13 @@ export const PUTAWAY_STATE = {
   // 上架
   PUTAWAY: 2,
 }
+// 上下架传参状态
+export const PUTAWAY_PARAMS = {
+  // 下架
+  SOLDOUT: 1,
+  // 上架
+  PUTAWAY: 0,
+}
 
 export const PUTAWAY_STATE_TIPS = {
   [PUTAWAY_STATE.SOLDOUT]: '上架',
@@ -81,14 +88,14 @@ export default {
                 type: 'success',
                 icon: ({ row }) => PUTAWAY_STATE_ICON[row.jackpotState],
                 click: this.upOrDownInfo,
-                disabled: ({ row }) => row.jackpotState !== PUTAWAY_STATE.SOLDOUT,
+                disabled: ({ row }) => row.jackpotState === PUTAWAY_STATE.CHECKING,
               },
               {
                 tip: '删除',
                 type: 'danger',
                 icon: 'el-icon-delete',
                 click: this.deleteJackpotInfo,
-                disabled: ({ row }) => row.jackpotState === PUTAWAY_STATE.PUTAWAY,
+                disabled: ({ row }) => row.jackpotState !== PUTAWAY_STATE.SOLDOUT,
               },
               // {
               //   tip: '审批记录',
@@ -123,6 +130,7 @@ export default {
     },
 
     async deleteJackpotInfo({ row }) {
+      await this.$confirm('确定要删除吗？', '提示', { type: 'warning' })
       await deleteJackpotInfo({
         productId: row.jackpotId,
       })
@@ -135,12 +143,13 @@ export default {
       await updateJackpotByState({
         jackpotId: (Array.isArray(jackpotId)) ? jackpotId : [jackpotId],
         jackpotState,
+        jackpotType: 1,
       })
     },
 
     // 当前行上下架
     async upOrDownInfo({ row }) {
-      const jackpotState = row.jackpotState
+      const jackpotState = row.jackpotState === 0 ? 2 : 0
       const jackpotType = PUTAWAY_STATE_TIPS[row.jackpotState]
 
       await this.$confirm(`确定要${jackpotType}该条信息吗？`, '提示', { type: 'warning' })
@@ -150,7 +159,7 @@ export default {
       this.$refs.table.loadData()
     },
 
-    // 批量上下架
+    // 奖池：批量上下架
     async handleMultiple(state) {
       if (this.$refs.table.selected.length === 0) {
         this.$message({
@@ -186,9 +195,6 @@ export default {
             <ElDropdownMenu slot="dropdown">
               <ElDropdownItem @click.native="handleMultiple(2)">
                 上架
-              </ElDropdownItem>
-              <ElDropdownItem @click.native="handleMultiple(1)">
-                审批
               </ElDropdownItem>
               <ElDropdownItem @click.native="handleMultiple(0)">
                 下架

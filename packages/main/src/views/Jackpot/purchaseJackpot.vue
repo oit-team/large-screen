@@ -42,7 +42,7 @@ export default {
                 type: 'danger',
                 icon: 'el-icon-delete',
                 click: this.deleteJackpotInfo,
-                disabled: ({ row }) => row.jackpotState === PUTAWAY_STATE.PUTAWAY,
+                disabled: ({ row }) => row.jackpotState !== PUTAWAY_STATE.SOLDOUT,
               },
             ],
           },
@@ -69,6 +69,7 @@ export default {
     },
 
     async deleteJackpotInfo({ row }) {
+      await this.$confirm('确定要删除吗？', '提示', { type: 'warning' })
       await deleteJackpotInfo({
         productId: row.jackpotId,
       })
@@ -86,7 +87,7 @@ export default {
     // 当前行上下架
     async upOrDownInfo({ row }) {
       // 如果状态为0：下架 2：上架
-      const jackpotState = row.jackpotState
+      const jackpotState = row.jackpotState === 0 ? 2 : 0
       const jackpotType = PUTAWAY_STATE_TIPS[row.jackpotState]
 
       await this.$confirm(`确定要${jackpotType}该条信息吗？`, '提示', { type: 'warning' })
@@ -94,9 +95,10 @@ export default {
 
       this.$message.success(`${jackpotType}成功！`)
       this.$refs.table.loadData()
+      this.$refs.table.clearSelection()
     },
 
-    // 批量上下架
+    // 采购池：批量上下架
     async handleMultiple(state) {
       if (this.$refs.table.selected.length === 0) {
         this.$message({
@@ -132,9 +134,6 @@ export default {
             <ElDropdownMenu slot="dropdown">
               <ElDropdownItem @click.native="handleMultiple(2)">
                 上架
-              </ElDropdownItem>
-              <ElDropdownItem @click.native="handleMultiple(1)">
-                审批
               </ElDropdownItem>
               <ElDropdownItem @click.native="handleMultiple(0)">
                 下架

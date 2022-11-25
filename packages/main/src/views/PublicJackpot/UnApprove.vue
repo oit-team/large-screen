@@ -21,14 +21,6 @@ export default {
       jackpotNote: '',
     },
     checkState: null,
-    rules: {
-      jackpotBuyPrice: [
-        { required: true, message: '请填写公共池采购价格', trigger: 'blur' },
-      ],
-      jackpotNote: [
-        { required: true, message: '请填写备注审核原因', trigger: 'blur' },
-      ],
-    },
   }),
 
   computed: {
@@ -55,11 +47,6 @@ export default {
                 icon: 'el-icon-close',
                 click: this.soldOut,
               },
-              {
-                tip: '审批记录',
-                type: 'primary',
-                icon: 'el-icon-notebook-2',
-              },
             ],
           },
         },
@@ -83,6 +70,7 @@ export default {
       const res = await getJackpotStyles({
         ...params,
         jackpotState: 1,
+        jackpotType: 0,
       })
       this.data = res.body
     },
@@ -150,12 +138,12 @@ export default {
 
     <ElDrawer title="审核" :visible.sync="drawer" size="40%">
       <div class="p-4">
-        <ElForm ref="form" :model="form" :rules="rules" label-width="80px">
+        <ElForm ref="form" :model="form" label-width="80px">
           <ElFormItem v-if="checkState === 2" prop="jackpotBuyPrice" label="采购价格">
-            <ElInput v-model="form.jackpotBuyPrice" />
+            <ElInput v-model="form.jackpotBuyPrice" oninput="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" />
           </ElFormItem>
           <ElFormItem v-if="checkState === 0" prop="jackpotNote" label="审核原因">
-            <ElInput v-model="form.jackpotNote" />
+            <ElInput v-model="form.jackpotNote" maxlength="20" show-word-limit />
           </ElFormItem>
         </ElForm>
         <ElButton class="add" type="primary" @click="toSubmit('form')">

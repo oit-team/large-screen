@@ -28,13 +28,13 @@ export default {
 <template>
   <div class="h-full flex flex-col overflow-hidden page-container">
     <ElTabs v-model="activeName" style="height:100%" class="flex flex-col flex-1" @tab-click="handleClick">
-      <ElTabPane label="奖池" name="myJackpot" lazy>
+      <ElTabPane label="我的奖池" name="myJackpot" lazy>
         <VcMyJackpot />
       </ElTabPane>
-      <ElTabPane label="公共池" name="second" lazy>
+      <ElTabPane label="我的公共池" name="second" lazy>
         <VcCommonJackpot />
       </ElTabPane>
-      <ElTabPane label="采购池" name="third" lazy>
+      <ElTabPane label="我的采购池" name="third" lazy>
         <VcPurchaseJackpot />
       </ElTabPane>
     </ElTabs>

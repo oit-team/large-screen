@@ -8,6 +8,7 @@ export default {
     maxMB: 50,
     isEdit: false,
     jackpotId: null,
+    labelPosition: 'left',
     checkedImg: [], // 反显选中的图片列表
     imageUrlList: [], // 选中的图片
     form: {
@@ -23,7 +24,7 @@ export default {
       jackpotNote: '', // 备注
       jackpotType: 1, // 奖池类型（0:公共，1:私有，2:采购）
     },
-    startTime: '',
+    startTime: [],
     videoSrc: '',
     rules: {
       vouchersName: [
@@ -120,7 +121,7 @@ export default {
     },
     changeRadio() {
       if (this.form.effectiveType === 0) {
-        this.startTime = ''
+        this.startTime = []
       }
       if (this.form.effectiveType === 1) {
         this.form.effectiveDay = null
@@ -173,8 +174,8 @@ export default {
         jackpotId: this.jackpotId,
       }).then((res) => {
         this.form = res.body
-        // 0: 按天 1：时间范围
-        this.startTime = [this.form.effectiveStart, this.form.effectiveEnd]
+        //  0: 按天 1：时间范围
+        this.startTime = [this.form.effectiveStart || '', this.form.effectiveEnd || '']
 
         this.checkedImg = res.body.jackpotImp.map(item => ({ url: item }))
         if (res.body.jackpotVideo) this.videoSrc = res.body.jackpotVideo[0]
@@ -210,7 +211,7 @@ export default {
       await this.isEdit ? this.updateJackpotStyle() : this.addJackpotStyle()
     },
     cancel(formName) {
-      this.startTime = ''
+      this.startTime = []
       this.checkedImg = []
       this.videoSrc = ''
       this.$refs[formName].resetFields()
@@ -224,21 +225,21 @@ export default {
     <ElPageHeader :content="`${isEdit ? '编辑' : '新增'}奖品信息`" class=" text-sm" @back="goBack" />
     <ElDivider />
     <div class="w-full h-full mb-4 overflow-y-auto">
-      <ElForm ref="form" :model="form" :rules="rules" label-width="80px">
+      <ElForm ref="form" :label-position="labelPosition" :model="form" :rules="rules" label-width="80px">
         <div class="grid grid-cols-2">
           <div class="m-6 pr-6 border-r">
             <ElFormItem label="名 称" prop="vouchersName">
               <ElInput v-model="form.vouchersName" />
             </ElFormItem>
             <ElFormItem label="库 存" prop="jackpotInventory">
-              <ElInput v-model="form.jackpotInventory" />
+              <ElInput v-model="form.jackpotInventory" oninput="value=value.replace(/[^\d]/g,'').replace(/^0{1,}/g,'')" />
             </ElFormItem>
             <ElFormItem label="价 格" prop="jackpotPrice">
-              <ElInput v-model="form.jackpotPrice" />
+              <ElInput v-model="form.jackpotPrice" oninput="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" />
             </ElFormItem>
             <ElFormItem label="有效期" prop="effectiveType" class="rodioDateItem">
               <div style="display: flex; align-items:center;">
-                <ElRadio v-model="form.effectiveType" style="margin: 0;" :label="1">
+                <ElRadio v-model="form.effectiveType" style="margin: 0;" :label="1" @change="changeRadio">
                   <ElDatePicker
                     v-model="startTime"
                     value-format="yyyy-MM-dd"
@@ -252,7 +253,7 @@ export default {
               </div>
               <div class="mt-2 text-sm" style="display: flex; align-items:center;">
                 <ElRadio v-model="form.effectiveType" :label="0" style="margin: 0;" @change="changeRadio">
-                  <ElInput v-model="form.effectiveDay" :disabled="form.effectiveType === 1" style="width:80px" type="number" />  / 天
+                  <ElInput v-model="form.effectiveDay" oninput="value=value.replace(/[^\d]/g,'').replace(/^0{1,}/g,'')" :disabled="form.effectiveType === 1" style="width:80px" />  / 天
                 </ElRadio>
               </div>
             </ElFormItem>

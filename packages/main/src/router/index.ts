@@ -16,6 +16,7 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   console.info('main', to, from)
+
   // 路由验证，meta.auth为false时不验证
   const auth = [...to.matched].reverse().every(item => item.meta?.auth === undefined || item.meta?.auth)
   if (auth) {
@@ -44,6 +45,7 @@ router.beforeEach(async (to, from, next) => {
       params: to.params,
     })
   }
+
   next()
 })
 

@@ -3,6 +3,7 @@ import { TablePage } from '@oit/element-ui-extend'
 import App from '@/App.vue'
 import router from '@/router'
 import store from '@/store'
+import { fieldStorage } from '@/utils/fieldStorage'
 
 import '@/plugins/element-ui'
 import '@/legacy'
@@ -12,10 +13,11 @@ import '@/styles/index.scss'
 import 'uno.css'
 
 Vue.use(TablePage, {
-  setFields: () => {
-    const fields = sessionStorage.getItem('headTitString')
+  async setFields(this: any, set: any) {
+    const fieldKey = this.$attrs['field-key']
+    const fields = (fieldKey && await fieldStorage.get(fieldKey)) || sessionStorage.getItem('headTitString')
     if (fields)
-      return JSON.parse(fields)
+      set(JSON.parse(fields))
   },
 })
 

@@ -42,3 +42,18 @@ export function updateJackpotAuditState(params) {
 export function getJacpotAuditList(params) {
   return post('/jackpot/procurement/getJacpotAuditList', params)
 }
+
+// 录入公共奖池
+export function addJackpotInfoRequest(params) {
+  return post('/jackpot/jackpotInfo/addJackpotInfoRequest', params)
+}
+
+// 查询采购的公共奖池商品列表
+export function getJackpotStyleList(params) {
+  return post('/jackpot/procurement/getJackpotStyleList', params)
+}
+
+// 新增采购商品
+export function addProcurementOrder(params) {
+  return post('/jackpot/procurement/addProcurementOrder', params)
+}

@@ -1,9 +1,15 @@
 <script>
 import { PUTAWAY_STATE, PUTAWAY_STATE_ICON, PUTAWAY_STATE_TEXT, PUTAWAY_STATE_TIPS } from './MyJackpot'
+import Purchase from './components/Purchase.vue'
 import { deleteJackpotInfo, getJackpotStyleAll, updateJackpotByState } from '@/api/jackpot'
 
 export default {
   name: 'MyJackpot',
+
+  components: {
+    Purchase,
+  },
+
   data: () => ({
     PUTAWAY_STATE,
     data: {},
@@ -15,10 +21,6 @@ export default {
       return {
         promise: this.loadData,
         actions: [
-          {
-            name: '采购奖券',
-            type: 'primary',
-          },
           {
             slot: 'multiple',
           },
@@ -121,28 +123,36 @@ export default {
 
 <template>
   <div class="h-full">
-    <div class="p-2 h-full">
-      <TablePage v-bind="tablePageOption" ref="table" auto>
-        <template #content:impUrl="{ row }">
-          <ElImage v-if="row.impUrl" :src="row.impUrl" class="file-res" fit="cover" />
-        </template>
-        <template slot="actions:multiple">
-          <ElDropdown class="mx-2">
-            <ElButton type="primary" size="small">
-              批量管理<i class="el-icon-arrow-down el-icon--right" />
-            </ElButton>
-            <ElDropdownMenu slot="dropdown">
-              <ElDropdownItem @click.native="handleMultiple(2)">
-                上架
-              </ElDropdownItem>
-              <ElDropdownItem @click.native="handleMultiple(0)">
-                下架
-              </ElDropdownItem>
-            </ElDropdownMenu>
-          </ElDropdown>
-        </template>
-      </TablePage>
-    </div>
+    <ElTabs type="card">
+      <ElTabPane label="已采购">
+        <TablePage v-bind="tablePageOption" ref="table" auto>
+          <template #content:impUrl="{ row }">
+            <ElImage v-if="row.impUrl" :src="row.impUrl" class="file-res" fit="cover" />
+          </template>
+          <template slot="actions:multiple">
+            <ElDropdown class="mx-2">
+              <ElButton type="primary" size="small">
+                批量管理<i class="el-icon-arrow-down el-icon--right" />
+              </ElButton>
+              <ElDropdownMenu slot="dropdown">
+                <ElDropdownItem @click.native="handleMultiple(2)">
+                  上架
+                </ElDropdownItem>
+                <ElDropdownItem @click.native="handleMultiple(1)">
+                  审批
+                </ElDropdownItem>
+                <ElDropdownItem @click.native="handleMultiple(0)">
+                  下架
+                </ElDropdownItem>
+              </ElDropdownMenu>
+            </ElDropdown>
+          </template>
+        </TablePage>
+      </ElTabPane>
+      <ElTabPane label="采购奖券">
+        <Purchase />
+      </ElTabPane>
+    </ElTabs>
   </div>
 </template>
 

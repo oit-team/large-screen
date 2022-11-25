@@ -1,5 +1,5 @@
 <script>
-import { deleteJackpotInfo, getJackpotStyleAll, updateJackpotByState } from '@/api/jackpot'
+import { addJackpotInfoRequest, deleteJackpotInfo, getJackpotStyleAll, updateJackpotByState } from '@/api/jackpot'
 
 // 上下架状态
 export const PUTAWAY_STATE = {
@@ -45,6 +45,9 @@ export default {
     PUTAWAY_STATE_ICON,
     data: {},
     selectedIds: [],
+    joinPublicDrawer: false,
+    joinPublicTableData: [],
+    joinPublicForm: {},
   }),
 
   computed: {
@@ -60,6 +63,15 @@ export default {
           {
             name: '加入公共奖池',
             type: 'primary',
+            click: () => {
+              if (!this.$refs.table.checkSelected()) return
+              this.joinPublicDrawer = true
+              this.joinPublicTableData = this.$refs.table.selected
+              this.joinPublicForm = this.$refs.table.selected.reduce((acc, cur) => {
+                acc[cur.jackpotId] = cur.jackpotInventory
+                return acc
+              }, {})
+            },
           },
           {
             slot: 'multiple',
@@ -176,6 +188,20 @@ export default {
       this.$refs.table.loadData()
       this.$refs.table.clearSelection()
     },
+
+    async addJackpotInfoRequest() {
+      const table = this.$refs.table
+      if (!table.checkSelected()) return
+      await addJackpotInfoRequest({
+        productList: Object.entries(this.joinPublicForm).map(([k, v]) => ({
+          productId: k,
+          jackpotNum: v,
+        })),
+      })
+      this.$refs.table.loadData()
+      this.joinPublicDrawer = false
+      this.$message.success('添加成功')
+    },
   },
 }
 </script>
@@ -183,7 +209,7 @@ export default {
 <template>
   <div class="h-full">
     <div class="p-2 h-full">
-      <TablePage v-bind="tablePageOption" ref="table" auto>
+      <TablePage v-bind="tablePageOption" ref="table" auto field-key="1669286174849">
         <template #content:impUrl="{ row }">
           <ElImage v-if="row.impUrl" :src="row.impUrl" class="file-res" fit="cover" />
         </template>
@@ -204,6 +230,49 @@ export default {
         </template>
       </TablePage>
     </div>
+    <ElDrawer
+      title="加入公共奖池"
+      :visible.sync="joinPublicDrawer"
+      direction="rtl"
+    >
+      <div class="flex flex-col h-full overflow-hidden">
+        <div class="h-full overflow-hidden">
+          <ElTable
+            ref="tableRef"
+            :data="joinPublicTableData"
+            style="width: 100%;"
+            height="100%"
+          >
+            <ElTableColumn
+              prop="vouchersName"
+              label="图片"
+              width="100"
+            >
+              <template #default="{ row }">
+                <ElImage v-if="row.impUrl" :src="row.impUrl" class="w-60px h-60px" fit="cover" />
+              </template>
+            </ElTableColumn>
+            <ElTableColumn
+              prop="vouchersName"
+              label="名称"
+            />
+            <ElTableColumn
+              prop="jackpotInventory"
+              label="库存"
+            >
+              <template #default="{ row }">
+                <ElInputNumber v-model="joinPublicForm[row.jackpotId]" class="mr-3" :min="0" :max="row.jackpotInventory" label="描述文字" />
+              </template>
+            </ElTableColumn>
+          </ElTable>
+        </div>
+        <div class="p-2 text-right">
+          <ElButton type="primary" @click="addJackpotInfoRequest()">
+            提交
+          </ElButton>
+        </div>
+      </div>
+    </ElDrawer>
   </div>
 </template>
 

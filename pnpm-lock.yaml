@@ -93,7 +93,7 @@ importers:
       '@formily/element': ^2.2.11
       '@formily/vue': ^2.2.11
       '@iconify/json': ^2.1.83
-      '@oit/element-ui-extend': 0.3.8-beta.14
+      '@oit/element-ui-extend': 0.3.8-beta.16
       '@oit/legacy': link:../legacy
       '@types/lodash-es': ^4.17.6
       '@unocss/reset': ^0.46.2
@@ -101,6 +101,7 @@ importers:
       '@vue/composition-api': ^1.7.1
       '@vueuse/core': ^9.0.0
       axios: ^1.1.3
+      big.js: ^6.2.1
       core-js: ^3.24.0
       crypto-js: ^4.1.1
       element-ui: ^2.15.10
@@ -122,12 +123,13 @@ importers:
       '@formily/core': 2.2.12
       '@formily/element': 2.2.12_euryrssseef75acupcz4olz5pe
       '@formily/vue': 2.2.12_ugk432boennyisqo4tgx5zxzca
-      '@oit/element-ui-extend': 0.3.8-beta.14_4jtkgfu5ezps5mwidvw4zjor3m
+      '@oit/element-ui-extend': 0.3.8-beta.16_4jtkgfu5ezps5mwidvw4zjor3m
       '@oit/legacy': link:../legacy
       '@unocss/reset': 0.46.3
       '@vue/composition-api': 1.7.1_vue@2.7.13
       '@vueuse/core': 9.4.0_ugk432boennyisqo4tgx5zxzca
       axios: 1.1.3
+      big.js: 6.2.1
       core-js: 3.26.0
       crypto-js: 4.1.1
       element-ui: 2.15.10_vue@2.7.13
@@ -913,8 +915,8 @@ packages:
       fastq: 1.13.0
     dev: true
 
-  /@oit/element-ui-extend/0.3.8-beta.14_4jtkgfu5ezps5mwidvw4zjor3m:
-    resolution: {integrity: sha512-o4XtYR168U280EaOrJAcWTp04zVWvPCViZZ5arFQifVjjRCosAOHl9pTULQNd4lGeryk0UDj+tvM2v6U9GGA9Q==}
+  /@oit/element-ui-extend/0.3.8-beta.16_4jtkgfu5ezps5mwidvw4zjor3m:
+    resolution: {integrity: sha512-fsgatE7vjvmcXHCLKYhCxVm0/U31c5HpjBH0CJ6KY/XnJP5f1LH2CZz+JJpF0uKKAPIrqwqlrHuzIms/RNaFmw==}
     peerDependencies:
       element-ui: ^2.15.9
       sass: ^1.53.0
@@ -1789,6 +1791,10 @@ packages:
   /balanced-match/1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
     dev: true
+
+  /big.js/6.2.1:
+    resolution: {integrity: sha512-bCtHMwL9LeDIozFn+oNhhFoq+yQ3BNdnsLSASUxLciOb1vgvpHsIO1dsENiGMgbb4SkP5TrzWzRiLddn8ahVOQ==}
+    dev: false
 
   /binary-extensions/2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}

@@ -14,3 +14,7 @@ export function dictitemInfoAllMethod(params) {
     cmd: 100009,
   })
 }
+
+export function getJsonData(code) {
+  return post('/system/menu/getJsonData', { code })
+}

@@ -223,9 +223,13 @@ export default {
       }
     },
   },
-  created() {
-    // test.testFun();
-    // this.$refs.brandRightCon.height;
+  // mounted() {
+  //   // test.testFun();
+  //   // this.$refs.brandRightCon.height;
+  // },
+
+  async mounted() {
+    await this.$nextTick()
     this.serverName = this.GLOBAL.system_manager_server
     this.brandTitArr = sessionStorage.headTitString.split('@')
     if (sessionStorage.headTitString.includes('@')) {
@@ -246,7 +250,7 @@ export default {
     this.dynamicParam = [
       { key: 'pageNum', value: this.pageNum, isTrue: true, msg: '请确认pageNum.' },
       { key: 'pageSize', value: this.pageSize, isTrue: true, msg: '请确认pageSize.' },
-      { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
+      // { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
       { key: 'orgStId', value: this.orgStId, isTrue: true, msg: '请先选择区域或者店铺.' },
       { key: 'type', value: this.isShop, isTrue: true, msg: '请先选择区域或者店铺.' },
     ]
@@ -267,7 +271,7 @@ export default {
       _this.dynamicParam = [
         { key: 'pageNum', value: _this.pageNum, isTrue: true, msg: '请确认pageNum.' },
         { key: 'pageSize', value: _this.pageSize, isTrue: true, msg: '请确认pageSize.' },
-        { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
+        // { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
         { key: 'orgStId', value: _this.orgStId, isTrue: true, msg: '请先选择区域或者店铺.' },
         { key: 'type', value: _this.isShop, isTrue: true, msg: '请先选择区域或者店铺.' },
       ]
@@ -307,8 +311,7 @@ export default {
       })
       _this.$refs.child.parentMsgs(_this.dynamicParam)
     }, 1000)
-  },
-  mounted() {
+
     this.getAreaListByBrandId()
     this.getAreaManager()
     // this.$root.$on('switchBrand', () => this.getTreeOrgList())
@@ -726,7 +729,7 @@ export default {
         this.dynamicParam = [
           { key: 'pageNum', value: this.pageNum, isTrue: true, msg: '请确认pageNum.' },
           { key: 'pageSize', value: this.pageSize, isTrue: true, msg: '请确认pageSize.' },
-          { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
+          // { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
           { key: 'orgStId', value: this.orgStId, isTrue: true, msg: '请先选择区域或者店铺.' },
           { key: 'type', value: this.isShop, isTrue: true, msg: '请先选择区域或者店铺.' },
         ]
@@ -1861,7 +1864,7 @@ export default {
         this.dynamicParam = [
           { key: 'pageNum', value: this.pageNum, isTrue: true, msg: '请确认pageNum.' },
           { key: 'pageSize', value: this.pageSize, isTrue: true, msg: '请确认pageSize.' },
-          { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
+          // { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
           { key: 'orgStId', value: this.orgStId, isTrue: true, msg: '请先选择区域或者店铺.' },
           { key: 'type', value: this.isShop, isTrue: true, msg: '请先选择区域或者店铺.' },
         ]

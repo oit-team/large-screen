@@ -22,11 +22,13 @@ export default {
   watch: {
     $route(to, from) {},
   },
-  created() {
+
+  async mounted() {
+    await this.$nextTick()
     if (sessionStorage.headTitString) {
       this.headTitArr = JSON.parse(sessionStorage.headTitString)
+      sessionStorage.headTitString = this.headTitArr
     }
-    // console.log("this.headTitArr========",this.headTitArr);
     if (!this.headTitArr) {
       this.$message({
         message: 'this.headTitArr为空',
@@ -39,8 +41,7 @@ export default {
       { key: 'pageSize', value: this.pageSize, isTrue: true, msg: '请确认pageSize.' },
       // { key: 'brandId', value: sessionStorage.brandId, isTrue: true, msg: '请确认品牌Id.' },
     ]
-  },
-  mounted() {
+
     this.pageNum = 1
     this.dynamicParam.forEach((el) => {
       if (el.key == 'pageNum') {
@@ -50,7 +51,12 @@ export default {
     // console.log("======roleList====mounted=======",this.dynamicParam)
     this.$refs.child.parentMsgs(this.dynamicParam)
   },
-  activated() {
+
+  async activated() {
+    debugger
+    console.log(sessionStorage.headTitString)
+    // await this.$nextTick()
+    console.log(this.headTitArrr)
     if (sessionStorage.headTitString) {
       this.headTitArr = JSON.parse(sessionStorage.headTitString)
     }

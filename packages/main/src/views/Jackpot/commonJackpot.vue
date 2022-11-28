@@ -18,11 +18,6 @@ export default {
         promise: this.loadData,
         actions: [
           {
-            name: '批量下架',
-            type: 'primary',
-            click: this.handleMultiple,
-          },
-          {
             slot: 'multiple',
           },
         ],
@@ -124,7 +119,12 @@ export default {
       await this.$confirm(`确定要${jackpotType}该条信息吗？`, '提示', { type: 'warning' })
       await this.updateJackpotByState(jackpotState, row.jackpotId)
 
-      this.$message.success(`${jackpotType}成功！`)
+      if (jackpotType === '审核') {
+        this.$message.success(`完成${jackpotType}提交！`)
+      }
+      else {
+        this.$message.success(`${jackpotType}成功！`)
+      }
       this.$refs.table.loadData()
     },
 
@@ -158,7 +158,12 @@ export default {
       }
 
       await this.updateJackpotByState(state, selectItems)
-      this.$message.success(`${jackpotType}成功！`)
+      if (jackpotType === '审核') {
+        this.$message.success(`完成${jackpotType}提交！`)
+      }
+      else {
+        this.$message.success(`${jackpotType}成功！`)
+      }
       this.$refs.table.loadData()
       this.$refs.table.clearSelection()
     },
@@ -176,7 +181,7 @@ export default {
 <template>
   <div class="h-full">
     <div class="p-2 h-full">
-      <TablePage v-bind="tablePageOption" ref="table" auto>
+      <TablePage v-bind="tablePageOption" ref="table" auto field-key="1669286174849">
         <template #content:impUrl="{ row }">
           <ElImage v-if="row.impUrl" :src="row.impUrl" class="file-res" fit="cover" />
         </template>
@@ -217,6 +222,8 @@ export default {
                   </div>
                   <div class="mb-1">
                     <span class="mr-4">申请时间：{{ item.applyForTime }}</span>
+                  </div>
+                  <div class="mb-1">
                     <span>审批时间：{{ item.auditTime || '暂无' }}</span>
                   </div>
                   <div class="mb-1">

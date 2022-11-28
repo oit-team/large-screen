@@ -129,7 +129,7 @@ export default {
 <template>
   <div class="h-full">
     <div class="p-2 h-full">
-      <TablePage v-bind="tablePageOption" ref="table">
+      <TablePage v-bind="tablePageOption" ref="table" field-key="1669627381942">
         <template #content:impUrl="{ row }">
           <ElImage v-if="row.impUrl" :src="row.impUrl" class="file-res" fit="cover" />
         </template>

@@ -138,9 +138,6 @@ export default {
                 <ElDropdownItem @click.native="handleMultiple(2)">
                   上架
                 </ElDropdownItem>
-                <ElDropdownItem @click.native="handleMultiple(1)">
-                  审批
-                </ElDropdownItem>
                 <ElDropdownItem @click.native="handleMultiple(0)">
                   下架
                 </ElDropdownItem>

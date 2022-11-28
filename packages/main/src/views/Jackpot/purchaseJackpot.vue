@@ -83,6 +83,7 @@ export default {
       await updateJackpotByState({
         jackpotId: (Array.isArray(jackpotId)) ? jackpotId : [jackpotId],
         jackpotState,
+        jackpotType: 2,
       })
     },
 

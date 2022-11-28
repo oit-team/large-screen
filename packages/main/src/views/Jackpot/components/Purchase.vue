@@ -10,7 +10,7 @@ const total = ref(0)
 const pageNum = ref(1)
 const pageSize = ref(30)
 const searchForm = ref({})
-const fields = ref([{ fieldName: '所属行业', fieldType: '值列', fieldKey: 'industryId', dbField: 'industryId', noTobleShow: true }, { fieldName: '名称', fieldType: '文本', fieldKey: 'vouchersName', dbField: 'vouchersName', noTobleShow: true }])
+const fields = ref([])
 const shoppingCartDrawer = ref(false)
 const shoppingCartData = ref({})
 const shoppingCartCount = ref({})
@@ -23,8 +23,10 @@ const totalPrice = computed(() => {
 })
 
 async function getFields() {
-  fields.value = await fieldStorage.get('')
+  const json = await fieldStorage.get('1669621663084')
+  fields.value = JSON.parse(json)
 }
+getFields()
 
 async function getJackpotStyleListData() {
   const res = await getJackpotStyleList({

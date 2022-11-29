@@ -35,7 +35,7 @@ export default {
                 icon: 'el-icon-edit',
                 click: ({ row }) => this.$router.push({
                   name: 'AddJackpot',
-                  query: { jackpotId: row.jackpotId },
+                  query: { jackpotId: row.jackpotId, name: 'second' },
                 }),
                 disabled: ({ row }) => row.jackpotState !== PUTAWAY_STATE.SOLDOUT,
               },
@@ -158,7 +158,7 @@ export default {
       }
 
       await this.updateJackpotByState(state, selectItems)
-      if (jackpotType === '审核') {
+      if (jackpotType === '审批') {
         this.$message.success(`完成${jackpotType}提交！`)
       }
       else {
@@ -262,11 +262,13 @@ export default {
     padding: 10px;
   }
   .imgInfo{
-    width: 90px;
+    display: flex;
+    align-items: center;
+    width: 130px;
     border-right: 1px solid #eee;
   .goodsImg{
     width: 100%;
-    height: 90px;
+    height: 120px;
     background-size: cover;
   }
 

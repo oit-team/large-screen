@@ -12,6 +12,10 @@ export default {
   data: () => ({
     activeName: 'myJackpot',
   }),
+  mounted() {
+    const activeName = this.$route.query.name
+    this.activeName = activeName || 'myJackpot'
+  },
 
   activated() {
   },

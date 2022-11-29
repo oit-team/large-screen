@@ -120,6 +120,7 @@ export default {
       await this.checkState === 2 ? this.passJackpotAuditState() : this.outJackpotAuditState()
       this.$message.success('提交成功！')
       this.drawer = false
+      this.form = {}
       this.$refs.table.loadData()
     },
   },

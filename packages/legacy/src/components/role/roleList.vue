@@ -52,11 +52,7 @@ export default {
     this.$refs.child.parentMsgs(this.dynamicParam)
   },
 
-  async activated() {
-    debugger
-    console.log(sessionStorage.headTitString)
-    // await this.$nextTick()
-    console.log(this.headTitArrr)
+  activated() {
     if (sessionStorage.headTitString) {
       this.headTitArr = JSON.parse(sessionStorage.headTitString)
     }

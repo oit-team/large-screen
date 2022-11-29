@@ -30,6 +30,23 @@ export const routes: RouteConfig[] = [
         name: 'Home',
         component: () => import('@/views/Home.vue'),
       },
+      // 角色管理
+      {
+        path: '/role/roleList',
+        name: 'RoleList',
+        component: () => import ('@/views/Role/RoleList.vue'),
+      },
+      {
+        path: '/role/addRole',
+        name: 'AddRole',
+        component: () => import ('@/views/Role/AddRole.vue'),
+      },
+      {
+        path: '/role/authUsersByRoleId',
+        name: 'AuthUsersByRoleId',
+        component: () => import ('@/views/Role/AuthUsersByRoleId.vue'),
+      },
+
       {
         path: '/product/list',
         component: () => import('@/views/Product/List.vue'),
@@ -65,6 +82,23 @@ export const routes: RouteConfig[] = [
         path: '/jackpot/public',
         name: 'PublicList',
         component: () => import('@/views/PublicJackpot/PublicList.vue'),
+      },
+      // 核销记录
+      {
+        path: '/jackpot/LotteryRecordList',
+        name: 'LotteryList',
+        component: () => import('@/views/LotteryRecods/LotteryList.vue'),
+      },
+      // 订单管理
+      {
+        path: '/jackpot/OrderList',
+        name: 'OrderList',
+        component: () => import('@/views/Order/OrderList.vue'),
+      },
+      {
+        path: '/jackpot/OrderList/detail',
+        name: 'Detail',
+        component: () => import('@/views/Order/Detail.vue'),
       },
       {
         path: '/404',

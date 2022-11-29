@@ -8,6 +8,7 @@ import Components from 'unplugin-vue-components/vite'
 // import IconsResolver from 'unplugin-icons/resolver'
 import AutoImport from 'unplugin-auto-import/vite'
 import Eslint from 'vite-plugin-eslint'
+import VueJsx from '@vitejs/plugin-vue2-jsx'
 // import {
 //   ElementUiResolver,
 // } from 'unplugin-vue-components/resolvers'
@@ -30,6 +31,7 @@ const config = defineConfig({
 
   plugins: [
     vue(),
+    VueJsx(),
     Unocss({
       preset: [presetUno()],
     }),

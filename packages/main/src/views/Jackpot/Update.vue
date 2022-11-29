@@ -24,6 +24,7 @@ export default {
       jackpotNote: '', // 备注
       jackpotType: 1, // 奖池类型（0:公共，1:私有，2:采购）
     },
+    requestLoading: false,
     startTime: [],
     videoSrc: '',
     rules: {
@@ -93,7 +94,6 @@ export default {
   },
   mounted() {
     const jackpot = this.$route.query
-
     if (jackpot.jackpotId) {
       this.jackpotId = jackpot.jackpotId
       this.isEdit = true
@@ -113,7 +113,7 @@ export default {
 
   methods: {
     goBack() {
-      this.$router.go(-1)
+      this.$router.push({ name: 'JackpotList', query: { name: this.$route.query.name } })
     },
     delVideo() {
       this.videoSrc = ''
@@ -122,14 +122,19 @@ export default {
     changeRadio() {
       if (this.form.effectiveType === 0) {
         this.startTime = []
+        this.$set(this.form, 'effectiveStart', '')
+        this.$set(this.form, 'effectiveEnd', '')
       }
       if (this.form.effectiveType === 1) {
-        this.form.effectiveDay = null
-        // this.$set(this.form, 'effectiveDay', null)
+        this.$set(this.form, 'effectiveDay', '')
       }
     },
     // 新增
     addJackpotStyle() {
+      if (this.requestLoading) {
+        return false
+      }
+      this.requestLoading = true
       addJackpotStyle({
         ...this.form,
       }).then((res) => {
@@ -145,16 +150,30 @@ export default {
           message: err.message,
           type: 'warning',
         })
+      }).finally(() => {
+        this.requestLoading = false
       })
     },
 
     // 编辑
     updateJackpotStyle() {
+      if (this.requestLoading) {
+        return false
+      }
+      this.requestLoading = true
+      // 0:天 1：时间范围
+      if (this.form.effectiveType === 0) {
+        this.form.effectiveStart = ''
+        this.form.effectiveEnd = ''
+      }
+      else {
+        this.form.effectiveDay = ''
+      }
       updateJackpotStyle({
         ...this.form,
       }).then((res) => {
         if (res.head.status === 0) {
-          this.$router.back()
+          this.$router.push({ name: 'JackpotList', query: { name: this.$route.query.name } })
           this.$message({
             message: '修改成功！',
             type: 'success',
@@ -165,6 +184,8 @@ export default {
           message: err.message,
           type: 'warning',
         })
+      }).finally(() => {
+        this.requestLoading = false
       })
     },
 

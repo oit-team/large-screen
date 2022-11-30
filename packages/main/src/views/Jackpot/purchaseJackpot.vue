@@ -10,6 +10,8 @@ export default {
     Purchase,
   },
 
+  inject: ['jackpot'],
+
   data: () => ({
     PUTAWAY_STATE,
     data: {},
@@ -55,6 +57,11 @@ export default {
       }
     },
   },
+  watch: {
+    'jackpot.activeName': function () {
+      this.$refs.table.loadData()
+    },
+  },
 
   methods: {
     async loadData(params) {
@@ -93,7 +100,7 @@ export default {
       const jackpotState = row.jackpotState === 0 ? 2 : 0
       const jackpotType = PUTAWAY_STATE_TIPS[row.jackpotState]
 
-      await this.$confirm(`确定要${jackpotType}该条信息吗？`, '提示', { type: 'warning' })
+      await this.$confirm(`确定要${jackpotType}该商品吗？`, '提示', { type: 'warning' })
       await this.updateJackpotByState(jackpotState, row.jackpotId)
 
       this.$message.success(`${jackpotType}成功！`)

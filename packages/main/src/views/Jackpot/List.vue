@@ -9,37 +9,35 @@ export default {
     VcMyJackpot,
     VcPurchaseJackpot,
   },
+  provide() {
+    return {
+      jackpot: this,
+    }
+  },
+
   data: () => ({
     activeName: 'myJackpot',
   }),
+
   mounted() {
     const activeName = this.$route.query.name
     this.activeName = activeName || 'myJackpot'
   },
 
-  activated() {
-  },
-
-  methods: {
-
-    handleClick(tab, event) {
-      // console.log(tab, event)
-    },
-  },
 }
 </script>
 
 <template>
   <div class="h-full flex flex-col overflow-hidden page-container">
-    <ElTabs v-model="activeName" style="height:100%" class="flex flex-col flex-1" @tab-click="handleClick">
+    <ElTabs v-model="activeName" style="height:100%" class="flex flex-col flex-1">
       <ElTabPane label="我的奖池" name="myJackpot" lazy>
-        <VcMyJackpot />
+        <VcMyJackpot ref="myJackpot" />
       </ElTabPane>
       <ElTabPane label="我的公共池" name="second" lazy>
-        <VcCommonJackpot />
+        <VcCommonJackpot ref="common" />
       </ElTabPane>
       <ElTabPane label="我的采购池" name="third" lazy>
-        <VcPurchaseJackpot />
+        <VcPurchaseJackpot ref="third" />
       </ElTabPane>
     </ElTabs>
   </div>

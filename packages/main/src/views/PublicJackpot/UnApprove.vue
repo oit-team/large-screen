@@ -11,6 +11,7 @@ export const PUTAWAY_STATE = {
 
 export default {
   name: 'UnApprove',
+  inject: ['publicJackpot'],
   data: () => ({
     PUTAWAY_STATE,
     drawer: false,
@@ -28,12 +29,9 @@ export default {
       return {
         promise: this.loadData,
         table: {
-          // rowKey: 'ROW_ID',
-          // reserveSelection: true,
-          // selection: true,
           data: this.data.resultList,
           actions: {
-            width: 180,
+            width: 120,
             buttons: [
               {
                 tip: '通过',
@@ -56,16 +54,13 @@ export default {
       }
     },
   },
-  mounted() {
-  },
-
-  activated() {
+  watch: {
+    'publicJackpot.activeName': function () {
+      this.$refs.table.loadData()
+    },
   },
 
   methods: {
-    reload() {
-      this.$refs.table.loadData()
-    },
     async loadData(params) {
       const res = await getJackpotStyles({
         ...params,
@@ -93,7 +88,7 @@ export default {
       const jackpotType = row.jackpotState === PUTAWAY_STATE.SOLDOUT ? '上架' : '下架'
       const jackpotState = row.jackpotState === PUTAWAY_STATE.SOLDOUT ? PUTAWAY_STATE.PUTAWAY : PUTAWAY_STATE.SOLDOUT
 
-      await this.$confirm(`确定要${jackpotType}该条信息吗？`, '提示', { type: 'warning' })
+      await this.$confirm(`确定要${jackpotType}改商品吗？`, '提示', { type: 'warning' })
       await this.updateJackpotAuditState(jackpotState, row.jackpotId)
 
       this.$message.success(`${jackpotType}成功！`)

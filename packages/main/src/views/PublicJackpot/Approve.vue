@@ -11,6 +11,7 @@ export const PUTAWAY_STATE = {
 
 export default {
   name: 'Approve',
+  inject: ['publicJackpot'],
   data: () => ({
     PUTAWAY_STATE,
     drawer: false,
@@ -23,17 +24,10 @@ export default {
     tablePageOption() {
       return {
         promise: this.loadData,
-        // actions: [
-        //   {
-        //     name: '新增奖券',
-        //     type: 'primary',
-        //     click: this.addJackpot,
-        //   },
-        // ],
         table: {
           data: this.data.resultList,
           actions: {
-            width: 180,
+            width: 120,
             buttons: [
               {
                 tip: ({ row }) => ['上架'][row.jackpotState] || '下架',
@@ -56,13 +50,15 @@ export default {
       }
     },
   },
+  watch: {
+    'publicJackpot.activeName': function () {
+      this.$refs.table.loadData()
+    },
+  },
   mounted() {
   },
 
   methods: {
-    reload() {
-      this.$refs.table.loadData()
-    },
     async loadData(params) {
       const res = await getJackpotStyles({
         ...params,
@@ -75,7 +71,6 @@ export default {
     addJackpot() {
       this.$router.push({
         name: 'AddJackpot',
-        // query: { jackpotType: 'publicJackpot' },
       })
     },
 
@@ -93,7 +88,7 @@ export default {
       const jackpotType = row.jackpotState === PUTAWAY_STATE.SOLDOUT ? '上架' : '下架'
       const jackpotState = row.jackpotState === PUTAWAY_STATE.SOLDOUT ? PUTAWAY_STATE.PUTAWAY : PUTAWAY_STATE.SOLDOUT
 
-      await this.$confirm(`确定要${jackpotType}该条信息吗？`, '提示', { type: 'warning' })
+      await this.$confirm(`确定要${jackpotType}该商品吗？`, '提示', { type: 'warning' })
       await this.updateJackpotByState(jackpotState, row.jackpotId)
 
       this.$message.success(`${jackpotType}成功！`)

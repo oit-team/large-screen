@@ -38,6 +38,7 @@ export const PUTAWAY_STATE_ICON = {
 
 export default {
   name: 'MyJackpot',
+  inject: ['jackpot'],
   data: () => ({
     PUTAWAY_STATE,
     PUTAWAY_STATE_TIPS,
@@ -109,11 +110,6 @@ export default {
                 click: this.deleteJackpotInfo,
                 disabled: ({ row }) => row.jackpotState !== PUTAWAY_STATE.SOLDOUT,
               },
-              // {
-              //   tip: '审批记录',
-              //   type: 'primary',
-              //   icon: 'el-icon-notebook-2',
-              // },
             ],
           },
         },
@@ -123,7 +119,10 @@ export default {
       }
     },
   },
-  mounted() {
+  watch: {
+    'jackpot.activeName': function () {
+      this.$refs.table.loadData()
+    },
   },
 
   methods: {
@@ -142,7 +141,7 @@ export default {
     },
 
     async deleteJackpotInfo({ row }) {
-      await this.$confirm('确定要删除吗？', '提示', { type: 'warning' })
+      await this.$confirm('确定要删除该商品吗？', '提示', { type: 'warning' })
       await deleteJackpotInfo({
         productId: row.jackpotId,
       })
@@ -164,7 +163,7 @@ export default {
       const jackpotState = row.jackpotState === 0 ? 2 : 0
       const jackpotType = PUTAWAY_STATE_TIPS[row.jackpotState]
 
-      await this.$confirm(`确定要${jackpotType}该条信息吗？`, '提示', { type: 'warning' })
+      await this.$confirm(`确定要${jackpotType}该商品吗？`, '提示', { type: 'warning' })
       await this.updateJackpotByState(jackpotState, row.jackpotId)
 
       this.$message.success(`${jackpotType}成功！`)

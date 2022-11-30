@@ -7,19 +7,14 @@ export default {
     VcApprove,
     VcUnApprove,
   },
+  provide() {
+    return {
+      publicJackpot: this,
+    }
+  },
   data: () => ({
     activeName: 'publicJackpot',
   }),
-
-  watch: {
-    activeName: {
-      immediate: true,
-      async handler() {
-        await this.$nextTick()
-        this.$refs[this.activeName].reload()
-      },
-    },
-  },
 
 }
 </script>

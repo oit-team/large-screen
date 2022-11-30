@@ -4,6 +4,9 @@ import { deleteJackpotInfo, getJackpotStyleAll, getJacpotAuditList, updateJackpo
 
 export default {
   name: 'CommonJackpot',
+
+  inject: ['jackpot'],
+
   data: () => ({
     PUTAWAY_STATE,
     drawer: false,
@@ -77,6 +80,13 @@ export default {
     },
   },
 
+  // 监听activeName的改变做出更新
+  watch: {
+    'jackpot.activeName': function () {
+      this.$refs.table.loadData()
+    },
+  },
+
   methods: {
     async loadData(params) {
       const res = await getJackpotStyleAll({
@@ -114,12 +124,12 @@ export default {
     async upOrDownInfo({ row }) {
       // 如果状态为0：下架 1: 审批
       const jackpotState = row.jackpotState === 0 ? 1 : 0
-      const jackpotType = PUTAWAY_STATE_TIPS[row.jackpotState]
+      const jackpotType = row.jackpotState === 0 ? '提交审核' : '下架'
 
-      await this.$confirm(`确定要${jackpotType}该条信息吗？`, '提示', { type: 'warning' })
+      await this.$confirm(`确定要${jackpotType}该商品吗？`, '提示', { type: 'warning' })
       await this.updateJackpotByState(jackpotState, row.jackpotId)
 
-      if (jackpotType === '审核') {
+      if (jackpotType === '提交审核') {
         this.$message.success(`完成${jackpotType}提交！`)
       }
       else {

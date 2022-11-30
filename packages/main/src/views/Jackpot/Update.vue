@@ -99,13 +99,6 @@ export default {
       this.isEdit = true
       this.getJackpotDetail()
     }
-
-    // if (jackpot.jackpotType === 'jackpot') {
-    //   this.$set(this.form, 'jackpotType', 1)
-    // }
-    // else {
-    //   this.$set(this.form, 'jackpotType', 0)
-    // }
   },
 
   activated() {

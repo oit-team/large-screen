@@ -57,3 +57,7 @@ export function getJackpotStyleList(params) {
 export function addProcurementOrder(params) {
   return post('/jackpot/procurement/addProcurementOrder', params)
 }
+
+export function getIndustryAll(params) {
+  return post('/system/brand/getIndustryAll', params)
+}

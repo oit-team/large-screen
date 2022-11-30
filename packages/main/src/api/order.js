@@ -10,3 +10,9 @@ export function getProcurementOrderList(params) {
 export function getProcurementOrderById(params) {
   return post('/jackpot/procurement/getProcurementOrderById', params)
 }
+
+export function dictitemInfoAllMethod(params) {
+  return post('/goods/dictitemInfo/dictitemInfoAllMethod', params, {
+    cmd: 100009,
+  })
+}

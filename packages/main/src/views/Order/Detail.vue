@@ -39,27 +39,27 @@ export default {
     <div class="flex-1 flex flex-col justify-center">
       <ElDescriptions :column="4" title="基本信息">
         <ElDescriptionsItem label="编号">
-          {{ formData.orderNo }}
+          {{ formData.orderNo || '暂无' }}
         </ElDescriptionsItem>
         <ElDescriptionsItem label="下单人">
-          {{ formData.userName }}
+          {{ formData.userName || '暂无' }}
         </ElDescriptionsItem>
         <ElDescriptionsItem label="下单时间">
-          {{ formData.createTime }}
+          {{ formData.createTime || '暂无' }}
         </ElDescriptionsItem>
         <ElDescriptionsItem label="所属店铺">
-          {{ formData.shopName }}
+          {{ formData.shopName || '暂无' }}
         </ElDescriptionsItem>
         <ElDescriptionsItem label="状态">
           <ElTag size="small">
-            {{ formData.stateName }}
+            {{ formData.stateName || '暂无' }}
           </ElTag>
         </ElDescriptionsItem>
         <ElDescriptionsItem label="总金额">
-          {{ formData.orderMoney }}
+          {{ formData.orderMoney || '暂无' }}
         </ElDescriptionsItem>
         <ElDescriptionsItem label="总数量">
-          {{ formData.procurementNum }}
+          {{ formData.procurementNum || '暂无' }}
         </ElDescriptionsItem>
       </ElDescriptions>
       <div class="mt-8 flex flex-1 flex-col overflow-hidden">
@@ -80,7 +80,7 @@ export default {
                 <ElImage
                   style="width: 60px; height: 60px"
                   :src="scope.row.imgUrl"
-                  :fit="contain"
+                  fit="contain"
                 />
               </template>
             </ElTableColumn>
@@ -97,6 +97,10 @@ export default {
               prop="jackpotBuyPrice"
             />
             <ElTableColumn
+              label="有效期类型"
+              prop="effectiveType"
+            />
+            <ElTableColumn
               label="有效天数"
               prop="effectiveDay"
             />
@@ -109,10 +113,6 @@ export default {
               label="失效时间"
               prop="effectiveEnd"
               show-overflow-tooltip
-            />
-            <ElTableColumn
-              label="有效期类型"
-              prop="effectiveType"
             />
           </ElTable>
         </ElCard>

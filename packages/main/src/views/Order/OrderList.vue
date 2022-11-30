@@ -1,16 +1,26 @@
 <script>
-import { getProcurementOrderList } from '@/api/order'
+import { dictitemInfoAllMethod, getProcurementOrderList } from '@/api/order'
 
 export default {
   name: 'OrderList',
   data: () => ({
     data: {},
+    orderStateList: [],
+    newOrderSatusList: [],
   }),
 
   computed: {
     tablePageOption() {
       return {
         promise: this.loadData,
+        search: {
+          fieldProps: {
+            // 订单状态
+            orderState: {
+              options: this.newOrderStateList,
+            },
+          },
+        },
         table: {
           data: this.data.resultList,
           actions: {
@@ -35,6 +45,7 @@ export default {
     },
   },
   mounted() {
+    this.getOrderStateList()
   },
 
   methods: {
@@ -43,6 +54,18 @@ export default {
         ...params,
       })
       this.data = res.body
+    },
+    // 根据字典项查询订单状态
+    async getOrderStateList() {
+      const res = await dictitemInfoAllMethod({
+        type: 'ORDER_STATE',
+      })
+      this.orderStateList = res.body.result
+
+      this.newOrderStateList = this.orderStateList.map(item => ({
+        optionKey: item.dictitemCode,
+        optionValue: item.dicttimeDisplayName,
+      }))
     },
   },
 }

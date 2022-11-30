@@ -223,10 +223,6 @@ export default {
       }
     },
   },
-  // mounted() {
-  //   // test.testFun();
-  //   // this.$refs.brandRightCon.height;
-  // },
 
   async mounted() {
     await this.$nextTick()
@@ -316,7 +312,7 @@ export default {
     this.getAreaManager()
     // this.$root.$on('switchBrand', () => this.getTreeOrgList())
 
-    // // 同菜单和角色列表不同，初始化的时候先传递参数不要执行请求用户列表，点击查询再请求
+    // 同菜单和角色列表不同，初始化的时候先传递参数不要执行请求用户列表，点击查询再请求
     this.pageNum = 1
     this.dynamicParam.forEach((el) => {
       if (el.key == 'pageNum') {

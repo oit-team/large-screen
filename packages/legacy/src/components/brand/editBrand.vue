@@ -354,7 +354,7 @@ export default {
     updateServerDate() {
       const _this = this
       const con = {
-        // brandId: this.$route.query.item.id,
+        brandId: this.$route.query.item.id,
         menuList: this.checkedMenuArr,
       }
       const jsonParam = _this.GLOBAL.g_paramJson(con)

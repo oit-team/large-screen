@@ -2,7 +2,8 @@
 import { SearchForm } from '@oit/element-ui-extend'
 import Big from 'big.js'
 import { Message } from 'element-ui'
-import { addProcurementOrder, getJackpotStyleList } from '@/api/jackpot'
+import { addProcurementOrder, getIndustryAll, getJackpotStyleList } from '@/api/jackpot'
+
 import { fieldStorage } from '@/utils/fieldStorage'
 
 const data = shallowRef([])
@@ -11,6 +12,7 @@ const pageNum = ref(1)
 const pageSize = ref(30)
 const searchForm = ref({})
 const fields = ref([])
+const fieldProps = ref({})
 const shoppingCartDrawer = ref(false)
 const shoppingCartData = ref({})
 const shoppingCartCount = ref({})
@@ -28,6 +30,7 @@ async function getFields() {
 }
 getFields()
 
+// 获得购物车列表数据
 async function getJackpotStyleListData() {
   const res = await getJackpotStyleList({
     ...searchForm.value,
@@ -40,6 +43,7 @@ async function getJackpotStyleListData() {
 
 watchEffect(getJackpotStyleListData)
 
+// 提交购物车
 async function addProcurementOrderData() {
   const res = await addProcurementOrder({
     orderTotalPrice: totalPrice.value,
@@ -49,9 +53,13 @@ async function addProcurementOrderData() {
     })),
   })
   Message.success('采购成功')
+  this.getJackpotStyleListData()
+  shoppingCartData.value = {}
+  shoppingCartCount.value = {}
   shoppingCartDrawer.value = false
 }
 
+// 加入购物车
 function addCart(item) {
   shoppingCartData.value = {
     ...shoppingCartData.value,
@@ -63,24 +71,43 @@ function addCart(item) {
   }
 }
 
+// 移出购物车内列表
 function removeCart(item) {
   instance.$delete(shoppingCartData.value, item.jackpotId)
   instance.$delete(shoppingCartCount.value, item.jackpotId)
 }
+
+// 查询搜索栏所属行业
+async function loadIndustryState() {
+  const res = await getIndustryAll()
+  const industryStateList = res.body.resultList
+
+  const newIndustryStateList = industryStateList.map(item => ({
+    optionKey: item.industryId,
+    optionValue: item.industryName,
+  }))
+
+  fieldProps.value = {
+    industryId: {
+      options: newIndustryStateList,
+    },
+  }
+}
+loadIndustryState()
 </script>
 
 <template>
   <div class="h-full flex flex-col">
-    <SearchForm :fields="fields" @query="searchForm = $event" @reset="searchForm = $event" />
+    <SearchForm :fields="fields" :field-props="fieldProps" @query="searchForm = $event" @reset="searchForm = $event" />
     <div>
       <ElButton size="small" type="primary" @click="shoppingCartDrawer = true">
         购物车
       </ElButton>
     </div>
     <div class="flex-1 overflow-auto mt-2">
-      <div class="grid lt-xl:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-4 pb-2">
+      <div v-if="data.length !== 0" class="grid lt-xl:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-4 pb-2">
         <ElCard v-for="item of data" :key="item.jackpotId" :body-style="{ padding: 0 }">
-          <img :src="item.impUrl" class="w-full aspect-square">
+          <ElImage :src="item.impUrl" fit="contain" class="w-full aspect-square" />
           <div class="p-2">
             <div>{{ item.vouchersName }}</div>
             <div class="text-xs grid grid-cols-2">
@@ -95,6 +122,7 @@ function removeCart(item) {
           </div>
         </ElCard>
       </div>
+      <ElEmpty v-else description="暂无数据" />
     </div>
     <ElPagination
       class="py-2"

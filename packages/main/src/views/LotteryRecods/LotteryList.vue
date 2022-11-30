@@ -32,8 +32,6 @@ export default {
     async loadData(params) {
       const res = await getLotteryRecordList({
         ...params,
-        brandId: sessionStorage.brandId,
-        userId: sessionStorage.userId,
       })
       this.data = res.body
     },

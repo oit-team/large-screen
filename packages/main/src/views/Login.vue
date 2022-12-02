@@ -77,7 +77,7 @@ export default defineComponent({
   align-items: center;
   width: 100%;
   height: 100vh;
-  background: url(@/../public/images/login-bg.png) no-repeat center;
+  background: url('/images/login-bg.png') no-repeat center;
   background-size: cover;
   .login-content{
     display: flex;

@@ -221,6 +221,14 @@ export default {
         })
         return
       }
+
+      if ((this.form.effectiveType === 0 && !this.form.effectiveDay) || (this.form.effectiveType === 1 && this.form.effectiveStart === '')) {
+        this.$message({
+          message: '有效期不能为空！',
+          type: 'warning',
+        })
+        return
+      }
       // 提交保存
       await this.isEdit ? this.updateJackpotStyle() : this.addJackpotStyle()
     },

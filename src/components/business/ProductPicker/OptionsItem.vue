@@ -1,6 +1,7 @@
 <template>
   <div class="goodsItem flex flex-col items-center leading-relaxed relative">
     <v-img
+      v-if="itemInfo.resUrl"
       :src="itemInfo.resUrl"
       class="rounded-xl bg-white"
       :class="clickItem ? 'boxShadow' : ''"

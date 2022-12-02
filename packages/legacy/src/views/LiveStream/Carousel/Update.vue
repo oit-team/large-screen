@@ -271,12 +271,12 @@ export default {
         ...pick(this.goodsDetailData, Object.keys(this.formData)),
       }
       const config = JSON.parse(this.goodsDetailData.rotationRules)
-
+      this.goodsDetailData.advertsStyles = this.goodsDetailData.advertsStyles || []
       this.carouselList = config.map((item) => {
         item._tempId = uniqueId()
-        // if (!this.goodsDetailData.advertsStyles.length) {
-        //   item.goods = []
-        // }
+        if (!this.goodsDetailData.advertsStyles.length) {
+          item.goods = []
+        }
         item.goods = item.goods || []
 
         return item

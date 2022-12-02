@@ -157,6 +157,10 @@ export default {
       if (!this.$refs.areaOrShop.checkSelected()) return
 
       const { data: selected } = this.$refs.areaOrShop.getCheckedNodes()[0]
+      if (selected.isShop === '0') {
+        this.$message.warning('设备不能下发区域，请选择店铺！')
+        return
+      }
       await this.updateSelectedDeviceInfo({
         belongingId: selected.id,
         belongingType: selected.isShop,

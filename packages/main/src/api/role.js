@@ -27,7 +27,7 @@ export function getRoleUserList(params) {
 
 // 授权
 export function addUserAndRole(params) {
-  return post('/api/system/user/addUserAndRole', params)
+  return post('/system/user/addUserAndRole', params)
 }
 
 // 菜单树列表

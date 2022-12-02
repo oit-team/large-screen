@@ -68,34 +68,7 @@ export const routes: RouteConfig[] = [
       keepAlive: false,
     },
   },
-  // 系统设置相关（角色管理、菜单管理、品牌入驻）
-  {
-    path: '/role/roleList',
-    name: 'roleList',
-    component: () => import ('@/components/role/roleList.vue'),
-    meta: {
-      keepAlive: true,
-      requiresAuth: true,
-    },
-  },
-  {
-    path: '/role/addRole',
-    name: 'addRole',
-    component: () => import ('@/components/role/addRole.vue'),
-    meta: {
-      keepAlive: false,
-      requiresAuth: true,
-    },
-  },
-  {
-    path: '/role/authUsersByRoleId',
-    name: 'authUsersByRoleId',
-    component: () => import ('@/components/role/authUsersByRoleId.vue'),
-    meta: {
-      keepAlive: false,
-      requiresAuth: true,
-    },
-  },
+  // 系统设置相关（菜单管理、品牌入驻）（角色管理迁移到main）
   {
     path: '/menu/menuList',
     name: 'menuList',

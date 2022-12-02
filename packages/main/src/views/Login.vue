@@ -12,6 +12,14 @@ export default defineComponent({
       userName: '',
       passWord: '',
     },
+    rules: {
+      userName: [
+        { required: true, message: '请输入用户名', trigger: 'blur' },
+      ],
+      passWord: [
+        { required: true, message: '请输入密码', trigger: 'blur' },
+      ],
+    },
   }),
 
   methods: {
@@ -19,6 +27,10 @@ export default defineComponent({
       const params = {
         ...this.form,
         passWord: crypto.encrypt(this.form.passWord),
+      }
+      if (!this.form.userName) {
+        this.$message.warning('请正确输入用户名和密码！')
+        return
       }
       const res = await login(params)
       const userData = res.body.resultList[0]
@@ -41,12 +53,12 @@ export default defineComponent({
       <div class="login-logo">
         <img src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" height="125" width="125">
       </div>
-      <ElForm ref="form" :model="form" label-width="100px">
-        <ElFormItem prop="pass">
-          <ElInput v-model="form.userName" type="username" prefix-icon="el-icon-s-custom" />
+      <ElForm ref="form" :model="form" :rules="rules" label-width="100px">
+        <ElFormItem prop="userName">
+          <ElInput v-model="form.userName" type="username" clearable prefix-icon="el-icon-s-custom" />
         </ElFormItem>
-        <ElFormItem prop="password">
-          <ElInput v-model="form.passWord" type="password" prefix-icon="el-icon-lock" @keyup.enter.native="login" />
+        <ElFormItem prop="passWord">
+          <ElInput v-model="form.passWord" type="password" clearable prefix-icon="el-icon-lock" @keyup.enter.native="login" />
         </ElFormItem>
         <ElFormItem>
           <ElButton type="primary" class="w-full" @click="login">
@@ -65,7 +77,7 @@ export default defineComponent({
   align-items: center;
   width: 100%;
   height: 100vh;
-  background: url(@/../public/images/bg.png);
+  background: url(@/../public/images/login-bg.png) no-repeat center;
   background-size: cover;
   .login-content{
     display: flex;
@@ -75,7 +87,8 @@ export default defineComponent({
     height: 400px;
     border-radius: 10px;
     background-color: #fff;
-    box-shadow: 4px 4px 2px rgb(138, 137, 137);
+    box-shadow: 2px 2px 2px rgba(247, 242, 242, 0.501);
+    transform: translateX(220px);
   }
 }
 </style>

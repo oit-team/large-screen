@@ -11,9 +11,11 @@
       class="mt-2 text-xs text-center text-gray-400"
       :class="{ 'font-bold text-gray-900': active }"
     >
-      <div>{{ item.styleName }}</div>
+      <div v-if="!hideName">
+        {{ item.styleName }}
+      </div>
       <div class="transform scale-90">
-        {{ item.totalNum }}套
+        {{ item.totalNum }}套搭配
       </div>
     </div>
   </div>
@@ -26,6 +28,7 @@ export default {
   props: {
     item: Object,
     active: Boolean,
+    hideName: Boolean,
   },
 }
 </script>

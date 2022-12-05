@@ -19,6 +19,11 @@ const routes = [
     name: 'Video',
     component: () => import('@/views/Video.vue'),
   },
+  {
+    path: '/recommend',
+    name: 'Recommend',
+    component: () => import('@/views/Recommend.vue'),
+  },
 ]
 
 const router = new VueRouter({

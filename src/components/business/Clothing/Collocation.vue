@@ -41,6 +41,10 @@ export default {
     height: [String, Number],
     width: [String, Number],
     item: Object,
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
@@ -51,7 +55,7 @@ export default {
 
   methods: {
     preview() {
-      store.commit('selectProduct', this.item)
+      !this.disabled && store.commit('selectProduct', this.item)
     },
     getSmallImage,
   },

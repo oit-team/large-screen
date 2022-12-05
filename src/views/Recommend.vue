@@ -2,7 +2,7 @@
   <div class="home">
     <header class="flex overflow-hidden bg-gray header">
       <div class="relative">
-        <div @click="zoomPreview()">
+        <div>
           <v-swiper
             ref="swiper"
             class="bg-white product-preview"
@@ -10,12 +10,12 @@
             @touchmove.native.prevent
           >
             <v-swiper-slide
-              v-for="src of selectedProduct.imgResources"
-              :key="src"
+              v-for="src of selectedCategoryItem.styleImg"
+              :key="src.resUrl"
             >
               <v-img
                 class="img"
-                :src="getSmallImage(src, 'x')"
+                :src="getSmallImage(src.resUrl, 'x')"
                 height="100%"
                 contain
               />
@@ -23,14 +23,14 @@
           </v-swiper>
         </div>
         <div
-          v-if="selectedProduct.imgResources && selectedProduct.imgResources.length"
+          v-if="selectedCategoryItem.styleImg && selectedCategoryItem.styleImg.length"
           class="flex absolute bottom-0 z-10 justify-end p-2 w-full"
         >
           <div class="overflow-hidden bg-black bg-opacity-40 rounded">
             <vc-btn class="px-1 min-w-0 bg-transparent" tile dark @click="() => $headerSwiper.slidePrev()">
               <vc-icon>fas fa-chevron-left</vc-icon>
             </vc-btn>
-            <span class="mx-1 text-white">{{ swiperIndex + 1 }}/{{ selectedProduct.imgResources.length }}</span>
+            <span class="mx-1 text-white">{{ swiperIndex + 1 }}/{{ selectedCategoryItem.styleImg.length }}</span>
             <vc-btn class="px-1 min-w-0 bg-transparent" tile dark @click="() => $headerSwiper.slideNext()">
               <vc-icon>fas fa-chevron-right</vc-icon>
             </vc-btn>
@@ -38,11 +38,9 @@
         </div>
       </div>
 
-      <div class="flex overflow-hidden flex-col mt-12 mb-6">
-        <div v-if="selectedProduct.collLabel" class="mx-8 space-x-8">
+      <div class="flex flex-1 gap-6 overflow-hidden flex-col mt-12 mb-6 px-6">
+        <div class="flex items-center justify-between">
           <v-chip
-            v-for="(item, index) of collLabels"
-            :key="index"
             class="px-6 h-10 text-2xl text-white"
             label
             dark
@@ -50,102 +48,55 @@
             <vc-icon class="mr-2">
               #
             </vc-icon>
-            <span>{{ item }}</span>
+            <span>{{ selectedCategoryItem.styleName }}</span>
           </v-chip>
+
+          <div class="text-red-500 text-2xl font-bold mr-6">
+            ￥{{ selectedCategoryItem.stylePrice }}
+          </div>
         </div>
 
-        <div class="flex-1">
-          <!-- eslint-disable vue/no-v-html -->
-          <p
-            class="description mx-8 mt-12 text-xl overflow-hidden"
-            v-html="selectedProduct.collInterpretation"
-          />
+        <div class="text-2xl flex flex-col gap-3">
+          <div>款号：{{ selectedCategoryItem.styleNo || '暂无' }}</div>
+          <div>面料：{{ selectedCategoryItem.styleFabric || '暂无' }}</div>
+          <div>颜色：{{ selectedCategoryItem.styleColor || '暂无' }}</div>
+          <div>廓型：{{ selectedCategoryItem.styleFlowerPattern || '暂无' }}</div>
         </div>
 
-        <div class="flex overflow-x-auto px-8 space-x-4">
-          <ClothingPriceCard
-            v-for="item of selectedProduct.commoditys"
-            :key="item.id"
-            :item="item"
-            card-height="235"
-            width="150"
-          >
-            <template v-if="hasCart(item)">
-              <vc-btn class="mt-2" block color="success" @click="removeFormCart(item)">
-                已添加
-              </vc-btn>
-            </template>
-            <template v-else>
-              <vc-btn class="mt-2" block @click="addToCart(item)">
-                试试看
-              </vc-btn>
-            </template>
-          </ClothingPriceCard>
+        <div class="text-xl bg-gray-200 p-3 rounded-xl flex-1" v-html="selectedCategoryItem.wearSellingPoint || '暂无穿着讲解'">
         </div>
       </div>
     </header>
 
     <section class="flex category">
-      <v-item-group v-model="withSelectedCategory" class="flex items-center overflow-x-auto flex-1 p-4 mr-4">
+      <v-item-group v-model="withSelectedCategory" class="flex items-center overflow-x-auto flex-1 p-4 mr-4" mandatory>
         <v-item
           v-for="item of obsCategoryList"
           v-slot="{ active, toggle }"
-          :key="item.styleName"
-          :value="item.styleName"
+          :key="item.styleId"
+          :value="item.styleId"
         >
           <ClothingCategory
             :active="active"
             :item="item"
+            hide-name
             @click="toggle"
           />
         </v-item>
       </v-item-group>
-      <div class="flex items-stretch p-4 pb-8 space-x-2">
-        <vc-btn class="h-full text-left vertical-btn" dark @click="tab = TABS.COLLOCATION">
+      <div class="flex items-stretch p-4 space-x-2">
+        <vc-btn class="h-full text-left vertical-btn" dark @click="sendCommandToDevice()">
           <vc-icon class="mb-2">
-            fas fa-user
+            fas fa-camera
           </vc-icon>
-          <span class="flex-1 vertical-text">自助挑选</span>
+          <span class="flex-1 vertical-text">智能搭配</span>
         </vc-btn>
-        <div class="relative">
-          <v-badge
-            class="z-10 h-full"
-            :content="shoppingCartList.length || '0'"
-            color="#c00000"
-            offset-x="12"
-            offset-y="12"
-          >
-            <vc-btn class="relative h-full text-left vertical-btn" @click="tab = TABS.SHOPPING_CART">
-              <vc-icon class="mb-2">
-                fas fa-shopping-cart
-              </vc-icon>
-              <span class="flex-1 vertical-text">我的试穿</span>
-            </vc-btn>
-          </v-badge>
-          <div
-            v-click-outside="() => changeBtn(false)"
-            class="absolute left-0 -bottom-7 px-0"
-          >
-            <vc-btn
-              v-if="!deleteConfirm"
-              text
-              @click="changeBtn(true)"
-            >
-              <vc-icon size="16" color="#d9d9d9">
-                fas fa-trash-alt
-              </vc-icon>
-            </vc-btn>
-            <vc-btn
-              v-else
-              class="px-0 w-full"
-              text
-              color="error"
-              @click="removeFormCart()"
-            >
-              确定
-            </vc-btn>
-          </div>
-        </div>
+        <vc-btn class="h-full text-left vertical-btn" @click="$router.push('/carousel')">
+          <vc-icon class="mb-2">
+            fas fa-undo-alt
+          </vc-icon>
+          <span class="flex-1 vertical-text">返回</span>
+        </vc-btn>
       </div>
     </section>
 
@@ -153,6 +104,7 @@
       <section class="bg-gray overflow-hidden">
         <template v-if="tab === TABS.COLLOCATION">
           <div
+            v-if="collocationList.length"
             ref="collocationList"
             class="h-full max-w-full inline-grid grid-rows-2 grid-flow-col gap-x-4 py-2 px-8 items-center overflow-x-auto"
             @scroll.passive="scroll"
@@ -164,9 +116,10 @@
               :class="`elevation-${selectedProduct === item ? 5 : 0}`"
               :item="item"
               width="225"
+              disabled
             />
           </div>
-          <div v-if="!collocationList.length" class="flex-1 flex-center">
+          <div v-else class="h-full grid place-content-center">
             <p class="text-xl">
               暂无相关搭配
             </p>
@@ -228,14 +181,15 @@
 
 <script>
 import { mapState } from 'vuex'
-import { isEmpty, keyBy } from 'lodash'
+import { keyBy } from 'lodash'
 import { enterShopPage } from '../api/frame'
 import ClothingPriceCard from '@/components/business/Clothing/PriceCard.vue'
 import Collocation from '@/components/business/Clothing/Collocation.vue'
 import ClothingCategory from '@/components/business/Clothing/Category.vue'
 import ProductPreview from '@/components/business/ProductPreview/ProductPreview.vue'
-import { getCategory, getProductList } from '@/api/product'
+import { getRecommendColl, getRecommendStyle } from '@/api/recommend'
 import { getSmallImage } from '@/utils/helper'
+import { sendCommandToDevice } from '@/api/common'
 
 const TABS = {
   COLLOCATION: 0,
@@ -251,7 +205,7 @@ let promise = null
 let timer = null
 
 export default {
-  name: 'Home',
+  name: 'Recommend',
 
   components: {
     ClothingPriceCard,
@@ -327,7 +281,10 @@ export default {
       }
     },
     categoryMap() {
-      return keyBy(this.categoryList, 'styleName')
+      return keyBy(this.categoryList, 'styleId')
+    },
+    selectedCategoryItem() {
+      return this.categoryMap[this.selectedCategory] || {}
     },
     shoppingCartCategory() {
       return this.shoppingCartList.reduce((prev, item) => {
@@ -335,7 +292,7 @@ export default {
           prev[item.styleCategory].totalNum++
         } else {
           prev[item.styleCategory] = {
-            styleName: item.styleCategory,
+            styleId: item.styleCategory,
             ...this.categoryMap[item.styleCategory],
             totalNum: 1,
           }
@@ -379,14 +336,22 @@ export default {
     },
   },
 
+  async beforeRouteUpdate(to, from, next) {
+    this.ids = this.$route.query.ids?.split(',')
+    await this.getRecommendStyle()
+    await this.loadData()
+    next()
+  },
+
   created() {
     this.setSwiperOptions()
   },
 
-  mounted() {
+  async mounted() {
     this.$headerSwiper = this.$refs.swiper.$swiper
-    this.getCategory()
-    this.loadData()
+    this.ids = this.$route.query.ids?.split(',')
+    await this.getRecommendStyle()
+    await this.loadData()
   },
 
   activated() {
@@ -433,11 +398,11 @@ export default {
         return
       this.loading = true
 
-      const getData = () => getProductList({
+      const getData = () => getRecommendColl({
         pageNum: this.page,
         pageSize: 30,
         brandId: localStorage.getItem('brandId'),
-        styleCategory: this.selectedCategory,
+        styleId: [this.selectedCategory],
       })
 
       promise = getData()
@@ -447,15 +412,15 @@ export default {
         // 对比promise是否是当前的
         if (promise !== current)
           return
-        const { collocationList } = res.body
+        const { collocationList = [] } = res.body
         if (collocationList.length) {
           this.collocationList = this.page === 1
             ? collocationList
             : this.collocationList.concat(collocationList)
           this.page++
 
-          if (isEmpty(this.$store.state.selectedProduct))
-            this.$store.commit('selectProduct', this.collocationList[0])
+          // if (isEmpty(this.$store.state.selectedProduct))
+          //   this.$store.commit('selectProduct', this.collocationList[0])
         }
       })
         .finally(() => {
@@ -464,10 +429,6 @@ export default {
             this.loading = false
           }, 1000)
         })
-    },
-    async getCategory() {
-      const res = await getCategory()
-      this.categoryList = res
     },
     scroll(e) {
       const {
@@ -508,6 +469,23 @@ export default {
         setTimeout(() => {
           this.loading = false
         })
+      })
+    },
+    async getRecommendStyle() {
+      const res = await getRecommendStyle({
+        ids: this.ids,
+      })
+      this.categoryList = res.body.resultList.map(item => ({
+        ...item,
+        imgUrl: item.rImg,
+        totalNum: item.collNum,
+      }))
+      this.selectedCategory = this.categoryList[0].styleId
+    },
+    async sendCommandToDevice() {
+      await sendCommandToDevice({
+        devId: this.$route.query.devId,
+        cmd: 8,
       })
     },
   },

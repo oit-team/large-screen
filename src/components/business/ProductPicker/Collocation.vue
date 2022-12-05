@@ -23,17 +23,29 @@
       </v-badge>
       试衣间
     </div>
+    <div class="p-2 flex flex-col items-center" @click="() => $refs.permission.open()">
+      <v-img
+        class="rounded-xl h-54px w-54px"
+        src="@/asset/image/camera.png"
+      ></v-img>
+      智能搭配
+    </div>
+
+    <Permission ref="permission" @accept="sendCommandToDevice()" />
   </Drawer>
 </template>
 
 <script>
+import Permission from '../Permission.vue'
 import Drawer from '@/components/commons/Drawer'
 import OptionsItem from '@/components/business/ProductPicker/OptionsItem'
+import { sendCommandToDevice } from '@/api/common'
 
 export default {
   components: {
     Drawer,
     OptionsItem,
+    Permission,
   },
   props: {
     rightList: Array,
@@ -64,6 +76,12 @@ export default {
     reset() {
       this.clickIndex = null
       this.showBorder = false
+    },
+    async sendCommandToDevice() {
+      await sendCommandToDevice({
+        devId: localStorage.getItem('devId'),
+        cmd: 8,
+      })
     },
   },
 }

@@ -85,7 +85,7 @@
       </div>
     </header>
 
-    <section class="flex category">
+    <section class="flex category overflow-hidden">
       <v-item-group v-model="withSelectedCategory" class="flex items-center overflow-x-auto flex-1 p-4 mr-4">
         <v-item
           v-for="item of obsCategoryList"

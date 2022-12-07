@@ -22,7 +22,9 @@ export default defineComponent({
   },
 
   mounted() {
-    this.getBrandsList(true)
+    if (this.userData.isMenagerRole > 0) {
+      this.getBrandsList(true)
+    }
   },
 
   methods: {
@@ -43,8 +45,11 @@ export default defineComponent({
         this.brandLogo = brandInfo.brandLogo
         this.brandNickName = brandInfo.brandName
         this.brandName = brandInfo.brandName
-      }).catch(() => {
-        sessionStorage.removeItem('brandId')
+      }).catch((err) => {
+        this.$message({
+          message: err.message,
+          type: 'warning',
+        })
       })
     },
 

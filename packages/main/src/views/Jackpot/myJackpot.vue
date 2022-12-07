@@ -59,7 +59,7 @@ export default {
         promise: this.loadData,
         actions: [
           {
-            name: '新增奖券',
+            name: '新增奖品',
             type: 'primary',
             click: this.addJackpot,
           },

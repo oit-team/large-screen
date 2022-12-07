@@ -3,6 +3,7 @@ import TablePage from '@/components/classify/TablePage/TablePage'
 import { getAdvertsRes } from '@/api/liveStream'
 import PreviewFile from '@/components/classify/PreviewFile'
 import FILE_TYPE from '@/enums/FILE_TYPE'
+import { convertImageSize } from '@/utils/helper'
 
 export default {
   name: 'CarouselResourcesList',
@@ -36,6 +37,7 @@ export default {
   },
 
   methods: {
+    convertImageSize,
     loadData(params) {
       return getAdvertsRes(params).then((res) => {
         this.data = res.body
@@ -57,7 +59,7 @@ export default {
     <table-page v-bind="tablePageOption" auto @row-click="previewFile">
       <template slot="content:resUrl" slot-scope="{ row }">
         <template v-if="row.resType === FILE_TYPE.IMAGE">
-          <el-image class="file-res" :src="row.resUrl" fit="cover" />
+          <el-image class="file-res" :src="convertImageSize(row.resUrl)" fit="cover" />
         </template>
         <template v-if="row.resType === FILE_TYPE.VIDEO">
           <el-image class="file-res" :src="row.videoImg" fit="cover" />

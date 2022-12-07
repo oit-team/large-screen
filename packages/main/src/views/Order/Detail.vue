@@ -1,5 +1,6 @@
 <script>
 import { getProcurementOrderById } from '@/api/order'
+import { convertImageSize } from '@/utils/helper'
 
 export default {
   name: 'Detail',
@@ -18,6 +19,7 @@ export default {
   },
 
   methods: {
+    convertImageSize,
     goBack() {
       this.$router.go(-1)
     },
@@ -79,7 +81,7 @@ export default {
               <template slot-scope="scope">
                 <ElImage
                   style="width: 60px; height: 60px"
-                  :src="scope.row.imgUrl"
+                  :src="convertImageSize(scope.row.imgUrl)"
                   fit="contain"
                 />
               </template>

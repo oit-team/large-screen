@@ -1,5 +1,6 @@
 <script>
 import { addJackpotInfoRequest, deleteJackpotInfo, getJackpotStyleAll, updateJackpotByState } from '@/api/jackpot'
+import { convertImageSize } from '@/utils/helper'
 
 // 上下架状态
 export const PUTAWAY_STATE = {
@@ -49,6 +50,7 @@ export default {
     joinPublicDrawer: false,
     joinPublicTableData: [],
     joinPublicForm: {},
+    jackpotInventoryLoading: false,
   }),
 
   computed: {
@@ -126,6 +128,7 @@ export default {
   },
 
   methods: {
+    convertImageSize,
     async loadData(params) {
       const res = await getJackpotStyleAll({
         ...params,
@@ -191,15 +194,18 @@ export default {
     async addJackpotInfoRequest() {
       const table = this.$refs.table
       if (!table.checkSelected()) return
+      this.jackpotInventoryLoading = true
       await addJackpotInfoRequest({
         productList: Object.entries(this.joinPublicForm).map(([k, v]) => ({
           productId: k,
           jackpotNum: v,
         })),
       })
+      this.jackpotInventoryLoading = false
       this.$refs.table.loadData()
       this.joinPublicDrawer = false
       this.$message.success('添加成功')
+      this.$refs.table.clearSelection()
     },
   },
 }
@@ -210,7 +216,7 @@ export default {
     <div class="p-2 h-full">
       <TablePage v-bind="tablePageOption" ref="table" auto field-key="1669614378709">
         <template #content:impUrl="{ row }">
-          <ElImage v-if="row.impUrl" :src="row.impUrl" class="file-res" fit="cover" />
+          <ElImage v-if="row.impUrl" :src="convertImageSize(row.impUrl)" class="file-res" fit="cover" />
         </template>
         <template slot="actions:multiple">
           <ElDropdown class="mx-2">
@@ -234,7 +240,7 @@ export default {
       :visible.sync="joinPublicDrawer"
       direction="rtl"
     >
-      <div class="flex flex-col h-full overflow-hidden">
+      <div class="flex flex-col p-2 h-full overflow-hidden">
         <div class="h-full overflow-hidden">
           <ElTable
             ref="tableRef"
@@ -248,7 +254,7 @@ export default {
               width="100"
             >
               <template #default="{ row }">
-                <ElImage v-if="row.impUrl" :src="row.impUrl" class="w-60px h-60px" fit="cover" />
+                <ElImage v-if="row.impUrl" :src="convertImageSize(row.impUrl)" class="w-60px h-60px" fit="cover" />
               </template>
             </ElTableColumn>
             <ElTableColumn
@@ -266,7 +272,7 @@ export default {
           </ElTable>
         </div>
         <div class="p-2 text-right">
-          <ElButton type="primary" @click="addJackpotInfoRequest()">
+          <ElButton type="primary" :loading="jackpotInventoryLoading" @click="addJackpotInfoRequest()">
             提交
           </ElButton>
         </div>

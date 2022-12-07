@@ -135,7 +135,7 @@ export default {
           this.$router.back()
           this.$message({
             message: '新增成功！',
-            type: 'warning',
+            type: 'success',
           })
         }
       }).catch((err) => {

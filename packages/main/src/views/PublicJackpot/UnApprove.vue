@@ -1,5 +1,6 @@
 <script>
 import { getJackpotStyles, updateJackpotAuditState } from '@/api/jackpot'
+import { convertImageSize } from '@/utils/helper'
 
 // 上下架状态
 export const PUTAWAY_STATE = {
@@ -61,6 +62,7 @@ export default {
   },
 
   methods: {
+    convertImageSize,
     async loadData(params) {
       const res = await getJackpotStyles({
         ...params,
@@ -127,7 +129,7 @@ export default {
     <div class="p-2 h-full">
       <TablePage v-bind="tablePageOption" ref="table" field-key="1669627381942" auto>
         <template #content:impUrl="{ row }">
-          <ElImage v-if="row.impUrl" :src="row.impUrl" class="file-res" fit="cover" />
+          <ElImage v-if="row.impUrl" :src="convertImageSize(row.impUrl)" class="file-res" fit="cover" />
         </template>
       </TablePage>
     </div>

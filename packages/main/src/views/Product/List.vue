@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Message, MessageBox } from 'element-ui'
+import { convertImageSize } from '@/utils/helper'
 import { deleteProductInfo, getProductAll, getProductIndex, updateProductState } from '@/api/product'
 import router from '@/router'
 import store from '@/store'
@@ -97,7 +98,7 @@ onActivated(refresh)
   <div class="p-2">
     <TablePage v-bind="tablePageOption" ref="table" :fields="fields">
       <template #content:productUrl="{ row }">
-        <ElImage :src="row.imgUrl" class="max-w-100px max-h-100px" />
+        <ElImage :src="convertImageSize(row.imgUrl)" class="max-w-100px max-h-100px" />
       </template>
     </TablePage>
   </div>

@@ -6,6 +6,8 @@ import { addProcurementOrder, getIndustryAll, getJackpotStyleList } from '@/api/
 
 import { fieldStorage } from '@/utils/fieldStorage'
 
+import { convertImageSize } from '@/utils/helper'
+
 const data = shallowRef([])
 const total = ref(0)
 const pageNum = ref(1)
@@ -14,6 +16,7 @@ const searchForm = ref({})
 const fields = ref([])
 const fieldProps = ref({})
 const shoppingCartDrawer = ref(false)
+const addShopCartLoading = ref(false)
 const shoppingCartData = ref({})
 const shoppingCartCount = ref({})
 const shoppingCartList = computed(() => Object.values(shoppingCartData.value))
@@ -45,6 +48,7 @@ watchEffect(getJackpotStyleListData)
 
 // 提交购物车
 async function addProcurementOrderData() {
+  addShopCartLoading.value = true
   const res = await addProcurementOrder({
     orderTotalPrice: totalPrice.value,
     styles: shoppingCartList.value.map(item => ({
@@ -52,6 +56,8 @@ async function addProcurementOrderData() {
       jackpotNum: shoppingCartCount.value[item.jackpotId],
     })),
   })
+  addShopCartLoading.value = false
+
   Message.success('采购成功')
   this.getJackpotStyleListData()
   shoppingCartData.value = {}
@@ -107,7 +113,7 @@ loadIndustryState()
     <div class="flex-1 overflow-auto mt-2">
       <div v-if="data.length !== 0" class="grid lt-xl:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-4 pb-2">
         <ElCard v-for="item of data" :key="item.jackpotId" :body-style="{ padding: 0 }">
-          <ElImage :src="item.impUrl" fit="contain" class="w-full aspect-square" />
+          <ElImage :src="convertImageSize(item.impUrl)" fit="contain" class="w-full aspect-square" />
           <div class="p-2">
             <div>{{ item.vouchersName }}</div>
             <div class="text-xs grid grid-cols-2">
@@ -115,7 +121,7 @@ loadIndustryState()
               <span>价格：{{ item.jackpotBuyPrice }}</span>
             </div>
             <div class="flex mt-2">
-              <ElButton size="mini" @click="shoppingCartCount[item.jackpotId] ? removeCart(item) : addCart(item)">
+              <ElButton size="mini" :disabled="item.jackpotInventory <= 0" @click="shoppingCartCount[item.jackpotId] ? removeCart(item) : addCart(item)">
                 {{ shoppingCartCount[item.jackpotId] ? `已添加(${shoppingCartCount[item.jackpotId]})` : '添加购物车' }}
               </ElButton>
             </div>
@@ -152,7 +158,7 @@ loadIndustryState()
             width="100"
           >
             <template #default="{ row }">
-              <ElImage v-if="row.impUrl" :src="row.impUrl" class="w-60px h-60px" fit="cover" />
+              <ElImage v-if="row.impUrl" :src="convertImageSize(row.impUrl)" class="w-60px h-60px" fit="cover" />
             </template>
           </ElTableColumn>
           <ElTableColumn
@@ -186,7 +192,7 @@ loadIndustryState()
         </ElTable>
         <div class="p-2 flex justify-between items-center">
           <div>总计：￥{{ totalPrice }}</div>
-          <ElButton type="primary" @click="addProcurementOrderData()">
+          <ElButton type="primary" :loading="addShopCartLoading" @click="addProcurementOrderData()">
             提交
           </ElButton>
         </div>

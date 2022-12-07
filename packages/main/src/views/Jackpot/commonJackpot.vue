@@ -1,6 +1,7 @@
 <script>
 import { PUTAWAY_PARAMS, PUTAWAY_STATE, PUTAWAY_STATE_ICON, PUTAWAY_STATE_TEXT, PUTAWAY_STATE_TIPS } from './MyJackpot'
 import { deleteJackpotInfo, getJackpotStyleAll, getJacpotAuditList, updateJackpotByState } from '@/api/jackpot'
+import { convertImageSize } from '@/utils/helper'
 
 export default {
   name: 'CommonJackpot',
@@ -88,6 +89,7 @@ export default {
   },
 
   methods: {
+    convertImageSize,
     async loadData(params) {
       const res = await getJackpotStyleAll({
         ...params,
@@ -193,7 +195,7 @@ export default {
     <div class="p-2 h-full">
       <TablePage v-bind="tablePageOption" ref="table" auto field-key="1669286174849">
         <template #content:impUrl="{ row }">
-          <ElImage v-if="row.impUrl" :src="row.impUrl" class="file-res" fit="cover" />
+          <ElImage v-if="row.impUrl" :src="convertImageSize(row.impUrl)" class="file-res" fit="cover" />
         </template>
         <template slot="actions:multiple">
           <ElDropdown class="mx-2">
@@ -217,7 +219,7 @@ export default {
             <ElCard class="box-card flex flex-col justify-center item-center">
               <div class="flex">
                 <div class="imgInfo w1/5 p-2 pr-4">
-                  <img v-if="item.impUrl" class="goodsImg" :src="item.impUrl" alt="商品图片">
+                  <img v-if="item.impUrl" class="goodsImg" :src="convertImageSize(item.impUrl)" alt="商品图片">
                   <ElAvatar v-else :size="60" src="https://empty" @error="errorHandler">
                     <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png">
                   </ElAvatar>
@@ -237,7 +239,7 @@ export default {
                     <span>审批时间：{{ item.auditTime || '暂无' }}</span>
                   </div>
                   <div class="mb-1">
-                    <ElTooltip class="item" effect="light" :content="item.auditNote" placement="bottom-start">
+                    <ElTooltip class="item" effect="light" :content="item.auditNote || '暂无'" placement="bottom-start">
                       <div class="mr-4 truncate">
                         审核说明：{{ item.auditNote || '暂无' }}
                       </div>

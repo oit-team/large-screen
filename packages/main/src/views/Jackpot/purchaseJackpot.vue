@@ -2,6 +2,7 @@
 import { PUTAWAY_STATE, PUTAWAY_STATE_ICON, PUTAWAY_STATE_TEXT, PUTAWAY_STATE_TIPS } from './MyJackpot'
 import Purchase from './components/Purchase.vue'
 import { deleteJackpotInfo, getJackpotStyleAll, updateJackpotByState } from '@/api/jackpot'
+import { convertImageSize } from '@/utils/helper'
 
 export default {
   name: 'MyJackpot',
@@ -64,6 +65,7 @@ export default {
   },
 
   methods: {
+    convertImageSize,
     async loadData(params) {
       const res = await getJackpotStyleAll({
         ...params,
@@ -135,7 +137,7 @@ export default {
       <ElTabPane label="已采购">
         <TablePage v-bind="tablePageOption" ref="table" auto>
           <template #content:impUrl="{ row }">
-            <ElImage v-if="row.impUrl" :src="row.impUrl" class="file-res" fit="cover" />
+            <ElImage v-if="row.impUrl" :src="convertImageSize(row.impUrl)" class="file-res" fit="cover" />
           </template>
           <template slot="actions:multiple">
             <ElDropdown class="mx-2">

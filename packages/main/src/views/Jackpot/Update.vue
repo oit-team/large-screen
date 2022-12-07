@@ -279,7 +279,7 @@ export default {
                 </ElRadio>
               </div>
               <div class="text-red text-xs mt-2">
-                *注：有效期至领取完成次日生效
+                *注：有效期至领取后次日生效
               </div>
             </ElFormItem>
             <ElFormItem label="物品说明" prop="jackpotNote">

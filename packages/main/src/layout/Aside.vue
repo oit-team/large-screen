@@ -70,12 +70,14 @@ export default defineComponent({
       </template>
     </ElMenu>
 
-    <div class="w-full text-center py-2">
-      <i
-        class="text-2xl text-gray-500 cursor-pointer"
-        :class="collapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'"
-        @click="toggleCollapse()"
-      />
+    <div class="w-full text-center py-2" style="backgroundColor:#F3F4F6">
+      <ElTooltip effect="dark" :content="collapse ? '点击展开' : '点击折叠'" placement="top">
+        <i
+          class="text-2xl text-gray-500 cursor-pointer"
+          :class="collapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'"
+          @click="toggleCollapse()"
+        />
+      </ElTooltip>
     </div>
   </ElAside>
 </template>

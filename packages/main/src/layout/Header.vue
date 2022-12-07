@@ -11,6 +11,8 @@ export default defineComponent({
   data: () => ({
     brandList: [],
     brandName: '切换品牌',
+    brandNickName: '',
+    brandLogo: '',
   }),
 
   computed: {
@@ -20,17 +22,26 @@ export default defineComponent({
   },
 
   mounted() {
-    this.getBrandsList()
+    this.getBrandsList(true)
   },
 
   methods: {
-    async getBrandsList() {
+    async getBrandsList(initLogin = false) {
       const params = {}
       getBrands(params).then((res) => {
         this.brandList = res.body.resultMap
+
+        if (initLogin) {
+          this.brandNickName = res.body.resultMap[0].brandName
+          this.brandLogo = res.body.resultMap[0].brandLogo
+        }
+
         const brandInfo = this.brandList.find((i) => {
           return i.brandId === +sessionStorage.getItem('brandId')
         })
+
+        this.brandLogo = brandInfo.brandLogo
+        this.brandNickName = brandInfo.brandName
         this.brandName = brandInfo.brandName
       }).catch(() => {
         sessionStorage.removeItem('brandId')
@@ -39,7 +50,10 @@ export default defineComponent({
 
     async changeBrand(item) {
       await this.getBrandsList()
+      this.brandNickName = item.brandName
+      this.brandLogo = item.brandLogo
       this.brandName = item.brandName
+
       sessionStorage.setItem('brandId', item.brandId)
       // 页面加载
       this.viewReload()
@@ -74,9 +88,9 @@ export default defineComponent({
     <ElHeader class="flex items-center justify-between border-b z-10">
       <div>
         <div class="flex items-center justify-center py-2">
-          <ElAvatar class="mr-2" src="https://picsum.photos/40" />
+          <ElAvatar class="mr-2" :src="brandLogo || userData.brandLogo" />
           <div class="font-bold select-none">
-            享客易
+            {{ brandNickName || userData.brandName }}
           </div>
         </div>
       </div>
@@ -119,7 +133,7 @@ export default defineComponent({
               </div>
             </div>
             <div slot="reference" class="flex justify-center items-center">
-              <img class="px-2" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt="" width="50" height="50">
+              <img class="px-2" :src="userData.headPortrait" alt="" width="50" height="50">
               <span>{{ userData.userName }}</span>
             </div>
           </ElPopover>

@@ -47,6 +47,18 @@ export default {
     },
     carouselMapCache: {},
     carouselPreviewId: '',
+    shopForm: {
+      selectedShopAddress: '',
+    },
+    selectIsShop: false,
+    shopRules: {
+      shop: [
+        { required: true, message: '请选择所在店铺', trigger: 'blur' },
+      ],
+      selectedShopAddress: [
+        { required: true, message: '请输入下发地址', trigger: 'blur' },
+      ],
+    },
   }),
 
   computed: {
@@ -98,7 +110,7 @@ export default {
           },
         },
         {
-          name: '分配店铺/区域',
+          name: '分配店铺',
           type: 'primary',
           click: () => {
             if (this.$refs.page.checkSelected())
@@ -153,6 +165,19 @@ export default {
         this.brandDrawerVisible = false
       })
     },
+    selectCheckNode() {
+      if (!this.$refs.areaOrShop.checkSelected()) return
+      const { data: selected } = this.$refs.areaOrShop.getCheckedNodes()[0]
+
+      if (selected.isShop === '1') {
+        this.shopForm.selectedShopAddress = selected.address
+        this.selectIsShop = true
+      }
+      else {
+        this.shopForm.selectedShopAddress = ''
+        this.selectIsShop = false
+      }
+    },
     async assignAreaOrShop() {
       if (!this.$refs.areaOrShop.checkSelected()) return
 
@@ -164,8 +189,10 @@ export default {
       await this.updateSelectedDeviceInfo({
         belongingId: selected.id,
         belongingType: selected.isShop,
+        address: this.shopForm.selectedShopAddress,
       })
       this.areaDrawerVisible = false
+      this.shopForm.selectedShopAddress = ''
     },
     async getDevTypeInfo() {
       const res = await api.getDevTypeInfo()
@@ -330,12 +357,18 @@ export default {
 
     <el-drawer
       :visible.sync="areaDrawerVisible"
-      title="分配店铺/区域"
+      title="分配店铺"
+      size="40%"
     >
       <div class="w-full box-border px-4">
-        <div>
-          <vc-cascader ref="areaOrShop" class="w-full" data="area_or_shop" clearable />
-        </div>
+        <el-form ref="shopForm" :model="shopForm" :rules="shopRules" label-width="80px">
+          <el-form-item prop="shop" label="选择店铺">
+            <vc-cascader ref="areaOrShop" class="w-full" data="area_or_shop" clearable @change="selectCheckNode" />
+          </el-form-item>
+          <el-form-item prop="selectedShopAddress" label="下发地址">
+            <el-input v-model="shopForm.selectedShopAddress" placeholder="请输入下发地址" :disabled="!selectIsShop" />
+          </el-form-item>
+        </el-form>
         <div class="mt-2">
           <el-button @click="areaDrawerVisible = false">
             取 消

@@ -35,6 +35,8 @@ export default {
       }
     }
     return {
+      updateAreaLoading: false,
+      updateShopLoading: false,
       administration: {
         id: '',
         isShop: '',
@@ -2071,6 +2073,7 @@ export default {
       // // console.log("确认新增区域");
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.updateAreaLoading = true
           // // console.log("-----333333333333--------",this.nodeInfo)
           let path = null
           if (this.nodeInfo) {
@@ -2100,6 +2103,7 @@ export default {
             // _this.areaForm.dutyId = '';
             // _this.areaForm = {}
             if (res.data.head.status == 0) {
+              this.updateAreaLoading = false
               _this.shopDialog = false
               _this.areaForm.areaName = ''
               _this.areaForm.areaCode = ''
@@ -2115,6 +2119,7 @@ export default {
               _this.getTreeOrgList() // 先注释
             }
             else {
+              this.updateAreaLoading = true
               _this.$message({
                 message: res.data.head.msg,
                 type: 'warning',
@@ -2133,6 +2138,7 @@ export default {
       // // console.log("确认新增区域");
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.updateShopLoading = true
           const _this = this
           // // console.log("_this.shopForm============",_this.shopForm)
           let orgStId = null
@@ -2159,6 +2165,7 @@ export default {
           _this.$axios.post(`${_this.GLOBAL.system_manager_server}/org/insertShop`, jsonParam).then((res) => {
             // // console.log("====确认新增区域接口==========",res.data.body);   // 成功时 body为null
             if (res.data.head.status == 0) {
+              this.updateShopLoading = false
               _this.shopDialog = false
               _this.shopForm.shopName = ''
               _this.shopForm.address = ''
@@ -2178,6 +2185,7 @@ export default {
               _this.getTreeOrgList() // 先注释
             }
             else {
+              this.updateShopLoading = false
               _this.$message({
                 message: res.data.head.msg,
                 type: 'warning',
@@ -2423,7 +2431,7 @@ export default {
       <div v-if="activeTab == 1" class="userListBox">
         <div class="operateBtn">
           <!-- isShop  0 区域 1 店铺  2 品牌 -->
-          <el-button v-if="isShop === '1'" size="small" icon="el-icon-plus" type="success" style="background-color:#4FD5AC;border-color: #4FD5AC;" class="addBtnOnly" @click="addUser">
+          <el-button :disabled="isShop !== '1'" size="small" icon="el-icon-plus" type="success" style="background-color:#4FD5AC;border-color: #4FD5AC;" class="addBtnOnly" @click="addUser">
             新增用户
           </el-button>
           <el-tooltip class="item" effect="dark" content="只有管家用户和APP及管家用户才可以授权" placement="top-start">
@@ -2652,7 +2660,7 @@ export default {
               <el-button size="small" @click="cancelAdd('areaForm')">
                 取 消
               </el-button>
-              <el-button size="small" type="primary" @click="conAddArea('areaForm')">
+              <el-button size="small" type="primary" :loading="updateAreaLoading" @click="conAddArea('areaForm')">
                 确 认
               </el-button>
             </div>
@@ -2706,7 +2714,7 @@ export default {
               <el-button size="small" @click="cancelAdd('shopForm')">
                 取 消
               </el-button>
-              <el-button size="small" type="primary" @click="conAddShop('shopForm')">
+              <el-button size="small" type="primary" :loading="updateShopLoading" @click="conAddShop('shopForm')">
                 确 认
               </el-button>
             </div>

@@ -16,6 +16,7 @@ export default {
       imageUrl: '',
 
       loading: false,
+      addCompanyLoading: false,
       // pageNum:1,
       // pagesize:10,
       dialog: false, // 新增公司
@@ -208,6 +209,7 @@ export default {
       const _this = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.addCompanyLoading = true
           if (this.ruleForm.orgId) {
             const con = {
               orgId: this.ruleForm.orgId,
@@ -219,6 +221,7 @@ export default {
             _this.$axios.post(`${_this.GLOBAL.system_manager_server}/company/updateCompanyInfo`, jsonParam).then((res) => {
               if (res.data.head.status == 0) {
                 this.dialog = false
+                this.addCompanyLoading = false
                 _this.$message({
                   message: res.data.head.msg,
                   type: 'success',
@@ -226,6 +229,7 @@ export default {
                 this.companyShow()
               }
               else {
+                this.addCompanyLoading = false
                 _this.$message({
                   message: res.data.head.msg,
                   type: 'warning',
@@ -242,6 +246,7 @@ export default {
             // console.log('新增公司参数',con)
             _this.$axios.post(`${_this.GLOBAL.system_manager_server}/company/insertCompanyInfo`, jsonParam).then((res) => {
               if (res.data.head.status == 0) {
+                this.addCompanyLoading = false
                 this.dialog = false
                 _this.$message({
                   message: res.data.head.msg,
@@ -250,6 +255,7 @@ export default {
                 this.companyShow()
               }
               else {
+                this.addCompanyLoading = false
                 _this.$message({
                   message: res.data.head.msg,
                   type: 'warning',
@@ -490,10 +496,10 @@ export default {
               <el-button @click="cancelForm">
                 取 消
               </el-button>
-              <el-button v-if="ruleForm.orgId" type="primary" @click="handleClose('addRuleForm')">
+              <el-button v-if="ruleForm.orgId" type="primary" :loading="addCompanyLoading" @click="handleClose('addRuleForm')">
                 保存
               </el-button>
-              <el-button v-else type="primary" @click="handleClose('addRuleForm')">
+              <el-button v-else type="primary" :loading="addCompanyLoading" @click="handleClose('addRuleForm')">
                 提交
               </el-button>
             </div>

@@ -5,6 +5,7 @@ import { addProductInfo, getGoodsTypeConfig, getProductAttrAndInfo, updateProduc
 import store from '@/store'
 import router from '@/router'
 
+const updateGoodsLoading = ref(false)
 const formRef = ref()
 const config = shallowRef()
 const route = useRoute()
@@ -53,8 +54,10 @@ async function updateProductInfoData(form: any) {
 }
 
 async function submitForm() {
+  updateGoodsLoading.value = true
   formRef.value.form.submit(async (form: any) => {
     await (isEdit ? updateProductInfoData(form) : addProductInfoData(form))
+    updateGoodsLoading.value = false
     Message.success('保存成功')
     router.back()
   })
@@ -76,7 +79,7 @@ async function getGoodsTypeConfigData(field: any) {
   <div>
     <PageHeader :content="isEdit ? '编辑商品' : '新增商品'">
       <template #actions>
-        <ElButton type="primary" @click="submitForm()">
+        <ElButton type="primary" :loading="updateGoodsLoading" @click="submitForm()">
           保存
         </ElButton>
       </template>

@@ -8,6 +8,7 @@ export default defineComponent({
   name: 'Login',
 
   data: () => ({
+    loginLoading: false,
     form: {
       userName: '',
       passWord: '',
@@ -24,6 +25,7 @@ export default defineComponent({
 
   methods: {
     async login() {
+      this.loginLoading = true
       const params = {
         ...this.form,
         passWord: crypto.encrypt(this.form.passWord),
@@ -33,12 +35,16 @@ export default defineComponent({
         return
       }
       const res = await login(params)
+      this.loginLoading = false
       const userData = res.body.resultList[0]
       setToken(res.body.accessToken)
       this.$store.commit('setUserData', userData)
-      sessionStorage.setItem('userId', userData.id)
-      sessionStorage.setItem('brandId', userData.brandId)
 
+      // 是管理员
+      if (userData.isMenagerRole > 0) {
+        sessionStorage.setItem('brandId', userData.brandId)
+      }
+      sessionStorage.setItem('userId', userData.id)
       await this.$store.dispatch('updateUserData')
 
       this.$router.push('/home')
@@ -64,7 +70,7 @@ export default defineComponent({
           <ElInput v-model="form.passWord" type="password" placeholder="请输入密码" clearable prefix-icon="el-icon-lock" @keyup.enter.native="login" />
         </ElFormItem>
         <ElFormItem>
-          <ElButton type="primary" class="w-full" @click="login">
+          <ElButton type="primary" class="w-full" :loading="loginLoading" @click="login">
             登 录
           </ElButton>
         </ElFormItem>

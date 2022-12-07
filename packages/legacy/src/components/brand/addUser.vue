@@ -19,6 +19,7 @@ export default ({
     }
 
     return {
+      addUserLoading: false,
       editFlag: false,
       ruleForm: {
         userName: '',
@@ -169,6 +170,7 @@ export default ({
         if (valid) {
           // alert('submit!');  // 通过组件验证
           // console.log('_this.ruleForm',_this.ruleForm);
+          this.addUserLoading = true
           let encryPwd = null
           if (_this.ruleForm.passWord) {
             encryPwd = CryptoJS.encrypt(this.ruleForm.passWord)
@@ -206,6 +208,8 @@ export default ({
             _this.$axios.post(`${_this.GLOBAL.system_manager_server}/user/updateUserById`, jsonParam).then((res) => {
               // console.log("编辑用户接口返回信息==========",res.data.body);
               if (res.data.head.status == 0) {
+                this.addUserLoading = false
+
                 _this.$message({
                   message: '编辑保存成功',
                   type: 'success',
@@ -236,6 +240,7 @@ export default ({
                 }
               }
               else {
+                this.addUserLoading = false
                 _this.$message({
                   message: res.data.head.msg,
                   type: 'warning',
@@ -279,6 +284,7 @@ export default ({
             _this.$axios.post(`${_this.GLOBAL.system_manager_server}/user/insertUser`, jsonParam).then((res) => {
               // console.log("新增用户接口返回信息==========",res.data.body);
               if (res.data.head.status == 0) {
+                this.addUserLoading = false
                 _this.$message({
                   message: '新增保存成功',
                   type: 'success',
@@ -288,6 +294,7 @@ export default ({
                 _this.$router.back()
               }
               else {
+                this.addUserLoading = true
                 _this.$message({
                   message: res.data.head.msg,
                   type: 'warning',
@@ -398,7 +405,7 @@ export default ({
       </el-form-item>
 
       <el-form-item>
-        <el-button size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">
+        <el-button size="small" icon="el-icon-check" type="primary" :loading="addUserLoading" @click="submitForm('ruleForm')">
           保存
         </el-button>
         <el-button v-if="!editFlag" size="small" icon="el-icon-refresh" @click="resetForm('ruleForm')">

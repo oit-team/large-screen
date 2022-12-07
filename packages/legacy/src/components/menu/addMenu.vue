@@ -4,6 +4,7 @@ export default {
   components: {},
   data() {
     return {
+      updateMenuLoading: false,
       editFlag: false, // 是否是编辑菜单   false 新增  true 编辑
       userId: 1, // 即createdId
       pId: '', // 父菜单id   新增菜单时不选父菜单则默认为一级菜单，pId 传 "0"
@@ -136,7 +137,7 @@ export default {
         if (valid) {
           // alert('submit!');  // 通过组件验证
           // console.log('_this.ruleForm',_this.ruleForm,_this.ruleForm.menuId)
-
+          this.updateMenuLoading = true
           const con = {
             pId: _this.pId,
             menuName: _this.ruleForm.menuName,
@@ -158,6 +159,7 @@ export default {
               // console.log("addMenu==========",res.data.body);
               if (res.data.head.status == 0) {
                 // console.log("编辑菜单成功===");
+                this.updateMenuLoading = false
                 _this.$message({
                   message: '编辑菜单成功',
                   type: 'success',
@@ -166,6 +168,7 @@ export default {
                 _this.$router.back()
               }
               else {
+                this.updateMenuLoading = false
                 _this.$message({
                   message: res.data.head.msg,
                   type: 'warning',
@@ -180,6 +183,7 @@ export default {
               // console.log("addMenu==========",res.data.body);
               if (res.data.head.status == 0) {
                 // console.log("新增菜单成功===");
+                this.updateMenuLoading = false
                 _this.$message({
                   message: '新增菜单成功',
                   type: 'success',
@@ -189,6 +193,7 @@ export default {
                 // this.$parent.getAllMenuList();
               }
               else {
+                this.updateMenuLoading = false
                 _this.$message({
                   message: res.data.head.msg,
                   type: 'warning',
@@ -282,7 +287,7 @@ export default {
       </el-form-item>
 
       <el-form-item>
-        <el-button size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">
+        <el-button size="small" icon="el-icon-check" type="primary" :loading="updateMenuLoading" @click="submitForm('ruleForm')">
           保存
         </el-button>
         <el-button v-if="!editFlag" size="small" icon="el-icon-refresh" @click="resetForm('ruleForm')">

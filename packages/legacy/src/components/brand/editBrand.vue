@@ -12,6 +12,7 @@ export default {
   },
   data() {
     return {
+      saveEditBrandLoading: false,
       loading: false,
       dialog: false, // 新增公司
       addLoading: false, // 新增公司loading
@@ -295,6 +296,7 @@ export default {
       const _this = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.saveEditBrandLoading = true
           const reg = /^[A-Za-z0-9]+$/
           // // console.log(reg.test(this.brandList.adminName))
           if (this.brandList.contacts) {
@@ -333,10 +335,12 @@ export default {
           // // console.log('编辑品牌参数',con)
           _this.$axios.post(`${_this.GLOBAL.system_manager_server}/brand/updateBrandInfo`, jsonParam).then((res) => {
             if (res.data.head.status == 0) {
+              this.saveEditBrandLoading = false
               // 保存品牌基础信息后更新付费服务日期
               _this.updateServerDate()
             }
             else {
+              this.saveEditBrandLoading = false
               _this.$message({
                 message: res.data.head.msg,
                 type: 'warning',
@@ -533,7 +537,7 @@ export default {
       <el-button type="primary" @click="cancel">
         取消
       </el-button>
-      <el-button type="primary" @click="conserve('brandList')">
+      <el-button type="primary" :loading="saveEditBrandLoading" @click="conserve('brandList')">
         保存
       </el-button>
     </div>

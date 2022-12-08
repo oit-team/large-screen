@@ -37,10 +37,10 @@ export default defineComponent({
       })
       this.menuList = res.body.resultList
     },
-    async change(id) {
+    change(id) {
       const item = this.menuMap[id]
-      await this.$router.push(/^\//.test(item.menuUrl) ? item.menuUrl : `/${item.menuUrl}`)
       sessionStorage.setItem('headTitString', item.fieldDes)
+      this.$router.push(/^\//.test(item.menuUrl) ? item.menuUrl : `/${item.menuUrl}`)
     },
   },
 })

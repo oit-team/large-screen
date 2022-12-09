@@ -58,7 +58,7 @@ export default {
       advertsType: [
         {
           required: true,
-          message: '请选择广告类型',
+          message: '请选择内容类型',
         },
       ],
     },
@@ -99,27 +99,27 @@ export default {
     }],
     // 相关联搭配文本域
     matchGoodsFields: [{
-      fieldName: '商品款号',
+      fieldName: '款号',
       fieldType: '文本',
       fieldKey: 'productNo',
       noTableShow: true,
     }, {
-      fieldName: '商品名称',
+      fieldName: '名称',
       fieldType: '文本',
       fieldKey: 'productName',
       noTableShow: true,
     }, {
-      fieldName: '商品款号',
+      fieldName: '款号',
       fieldType: '文本',
       fieldKey: 'styleNo',
       noSearchShow: true,
     }, {
-      fieldName: '商品名称',
+      fieldName: '名称',
       fieldType: '文本',
       fieldKey: 'styleName',
       noSearchShow: true,
     }, {
-      fieldName: '商品图片',
+      fieldName: '图片',
       fieldType: '文本',
       fieldKey: 'resUrl',
       noSearchShow: true,
@@ -527,7 +527,7 @@ export default {
 
 <template>
   <page-container class="h-full flex overflow-hidden flex-col" back-top>
-    <page-header :content="`${isEdit ? '编辑' : '新增'}广告`" />
+    <page-header :content="`${isEdit ? '编辑' : '新增'}内容`" />
     <div class="flex flex-1">
       <el-tabs v-model="tab" class="flex overflow-hidden flex-col flex-1 mb-2" type="border-card">
         <el-tab-pane
@@ -627,12 +627,12 @@ export default {
               <div class="reletiveMatch flex flex-col p-1">
                 <div>
                   <el-button type="primary" icon="el-icon-plus" size="small" plain :disabled="item.goods.length === 5" @click="clickToSelectMatchGoods">
-                    选择商品
+                    选择内容
                   </el-button>
                 </div>
 
                 <div v-if="!item.goods.length" class="flex justify-center items-center">
-                  <el-empty description="暂无关联搭配，点击选择商品添加吧" :image-size="60" class="flex-1" />
+                  <el-empty description="暂无关联搭配，点击选择内容添加吧" :image-size="60" class="flex-1" />
                 </div>
                 <div v-else class="matchGoodsList flex-1 grid grid-cols-5 py-2 mt-2 text-xs">
                   <div v-for="(goodsId, index) in item.goods" :key="index" class="matchGoodsItem box-border flex flex-col justify-center items-center">
@@ -671,12 +671,12 @@ export default {
         :disabled="disabledEdit"
       >
         <div class="mb-2 text-sm text-center">
-          广告配置
+          内容配置
         </div>
         <el-form-item label="标题" prop="describe">
           <el-input v-model="formData.describe" placeholder="请输入标题" clearable />
         </el-form-item>
-        <el-form-item label="广告类型" prop="advertsType">
+        <el-form-item label="类型" prop="advertsType">
           <el-select v-model="formData.advertsType">
             <el-option :value="0" label="大屏广告机" />
           </el-select>

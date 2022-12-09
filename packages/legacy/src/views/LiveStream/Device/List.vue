@@ -225,7 +225,7 @@ export default {
       if (!this.$refs.page.checkSelected()) return
 
       if (advId === 0) {
-        await this.$confirm('确定要将所选设备恢复成默认广告吗？', '提示', {
+        await this.$confirm('确定要将所选设备恢复成默认内容吗？', '提示', {
           type: 'warning',
         })
       }
@@ -234,7 +234,7 @@ export default {
         advertsId: advId,
         devIds: this.selected.map(item => item.devId),
       }).then((res) => {
-        this.$message.success('广告设置成功')
+        this.$message.success('设置成功')
         this.selected[0].advertsId = advId
         this.$refs.carouselList.close()
       })
@@ -290,7 +290,7 @@ export default {
     >
       <template slot="actions:ads">
         <el-dropdown class="mx-2" split-button type="primary" size="small" @click="openAssignAds()">
-          广告设置
+          内容设置
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item
               :disabled="selected.length > 1"

@@ -100,6 +100,12 @@ export const routes: RouteConfig[] = [
         name: 'Detail',
         component: () => import('@/views/Order/Detail.vue'),
       },
+      // 积分流水
+      {
+        path: '/jackpot/integralList',
+        name: 'IntegralList',
+        component: () => import('@/views/Integral/IntegralList.vue'),
+      },
       {
         path: '/404',
         component: () => import('@/views/404.vue'),

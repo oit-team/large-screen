@@ -4,6 +4,7 @@ export default {
   name: 'AddRole',
   data() {
     return {
+      updateRoleLoading: false,
       menuIds: '',
       editFlag: true, // 判断是否出现重置
       menuList: [], // 树形菜单列表
@@ -102,6 +103,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.updateRoleLoading = true
           const halfCheckedKeys = this.$refs.tree.getHalfCheckedKeys() // 半选中的节点所组成的数组
           const checkedKeys = this.$refs.tree.getCheckedKeys() // 选中的节点所组成的数组
 
@@ -134,6 +136,8 @@ export default {
                 message: err.message,
                 type: 'warning',
               })
+            }).finally(() => {
+              this.updateRoleLoading = false
             })
           }
           else {
@@ -159,6 +163,8 @@ export default {
                 message: err.message,
                 type: 'warning',
               })
+            }).finally(() => {
+              this.updateRoleLoading = false
             })
           }
         }
@@ -197,7 +203,7 @@ export default {
         />
       </ElFormItem>
       <ElFormItem>
-        <ElButton size="small" icon="el-icon-check" type="primary" @click="submitForm('ruleForm')">
+        <ElButton size="small" icon="el-icon-check" type="primary" :loading="updateRoleLoading" @click="submitForm('ruleForm')">
           保存
         </ElButton>
         <ElButton v-if="editFlag" size="small" icon="el-icon-refresh" @click="resetForm('ruleForm')">

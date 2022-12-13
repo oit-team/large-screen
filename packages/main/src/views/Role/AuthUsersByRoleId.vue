@@ -7,13 +7,12 @@ export default defineComponent({
   components: {},
   data() {
     return {
+      roleAuthorizationLoading: false,
       roleId: null,
       roleName: '',
       roleRemark: '',
       allUserList: [],
       associatedUser: [], // 右侧数据，只用写key就好
-      leftDefaultChecked: [],
-      rightDefaultChecked: [],
       pageTitle: '用户角色授权',
     }
   },
@@ -72,6 +71,10 @@ export default defineComponent({
     // 授权
     empowerUsersByRoleId(userArr, operateId) {
       // this.checkedRoleArr = this.$refs.roleTree.getCheckedKeys();     // 选中的节点所组成的数组
+      if (this.roleAuthorizationLoading) {
+        return false
+      }
+      this.roleAuthorizationLoading = true
       const con = {
         userIds: userArr.join(','), // 用户ID字符串
         roleIds: this.roleId, // 角色ID字符串
@@ -90,6 +93,13 @@ export default defineComponent({
             type: 'warning',
           })
         }
+      }).catch((err) => {
+        this.$message({
+          message: err.message,
+          type: 'warning',
+        })
+      }).finally(() => {
+        this.roleAuthorizationLoading = false
       })
     },
     renderFunc(h, option) {
@@ -121,10 +131,6 @@ export default defineComponent({
       class="flex justify-center items-center"
       :titles="['未授权用户', '已授权用户']"
       :button-texts="['取消', '授权']"
-      :left-default-checked="leftDefaultChecked"
-      :right-default-checked="rightDefaultChecked"
-      @left-check-change="leftChecked"
-      @right-check-change="rightChecked"
       @change="handleChange"
     />
   </div>

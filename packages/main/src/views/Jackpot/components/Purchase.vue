@@ -1,7 +1,7 @@
 <script setup>
 import { SearchForm } from '@oit/element-ui-extend'
 import Big from 'big.js'
-import { Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 import { addProcurementOrder, getIndustryAll, getJackpotStyleList } from '@/api/jackpot'
 
 import { fieldStorage } from '@/utils/fieldStorage'
@@ -17,6 +17,7 @@ const fields = ref([])
 const fieldProps = ref({})
 const shoppingCartDrawer = ref(false)
 const addShopCartLoading = ref(false)
+const paymentRadio = ref(1)
 const shoppingCartData = ref({})
 const shoppingCartCount = ref({})
 const shoppingCartList = computed(() => Object.values(shoppingCartData.value))
@@ -48,15 +49,20 @@ watchEffect(getJackpotStyleListData)
 
 // 提交购物车
 async function addProcurementOrderData() {
+  const paymentType = paymentRadio.value === 1 ? '支付宝' : '积分兑换'
+  await MessageBox.confirm(`确定使用${paymentType}支付吗？`, '提示', { type: 'warning' })
   addShopCartLoading.value = true
+
   const res = await addProcurementOrder({
     orderTotalPrice: totalPrice.value,
+    payType: paymentRadio.value,
     styles: shoppingCartList.value.map(item => ({
       jackpotId: item.jackpotId,
       jackpotNum: shoppingCartCount.value[item.jackpotId],
     })),
+  }).finally(() => {
+    addShopCartLoading.value = false
   })
-  addShopCartLoading.value = false
 
   Message.success('采购成功')
   this.getJackpotStyleListData()
@@ -192,6 +198,19 @@ loadIndustryState()
         </ElTable>
         <div class="p-2 flex justify-between items-center">
           <div>总计：￥{{ totalPrice }}</div>
+          <p>
+            <span class="text-red">*</span>
+            <span>请选择支付方式：</span>
+            <ElRadioGroup v-model="paymentRadio">
+              <ElRadio :label="1">
+                支付宝
+              </ElRadio>
+              <ElRadio :label="2">
+                积分兑换
+              </ElRadio>
+            </ElRadioGroup>
+          </p>
+
           <ElButton type="primary" :loading="addShopCartLoading" @click="addProcurementOrderData()">
             提交
           </ElButton>

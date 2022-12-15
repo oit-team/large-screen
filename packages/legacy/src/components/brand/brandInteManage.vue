@@ -88,10 +88,14 @@ export default {
           { max: 12, message: '长度在 12 个字以内', trigger: 'blur' },
         ],
       },
+      integralForm: {
+        integral: '',
+      },
       shopForm: {
         shopName: '',
         address: '',
         telephone: '',
+        integralNumber: '',
         orgStId: '',
         openDate: '',
         gradeId: '',
@@ -1968,6 +1972,7 @@ export default {
           this.shopForm.gradeId = ''
         }
         this.shopForm.telephone = this.nodeInfo.telephone
+        this.shopForm.integralNumber = this.nodeInfo.integralNumber
         this.shopForm.openDate = this.nodeInfo.openDate
         this.shopForm.shopCode = this.nodeInfo.shopCode
         this.shopForm.orgStId = Number(this.nodeInfo.parentId)
@@ -2043,6 +2048,15 @@ export default {
           message: '已取消删除',
         })
       })
+    },
+    cancelRecharge(formName) {
+      console.log('取消充值！')
+      console.log(this.$refs.integralForm)
+      this.shopDialog = false
+      this.$refs.integralForm.resetFields()
+    },
+    conRechargeIntegral(formName) {
+      console.log('确认充值！')
     },
     // 取消操作
     cancelAdd(formName) {
@@ -2431,7 +2445,7 @@ export default {
       <div v-if="activeTab == 1" class="userListBox">
         <div class="operateBtn">
           <!-- isShop  0 区域 1 店铺  2 品牌 -->
-          <el-button :disabled="isShop !== '1'" size="small" icon="el-icon-plus" type="success" style="background-color:#4FD5AC;border-color: #4FD5AC;" class="addBtnOnly" @click="addUser">
+          <el-button :disabled="isShop !== '0'" size="small" icon="el-icon-plus" type="success" style="background-color:#4FD5AC;border-color: #4FD5AC;" class="addBtnOnly" @click="addUser">
             新增用户
           </el-button>
           <el-tooltip class="item" effect="dark" content="只有管家用户和APP及管家用户才可以授权" placement="top-start">
@@ -2771,6 +2785,9 @@ export default {
               <el-form-item label="联系电话" :label-width="formLabelWidth" prop="telephone">
                 <el-input v-model="shopForm.telephone" autocomplete="off" placeholder="请输入店铺联系电话" />
               </el-form-item>
+              <el-form-item label="所属积分" :label-width="formLabelWidth" prop="telephone">
+                <el-input v-model="shopForm.integralNumber" disabled autocomplete="off" />
+              </el-form-item>
 
               <el-form-item label="开店日期" :label-width="formLabelWidth" prop="openDate">
                 <el-date-picker
@@ -2801,6 +2818,22 @@ export default {
               </el-button>
               <el-button size="small" type="primary" @click="conEditAreaOrShop('shopForm')">
                 确 认
+              </el-button>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane v-if="editShop" label="积分充值" name="integral">
+            <!-- 新增积分充值 接口还未调TODO -->
+            <el-form ref="integralForm" :model="integralForm">
+              <el-form-item label="充值积分" :label-width="formLabelWidth">
+                <el-input v-model="integralForm.integral" oninput="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" autocomplete="off" placeholder="请输入充值积分数" />
+              </el-form-item>
+            </el-form>
+            <div class="demo-drawer__footer">
+              <el-button size="small" @click="cancelRecharge('integralForm')">
+                取 消
+              </el-button>
+              <el-button size="small" type="primary" @click="conRechargeIntegral('integralForm')">
+                确认充值
               </el-button>
             </div>
           </el-tab-pane>

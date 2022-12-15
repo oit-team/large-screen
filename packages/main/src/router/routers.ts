@@ -65,6 +65,16 @@ export const routes: RouteConfig[] = [
           edit: true,
         },
       },
+      {
+        path: '/category/list',
+        name: 'CategoryList',
+        component: () => import('@/views/Category/List.vue'),
+      },
+      {
+        path: '/category/update',
+        name: 'UpdateCategory',
+        component: () => import('@/views/Category/Update.vue'),
+      },
       // 奖池
       {
         path: '/jackpot/merchant',

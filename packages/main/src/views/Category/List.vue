@@ -76,17 +76,32 @@ export default {
   <div class="h-full">
     <div class="p-2 h-full">
       <TablePage v-bind="tablePageOption" ref="table" auto field-key="1671013223008">
-        <template #content:typeImg="{ row }">
-          <ElImage v-if="row.typeImg" :src="row.typeImg" class="file-res" fit="cover" />
+        <template #content:typeParentName="{ row }">
+          <div v-if="row.typeParentName">
+            {{ row.typeParentName }}
+          </div>
+          <div v-else class="text-gray-300">
+            暂无
+          </div>
+        </template>
+        <template #column:typeImg>
+          <ElTableColumn
+            prop="typeImg"
+            label="图片"
+            align="center"
+            width="140"
+          >
+            <!-- table单独列拿出来处理 需要在scope前面加一个数据 空div或者123 -->
+            <div />
+            <template slot-scope="scope">
+              <ElImage v-if="scope.row.typeImg" :src="scope.row.typeImg" class="block w-70px h-70px mx-auto" fit="cover" />
+              <div v-else class="text-gray-300">
+                暂无
+              </div>
+            </template>
+          </ElTableColumn>
         </template>
       </TablePage>
     </div>
   </div>
 </template>
-
-<style lang='scss' scoped>
-.file-res {
-  height: 80px;
-  width: 80px;
-}
-</style>

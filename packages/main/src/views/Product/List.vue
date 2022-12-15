@@ -97,9 +97,28 @@ onActivated(refresh)
 <template>
   <div class="p-2">
     <TablePage v-bind="tablePageOption" ref="table" :fields="fields">
-      <template #content:productUrl="{ row }">
-        <ElImage :src="convertImageSize(row.imgUrl)" class="max-w-100px max-h-100px" />
+      <!-- <template #content:productUrl="{ row }">
+        <ElImage :src="convertImageSize(row.imgUrl)" class="max-w-100px max-h-100px file-res" />
+      </template> -->
+      <template #column:productUrl>
+        <ElTableColumn
+          prop="productUrl"
+          label="图片"
+          align="center"
+          width="140"
+        >
+          <div />
+          <template slot-scope="scope">
+            <ElImage v-if="scope.row.productUrl" :src="convertImageSize(scope.row.productUrl)" class="block w-70px h-70px mx-auto" fit="cover" />
+            <div v-else class="text-gray-300">
+              暂无
+            </div>
+          </template>
+        </ElTableColumn>
       </template>
     </TablePage>
   </div>
 </template>
+
+<style lang='scss' scoped>
+</style>

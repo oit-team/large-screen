@@ -277,9 +277,9 @@ export default {
                 <ElRadio v-model="form.effectiveType" :label="0" style="margin: 0;" @change="changeRadio">
                   <ElInput v-model="form.effectiveDay" oninput="value=value.replace(/[^\d]/g,'').replace(/^0{1,}/g,'')" :disabled="form.effectiveType === 1" style="width:80px" />  / 天
                 </ElRadio>
-              </div>
-              <div class="text-red text-xs mt-2">
-                *注：有效期至领取后次日生效
+                <div class="text-red text-xs mt-2 ml-8">
+                  *注：有效期至领取后次日生效
+                </div>
               </div>
             </ElFormItem>
             <ElFormItem label="物品说明" prop="jackpotNote">

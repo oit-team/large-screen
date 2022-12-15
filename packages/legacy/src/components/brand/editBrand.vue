@@ -399,7 +399,7 @@ export default {
           <!-- 上传品牌logo -->
           <vc-upload
             v-bind="uploadOption" ref="upload" action="/system/file/uploadFile"
-            class="avatar-uploader"
+            class="avatar-uploader" :class="{ 'update-upload-dragger': brandList.brandLogo }"
             :show-file-list="false"
           >
             <img v-if="brandList.brandLogo || uploadFileList.fileUrl" :src="brandList.brandLogo" class="imgLogo">
@@ -592,15 +592,18 @@ export default {
   @{deep} .el-tooltip {
     padding: 7px 7px!important;
   }
-  /deep/.avatar-uploader .el-upload{
-    display:flex;
-  }
   ::v-deep{
     .el-upload-dragger{
       display: flex;
-      width: 18%;
       height: 40px;
       border: 0;
+    }
+    .avatar-uploader .el-upload{
+      display:flex;
+      width: 132px;
+    }
+    .update-upload-dragger .el-upload{
+      width: 182px;
     }
   }
   .avatar-uploader .el-upload {

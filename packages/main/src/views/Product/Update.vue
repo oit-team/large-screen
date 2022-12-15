@@ -54,10 +54,11 @@ async function updateProductInfoData(form: any) {
 }
 
 async function submitForm() {
-  updateGoodsLoading.value = true
   formRef.value.form.submit(async (form: any) => {
-    await (isEdit ? updateProductInfoData(form) : addProductInfoData(form))
-    updateGoodsLoading.value = false
+    updateGoodsLoading.value = true
+    await (isEdit ? updateProductInfoData(form) : addProductInfoData(form)).finally(() => {
+      updateGoodsLoading.value = false
+    })
     Message.success('保存成功')
     router.back()
   })

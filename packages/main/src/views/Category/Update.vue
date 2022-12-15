@@ -65,7 +65,6 @@ export default {
     },
     // 新增
     async addProductType() {
-      this.requestLoading = true
       await addProductType({
         ...this.form,
       }).finally(() => {
@@ -77,7 +76,6 @@ export default {
 
     // 编辑
     async updateProductType() {
-      this.requestLoading = true
       await updateProductType({
         ...this.form,
       }).finally(() => {
@@ -105,6 +103,7 @@ export default {
 
     // 提交
     async onSubmit(formName) {
+      this.requestLoading = true
       const upload = this.$refs.upload
       if (!upload.checkUploadDone())
         return this.$message.warning('请等待文件上传完成')

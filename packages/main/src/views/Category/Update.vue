@@ -110,7 +110,7 @@ export default {
 
       const files = this.$refs.upload.getUploadResults()
 
-      if (files.length !== 0) {
+      if (files.lengh !== 0) {
         this.form.typeImg = files[0].url
       }
 

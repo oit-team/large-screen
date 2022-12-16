@@ -21,11 +21,11 @@ export default {
     productParent: [],
     rules: {
       typeName: [
-        { required: true, message: '请输入品类名称', trigger: 'blur' },
+        { required: true, message: '请输入类别名称', trigger: 'blur' },
         { min: 1, max: 32, message: '长度在 1 到 32 个字符', trigger: 'blur' },
       ],
       typeSort: [
-        { required: true, message: '请输入品类排序', trigger: 'blur' },
+        { required: true, message: '请输入类别排序', trigger: 'blur' },
       ],
 
     },
@@ -134,11 +134,11 @@ export default {
     <div class="w-full h-full mb-4 overflow-y-auto">
       <div class="ml-10 w3/5">
         <ElForm ref="form" :label-position="labelPosition" :model="form" :rules="rules" label-width="80px">
-          <ElFormItem label="品类名称" prop="typeName">
-            <ElInput v-model="form.typeName" placeholder="请输入品类名称" />
+          <ElFormItem label="类别名称" prop="typeName">
+            <ElInput v-model="form.typeName" placeholder="请输入类别名称" />
           </ElFormItem>
-          <ElFormItem label="父级品类">
-            <ElSelect v-model="form.typeParentId" :disabled="isEdit" class="w-full" placeholder="请选择父级品类">
+          <ElFormItem label="父级类别">
+            <ElSelect v-model="form.typeParentId" :disabled="isEdit" class="w-full" placeholder="请选择父级类别">
               <ElOption
                 v-for="item of productParent"
                 :key="item.typeId"
@@ -147,10 +147,10 @@ export default {
               />
             </ElSelect>
           </ElFormItem>
-          <ElFormItem label="品类排序" prop="typeSort">
-            <ElInput v-model="form.typeSort" placeholder="请输入品类排序" />
+          <ElFormItem label="类别排序" prop="typeSort">
+            <ElInput v-model="form.typeSort" placeholder="请输入类别排序" />
           </ElFormItem>
-          <ElFormItem label="品类图片" prop="typeImg">
+          <ElFormItem label="类别图片" prop="typeImg">
             <VcUpload
               v-bind="uploadOption"
               ref="upload" action="/api/system/file/uploadFile"

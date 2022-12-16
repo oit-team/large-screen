@@ -14,7 +14,7 @@ export default {
         promise: this.loadData,
         actions: [
           {
-            name: '新增品类',
+            name: '新增类别',
             type: 'primary',
             to: '/category/update',
           },

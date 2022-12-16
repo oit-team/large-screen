@@ -194,8 +194,21 @@ export default {
   <div class="h-full">
     <div class="p-2 h-full">
       <TablePage v-bind="tablePageOption" ref="table" auto field-key="1669286174849">
-        <template #content:impUrl="{ row }">
-          <ElImage v-if="row.impUrl" :src="convertImageSize(row.impUrl)" class="file-res" fit="cover" />
+        <template #column:impUrl>
+          <ElTableColumn
+            prop="impUrl"
+            label="图片"
+            align="center"
+            width="140"
+          >
+            <div />
+            <template slot-scope="scope">
+              <ElImage v-if="scope.row.impUrl" :src="convertImageSize(scope.row.impUrl)" class="block w-70px h-70px mx-auto" fit="cover" />
+              <div v-else class="text-gray-300">
+                暂无
+              </div>
+            </template>
+          </ElTableColumn>
         </template>
         <template slot="actions:multiple">
           <ElDropdown class="mx-2">
@@ -257,10 +270,6 @@ export default {
 </template>
 
 <style lang='scss' scoped>
-.file-res {
-  height: 60px;
-  width: 60px;
-}
 ::v-deep{
   .el-drawer__header{
     padding: 10px;

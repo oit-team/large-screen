@@ -57,21 +57,30 @@ export default {
 <template>
   <page-container>
     <table-page v-bind="tablePageOption" auto @row-click="previewFile">
-      <template slot="content:resUrl" slot-scope="{ row }">
-        <template v-if="row.resType === FILE_TYPE.IMAGE">
-          <el-image class="file-res" :src="convertImageSize(row.resUrl)" fit="cover" />
-        </template>
-        <template v-if="row.resType === FILE_TYPE.VIDEO">
-          <el-image class="file-res" :src="row.videoImg" fit="cover" />
-        </template>
+      <template #column:resUrl>
+        <el-table-column
+          prop="resUrl"
+          label="资源"
+          align="center"
+          width="140"
+        >
+          <div />
+          <template slot-scope="scope">
+            <el-image v-if="scope.row.resType === FILE_TYPE.IMAGE" :src="convertImageSize(scope.row.resUrl)" class="block imgSize w-70px h-70px mx-auto" fit="cover" />
+            <el-image v-else-if="scope.row.resType === FILE_TYPE.VIDEO" :src="scope.row.videoImg" class="block imgSize w-70px h-70px mx-auto" fit="cover" />
+            <div v-else class="text-gray-300">
+              暂无
+            </div>
+          </template>
+        </el-table-column>
       </template>
     </table-page>
   </page-container>
 </template>
 
 <style scoped lang="less">
-.file-res {
-  height: 60px;
-  width: 60px;
+.imgSize{
+  width: 70px;
+  height: 70px;
 }
 </style>

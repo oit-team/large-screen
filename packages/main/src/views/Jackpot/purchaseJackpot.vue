@@ -136,8 +136,21 @@ export default {
     <ElTabs type="card">
       <ElTabPane label="已采购">
         <TablePage v-bind="tablePageOption" ref="table" auto>
-          <template #content:impUrl="{ row }">
-            <ElImage v-if="row.impUrl" :src="convertImageSize(row.impUrl)" class="file-res" fit="cover" />
+          <template #column:impUrl>
+            <ElTableColumn
+              prop="impUrl"
+              label="图片"
+              align="center"
+              width="140"
+            >
+              <div />
+              <template slot-scope="scope">
+                <ElImage v-if="scope.row.impUrl" :src="convertImageSize(scope.row.impUrl)" class="block w-70px h-70px mx-auto" fit="cover" />
+                <div v-else class="text-gray-300">
+                  暂无
+                </div>
+              </template>
+            </ElTableColumn>
           </template>
           <template slot="actions:multiple">
             <ElDropdown class="mx-2">

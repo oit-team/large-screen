@@ -269,7 +269,7 @@ export default {
                   品牌邮箱：
                 </div>
                 <div class="divR">
-                  {{ item.brandInfo.mailbox }}
+                  {{ item.brandInfo.mailbox || '暂无' }}
                 </div>
               </div>
               <div class="divH">
@@ -278,6 +278,27 @@ export default {
                 </div>
                 <div class="divR">
                   {{ item.brandInfo.brandState ? '关闭' : '开启' }}
+                </div>
+              </div>
+              <div class="divH">
+                <div class="divL">
+                  品牌地址：
+                </div>
+                <div class="divR">
+                  {{ item.brandInfo.address }}
+                </div>
+              </div>
+              <div class="divH">
+                <div class="divL">
+                  品牌介绍：
+                </div>
+                <div class="divR">
+                  {{ item.brandInfo.introduce }}
+                  <!-- <el-tooltip class="item p-0" effect="dark" content="Bottom Center 提示文字" placement="bottom">
+                    <div class="mr-4 truncate">
+                      {{ item.brandInfo.introduce }}
+                    </div>
+                  </el-tooltip> -->
                 </div>
               </div>
               <div class="divH">
@@ -408,7 +429,8 @@ export default {
           flex-direction: column;
           justify-content: center;
           align-items: center;
-          width: 20%;
+          text-align: center;
+          width: 25%;
           border-right: 1px solid #e5e5e5;
           padding: 10px;
           box-sizing: border-box;

@@ -69,6 +69,12 @@ export default {
         dueEndTime: [
           { required: true, message: '请选择到期时间', trigger: 'blur' },
         ],
+        introduce: [
+          { required: true, message: '请输入品牌介绍', trigger: 'blur' },
+        ],
+        address: [
+          { required: true, message: '请输入品牌地址', trigger: 'blur' },
+        ],
         totalNumShop: [
           { required: true, message: '请输入店铺总数量', trigger: 'blur' },
         ],
@@ -331,6 +337,7 @@ export default {
             this.brandList.brandState = 1
           }
           const con = this.brandList
+          console.log(this.brandList, 'brandList')
           const jsonParam = _this.GLOBAL.g_paramJson(con)
           // // console.log('编辑品牌参数',con)
           _this.$axios.post(`${_this.GLOBAL.system_manager_server}/brand/updateBrandInfo`, jsonParam).then((res) => {
@@ -460,6 +467,15 @@ export default {
             format="yyyy 年 MM 月 dd 日"
             value-format="yyyy-MM-dd"
           />
+        </el-form-item>
+        <el-form-item label="品牌介绍" prop="introduce">
+          <el-input
+            v-model="brandList.introduce" type="textarea" maxlength="100" resize="none"
+            show-word-limit autosize placeholder="请输入品牌介绍" autocomplete="off" style="width:60%;"
+          />
+        </el-form-item>
+        <el-form-item label="品牌地址" prop="address">
+          <el-input v-model="brandList.address" placeholder="请输入品牌地址" autocomplete="off" style="width:60%;" />
         </el-form-item>
         <el-form-item label="店铺总数量" prop="totalNumShop">
           <el-input v-model="brandList.totalNumShop" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入店铺总数量" autocomplete="off" style="width:60%;" />
@@ -604,6 +620,9 @@ export default {
     }
     .update-upload-dragger .el-upload{
       width: 182px;
+    }
+    .el-textarea__inner{
+      min-height: 60px;
     }
   }
   .avatar-uploader .el-upload {

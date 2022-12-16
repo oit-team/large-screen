@@ -31,7 +31,8 @@ export default {
       ruleForm: {
         orgId: '',
         orgName: '',
-        address: '',
+        address: '', // 新增公司地址
+        brandAddress: '', // 品牌地址
         adminName: '',
         brandName: '',
         brandType: '',
@@ -41,6 +42,7 @@ export default {
         bueEndTime: '',
         contacts: '',
         mailbox: '',
+        introduce: '',
         gradeS: '',
         gradeA: '',
         gradeB: '',
@@ -90,6 +92,12 @@ export default {
         ],
         totalNumShop: [
           { required: true, message: '请输入店铺总数量', trigger: 'blur' },
+        ],
+        introduce: [
+          { required: true, message: '请输入品牌介绍', trigger: 'blur' },
+        ],
+        brandAddress: [
+          { required: true, message: '请输入品牌地址', trigger: 'blur' },
         ],
       },
       options: [],
@@ -427,6 +435,8 @@ export default {
             gradeC: this.ruleForm.gradeC,
             totalNumShop: this.ruleForm.totalNumShop,
             industryId: this.ruleForm.industryId,
+            introduce: this.ruleForm.introduce,
+            address: this.ruleForm.brandAddress,
           }
           // console.log('新增品牌参数',con)
           const jsonParam = _this.GLOBAL.g_paramJson(con)
@@ -618,6 +628,15 @@ export default {
             value-format="yyyy-MM-dd"
           />
         </el-form-item>
+        <el-form-item label="品牌介绍" prop="introduce">
+          <el-input
+            v-model="ruleForm.introduce" type="textarea" maxlength="100" resize="none"
+            show-word-limit autosize placeholder="请输入品牌介绍" autocomplete="off" style="width:60%;"
+          />
+        </el-form-item>
+        <el-form-item label="品牌地址" prop="brandAddress">
+          <el-input v-model="ruleForm.brandAddress" placeholder="请输入品牌地址" autocomplete="off" style="width:60%;" />
+        </el-form-item>
         <el-form-item label="联系人">
           <el-input v-model="ruleForm.contacts" placeholder="请输入联系人" autocomplete="off" style="width:60%;" />
         </el-form-item>
@@ -702,6 +721,9 @@ export default {
       width: 18%;
       height: 40px;
       border: 0;
+    }
+    .el-textarea__inner{
+      min-height: 60px;
     }
   }
 

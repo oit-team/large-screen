@@ -23,7 +23,7 @@
       </v-badge>
       试衣间
     </div>
-    <div class="p-2 flex flex-col items-center" @click="() => $refs.permission.open()">
+    <div v-if="showModule(4)" class="p-2 flex flex-col items-center" @click="() => $refs.permission.open()">
       <v-img
         class="rounded-xl h-54px w-54px"
         src="@/asset/image/camera.png"
@@ -82,6 +82,10 @@ export default {
         devId: localStorage.getItem('devId'),
         cmd: 8,
       })
+    },
+    showModule(value) {
+      const moduleValue = this.$route.query.moduleValue
+      return (value & moduleValue) > 0
     },
   },
 }

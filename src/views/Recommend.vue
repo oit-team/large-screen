@@ -91,12 +91,6 @@
           </vc-icon>
           <span class="flex-1 vertical-text">智能搭配</span>
         </vc-btn>
-        <vc-btn class="h-full text-left vertical-btn" @click="$router.push('/carousel')">
-          <vc-icon class="mb-2">
-            fas fa-undo-alt
-          </vc-icon>
-          <span class="flex-1 vertical-text">返回</span>
-        </vc-btn>
       </div>
     </section>
 

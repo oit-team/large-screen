@@ -63,24 +63,8 @@ export default {
 .boxShadow{
   box-shadow: 0 2px 12px 0 #5e8cfd;
 }
-@-webkit-keyframes greenPulse {
-  from {
-    -webkit-box-shadow: 0 0 9px #333;
-    width: 25px;
-    height: 25px;
-  }
-  50% { -webkit-box-shadow: 0 0 0px #5e8cfd; }
-  to {
-    -webkit-box-shadow: 0 0 9px #333;
-    width: 26px;
-    height: 26px;
-  }
-}
 
 .btn {
   border-radius: 50%;
-  -webkit-animation-name: greenPulse;
-  -webkit-animation-duration: 1s;
-  -webkit-animation-iteration-count: infinite;
 }
 </style>

@@ -69,10 +69,7 @@ async function getGoodsTypeConfigData(field: any) {
   const res = await getGoodsTypeConfig().finally(() => {
     field.loading = false
   })
-  field.dataSource = res.body?.result?.map((item: any) => ({
-    label: item.dicttimeDisplayName,
-    value: item.dictitemCode,
-  }))
+  field.dataSource = res.body?.result
 }
 </script>
 

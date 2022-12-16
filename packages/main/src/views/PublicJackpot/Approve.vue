@@ -112,8 +112,21 @@ export default {
   <div class="h-full">
     <div class="p-2 h-full">
       <TablePage v-bind="tablePageOption" ref="table" field-key="1669627381942" auto>
-        <template #content:impUrl="{ row }">
-          <ElImage v-if="row.impUrl" :src="convertImageSize(row.impUrl)" class="file-res" fit="cover" />
+        <template #column:impUrl>
+          <ElTableColumn
+            prop="impUrl"
+            label="图片"
+            align="center"
+            width="140"
+          >
+            <div />
+            <template slot-scope="scope">
+              <ElImage v-if="scope.row.impUrl" :src="convertImageSize(scope.row.impUrl)" class="block w-70px h-70px mx-auto" fit="cover" />
+              <div v-else class="text-gray-300">
+                暂无
+              </div>
+            </template>
+          </ElTableColumn>
         </template>
       </TablePage>
       <ElDrawer title="审批记录" :visible.sync="drawer" size="35%">
@@ -172,10 +185,6 @@ export default {
   .el-card__body{
     padding: 10px;
   }
-}
-.file-res {
-  height: 60px;
-  width: 60px;
 }
 .imgInfo{
     display: flex;

@@ -61,3 +61,8 @@ export function addProcurementOrder(params) {
 export function getIndustryAll(params) {
   return post('/system/brand/getIndustryAll', params)
 }
+
+// 查询店铺积分数 新增奖券加入购物车
+export function getShopByIntegralNum(params) {
+  return post('/jackpot/procurement/getShopByIntegralNum', params)
+}

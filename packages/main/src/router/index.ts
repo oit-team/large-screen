@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+// @ts-expect-error: ignore
 import { router as LegacyRouter } from '@oit/legacy'
 import { Loading } from 'element-ui'
 import { routes } from './routers'

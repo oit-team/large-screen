@@ -2,7 +2,7 @@
 import { SearchForm } from '@oit/element-ui-extend'
 import Big from 'big.js'
 import { Message, MessageBox } from 'element-ui'
-import { addProcurementOrder, getIndustryAll, getJackpotStyleList } from '@/api/jackpot'
+import { addProcurementOrder, getIndustryAll, getJackpotStyleList, getShopByIntegralNum } from '@/api/jackpot'
 
 import { fieldStorage } from '@/utils/fieldStorage'
 
@@ -22,6 +22,8 @@ const shoppingCartData = ref({})
 const shoppingCartCount = ref({})
 const shoppingCartList = computed(() => Object.values(shoppingCartData.value))
 const instance = getCurrentInstance().proxy
+const totalIntegral = ref(0)
+const allIntegral = ref(0)
 const totalPrice = computed(() => {
   return shoppingCartList.value.reduce((total, item) => {
     return new Big(+item.jackpotBuyPrice).times(shoppingCartCount.value[item.jackpotId]).plus(total).toNumber()
@@ -33,6 +35,14 @@ async function getFields() {
   fields.value = JSON.parse(json)
 }
 getFields()
+
+async function getIntegralNum() {
+  const res = await getShopByIntegralNum({
+    payIntegral: totalPrice.value,
+  })
+  allIntegral.value = res.body.integralNumber
+  totalIntegral.value = res.body.payIntegralNumber
+}
 
 // 获得购物车列表数据
 async function getJackpotStyleListData() {
@@ -106,6 +116,10 @@ async function loadIndustryState() {
   }
 }
 loadIndustryState()
+
+watch(shoppingCartDrawer, () => {
+  getIntegralNum()
+})
 </script>
 
 <template>
@@ -196,22 +210,40 @@ loadIndustryState()
             </template>
           </ElTableColumn>
         </ElTable>
-        <div class="p-2 flex justify-between items-center">
-          <div>总计：￥{{ totalPrice }}</div>
-          <p>
-            <span class="text-red">*</span>
-            <span>请选择支付方式：</span>
-            <ElRadioGroup v-model="paymentRadio">
-              <ElRadio :label="1">
-                支付宝
-              </ElRadio>
-              <ElRadio :label="2">
-                积分兑换
-              </ElRadio>
-            </ElRadioGroup>
-          </p>
+        <div class="p-2 flex justify-between items-center ">
+          <div>
+            <div class="py-2">
+              总计：￥{{ totalPrice }}
+            </div>
+            <div v-if="paymentRadio === 2" class="py-2">
+              <div>
+                店铺剩余积分：￥{{ allIntegral }}
+                购买所需积分：￥{{ totalIntegral }}
+              </div>
+              <div v-if="totalIntegral > allIntegral" class="text-sm text-red-400">
+                (*剩余积分不足以兑换)
+              </div>
+            </div>
+            <p>
+              <span class="text-red">*</span>
+              <span>请选择支付方式：</span>
+              <ElRadioGroup v-model="paymentRadio">
+                <ElRadio :label="1">
+                  支付宝
+                </ElRadio>
+                <ElRadio :label="2">
+                  积分兑换
+                </ElRadio>
+              </ElRadioGroup>
+            </p>
+          </div>
 
-          <ElButton type="primary" :loading="addShopCartLoading" @click="addProcurementOrderData()">
+          <ElButton
+            type="primary"
+            :loading="addShopCartLoading"
+            :disabled="paymentRadio === 2 && totalIntegral > allIntegral"
+            @click="addProcurementOrderData()"
+          >
             提交
           </ElButton>
         </div>

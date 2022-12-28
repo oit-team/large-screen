@@ -725,6 +725,11 @@ export default {
     .el-textarea__inner{
       min-height: 60px;
     }
+    .el-textarea .el-input__count{
+      position: absolute;
+      right: 10px;
+      bottom: -20px;
+    }
   }
 
   /deep/.el-step__head{

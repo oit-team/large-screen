@@ -624,6 +624,11 @@ export default {
     .el-textarea__inner{
       min-height: 60px;
     }
+    .el-textarea .el-input__count{
+      position: absolute;
+      right: 10px;
+      bottom: -20px;
+    }
   }
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;

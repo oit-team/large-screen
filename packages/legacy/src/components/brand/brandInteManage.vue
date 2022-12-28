@@ -2445,7 +2445,7 @@ export default {
       <div v-if="activeTab == 1" class="userListBox">
         <div class="operateBtn">
           <!-- isShop  0 区域 1 店铺  2 品牌 -->
-          <el-button :disabled="isShop !== '0'" size="small" icon="el-icon-plus" type="success" style="background-color:#4FD5AC;border-color: #4FD5AC;" class="addBtnOnly" @click="addUser">
+          <el-button size="small" icon="el-icon-plus" type="success" style="background-color:#4FD5AC;border-color: #4FD5AC;" class="addBtnOnly" @click="addUser">
             新增用户
           </el-button>
           <el-tooltip class="item" effect="dark" content="只有管家用户和APP及管家用户才可以授权" placement="top-start">

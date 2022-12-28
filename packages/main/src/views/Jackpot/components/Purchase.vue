@@ -210,21 +210,23 @@ watch(shoppingCartDrawer, () => {
             </template>
           </ElTableColumn>
         </ElTable>
-        <div class="p-2 flex justify-between items-center ">
-          <div>
+        <div class="p-2 flex flex-col">
+          <div class="flex">
             <div class="py-2">
               总计：￥{{ totalPrice }}
             </div>
             <div v-if="paymentRadio === 2" class="py-2">
-              <div>
-                店铺剩余积分：￥{{ allIntegral }}
-                购买所需积分：￥{{ totalIntegral }}
+              <div class="flex justify-around ml-8">
+                店铺剩余积分：{{ allIntegral }}
+                购买所需积分：{{ totalIntegral }}
               </div>
-              <div v-if="totalIntegral > allIntegral" class="text-sm text-red-400">
+              <div v-if="totalIntegral > allIntegral" class="ml-8 text-sm text-red-400">
                 (*剩余积分不足以兑换)
               </div>
             </div>
-            <p>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
               <span class="text-red">*</span>
               <span>请选择支付方式：</span>
               <ElRadioGroup v-model="paymentRadio">
@@ -235,17 +237,17 @@ watch(shoppingCartDrawer, () => {
                   积分兑换
                 </ElRadio>
               </ElRadioGroup>
-            </p>
-          </div>
+            </div>
 
-          <ElButton
-            type="primary"
-            :loading="addShopCartLoading"
-            :disabled="paymentRadio === 2 && totalIntegral > allIntegral"
-            @click="addProcurementOrderData()"
-          >
-            提交
-          </ElButton>
+            <ElButton
+              type="primary"
+              :loading="addShopCartLoading"
+              :disabled="paymentRadio === 2 && totalIntegral > allIntegral"
+              @click="addProcurementOrderData()"
+            >
+              {{ paymentRadio === 2 ? '提交' : '下一步' }}
+            </ElButton>
+          </div>
         </div>
       </div>
     </ElDrawer>

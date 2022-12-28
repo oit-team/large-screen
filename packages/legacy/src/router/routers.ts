@@ -68,6 +68,14 @@ export const routes: RouteConfig[] = [
       keepAlive: false,
     },
   },
+  {
+    path: '/live-stream/content-review/list',
+    name: 'LiveStreamContentReviewList',
+    component: () => import ('@/views/LiveStream/ContentReview/List.vue'),
+    meta: {
+      keepAlive: true,
+    },
+  },
   // 系统设置相关（菜单管理、品牌入驻）（角色管理迁移到main）
   {
     path: '/menu/menuList',

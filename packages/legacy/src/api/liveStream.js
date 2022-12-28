@@ -259,3 +259,38 @@ export function getCollocationList(params) {
 export function getAdvertsById(params) {
   return post(`${API_SERVICE.LIVE_BROADCAST}/adverts/getAdvertsById`, params)
 }
+
+/**
+ * 内容审核 获取一周日期
+ */
+export function getDateToWeek(params) {
+  return post(`${API_SERVICE.LIVE_BROADCAST}/book/getdateToWeek`, params)
+}
+
+/**
+ * 获取设备列表 内容审核
+ */
+export function getContextDeviceList(params) {
+  return post(`${API_SERVICE.LIVE_BROADCAST}/device/getContextDeviceList`, params)
+}
+
+/**
+ * 查询天的小时间隔
+ */
+export function getIntervalHourConfig(params) {
+  return post(`${API_SERVICE.LIVE_BROADCAST}/book/getIntervalHourConfig`, params)
+}
+
+/**
+ * 查询审核中的时间
+ */
+export function getAuditBook(params) {
+  return post(`${API_SERVICE.LIVE_BROADCAST}/book/getAuditBook`, params)
+}
+
+/**
+ * 提交审核
+ */
+export function updateBookInfo(params) {
+  return post(`${API_SERVICE.LIVE_BROADCAST}/book/updateBookInfo`, params)
+}

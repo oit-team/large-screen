@@ -41,6 +41,12 @@ export default {
             icon: 'el-icon-plus',
             to: 'LiveStreamCarouselUpdate',
           },
+          {
+            name: '公共投放',
+            type: 'primary',
+            icon: 'el-icon-position',
+            to: '/live-stream/carousel/public-release',
+          },
         ],
         table: {
           data: this.data.advertsList,

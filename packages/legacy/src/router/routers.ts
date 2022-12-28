@@ -45,6 +45,14 @@ export const routes: RouteConfig[] = [
     },
   },
   {
+    path: '/live-stream/carousel/public-release',
+    name: 'PublicRelease',
+    component: () => import ('@/views/LiveStream/Carousel/PublicRelease.vue'),
+    meta: {
+      keepAlive: false,
+    },
+  },
+  {
     path: '/live-stream/carousel-resources/upload',
     name: 'CarouselResourcesUpload',
     component: () => import ('@/views/LiveStream/CarouselResources/Upload.vue'),

@@ -13,7 +13,7 @@ const BOOKSTATE = {
 
 export default {
   components: {
-    // CarouselPreview,
+    CarouselPreview,
   },
   data() {
     return {
@@ -23,7 +23,6 @@ export default {
       devId: '', // 设备id
       selectContent: '轮播记录', // 内容展示
       nowTime: new Date(), // 当前时间
-      checkList: [],
       weekList: [],
       bookList: [],
       moreTime: [],
@@ -35,11 +34,11 @@ export default {
       carouselMapCache: {},
       BOOKSTATE,
       selectTimeList: [], // 最终提交时的数组
-      remarks: '', // 审核拒绝  - 备注
       previewDrawerVisible: false,
       // .....................
       nowHIndex: 0, // 当前选中的  小时
       carouselPreviewId: '',
+      showCalen: false,
     }
   },
   computed: {
@@ -72,16 +71,13 @@ export default {
     // },
   },
   watch: {
-    selectContent() {
-      console.log(this.selectContent)
-    },
     selectTime() {
       this.moreTime = []
       this.nowHIndex = 0
       this.getIntervalHourConfig()
     },
     devId() {
-      console.log(this.devId)
+      this.getDateToWeek()
     },
     // 获取的分钟  时间段
     moreTime() {
@@ -97,14 +93,12 @@ export default {
   },
   async activated() {
     await this.getBrandList()
-    await this.getDateToWeek()
   },
   methods: {
     async getBrandList() {
       this.navLoading = true
       const res = await api.getContextDeviceList()
       this.brandList = res.body.resultList
-      // this.brandIdNav = this.brandList[0]?.brandId
       this.navLoading = false
     },
     async getDateToWeek() {
@@ -112,6 +106,8 @@ export default {
         time: this.nowTime,
       })
       this.weekList = res.body.resultList
+      this.selectTime = `${this.nowTime.getFullYear()}-${this.nowTime.getMonth() + 1}-${this.nowTime.getDate()}`
+      this.getIntervalHourConfig()
     },
     async getIntervalHourConfig() {
       const res = await api.getIntervalHourConfig({
@@ -122,7 +118,6 @@ export default {
       this.getAuditBook(this.bookList[0])
     },
     async getAuditBook(data) {
-      this.moreTime = []
       const res = await api.getAuditBook({
         startTime: data.startTime,
         endTime: data.endTime,
@@ -139,21 +134,21 @@ export default {
     // 点击 左侧 小时
     changeTime(e) {
       this.nowHIndex = e
-      console.log(this.bookList)
+      // console.log(this.bookList)
       this.getAuditBook(this.bookList[e])
     },
     // 提交审核  通过/拒绝
     async updateBookInfo(state, id) {
-      console.log(id)
       if (this.selectTimeList?.length === 0 && !id) return
       if (state === 0) {
-        this.$prompt('', '请输入拒绝原因', {
+        this.$prompt('请限制在30字以内', '拒绝原因', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         })
           .then(async ({ value }) => {
-            console.log(value)
-            if (value) {
+            // console.log(value)
+            if (value.length > 30) return this.$message.error('请输入30字以内的内容')
+            if (value && value.length <= 30) {
               await api.updateBookInfo({
                 bookIds: id ? [id] : this.selectTimeList,
                 bookState: state,
@@ -188,18 +183,25 @@ export default {
       else this.selectTimeList.splice(this.selectTimeList.indexOf(id), 1)
     },
     previewAds(item) {
-      console.log(item)
+      // console.log(item)
       this.previewDrawerVisible = true
       const { advertsId } = item
       this.carouselPreviewId = advertsId
       !this.carouselMapCache[advertsId] && api.getAdvertsById({
         advId: advertsId,
       }).then((res) => {
-        const item = res.body.advertsList[0]
+        const item = res.body
         item.rotationRules = JSON.parse(item.rotationRules)
         item.resEntityMap = keyBy(item.resEntityList, 'id')
         this.$set(this.carouselMapCache, advertsId, item)
       })
+    },
+    chickCalen() {
+      this.showCalen = true
+    },
+    changePickerTime(e) {
+      this.selectTime = `${e.getFullYear()}-${e.getMonth() + 1}-${e.getDate()}`
+      this.getDateToWeek()
     },
   },
 }
@@ -228,7 +230,10 @@ export default {
 
     <!--    右侧内容区 -->
     <div class="flex-1 px-2">
-      <div class="w-full h-full flex flex-col">
+      <div v-if="!devId" class="w-full h-full flex items-center justify-center">
+        <el-empty description="暂无数据" />
+      </div>
+      <div v-else class="w-full h-full flex flex-col">
         <el-radio-group v-model="selectContent">
           <el-radio-button label="轮播记录" />
           <el-radio-button label="内容审核" />
@@ -244,8 +249,13 @@ export default {
               :label="item"
             />
           </el-radio-group>
-          <div class="flex items-center">
-            <i class="el-icon-date text-xl" />
+          <div class="flex items-center px-2" @click="chickCalen">
+            <el-date-picker
+              v-model="nowTime"
+              type="date"
+              placeholder="选择日期"
+              @change="changePickerTime"
+            />
           </div>
         </div>
 
@@ -299,7 +309,13 @@ export default {
                       <div :class="time.bookState !== BOOKSTATE.REVIEW ? 'text-[#c0c4cc]' : ''">
                         {{ `${time._configStartTime}-${time._configEndTime}` }} <span>{{ `${time.advertsName || '暂无'}(${time.shopName || '暂无'})` }}</span>
                       </div>
-                      <el-checkbox v-model="time._check" :disabled="time.bookState !== 1" class="mx-2" @change="changeCheck($event, time.bookId)" />
+                      <el-checkbox
+                        v-if="selectContent === '内容审核'"
+                        v-model="time._check"
+                        :disabled="time.bookState !== 1"
+                        class="mx-2"
+                        @change="changeCheck($event, time.bookId)"
+                      />
                     </div>
 
                     <!--  操作部分 -->
@@ -308,7 +324,7 @@ export default {
                         预览
                       </el-button>
 
-                      <div v-if="time.bookState === BOOKSTATE.REVIEW" class="flex gap-2 ml-4">
+                      <div v-if="time.bookState === BOOKSTATE.REVIEW && selectContent === '内容审核'" class="flex gap-2 ml-4">
                         <el-button type="success" icon="el-icon-check" size="mini" circle @click="updateBookInfo(2, time.bookId)" />
                         <el-button type="danger" icon="el-icon-close" size="mini" circle @click="updateBookInfo(0, time.bookId)" />
                       </div>
@@ -317,7 +333,7 @@ export default {
                 </el-timeline-item>
               </el-timeline>
 
-              <div class="w-full p-2 box-border">
+              <div v-if="selectContent === '内容审核'" class="w-full p-2 box-border">
                 <div class="flex justify-around w-full items-center py-4">
                   <el-button type="primary" @click="updateBookInfo(2)">
                     通过
@@ -335,7 +351,6 @@ export default {
 
     <!--  审核预览 -->
     <el-drawer :visible.sync="previewDrawerVisible" title="预览广告" size="500px">
-      456
       <div v-loading="!carouselMapCache[carouselPreviewId]" class="h-full">
         <carousel-preview
           v-if="previewDrawerVisible && carouselMapCache[carouselPreviewId]"

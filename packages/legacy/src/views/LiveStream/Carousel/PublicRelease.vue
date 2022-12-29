@@ -45,17 +45,17 @@ export default {
       children: 'devList',
       label: 'brandName',
     },
-    nowHIndex: 0, // 当前选中的  小时
+    nowHIndex: 0, // 当前选中的 小时
   }),
   computed: {
     searchList() {
-      return [...this.deviceList]
-        .filter(item => item.brandName.includes(this.search))
+      return [...this.deviceList].filter(item => item.brandName.includes(this.search))
     },
   },
   watch: {
     selectDate(newVal, oldVal) {
       this.selectWeekTime = newVal || dayjs().format('YYYY-MM-DD')
+      this.onedayMinutesList = []
       this.getdateToWeek()
       this.getIntervalHourConfig()
     },
@@ -85,7 +85,6 @@ export default {
 
     // 点击左侧菜单树
     handleNodeClick(data = {}) {
-      console.log(data)
       // 商场
       this.brandId = data?.brandId
       // 店铺
@@ -109,6 +108,14 @@ export default {
       })
     },
 
+    // 点击左侧小时
+    changeTime(item, index) {
+      this.nowHIndex = index
+      this.startTime = item.startTime
+      this.endTime = item.endTime
+      this.getIntervalMinuteConfig()
+    },
+
     // 获取分钟
     async getIntervalMinuteConfig() {
       this.minuteLoading = true
@@ -123,25 +130,6 @@ export default {
         item.isAfter = dayjs().isAfter(dayjs(item.configStartTime))
         return item
       })
-    },
-
-    // 手风琴点击改变
-    // changeCollapse(data) {
-    //   if (data) {
-    //     const [start, end] = data?.split(',')
-    //     this.startTime = start
-    //     this.endTime = end
-    //     this.getIntervalMinuteConfig()
-    //   }
-    // },
-
-    // 点击 左侧 小时
-    changeTime(item, index) {
-      console.log(item)
-      this.nowHIndex = index
-      this.startTime = item.startTime
-      this.endTime = item.endTime
-      this.getIntervalMinuteConfig()
     },
 
     // 点击预定按钮 打开广告抽屉
@@ -196,11 +184,11 @@ export default {
     },
 
     // 提交支付
-    toPaySubmit() {
+    async toPaySubmit() {
       if (this.paymentRadio === 2) {
         this.getIntegralPay()
       }
-      this.getIntervalMinuteConfig()
+      await this.getIntervalMinuteConfig()
     },
   },
 
@@ -217,7 +205,7 @@ export default {
         </el-tooltip>
       </div>
       <div v-loading="navLoading" class="overflow-y-auto flex-1">
-        <el-tree ref="brandTree" :data="searchList" :props="defaultProps" highlight-current @node-click="handleNodeClick" />
+        <el-tree :data="searchList" :props="defaultProps" highlight-current @node-click="handleNodeClick" />
       </div>
     </div>
     <div class="w-full flex flex-col">
@@ -238,7 +226,7 @@ export default {
         </div>
       </div>
       <div class="flex-1 p-2 py-8 flex">
-        <div v-loading="hourLoading" class="w-1/3 px-4">
+        <div v-if="onedayHoursList.length > 0" v-loading="hourLoading" class="w-1/3 h-full px-4">
           <div
             v-for="(item, index) in onedayHoursList"
             :key="index"
@@ -249,31 +237,42 @@ export default {
             {{ item.startTime.slice(11) }}-{{ item.endTime.slice(11) }}
           </div>
         </div>
+        <el-empty v-else class="w-full" :image-size="100" description="暂无数据" />
         <el-divider class="h-full" direction="vertical" />
-        <div v-loading="minuteLoading" class="w-2/3 pt-8">
-          <div class="w-full h-full cursor-pointer flex flex-col justify-between pl-4 pt-4">
+        <div v-loading="minuteLoading" class="w-2/3">
+          <div v-if="onedayMinutesList.length > 0" class="w-full h-full cursor-pointer flex flex-col justify-between pl-4 pt-8">
             <el-timeline>
               <el-timeline-item
                 v-for="onedayMinute in onedayMinutesList"
                 :key="onedayMinute.bookConnfigId"
-                size="large"
+                size="normal"
                 hide-timestamp
               >
                 <div class="flex items-center">
                   <div class="flex items-center">
-                    <el-tag v-if="onedayMinute.bookState === 1" type="primary" plain class="mr-2">
-                      {{ onedayMinute.remarks }}
+                    <el-tag v-if="onedayMinute.bookState === BOOKSTATE.EMPTY" type="primary" class="mr-2">
+                      待预约
                     </el-tag>
-                    <el-tag v-if="onedayMinute.bookState !== 1" type="primary" plain class="mr-2">
-                      {{ onedayMinute.bookstateName }}
+                    <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.REVIEW" type="info" class="mr-2">
+                      待审核
                     </el-tag>
-                    <div :class="onedayMinute.bookState !== 0 ? 'text-[#c0c4cc]' : ''">
+                    <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.PASS" type="warning" class="mr-2">
+                      待支付
+                    </el-tag>
+                    <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.PLAY" type="primary" class="mr-2">
+                      未播放
+                    </el-tag>
+                    <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.PLAYED" type="success" class="mr-2">
+                      已播放
+                    </el-tag>
+                    <div :class="onedayMinute.isAfter ? 'pastTime' : 'futureTime'">
                       {{ `${onedayMinute.configStartTime.slice(11, 16)}-${onedayMinute.configEndTime.slice(11, 16)}` }} <span v-if="onedayMinute.advertsName && onedayMinute.shopName ">{{ `${onedayMinute.advertsName}(${onedayMinute.shopName})` }}</span>
                     </div>
-                    <el-button v-if="onedayMinute.bookState === 0" :disabled="onedayMinute.isAfter" class="ml-4" type="primary" plain size="mini" @click="openListDrawer(onedayMinute.bookConnfigId)">
+                    <span v-if="onedayMinute.bookState === BOOKSTATE.REVIEW" :class="onedayMinute.isAfter ? 'pastTime' : 'futureTime'" class="ml-6 text-xs">{{ onedayMinute.remarks }}</span>
+                    <el-button v-if="onedayMinute.bookState === BOOKSTATE.EMPTY" :disabled="onedayMinute.isAfter" class="ml-4 appointmentTime" type="text" size="mini" @click="openListDrawer(onedayMinute.bookConnfigId)">
                       预约
                     </el-button>
-                    <el-button v-if="onedayMinute.isPay === 1 && onedayMinute.bookState === 2" class="ml-4" type="primary" plain size="mini" @click="handleClickPay(onedayMinute)">
+                    <el-button v-if="onedayMinute.isPay === BOOKSTATE.REVIEW && onedayMinute.bookState === BOOKSTATE.PASS" :disabled="onedayMinute.isAfter" class="ml-4 payment" type="text" size="mini" @click="handleClickPay(onedayMinute)">
                       去支付
                     </el-button>
                   </div>
@@ -281,6 +280,7 @@ export default {
               </el-timeline-item>
             </el-timeline>
           </div>
+          <el-empty v-else class="w-full h-full" :image-size="100" description="暂无数据" />
         </div>
       </div>
     </div>
@@ -317,9 +317,18 @@ export default {
 </template>
 
 <style lang='scss' scoped>
-::v-deep .el-timeline-item__wrapper{
+::v-deep {
+  .el-timeline-item__wrapper{
     top: -10px;
+  }
+  .el-button--text{
+    text-decoration: underline;
+  }
+  .el-button--text.payment{
+    color: #E6A23C;
+  }
 }
+
 .bindHover:hover{
     background-color: #9cc1fc;
     color: #FFFFFF;

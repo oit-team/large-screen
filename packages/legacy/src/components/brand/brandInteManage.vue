@@ -5,7 +5,7 @@ import commonSearch from '../common/commonSearch'
 import { delIssue } from '../../api/statistics'
 import ManagementPage from './DeviceList'
 import CollocationPage from './Collocation'
-import { getUserList } from '@/api/statistics'
+import { getStoreList, getUserList } from '@/api/statistics'
 // import test from '../../assets/brandJs/test';
 
 export default {
@@ -100,6 +100,7 @@ export default {
         openDate: '',
         gradeId: '',
         shopCode: '',
+        storeId: '',
       },
       shopRules: {
         shopName: [
@@ -145,6 +146,7 @@ export default {
         limitTimes: null,
         isAll: false,
       },
+      marketList: [],
       taskFormRules: {
         taskTime: [
           { required: true, message: '请选择任务开始和结束时间', trigger: 'blur' },
@@ -331,6 +333,7 @@ export default {
   },
   activated() {
     this.getAreaManager()
+    this.getStoreList()
     // console.log("==综合管理==activated====")
     // this.getTreeOrgList()
     this.clickNodeFlag = false
@@ -392,6 +395,11 @@ export default {
       })
     },
 
+    async getStoreList() {
+      const res = await getStoreList()
+      console.log(res)
+      this.marketList = res.body.storeList
+    },
     // 任务下发 获取选择下发的成员
     drawerSelect(val) {
       const list = val.map((e) => {
@@ -1473,6 +1481,7 @@ export default {
       this.shopForm.orgStId = ''
       this.shopForm.openDate = ''
       this.shopForm.shopCode = ''
+      this.shopForm.storeId = ''
 
       this.areaForm.areaName = ''
       this.areaForm.areaCode = ''
@@ -1953,7 +1962,7 @@ export default {
     },
     // 点击操作-》编辑按钮
     clickEdit() {
-      // console.log("点击编辑时的this.nodeInfo====",this.nodeInfo)
+      console.log('点击编辑时的this.nodeInfo====', this.nodeInfo)
       this.handleClickFlag = false
       this.shopDialog = true
       this.editFlag = true
@@ -1976,6 +1985,7 @@ export default {
         this.shopForm.openDate = this.nodeInfo.openDate
         this.shopForm.shopCode = this.nodeInfo.shopCode
         this.shopForm.orgStId = Number(this.nodeInfo.parentId)
+        this.shopForm.storeId = Number(this.nodeInfo.storeId)
         if (this.shopForm.orgStId == 0) {
           this.shopForm.orgStId = null
         }
@@ -2295,6 +2305,10 @@ export default {
       // // console.log("=====店铺所属区域id======",val);
       this.shopForm.orgStId = val
     },
+    // changeStore(val) {
+    //   // // console.log("=====店铺所属区域id======",val);
+    //   this.shopForm.orgStId = val
+    // },
     // 更换区域负责人
     changeAreaManger(val) {
       this.areaForm.dutyId = val
@@ -2723,6 +2737,16 @@ export default {
                   />
                 </el-select>
               </el-form-item>
+              <el-form-item label="所属商场" :label-width="formLabelWidth">
+                <el-select v-model="shopForm.storeId" filterable placeholder="请选择所属商场">
+                  <el-option
+                    v-for="item in marketList"
+                    :key="item.storeId"
+                    :label="item.storeName"
+                    :value="item.storeId"
+                  />
+                </el-select>
+              </el-form-item>
             </el-form>
             <div class="demo-drawer__footer">
               <el-button size="small" @click="cancelAdd('shopForm')">
@@ -2808,6 +2832,16 @@ export default {
                     :key="item.id"
                     :label="item.osName"
                     :value="item.id"
+                  />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="所属商场" :label-width="formLabelWidth">
+                <el-select v-model="shopForm.storeId" :disabled="shopForm.storeId" filterable placeholder="请选择所属商场">
+                  <el-option
+                    v-for="item in marketList"
+                    :key="item.storeId"
+                    :label="item.storeName"
+                    :value="item.storeId"
                   />
                 </el-select>
               </el-form-item>

@@ -9,6 +9,7 @@ const BOOKSTATE = {
   PASS: 2,
   PLAY: 3,
   PLAYED: 4,
+  ERROR: 5,
 }
 
 export default {
@@ -80,7 +81,6 @@ export default {
       this.getIntervalHourConfig()
     },
     devId() {
-      console.log(this.devId)
       this.getDateToWeek()
     },
     // 获取的分钟  时间段
@@ -148,7 +148,6 @@ export default {
     // 点击 左侧 小时
     changeTime(e) {
       this.nowHIndex = e
-      // console.log(this.bookList)
       this.getAuditBook(this.bookList[e])
     },
     // 提交审核  通过/拒绝
@@ -160,7 +159,6 @@ export default {
           cancelButtonText: '取消',
         })
           .then(async ({ value }) => {
-            // console.log(value)
             if (value.length > 30) return this.$message.error('请输入30字以内的内容')
             if (value && value.length <= 30) {
               await api.updateBookInfo({
@@ -169,7 +167,7 @@ export default {
                 devId: this.devId,
                 remarks: value,
               })
-              this.$message('提交成功')
+              this.$message.success('提交成功')
               this.selectTimeList = []
               await this.getAuditBook(this.bookList[this.nowHIndex])
             }
@@ -197,7 +195,6 @@ export default {
       else this.selectTimeList.splice(this.selectTimeList.indexOf(id), 1)
     },
     previewAds(item) {
-      // console.log(item)
       this.previewDrawerVisible = true
       const { advertsId } = item
       this.carouselPreviewId = advertsId
@@ -319,6 +316,9 @@ export default {
                       </el-tag>
                       <el-tag v-else-if="time.bookState === BOOKSTATE.PLAYED" class="mr-2">
                         已播放
+                      </el-tag>
+                      <el-tag v-else-if="time.bookState === BOOKSTATE.ERROR" type="danger" class="mr-2">
+                        发布失败
                       </el-tag>
                       <div :class="time.bookState !== BOOKSTATE.REVIEW ? 'text-[#c0c4cc]' : ''">
                         {{ `${time._configStartTime}-${time._configEndTime}` }} <span>{{ `${time.advertsName || '暂无'}(${time.shopName || '暂无'})` }}</span>

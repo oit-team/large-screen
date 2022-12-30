@@ -58,3 +58,11 @@ export function getUserList(params) {
 export function delIssue(params) {
   return post('/task/taskManage/delIssue', params)
 }
+
+/**
+ *
+ * 获取商场列表
+ */
+export function getStoreList(params) {
+  return post('/system/org/getStoreList', params)
+}

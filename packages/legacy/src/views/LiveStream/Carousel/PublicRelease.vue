@@ -1,6 +1,6 @@
 <script>
 import dayjs from 'dayjs'
-import CarouselListDrawer from '../Carousel/ListDrawer'
+import CarouselListDrawer from '../Carousel/ListPublicDrawer'
 import { addBookInfo, getContextDeviceList, getIntegralPay, getIntervalHourConfig, getIntervalMinuteConfig, getShopByIntegralNum, getdateToWeek } from '@/api/publicRelease'
 
 const BOOKSTATE = {
@@ -46,6 +46,7 @@ export default {
       label: 'brandName',
     },
     nowHIndex: 0, // 当前选中的 小时
+    alipayForm: '',
   }),
   computed: {
     searchList() {
@@ -183,10 +184,26 @@ export default {
       this.$message({ message: '支付成功！', type: 'success' })
     },
 
+    // 支付宝支付
+    async getUseAliPay() {
+      const res = await getIntegralPay({
+        userId: sessionStorage.getItem('userId'),
+        bookId: this.bookId,
+        payType: 1,
+        payNum: 2,
+        returnNum: 2,
+        amount: this.bookPrice,
+      })
+      document.write(res.body.result)
+    },
+
     // 提交支付
     async toPaySubmit() {
       if (this.paymentRadio === 2) {
         this.getIntegralPay()
+      }
+      else {
+        this.getUseAliPay()
       }
       await this.getIntervalMinuteConfig()
     },
@@ -305,10 +322,19 @@ export default {
             支付积分：{{ payTotalIntegral }}
           </div>
         </div>
+        <div v-if="payTotalIntegral > integralNumber" class="text-sm text-red-400">
+          (*剩余积分不足以兑换)
+        </div>
         <div class="my-4">
           支付金额：{{ bookPrice }}
         </div>
-        <el-button :loading="payLoading" type="primary" size="mini" @click="toPaySubmit('form')">
+        <el-button
+          :disabled="paymentRadio === 2 && payTotalIntegral > integralNumber"
+          :loading="payLoading"
+          type="primary"
+          size="mini"
+          @click="toPaySubmit('form')"
+        >
           {{ paymentRadio === 2 ? '提交' : '下一步' }}
         </el-button>
       </div>

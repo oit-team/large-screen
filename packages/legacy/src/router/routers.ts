@@ -53,6 +53,22 @@ export const routes: RouteConfig[] = [
     },
   },
   {
+    path: '/live-stream/carousel/pay-success',
+    name: 'PaySuccess',
+    component: () => import ('@/views/LiveStream/Carousel/PaySuccess.vue'),
+    meta: {
+      keepAlive: false,
+    },
+  },
+  {
+    path: '/live-stream/carousel/pay-fail',
+    name: 'PayFailing',
+    component: () => import ('@/views/LiveStream/Carousel/PayFailing.vue'),
+    meta: {
+      keepAlive: false,
+    },
+  },
+  {
     path: '/live-stream/carousel-resources/upload',
     name: 'CarouselResourcesUpload',
     component: () => import ('@/views/LiveStream/CarouselResources/Upload.vue'),

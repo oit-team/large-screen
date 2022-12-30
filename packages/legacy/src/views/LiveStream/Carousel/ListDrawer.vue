@@ -15,14 +15,26 @@ export default {
 
   data: () => ({
     visible: false,
+    timeIsShow: false,
     data: {},
     selected: null,
+    selectTimeInterval: '',
+    pickerOptions: {
+      disabledDate(time) {
+        return time.getTime() <= (Date.now() - 24 * 60 * 60 * 1000)
+      },
+    },
   }),
 
   computed: {
     tablePageOption() {
       return {
         promise: this.loadData,
+        actions: [
+          {
+            slot: 'timeInterval',
+          },
+        ],
         search: {
           responsive: 'grid-cols-1 2xl:grid-cols-2',
         },
@@ -43,6 +55,8 @@ export default {
     },
   },
 
+  mounted() {
+  },
   methods: {
     async open() {
       this.selected = null
@@ -83,6 +97,9 @@ export default {
     close() {
       this.visible = false
     },
+    showTime() {
+      this.timeIsShow = true
+    },
     loadData(params) {
       return getAdvertsList({
         ...params,
@@ -93,7 +110,18 @@ export default {
       })
     },
     submit() {
-      this.$emit('submit', this.selected)
+      if (!this.selectTimeInterval && this.timeIsShow) {
+        this.$message({
+          message: '请先选择时间范围',
+          type: 'warning',
+        })
+        return
+      }
+      const obj = {
+        ...this.selected,
+        selectTimeInterval: this.selectTimeInterval,
+      }
+      this.$emit('submit', obj)
     },
   },
 }
@@ -102,7 +130,22 @@ export default {
 <template>
   <el-drawer :visible.sync="visible" size="70%" title="选择广告">
     <div v-if="visible" class="flex overflow-hidden h-full p-4">
-      <table-page v-bind="tablePageOption" ref="page" @current-change="selected = $event" />
+      <table-page v-bind="tablePageOption" ref="page" @current-change="selected = $event">
+        <template slot="actions:timeInterval">
+          <div v-if="timeIsShow" class="flex justify-center items-center">
+            <span><span class=" text-red-400">*</span>选择时间范围：</span>
+            <el-date-picker
+              v-model="selectTimeInterval"
+              :picker-options="pickerOptions"
+              value-format="yyyy-mm-dd HH:MM:SS"
+              type="datetimerange"
+              range-separator="-"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            />
+          </div>
+        </template>
+      </table-page>
 
       <carousel-preview class="ml-2" :option="carouselItemOption" :file-map="fileMap">
         <el-empty v-if="!selected" description="未选择广告" />

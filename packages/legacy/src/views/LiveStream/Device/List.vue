@@ -50,6 +50,7 @@ export default {
     shopForm: {
       selectedShopAddress: '',
     },
+    brandType: null,
     selectIsShop: false,
     shopRules: {
       shop: [
@@ -60,7 +61,6 @@ export default {
       ],
     },
   }),
-
   computed: {
     userData() {
       return this.$store.state.userData
@@ -132,7 +132,6 @@ export default {
       ].filter(item => !item.auth || this.userData.isMenagerRole > 0) // 权限验证，brandList不存在则视为无权限
     },
   },
-
   activated() {
     this.getBrandList()
     this.getDevTypeInfo()
@@ -146,6 +145,7 @@ export default {
       this.navLoading = true
       const res = await api.getBrandIdDevCount()
       this.brandList = res.body.resultList
+
       this.navLoading = false
     },
     async delDeviceInfo({ row: { devId } }) {
@@ -216,18 +216,35 @@ export default {
       this.selected = e || []
       if (!e.length) return
       this.devConfig = e[0].devConfig
+      // brandType 为1 选择广告时：显示时间选择器
+      if (e[0]?.brandType === 1)
+        this.$refs.carouselList.showTime()
     },
     openAssignAds() {
       if (this.$refs.page.checkSelected())
         this.$refs.carouselList.open()
     },
-    async assignAds({ advId }) {
+    async assignAds({ selectTimeInterval = {}, advId }) {
       if (!this.$refs.page.checkSelected()) return
 
       if (advId === 0) {
         await this.$confirm('确定要将所选设备恢复成默认内容吗？', '提示', {
           type: 'warning',
         })
+      }
+      if (selectTimeInterval) {
+        const [startTime, endTime] = selectTimeInterval
+        upDevAdverts({
+          advertsId: advId,
+          devIds: this.selected.map(item => item.devId),
+          startTime,
+          endTime,
+        }).then((res) => {
+          this.$message.success('设置成功')
+          this.selected[0].advertsId = advId
+          this.$refs.carouselList.close()
+        })
+        return
       }
 
       upDevAdverts({

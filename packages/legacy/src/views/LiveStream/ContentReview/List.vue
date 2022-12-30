@@ -39,6 +39,9 @@ export default {
       nowHIndex: 0, // 当前选中的  小时
       carouselPreviewId: '',
       showCalen: false,
+      hourLoading: false,
+      minuteLoading: false,
+      brandId: null,
     }
   },
   computed: {
@@ -77,6 +80,7 @@ export default {
       this.getIntervalHourConfig()
     },
     devId() {
+      console.log(this.devId)
       this.getDateToWeek()
     },
     // 获取的分钟  时间段
@@ -104,29 +108,39 @@ export default {
     async getDateToWeek() {
       const res = await api.getDateToWeek({
         time: this.nowTime,
+        brandId: this.brandId,
       })
       this.weekList = res.body.resultList
       this.selectTime = `${this.nowTime.getFullYear()}-${this.nowTime.getMonth() + 1}-${this.nowTime.getDate()}`
       this.getIntervalHourConfig()
     },
     async getIntervalHourConfig() {
+      this.hourLoading = true
       const res = await api.getIntervalHourConfig({
         time: `${this.selectTime} 08:00:00`,
         devId: this.devId,
+        brandId: this.brandId,
+      }).finally(() => {
+        this.hourLoading = false
       })
       this.bookList = res.body.resultList
       this.getAuditBook(this.bookList[0])
     },
     async getAuditBook(data) {
+      this.minuteLoading = true
       const res = await api.getAuditBook({
         startTime: data.startTime,
         endTime: data.endTime,
         devId: this.devId,
+        brandId: this.brandId,
+      }).finally(() => {
+        this.minuteLoading = false
       })
       this.moreTime = res.body.resultList
     },
     // 切换设备  左侧设备菜单
     handleNodeClick(data) {
+      this.brandId = data?.brandId
       if (data.devId) {
         this.devId = data.devId
       }
@@ -263,7 +277,7 @@ export default {
           <el-empty description="暂无数据" />
         </div>
         <div v-else class="w-full flex-1 flex">
-          <div class="flex flex-col w-1/3 gap-2">
+          <div v-loading="hourLoading" class="flex flex-col w-1/3 gap-2">
             <div
               v-for="(item, index) in bookMapList"
               :key="index"
@@ -281,7 +295,7 @@ export default {
             <div v-if="moreTime.length === 0" class="w-full text-center">
               <el-empty description="暂无数据" />
             </div>
-            <div v-else class="w-full h-full cursor-pointer flex flex-col justify-between pl-4 pt-4">
+            <div v-else v-loading="minuteLoading" class="w-full h-full cursor-pointer flex flex-col justify-between pl-4 pt-4">
               <el-timeline>
                 <el-timeline-item
                   v-for="(time, id) in moreTime"

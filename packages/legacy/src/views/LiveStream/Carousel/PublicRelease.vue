@@ -9,6 +9,7 @@ const BOOKSTATE = {
   PASS: 2, // 待支付
   PLAY: 3, // 待播放
   PLAYED: 4, // 已播放
+  FAIL: 5, // 发布失败
 }
 
 export default {
@@ -97,6 +98,7 @@ export default {
 
     // 获取小时
     async getIntervalHourConfig() {
+      this.onedayMinutesList = []
       this.hourLoading = true
       const res = await getIntervalHourConfig({
         time: `${this.selectWeekTime} 08:00:00`,
@@ -282,6 +284,9 @@ export default {
                     <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.PLAYED" type="success" class="mr-2">
                       已播放
                     </el-tag>
+                    <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.FAIL" type="danger" class="mr-2">
+                      发布失败
+                    </el-tag>
                     <div :class="onedayMinute.isAfter ? 'pastTime' : 'futureTime'">
                       {{ `${onedayMinute.configStartTime.slice(11, 16)}-${onedayMinute.configEndTime.slice(11, 16)}` }} <span v-if="onedayMinute.advertsName && onedayMinute.shopName ">{{ `${onedayMinute.advertsName}(${onedayMinute.shopName})` }}</span>
                     </div>
@@ -303,15 +308,32 @@ export default {
     </div>
     <carousel-list-drawer ref="carouselList" @submit="assignAds" />
 
-    <el-drawer title="支付" :visible.sync="paymentDrawer" size="30%">
+    <el-drawer title="支付" :visible.sync="paymentDrawer" size="40%">
       <div class="p-4">
-        <div>
+        <div class="flex items-center">
           <span>请选择支付方式：</span>
-          <el-radio-group v-model="paymentRadio">
-            <el-radio :label="1">
-              支付宝
+          <el-radio-group v-model="paymentRadio" class="flex radio items-center">
+            <el-radio :label="1" border class="flex">
+              <div class="imageAlipay">
+                <el-image
+                  width="50"
+                  height="20"
+                  fit="cover"
+                  :src="require('../Carousel/alipay.png')"
+                  mode="scaleToFill"
+                />
+              </div>
+              <div class="imageRecommed">
+                <el-image
+                  width="50"
+                  height="20"
+                  fit="cover"
+                  :src="require('../Carousel/recommend.png')"
+                  mode="scaleToFill"
+                />
+              </div>
             </el-radio>
-            <el-radio :label="2">
+            <el-radio :label="2" border class="flex">
               积分兑换
             </el-radio>
           </el-radio-group>
@@ -335,7 +357,7 @@ export default {
           size="mini"
           @click="toPaySubmit('form')"
         >
-          {{ paymentRadio === 2 ? '提交' : '下一步' }}
+          立即支付
         </el-button>
       </div>
     </el-drawer>
@@ -352,6 +374,27 @@ export default {
   }
   .el-button--text.payment{
     color: #E6A23C;
+  }
+  .el-radio__label .recommend{
+    font-size: 1px;
+  }
+  .el-radio__label .imageAlipay .el-image{
+    position: relative;
+    top: -8px;
+  }
+  .el-radio__label .imageAlipay .el-image img{
+   width: 80px;
+  }
+  .el-radio .el-radio__label{
+    display: flex;
+  }
+  .el-radio__label .imageRecommed .el-image{
+    position: relative;
+    top: -3px;
+    margin-left: 10px;
+  }
+  .el-radio__label .imageRecommed .el-image img{
+   width: 30px;
   }
 }
 

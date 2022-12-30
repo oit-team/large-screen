@@ -245,7 +245,7 @@ watch(shoppingCartDrawer, () => {
               :disabled="paymentRadio === 2 && totalIntegral > allIntegral"
               @click="addProcurementOrderData()"
             >
-              {{ paymentRadio === 2 ? '提交' : '下一步' }}
+              立即支付
             </ElButton>
           </div>
         </div>

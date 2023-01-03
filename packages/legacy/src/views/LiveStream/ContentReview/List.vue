@@ -11,6 +11,10 @@ const BOOKSTATE = {
   PLAYED: 4,
   ERROR: 5,
 }
+const HANDLETYPE = {
+  NOHANDLE: '轮播记录',
+  HANDLE: '内容审核',
+}
 
 export default {
   components: {
@@ -22,7 +26,7 @@ export default {
       navLoading: false,
       brandList: [],
       devId: '', // 设备id
-      selectContent: '轮播记录', // 内容展示
+      selectContent: HANDLETYPE.NOHANDLE, // 内容展示
       nowTime: new Date(), // 当前时间
       weekList: [],
       bookList: [],
@@ -34,6 +38,7 @@ export default {
       },
       carouselMapCache: {},
       BOOKSTATE,
+      HANDLETYPE,
       selectTimeList: [], // 最终提交时的数组
       previewDrawerVisible: false,
       // .....................
@@ -47,31 +52,14 @@ export default {
   computed: {
     bookMapList() {
       return this.bookList.map((item) => {
-        return {
-          startTime: item.startTime.substring(item.startTime.indexOf(' ') + 1, item.startTime.length),
-          endTime: item.endTime.substring(item.endTime.indexOf(' ') + 1, item.endTime.length),
-        }
+        item.startTime = item.startTime.substring(item.startTime.indexOf(' ') + 1, item.startTime.length)
+        item.endTime = item.endTime.substring(item.endTime.indexOf(' ') + 1, item.endTime.length)
+        return item
       })
     },
     searchList() {
-      // const allBrand = {
-      //   brandId: '',
-      //   brandName: '全部',
-      //   countNum: this.brandList
-      //     .reduce((accumulator, { countNum }) => accumulator + countNum, 0),
-      // }
-      //
-      // return [allBrand, ...this.brandList]
-      //   .filter(item => item.brandName.includes(this.search))
       return this.brandList.filter(item => item.brandName.includes(this.search))
     },
-    // moreTimeMap() {
-    //   const obj = {}
-    //   this.moreTime.forEach((item) => {
-    //     obj[item._label] = item
-    //   })
-    //   return obj
-    // },
   },
   watch: {
     selectTime() {
@@ -195,6 +183,15 @@ export default {
       if (e) this.selectTimeList.push(id)
       else this.selectTimeList.splice(this.selectTimeList.indexOf(id), 1)
     },
+    // 点击今天
+    changeToday() {
+      // 如果当前选择的日期是今天   return
+      const timer = `${new Date().getFullYear()}-${new Date().getMonth() + 1 < 10 ? `0${new Date().getMonth() + 1}` : new Date().getMonth() + 1}-${new Date().getDate() < 10 ? `0${new Date().getDate()}` : new Date().getDate()}`
+      if (this.selectTime === timer) return false
+      this.nowTime = new Date()
+      this.selectTime = `${this.nowTime.getFullYear()}-${this.nowTime.getMonth() + 1 < 10 ? `0${this.nowTime.getMonth() + 1}` : this.nowTime.getMonth() + 1}-${this.nowTime.getDate() < 10 ? `0${this.nowTime.getDate()}` : this.nowTime.getDate()}`
+      this.getDateToWeek()
+    },
     previewAds(item) {
       this.previewDrawerVisible = true
       const { advertsId } = item
@@ -244,8 +241,8 @@ export default {
       </div>
       <div v-else class="w-full h-full flex flex-col">
         <el-radio-group v-model="selectContent">
-          <el-radio-button label="轮播记录" />
-          <el-radio-button label="内容审核" />
+          <el-radio-button :label="HANDLETYPE.NOHANDLE" />
+          <el-radio-button :label="HANDLETYPE.HANDLE" />
         </el-radio-group>
 
         <el-divider />
@@ -259,6 +256,9 @@ export default {
             />
           </el-radio-group>
           <div class="flex items-center px-2">
+            <el-button type="text" class="mr-2" @click="changeToday">
+              今天
+            </el-button>
             <el-date-picker
               v-model="nowTime"
               type="date"
@@ -271,8 +271,8 @@ export default {
         <div v-if="bookMapList.length === 0" class="w-full flex-1">
           <el-empty description="暂无数据" />
         </div>
-        <div v-else class="w-full flex-1 flex">
-          <div v-loading="hourLoading" class="flex flex-col px-2 gap-2">
+        <div v-else class="w-full flex-1 flex ">
+          <div v-loading="hourLoading" class="flex flex-col px-2 gap-y-2 flex-shrink-0">
             <div
               v-for="(item, index) in bookMapList"
               :key="index"
@@ -280,7 +280,7 @@ export default {
               :class="nowHIndex === index ? 'bg-[#5c96fd] text-white rounded-md' : ''"
               @click="changeTime(index)"
             >
-              {{ item.startTime }}
+              {{ item.startTime }}(已预定：{{ item.auditStateNum || 0 }} 待审核：{{ item.bookStateNum || 0 }})
             </div>
           </div>
 
@@ -322,7 +322,7 @@ export default {
                         {{ `${time._configStartTime}-${time._configEndTime}` }} <span>{{ `${time.advertsName || '暂无'}(${time.shopName || '暂无'})` }}</span>
                       </div>
                       <el-checkbox
-                        v-if="selectContent === '内容审核'"
+                        v-if="selectContent === HANDLETYPE.HANDLE"
                         v-model="time._check"
                         :disabled="time.bookState !== 1"
                         class="mx-2"
@@ -336,7 +336,7 @@ export default {
                         预览
                       </el-button>
 
-                      <div v-if="time.bookState === BOOKSTATE.REVIEW && selectContent === '内容审核'" class="flex gap-2 ml-4">
+                      <div v-if="time.bookState === BOOKSTATE.REVIEW && selectContent === HANDLETYPE.HANDLE" class="flex gap-2 ml-4">
                         <el-button type="success" icon="el-icon-check" size="mini" circle @click="updateBookInfo(2, time.bookId)" />
                         <el-button type="danger" icon="el-icon-close" size="mini" circle @click="updateBookInfo(0, time.bookId)" />
                       </div>
@@ -345,7 +345,7 @@ export default {
                 </el-timeline-item>
               </el-timeline>
 
-              <div v-if="selectContent === '内容审核'" class="w-full p-2 box-border">
+              <div v-if="selectContent === HANDLETYPE.HANDLE" class="w-full p-2 box-border">
                 <div class="flex justify-around w-full items-center py-4">
                   <el-button type="primary" @click="updateBookInfo(2)">
                     通过

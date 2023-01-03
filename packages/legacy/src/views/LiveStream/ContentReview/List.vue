@@ -39,7 +39,6 @@ export default {
       // .....................
       nowHIndex: 0, // 当前选中的  小时
       carouselPreviewId: '',
-      showCalen: false,
       hourLoading: false,
       minuteLoading: false,
       brandId: null,
@@ -110,9 +109,8 @@ export default {
         time: this.nowTime,
         brandId: this.brandId,
       })
+      this.selectTime = `${this.nowTime.getFullYear()}-${this.nowTime.getMonth() + 1 < 10 ? `0${this.nowTime.getMonth() + 1}` : this.nowTime.getMonth() + 1}-${this.nowTime.getDate() < 10 ? `0${this.nowTime.getDate()}` : this.nowTime.getDate()}`
       this.weekList = res.body.resultList
-      this.selectTime = `${this.nowTime.getFullYear()}-${this.nowTime.getMonth() + 1}-${this.nowTime.getDate()}`
-      this.getIntervalHourConfig()
     },
     async getIntervalHourConfig() {
       this.hourLoading = true
@@ -152,7 +150,10 @@ export default {
     },
     // 提交审核  通过/拒绝
     async updateBookInfo(state, id) {
-      if (this.selectTimeList?.length === 0 && !id) return
+      if (this.selectTimeList?.length === 0 && !id) {
+        this.$message.warning('未选择项')
+        return
+      }
       if (state === 0) {
         this.$prompt('请限制在30字以内', '拒绝原因', {
           confirmButtonText: '确定',
@@ -207,11 +208,8 @@ export default {
         this.$set(this.carouselMapCache, advertsId, item)
       })
     },
-    chickCalen() {
-      this.showCalen = true
-    },
     changePickerTime(e) {
-      this.selectTime = `${e.getFullYear()}-${e.getMonth() + 1}-${e.getDate()}`
+      this.selectTime = `${e.getFullYear()}-${e.getMonth() + 1 < 10 ? `0${e.getMonth() + 1}` : e.getMonth() + 1}-${e.getDate() < 10 ? `0${e.getDate()}` : e.getDate()}`
       this.getDateToWeek()
     },
   },
@@ -260,7 +258,7 @@ export default {
               :label="item"
             />
           </el-radio-group>
-          <div class="flex items-center px-2" @click="chickCalen">
+          <div class="flex items-center px-2">
             <el-date-picker
               v-model="nowTime"
               type="date"
@@ -274,15 +272,15 @@ export default {
           <el-empty description="暂无数据" />
         </div>
         <div v-else class="w-full flex-1 flex">
-          <div v-loading="hourLoading" class="flex flex-col w-1/3 gap-2">
+          <div v-loading="hourLoading" class="flex flex-col px-2 gap-2">
             <div
               v-for="(item, index) in bookMapList"
               :key="index"
-              class="cursor-pointer py-2 w-full rounded-md text-center bindHover"
+              class="cursor-pointer p-2 box-border w-full rounded-md text-center bindHover"
               :class="nowHIndex === index ? 'bg-[#5c96fd] text-white rounded-md' : ''"
               @click="changeTime(index)"
             >
-              {{ item.startTime }}-{{ item.endTime }}
+              {{ item.startTime }}
             </div>
           </div>
 

@@ -30,6 +30,7 @@ export default {
       nowTime: new Date(), // 当前时间
       weekList: [],
       bookList: [],
+      bookMapList: [],
       moreTime: [],
       selectTime: '', // 选中的日期 2022-08-08  年月日
       defaultProps: {
@@ -50,13 +51,6 @@ export default {
     }
   },
   computed: {
-    bookMapList() {
-      return this.bookList.map((item) => {
-        item.startTime = item.startTime.substring(item.startTime.indexOf(' ') + 1, item.startTime.length)
-        item.endTime = item.endTime.substring(item.endTime.indexOf(' ') + 1, item.endTime.length)
-        return item
-      })
-    },
     searchList() {
       return this.brandList.filter(item => item.brandName.includes(this.search))
     },
@@ -66,6 +60,14 @@ export default {
       this.moreTime = []
       this.nowHIndex = 0
       this.getIntervalHourConfig()
+    },
+    bookList() {
+      this.bookList.forEach((item) => {
+        const obj = JSON.parse(JSON.stringify(item))
+        obj.startTime = item.startTime.substring(item.startTime.indexOf(' ') + 1, item.startTime.length)
+        obj.endTime = item.endTime.substring(item.endTime.indexOf(' ') + 1, item.endTime.length)
+        this.bookMapList.push(obj)
+      })
     },
     devId() {
       this.getDateToWeek()
@@ -134,6 +136,9 @@ export default {
     // 点击 左侧 小时
     changeTime(e) {
       this.nowHIndex = e
+      console.log(e)
+      console.log(this.bookList)
+      console.log(this.bookMapList)
       this.getAuditBook(this.bookList[e])
     },
     // 提交审核  通过/拒绝
@@ -263,6 +268,7 @@ export default {
               v-model="nowTime"
               type="date"
               placeholder="选择日期"
+              :clearable="false"
               @change="changePickerTime"
             />
           </div>
@@ -280,7 +286,7 @@ export default {
               :class="nowHIndex === index ? 'bg-[#5c96fd] text-white rounded-md' : ''"
               @click="changeTime(index)"
             >
-              {{ item.startTime }}(已预定：{{ item.auditStateNum || 0 }} 待审核：{{ item.bookStateNum || 0 }})
+              {{ item.startTime }}(待预定：{{ item.bookStateNum || 0 }} 待审核：{{ item.auditStateNum || 0 }})
             </div>
           </div>
 
@@ -300,6 +306,13 @@ export default {
                 >
                   <div class="flex items-center">
                     <div class="flex w-1/2 items-center">
+                      <el-checkbox
+                        v-if="selectContent === HANDLETYPE.HANDLE"
+                        v-model="time._check"
+                        :disabled="time.bookState !== 1"
+                        class="mx-2"
+                        @change="changeCheck($event, time.bookId)"
+                      />
                       <el-tag v-if="time.bookState === BOOKSTATE.EMPTY" class="mr-2">
                         待预约
                       </el-tag>
@@ -321,13 +334,6 @@ export default {
                       <div :class="time.bookState !== BOOKSTATE.REVIEW ? 'text-[#c0c4cc]' : ''">
                         {{ `${time._configStartTime}-${time._configEndTime}` }} <span>{{ `${time.advertsName || '暂无'}(${time.shopName || '暂无'})` }}</span>
                       </div>
-                      <el-checkbox
-                        v-if="selectContent === HANDLETYPE.HANDLE"
-                        v-model="time._check"
-                        :disabled="time.bookState !== 1"
-                        class="mx-2"
-                        @change="changeCheck($event, time.bookId)"
-                      />
                     </div>
 
                     <!--  操作部分 -->

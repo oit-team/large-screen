@@ -102,6 +102,7 @@ export default {
         shopCode: '',
         storeId: '',
       },
+      shopStore: false, // 编辑店铺时是否禁用 选择商场选项
       shopRules: {
         shopName: [
           { required: true, message: '请输入店铺名称', trigger: 'blur' },
@@ -1972,6 +1973,8 @@ export default {
         this.editShop = true
         this.editArea = false
 
+        this.shopStore = !!this.nodeInfo.storeId
+
         this.shopForm.shopName = this.nodeInfo.osName
         this.shopForm.address = this.nodeInfo.address
         if (this.nodeInfo.gradeId) {
@@ -1988,6 +1991,9 @@ export default {
         this.shopForm.storeId = Number(this.nodeInfo.storeId)
         if (this.shopForm.orgStId == 0) {
           this.shopForm.orgStId = null
+        }
+        if (this.shopForm.storeId == 0) {
+          this.shopForm.storeId = null
         }
       }
       else if (this.nodeInfo.isShop == '0') { // 区域
@@ -2180,6 +2186,7 @@ export default {
             gradeId: _this.shopForm.gradeId,
             telephone: _this.shopForm.telephone,
             orgStId,
+            storeId: _this.shopForm.storeId,
             openDate: _this.shopForm.openDate,
             shopCode: _this.shopForm.shopCode,
             userId: sessionStorage.userId,
@@ -2247,6 +2254,7 @@ export default {
               telephone: _this.shopForm.telephone,
               openDate: _this.shopForm.openDate,
               shopCode: _this.shopForm.shopCode,
+              storeId: _this.shopForm.storeId,
             }
           }
           else if (_this.nodeInfo.isShop == '0') {
@@ -2263,7 +2271,7 @@ export default {
               dutyId: _this.areaForm.dutyId,
             }
           }
-          // // console.log("----编辑con---",con)
+          // console.log("----编辑con---",con)
           const jsonParam = _this.GLOBAL.g_paramJson(con)
           _this.$axios.post(`${_this.GLOBAL.system_manager_server}/org/updateShopOrOrgById`, jsonParam).then((res) => {
             // // console.log("====确认编辑接口==========",res.data.body);   // 成功时 body为null
@@ -2305,10 +2313,6 @@ export default {
       // // console.log("=====店铺所属区域id======",val);
       this.shopForm.orgStId = val
     },
-    // changeStore(val) {
-    //   // // console.log("=====店铺所属区域id======",val);
-    //   this.shopForm.orgStId = val
-    // },
     // 更换区域负责人
     changeAreaManger(val) {
       this.areaForm.dutyId = val
@@ -2738,7 +2742,7 @@ export default {
                 </el-select>
               </el-form-item>
               <el-form-item label="所属商场" :label-width="formLabelWidth">
-                <el-select v-model="shopForm.storeId" filterable placeholder="请选择所属商场">
+                <el-select v-model="shopForm.storeId" filterable clearable placeholder="请选择所属商场">
                   <el-option
                     v-for="item in marketList"
                     :key="item.storeId"
@@ -2836,7 +2840,7 @@ export default {
                 </el-select>
               </el-form-item>
               <el-form-item label="所属商场" :label-width="formLabelWidth">
-                <el-select v-model="shopForm.storeId" :disabled="shopForm.storeId" filterable placeholder="请选择所属商场">
+                <el-select v-model="shopForm.storeId" :disabled="shopStore" clearable filterable placeholder="请选择所属商场">
                   <el-option
                     v-for="item in marketList"
                     :key="item.storeId"

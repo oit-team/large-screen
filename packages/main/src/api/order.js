@@ -16,3 +16,7 @@ export function dictitemInfoAllMethod(params) {
     cmd: 100009,
   })
 }
+
+export function alipay(params) {
+  return post('/system/pay/alipay', params)
+}

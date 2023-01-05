@@ -1,5 +1,5 @@
 <script>
-import { dictitemInfoAllMethod, getProcurementOrderList } from '@/api/order'
+import { alipay, dictitemInfoAllMethod, getProcurementOrderList } from '@/api/order'
 
 export default {
   name: 'OrderList',
@@ -35,6 +35,13 @@ export default {
                   query: { orderId: row.orderId },
                 }),
               },
+              {
+                tip: '去支付',
+                type: 'warning',
+                icon: 'el-icon-wallet',
+                disabled: ({ row }) => row.orderState !== 0,
+                click: this.submitAlipay,
+              },
             ],
           },
         },
@@ -55,6 +62,7 @@ export default {
       })
       this.data = res.body
     },
+
     // 根据字典项查询订单状态
     async getOrderStateList() {
       const res = await dictitemInfoAllMethod({
@@ -66,6 +74,16 @@ export default {
         optionKey: item.dictitemCode,
         optionValue: item.dicttimeDisplayName,
       }))
+    },
+
+    async submitAlipay({ row }) {
+      const res = await alipay({
+        shopId: row.shopId,
+        amount: row.orderMoney,
+        payNum: 1,
+        returnNum: 1,
+      })
+      document.write(res.body.result)
     },
   },
 }

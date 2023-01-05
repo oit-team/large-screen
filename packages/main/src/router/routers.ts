@@ -93,6 +93,18 @@ export const routes: RouteConfig[] = [
         name: 'PublicList',
         component: () => import('@/views/PublicJackpot/PublicList.vue'),
       },
+      // 支付成功
+      {
+        path: '/jackpot/pay-success',
+        name: 'PurchasePaySuccess',
+        component: () => import('@/views/Jackpot/components/purchasePaySuccess.vue'),
+      },
+      // 支付失败
+      {
+        path: '/jackpot/pay-fail',
+        name: 'PurchasePayFail',
+        component: () => import('@/views/Jackpot/components/purchasePayFail.vue'),
+      },
       // 核销记录
       {
         path: '/jackpot/LotteryRecordList',

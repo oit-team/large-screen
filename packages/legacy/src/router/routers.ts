@@ -191,4 +191,22 @@ export const routes: RouteConfig[] = [
       requiresAuth: true,
     },
   },
+  {
+    path: '/brand/pay-success',
+    name: 'IntegralPaySuccess',
+    component: () => import ('@/components/brand/integralPaySuccess.vue'),
+    meta: {
+      keepAlive: false,
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/brand/pay-fail',
+    name: 'IntegralPayFail',
+    component: () => import ('@/components/brand/integralPayFail.vue'),
+    meta: {
+      keepAlive: false,
+      requiresAuth: true,
+    },
+  },
 ]

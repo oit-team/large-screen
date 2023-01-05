@@ -1,5 +1,7 @@
 <script>
 import { keyBy } from 'lodash-es'
+// import { TIME_LINE_STYLE } from '../Carousel/PublicRelease.vue'
+import toApprove from '@/assets/icons/toApprove.svg'
 import * as api from '@/api/liveStream'
 import CarouselPreview from '@/components/business/CarouselPreview'
 
@@ -11,6 +13,40 @@ const BOOKSTATE = {
   PLAYED: 4,
   ERROR: 5,
 }
+
+const TIME_LINE_STYLE = {
+  [BOOKSTATE.EMPTY]: {
+    icon: 'el-icon-time',
+    color: '#409EFF',
+    type: 'el',
+  },
+  [BOOKSTATE.REVIEW]: {
+    icon: toApprove,
+    color: '#909399',
+    type: 'svg',
+  },
+  [BOOKSTATE.PASS]: {
+    icon: 'el-icon-circle-check',
+    color: '#67C23A',
+    type: 'el',
+  },
+  [BOOKSTATE.PLAY]: {
+    icon: 'el-icon-video-play',
+    color: '#409EFF',
+    type: 'el',
+  },
+  [BOOKSTATE.PLAYED]: {
+    icon: 'el-icon-circle-check',
+    color: '#67C23A',
+    type: 'el',
+  },
+  [BOOKSTATE.ERROR]: {
+    icon: 'el-icon-warning-outline',
+    color: '#F56C6C',
+    type: 'el',
+  },
+}
+
 const HANDLETYPE = {
   NOHANDLE: '轮播记录',
   HANDLE: '内容审核',
@@ -22,6 +58,7 @@ export default {
   },
   data() {
     return {
+      TIME_LINE_STYLE,
       search: '',
       navLoading: false,
       brandList: [],
@@ -62,6 +99,7 @@ export default {
       this.getIntervalHourConfig()
     },
     bookList() {
+      this.bookMapList = []
       this.bookList.forEach((item) => {
         const obj = JSON.parse(JSON.stringify(item))
         obj.startTime = item.startTime.substring(item.startTime.indexOf(' ') + 1, item.startTime.length)
@@ -82,8 +120,7 @@ export default {
       })
     },
   },
-  created() {
-  },
+
   async activated() {
     await this.getBrandList()
   },
@@ -136,15 +173,12 @@ export default {
     // 点击 左侧 小时
     changeTime(e) {
       this.nowHIndex = e
-      console.log(e)
-      console.log(this.bookList)
-      console.log(this.bookMapList)
       this.getAuditBook(this.bookList[e])
     },
     // 提交审核  通过/拒绝
     async updateBookInfo(state, id) {
       if (this.selectTimeList?.length === 0 && !id) {
-        this.$message.warning('未选择项')
+        this.$message.warning('请至少勾选一项！')
         return
       }
       if (state === 0) {
@@ -304,6 +338,10 @@ export default {
                   size="large"
                   hide-timestamp
                 >
+                  <template #dot>
+                    <i v-if="TIME_LINE_STYLE[time.bookState].type === 'el'" :class="TIME_LINE_STYLE[time.bookState].icon" :style="{ backgroundColor: TIME_LINE_STYLE[time.bookState].color, color: '#fff', borderRadius: '50%' }" />
+                    <img v-if="TIME_LINE_STYLE[time.bookState].type === 'svg'" :src="TIME_LINE_STYLE[time.bookState].icon" :style="{ backgroundColor: TIME_LINE_STYLE[time.bookState].color }" class="w-[24px] h-[24px]">
+                  </template>
                   <div class="flex items-center">
                     <div class="flex w-1/2 items-center">
                       <el-checkbox
@@ -334,14 +372,13 @@ export default {
                       <div :class="time.bookState !== BOOKSTATE.REVIEW ? 'text-[#c0c4cc]' : ''">
                         {{ `${time._configStartTime}-${time._configEndTime}` }} <span>{{ `${time.advertsName || '暂无'}(${time.shopName || '暂无'})` }}</span>
                       </div>
+                      <el-button v-if="time.bookState !== BOOKSTATE.EMPTY" class="ml-4" type="text" size="mini" @click="previewAds(time)">
+                        预览
+                      </el-button>
                     </div>
 
                     <!--  操作部分 -->
                     <div class="flex items-center">
-                      <el-button v-if="time.bookState !== BOOKSTATE.EMPTY" type="primary" size="mini" plain @click="previewAds(time)">
-                        预览
-                      </el-button>
-
                       <div v-if="time.bookState === BOOKSTATE.REVIEW && selectContent === HANDLETYPE.HANDLE" class="flex gap-2 ml-4">
                         <el-button type="success" icon="el-icon-check" size="mini" circle @click="updateBookInfo(2, time.bookId)" />
                         <el-button type="danger" icon="el-icon-close" size="mini" circle @click="updateBookInfo(0, time.bookId)" />
@@ -380,9 +417,25 @@ export default {
   </div>
 </template>
 
-<style scoped>
-::v-deep .el-timeline-item__wrapper{
+<style lang='scss' scoped>
+::v-deep {
+  .el-button--text{
+    text-decoration: underline;
+  }
+  .el-timeline-item__wrapper{
     top: -10px;
+  }
+  .el-timeline-item__dot{
+    position: absolute;
+    top: -6px;
+    left: -6px;
+  }
+  .el-timeline-item__dot img{
+    border-radius: 50%;
+  }
+  .el-timeline-item__dot i{
+    font-size: 24px;
+  }
 }
 .bindHover:hover{
     background-color: #9cc1fc;

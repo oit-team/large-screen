@@ -1,6 +1,11 @@
 <script>
 import dayjs from 'dayjs'
+import { keyBy } from 'lodash-es'
 import CarouselListDrawer from '../Carousel/ListPublicDrawer'
+import * as api from '@/api/liveStream'
+import CarouselPreview from '@/components/business/CarouselPreview'
+import toPay from '@/assets/icons/toPay.svg'
+import toApprove from '@/assets/icons/toApprove.svg'
 import { addBookInfo, getContextDeviceList, getIntegralPay, getIntervalHourConfig, getIntervalMinuteConfig, getShopByIntegralNum, getdateToWeek } from '@/api/publicRelease'
 
 const BOOKSTATE = {
@@ -12,20 +17,59 @@ const BOOKSTATE = {
   FAIL: 5, // 发布失败
 }
 
+export const TIME_LINE_STYLE = {
+  [BOOKSTATE.EMPTY]: {
+    icon: 'el-icon-time',
+    color: '#409EFF',
+    type: 'el',
+  },
+  [BOOKSTATE.REVIEW]: {
+    icon: toApprove,
+    color: '#909399',
+    type: 'svg',
+  },
+  [BOOKSTATE.PASS]: {
+    icon: toPay,
+    color: '#E6A23C',
+    type: 'svg',
+  },
+  [BOOKSTATE.PLAY]: {
+    icon: 'el-icon-video-play',
+    color: '#409EFF',
+    type: 'el',
+  },
+  [BOOKSTATE.PLAYED]: {
+    icon: 'el-icon-circle-check',
+    color: '#67C23A',
+    type: 'el',
+  },
+  [BOOKSTATE.FAIL]: {
+    icon: 'el-icon-warning-outline',
+    color: '#F56C6C',
+    type: 'el',
+  },
+}
+
 export default {
   name: 'PublicRelease',
   components: {
     CarouselListDrawer,
+    CarouselPreview,
   },
 
   data: () => ({
     BOOKSTATE,
+    TIME_LINE_STYLE,
     paymentDrawer: false,
     navLoading: false,
     minuteLoading: false,
     payLoading: false,
     hourLoading: false,
+    previewDrawerVisible: false,
 
+    carouselMapCache: {},
+    carouselPreviewId: '',
+    checkList: [],
     deviceList: [],
     weekTimeList: [],
     onedayHoursList: [],
@@ -58,12 +102,12 @@ export default {
     selectDate(newVal, oldVal) {
       this.selectWeekTime = newVal || dayjs().format('YYYY-MM-DD')
       this.onedayMinutesList = []
+      this.nowHIndex = 0
       this.getdateToWeek()
       this.getIntervalHourConfig()
     },
   },
   mounted() {
-    this.getdateToWeek()
     this.getContextDeviceList()
   },
   methods: {
@@ -93,22 +137,29 @@ export default {
       if (data?.devId) {
         this.brandIdNav = data.devId
         this.getIntervalHourConfig()
+        this.getdateToWeek()
       }
     },
 
     // 获取小时
     async getIntervalHourConfig() {
       this.onedayMinutesList = []
+      this.nowHIndex = 0
       this.hourLoading = true
       const res = await getIntervalHourConfig({
         time: `${this.selectWeekTime} 08:00:00`,
         devId: this.brandIdNav,
+        brandId: this.brandId,
       }).finally(() => { this.hourLoading = false })
 
       this.onedayHoursList = res.body.resultList.map((item) => {
         item.isAfter = dayjs().isAfter(dayjs(item.endTime))
         return item
       })
+      const initOneDayHour = this.onedayHoursList
+      if (this.nowHIndex === 0) {
+        this.getIntervalMinuteConfig(initOneDayHour[0])
+      }
     },
 
     // 点击左侧小时
@@ -116,21 +167,22 @@ export default {
       this.nowHIndex = index
       this.startTime = item.startTime
       this.endTime = item.endTime
-      this.getIntervalMinuteConfig()
+      this.getIntervalMinuteConfig(item)
     },
 
     // 获取分钟
-    async getIntervalMinuteConfig() {
+    async getIntervalMinuteConfig(item) {
       this.minuteLoading = true
       const res = await getIntervalMinuteConfig({
-        startTime: this.startTime,
-        endTime: this.endTime,
+        startTime: item.startTime,
+        endTime: item.endTime,
         devId: this.brandIdNav,
         brandId: this.brandId,
       }).finally(() => this.minuteLoading = false)
 
       this.onedayMinutesList = res.body.resultList.map((item) => {
         item.isAfter = dayjs().isAfter(dayjs(item.configStartTime))
+        this.$set(item, '_check', false)
         return item
       })
     },
@@ -145,17 +197,23 @@ export default {
     async assignAds({ advId }) {
       this.minuteLoading = true
       addBookInfo({
-        bookIds: [{
-          bookConnfigId: this.bookConnfigId,
-          advertsId: advId,
-        }],
+        bookIds: this.checkList.length ? this.checkList : [this.bookConnfigId],
+        advertsId: advId,
         devId: this.brandIdNav,
         brandId: this.brandId,
       }).then(() => {
-        this.$message.success('设置成功')
+        this.$message.success('预约成功！')
         this.$refs.carouselList.close()
-        this.getIntervalMinuteConfig()
-      }).finally(() => { this.minuteLoading = false })
+        this.getIntervalMinuteConfig(this.onedayHoursList[this.nowHIndex])
+        this.checkList = []
+      }).catch((err) => {
+        this.$message({
+          message: err.message,
+          type: 'warning',
+        })
+      }).finally(() => {
+        this.minuteLoading = false
+      })
     },
 
     // 点击去支付按钮
@@ -164,6 +222,25 @@ export default {
       this.bookId = onedayMinute.bookId
       this.bookPrice = onedayMinute.bookPrice
       await this.getShopByIntegralNum()
+    },
+
+    previewAds(item) {
+      this.previewDrawerVisible = true
+      const { advertsId } = item
+      this.carouselPreviewId = advertsId
+      !this.carouselMapCache[advertsId] && api.getAdvertsById({
+        advId: advertsId,
+      }).then((res) => {
+        const item = res.body
+        item.rotationRules = JSON.parse(item.rotationRules)
+        item.resEntityMap = keyBy(item.resEntityList, 'id')
+        this.$set(this.carouselMapCache, advertsId, item)
+      })
+    },
+
+    changeCheck(e, id) {
+      if (e) this.checkList.push(id)
+      else this.checkList.splice(this.checkList.indexOf(id), 1)
     },
 
     // 获取积分数
@@ -207,7 +284,16 @@ export default {
       else {
         this.getUseAliPay()
       }
-      await this.getIntervalMinuteConfig()
+      await this.getIntervalMinuteConfig(this.onedayHoursList[this.nowHIndex])
+    },
+
+    async batchAppoint() {
+      if (this.checkList?.length === 0) {
+        this.$message.warning('请至少勾选一项！')
+        return
+      }
+
+      await this.openListDrawer()
     },
   },
 
@@ -227,7 +313,7 @@ export default {
         <el-tree :data="searchList" :props="defaultProps" highlight-current @node-click="handleNodeClick" />
       </div>
     </div>
-    <div class="w-full flex flex-col">
+    <div v-if="weekTimeList.length > 0" class="w-full flex flex-col">
       <div class="flex">
         <div class="w-5/6">
           <el-radio-group v-model="selectWeekTime" @change="getIntervalHourConfig">
@@ -245,30 +331,41 @@ export default {
         </div>
       </div>
       <div class="flex-1 p-2 py-8 flex">
-        <div v-if="onedayHoursList.length > 0" v-loading="hourLoading" class="w-1/3 h-full px-4">
+        <div v-if="onedayHoursList.length > 0" v-loading="hourLoading" class="w-1/4 h-full px-2">
           <div
             v-for="(item, index) in onedayHoursList"
             :key="index"
-            class="cursor-pointer py-2 w-full rounded-md text-center bindHover"
+            class="cursor-pointer p-2 box-border w-full rounded-md text-center bindHover"
             :class="nowHIndex === index ? 'bg-[#5c96fd] text-white rounded-md' : ''"
             @click="changeTime(item, index)"
           >
-            {{ item.startTime.slice(11) }}-{{ item.endTime.slice(11) }}
+            {{ `${item.startTime.slice(11)}` }}
+            <span class="text-xs">（待预约：<span :class="nowHIndex === index ? 'text-white' : 'text-[#409EFF]'">{{ `${item.bookStateNum}` }}）</span></span>
           </div>
         </div>
         <el-empty v-else class="w-full" :image-size="100" description="暂无数据" />
         <el-divider class="h-full" direction="vertical" />
-        <div v-loading="minuteLoading" class="w-2/3">
-          <div v-if="onedayMinutesList.length > 0" class="w-full h-full cursor-pointer flex flex-col justify-between pl-4 pt-8">
+        <div v-loading="minuteLoading" class="w-full">
+          <div v-if="onedayMinutesList.length > 0" class="w-full h-full cursor-pointer flex flex-col pl-4 pt-8">
             <el-timeline>
               <el-timeline-item
                 v-for="onedayMinute in onedayMinutesList"
                 :key="onedayMinute.bookConnfigId"
-                size="normal"
+                size="large"
                 hide-timestamp
               >
+                <template #dot>
+                  <i v-if="TIME_LINE_STYLE[onedayMinute.bookState].type === 'el'" :class="TIME_LINE_STYLE[onedayMinute.bookState].icon" :style="{ backgroundColor: TIME_LINE_STYLE[onedayMinute.bookState].color, color: '#fff', borderRadius: '50%' }" />
+                  <img v-if="TIME_LINE_STYLE[onedayMinute.bookState].type === 'svg'" :src="TIME_LINE_STYLE[onedayMinute.bookState].icon" :style="{ backgroundColor: TIME_LINE_STYLE[onedayMinute.bookState].color }" class="w-[24px] h-[24px]">
+                </template>
                 <div class="flex items-center">
                   <div class="flex items-center">
+                    <el-checkbox
+                      v-model="onedayMinute._check"
+                      :disabled="onedayMinute.bookState !== 0 || onedayMinute.isAfter"
+                      class="mx-2"
+                      @change="changeCheck($event, onedayMinute.bookConnfigId)"
+                    />
                     <el-tag v-if="onedayMinute.bookState === BOOKSTATE.EMPTY" type="primary" class="mr-2">
                       待预约
                     </el-tag>
@@ -288,30 +385,52 @@ export default {
                       发布失败
                     </el-tag>
                     <div :class="onedayMinute.isAfter ? 'pastTime' : 'futureTime'">
-                      {{ `${onedayMinute.configStartTime.slice(11, 16)}-${onedayMinute.configEndTime.slice(11, 16)}` }} <span v-if="onedayMinute.advertsName && onedayMinute.shopName ">{{ `${onedayMinute.advertsName}(${onedayMinute.shopName})` }}</span>
+                      {{ `${onedayMinute.configStartTime.slice(11, 16)}-${onedayMinute.configEndTime.slice(11, 16)}` }}
+                      (<span :class="onedayMinute.isAfter ? 'pastTime text-xs' : 'futureMoney  text-xs'">￥{{ `${onedayMinute.bookPrice}` }}</span>)
+                      <span v-if="onedayMinute.advertsName && onedayMinute.shopName " class="ml-4">{{ `${onedayMinute.advertsName}(${onedayMinute.shopName})` }}</span>
                     </div>
                     <span v-if="onedayMinute.bookState === BOOKSTATE.REVIEW" :class="onedayMinute.isAfter ? 'pastTime' : 'futureTime'" class="ml-6 text-xs">{{ onedayMinute.remarks }}</span>
-                    <el-button v-if="onedayMinute.bookState === BOOKSTATE.EMPTY" :disabled="onedayMinute.isAfter" class="ml-4 appointmentTime" type="text" size="mini" @click="openListDrawer(onedayMinute.bookConnfigId)">
+                    <el-button v-if="onedayMinute.bookState === BOOKSTATE.EMPTY" :disabled="onedayMinute.isAfter" class="ml-4" type="text" size="mini" @click="openListDrawer(onedayMinute.bookConnfigId)">
                       预约
                     </el-button>
                     <el-button v-if="onedayMinute.isPay === BOOKSTATE.REVIEW && onedayMinute.bookState === BOOKSTATE.PASS" :disabled="onedayMinute.isAfter" class="ml-4 payment" type="text" size="mini" @click="handleClickPay(onedayMinute)">
                       去支付
                     </el-button>
+                    <el-button v-if="onedayMinute.bookState > BOOKSTATE.EMPTY" class="ml-4" type="text" size="mini" @click="previewAds(onedayMinute)">
+                      预览
+                    </el-button>
                   </div>
                 </div>
               </el-timeline-item>
             </el-timeline>
+
+            <div class="w-full p-2 box-border">
+              <div class="w-full items-center py-4">
+                <el-button type="primary" size="medium" @click="batchAppoint()">
+                  批量预约
+                </el-button>
+                <!-- <el-button type="info" size="medium" @click="cancelAppoint()">
+                  取消
+                </el-button> -->
+              </div>
+            </div>
           </div>
-          <el-empty v-else class="w-full h-full" :image-size="100" description="暂无数据" />
+          <el-empty v-else class="w-full h-full flex justify-center items-center" :image-size="100" description="暂无数据" />
         </div>
       </div>
     </div>
+    <el-empty v-else description="暂无数据" class="w-full h-full flex justify-center items-center" />
     <carousel-list-drawer ref="carouselList" @submit="assignAds" />
 
     <el-drawer title="支付" :visible.sync="paymentDrawer" size="40%">
-      <div class="p-4">
-        <div class="flex items-center">
-          <span>请选择支付方式：</span>
+      <div class="px-4">
+        <div>
+          支付金额：￥{{ bookPrice }}
+        </div>
+        <div class="my-4">
+          <div class="my-2">
+            支付方式：
+          </div>
           <el-radio-group v-model="paymentRadio" class="flex radio items-center">
             <el-radio :label="1" border class="flex">
               <div class="imageAlipay">
@@ -334,21 +453,26 @@ export default {
               </div>
             </el-radio>
             <el-radio :label="2" border class="flex">
-              积分兑换
+              <div class="imageIntegral">
+                <el-image
+                  width="50"
+                  height="20"
+                  fit="cover"
+                  :src="require('../Carousel/integral.jpg')"
+                  mode="scaleToFill"
+                />
+              </div>
             </el-radio>
           </el-radio-group>
         </div>
-        <div v-if="paymentRadio === 2" class="mt-4 flex">
+        <div v-if="paymentRadio === 2" class="my-4 flex">
           <div>店铺总积分：{{ integralNumber }}</div>
           <div class="ml-4">
             支付积分：{{ payTotalIntegral }}
           </div>
         </div>
-        <div v-if="payTotalIntegral > integralNumber" class="text-sm text-red-400">
+        <div v-if="payTotalIntegral > integralNumber && paymentRadio === 2" class="text-sm text-red-400 mb-2">
           (*剩余积分不足以兑换)
-        </div>
-        <div class="my-4">
-          支付金额：{{ bookPrice }}
         </div>
         <el-button
           :disabled="paymentRadio === 2 && payTotalIntegral > integralNumber"
@@ -361,6 +485,16 @@ export default {
         </el-button>
       </div>
     </el-drawer>
+    <!--  审核预览 -->
+    <el-drawer :visible.sync="previewDrawerVisible" title="预览广告" size="600px">
+      <div v-loading="!carouselMapCache[carouselPreviewId]" class="h-full">
+        <carousel-preview
+          v-if="previewDrawerVisible && carouselMapCache[carouselPreviewId]"
+          :option="carouselMapCache[carouselPreviewId].rotationRules"
+          :file-map="carouselMapCache[carouselPreviewId].resEntityMap"
+        />
+      </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -368,6 +502,17 @@ export default {
 ::v-deep {
   .el-timeline-item__wrapper{
     top: -10px;
+  }
+  .el-timeline-item__dot{
+    position: absolute;
+    top: -6px;
+    left: -6px;
+  }
+  .el-timeline-item__dot img{
+    border-radius: 50%;
+  }
+  .el-timeline-item__dot i{
+    font-size: 24px;
   }
   .el-button--text{
     text-decoration: underline;
@@ -385,13 +530,21 @@ export default {
   .el-radio__label .imageAlipay .el-image img{
    width: 80px;
   }
+  .el-radio__label .imageIntegral .el-image{
+    position: relative;
+    top: -12px;
+  }
+  .el-radio__label .imageIntegral .el-image img{
+   width: 120px;
+  }
+
   .el-radio .el-radio__label{
     display: flex;
   }
   .el-radio__label .imageRecommed .el-image{
     position: relative;
     top: -3px;
-    margin-left: 10px;
+    margin-left: 20px;
   }
   .el-radio__label .imageRecommed .el-image img{
    width: 30px;
@@ -407,5 +560,8 @@ export default {
 }
 .futureTime{
   color: #303133;
+}
+.futureMoney{
+  color: red;
 }
 </style>

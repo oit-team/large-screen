@@ -137,7 +137,7 @@ export default {
             <el-date-picker
               v-model="selectTimeInterval"
               :picker-options="pickerOptions"
-              value-format="yyyy-mm-dd HH:MM:SS"
+              value-format="yyyy-MM-dd HH:mm:ss"
               type="datetimerange"
               range-separator="-"
               start-placeholder="开始日期"

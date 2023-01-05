@@ -224,7 +224,7 @@ export default {
       if (this.$refs.page.checkSelected())
         this.$refs.carouselList.open()
     },
-    async assignAds({ selectTimeInterval = {}, advId }) {
+    async assignAds({ selectTimeInterval = {}, advId, brandId }) {
       if (!this.$refs.page.checkSelected()) return
 
       if (advId === 0) {
@@ -235,6 +235,7 @@ export default {
       if (selectTimeInterval) {
         const [startTime, endTime] = selectTimeInterval
         upDevAdverts({
+          brandId,
           advertsId: advId,
           devIds: this.selected.map(item => item.devId),
           startTime,
@@ -248,6 +249,7 @@ export default {
       }
 
       upDevAdverts({
+        brandId,
         advertsId: advId,
         devIds: this.selected.map(item => item.devId),
       }).then((res) => {

@@ -34,7 +34,7 @@ export default defineComponent({
         this.$message.warning('请正确输入用户名和密码！')
         return
       }
-      const res = await login(params)
+      const res = await login(params).finally(() => { this.loginLoading = false })
       this.loginLoading = false
       const userData = res.body.resultList[0]
       setToken(res.body.accessToken)

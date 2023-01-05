@@ -2066,14 +2066,40 @@ export default {
       })
     },
     cancelRecharge(formName) {
-      console.log('取消充值！')
-      console.log(this.$refs.integralForm)
       this.shopDialog = false
+      this.integralForm.integral = ''
       this.$refs.integralForm.resetFields()
+      this.$message({
+        message: '取消充值！',
+        type: 'info',
+      })
     },
-    conRechargeIntegral(formName) {
-      console.log('确认充值！')
+    async conRechargeIntegral(formName) {
+      const con = {
+        payNum: 1,
+        returnNum: 1,
+        amount: this.integralForm.integral,
+        shopId: this.nodeInfo.id,
+      }
+      const jsonParam = this.GLOBAL.g_paramJson(con)
+      this.$axios.post(`${this.GLOBAL.system_manager_server}/pay/alipay`, jsonParam).then((res) => {
+        if (res.data.head.status === 0) {
+          document.write(res.data.body.result)
+        }
+        else {
+          this.$message({
+            message: res.data.head.msg,
+            type: 'warning',
+          })
+        }
+      }).catch((err) => {
+        this.$message({
+          message: err.message,
+          type: 'warning',
+        })
+      })
     },
+
     // 取消操作
     cancelAdd(formName) {
       this.shopDialog = false
@@ -2871,7 +2897,7 @@ export default {
                 取 消
               </el-button>
               <el-button size="small" type="primary" @click="conRechargeIntegral('integralForm')">
-                确认充值
+                立即支付
               </el-button>
             </div>
           </el-tab-pane>

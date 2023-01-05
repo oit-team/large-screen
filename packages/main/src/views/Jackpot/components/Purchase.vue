@@ -41,7 +41,7 @@ async function getIntegralNum() {
     payIntegral: totalPrice.value,
   })
   allIntegral.value = res.body.integralNumber
-  totalIntegral.value = res.body.payIntegralNumber
+  totalIntegral.value = res.body.payTotalIntegral
 }
 
 // 获得购物车列表数据
@@ -57,15 +57,12 @@ async function getJackpotStyleListData() {
 
 watchEffect(getJackpotStyleListData)
 
-// 提交购物车
-async function addProcurementOrderData() {
-  const paymentType = paymentRadio.value === 1 ? '支付宝' : '积分兑换'
-  await MessageBox.confirm(`确定使用${paymentType}支付吗？`, '提示', { type: 'warning' })
+// 积分支付
+async function getIntegralPay() {
   addShopCartLoading.value = true
-
-  const res = await addProcurementOrder({
+  await addProcurementOrder({
     orderTotalPrice: totalPrice.value,
-    payType: paymentRadio.value,
+    payType: 2,
     styles: shoppingCartList.value.map(item => ({
       jackpotId: item.jackpotId,
       jackpotNum: shoppingCartCount.value[item.jackpotId],
@@ -73,9 +70,35 @@ async function addProcurementOrderData() {
   }).finally(() => {
     addShopCartLoading.value = false
   })
+}
 
-  Message.success('采购成功')
-  this.getJackpotStyleListData()
+// 支付宝支付
+async function getUseAliPay() {
+  const res = await addProcurementOrder({
+    orderTotalPrice: totalPrice.value,
+    payType: 1,
+    payNum: 3,
+    returnNum: 3,
+    styles: shoppingCartList.value.map(item => ({
+      jackpotId: item.jackpotId,
+      jackpotNum: shoppingCartCount.value[item.jackpotId],
+    })),
+  })
+  document.write(res.body.result)
+}
+
+// 购物车提交支付按钮
+async function addProcurementOrderData() {
+  if (paymentRadio.value === 2) {
+    await MessageBox.confirm('确定使用积分支付吗？', '提示', { type: 'warning' })
+    await this.getIntegralPay()
+    await Message.success('支付成功！')
+  }
+  else {
+    await this.getUseAliPay()
+  }
+
+  await this.getJackpotStyleListData()
   shoppingCartData.value = {}
   shoppingCartCount.value = {}
   shoppingCartDrawer.value = false
@@ -164,7 +187,7 @@ watch(shoppingCartDrawer, () => {
       title="购物车"
       :visible.sync="shoppingCartDrawer"
       direction="rtl"
-      size="40%"
+      size="45%"
     >
       <div class="flex flex-col h-full">
         <ElTable
@@ -210,15 +233,15 @@ watch(shoppingCartDrawer, () => {
             </template>
           </ElTableColumn>
         </ElTable>
-        <div class="p-2 flex flex-col">
+        <div class="px-2 py-4 flex flex-col">
           <div class="flex">
-            <div class="py-2">
+            <div class="p-2">
               总计：￥{{ totalPrice }}
             </div>
             <div v-if="paymentRadio === 2" class="py-2">
               <div class="flex justify-around ml-8">
-                店铺剩余积分：{{ allIntegral }}
-                购买所需积分：{{ totalIntegral }}
+                <span>店铺剩余积分：{{ allIntegral }}</span>
+                <span class="ml-4">购买所需积分：{{ totalIntegral }}</span>
               </div>
               <div v-if="totalIntegral > allIntegral" class="ml-8 text-sm text-red-400">
                 (*剩余积分不足以兑换)
@@ -226,15 +249,40 @@ watch(shoppingCartDrawer, () => {
             </div>
           </div>
           <div class="flex justify-between items-center">
-            <div>
+            <div class="flex items-center">
               <span class="text-red">*</span>
               <span>请选择支付方式：</span>
-              <ElRadioGroup v-model="paymentRadio">
-                <ElRadio :label="1">
-                  支付宝
+              <ElRadioGroup v-model="paymentRadio" class="flex radio items-center">
+                <ElRadio :label="1" border class="flex">
+                  <div class="imageAlipay">
+                    <ElImage
+                      width="50"
+                      height="20"
+                      fit="cover"
+                      :src="require('../components/alipay.png')"
+                      mode="scaleToFill"
+                    />
+                  </div>
+                  <div class="imageRecommed">
+                    <ElImage
+                      width="50"
+                      height="20"
+                      fit="cover"
+                      :src="require('../components/recommend.png')"
+                      mode="scaleToFill"
+                    />
+                  </div>
                 </ElRadio>
-                <ElRadio :label="2">
-                  积分兑换
+                <ElRadio :label="2" border class="flex">
+                  <div class="imageIntegral">
+                    <ElImage
+                      width="50"
+                      height="20"
+                      fit="cover"
+                      :src="require('../components/integral.jpg')"
+                      mode="scaleToFill"
+                    />
+                  </div>
                 </ElRadio>
               </ElRadioGroup>
             </div>
@@ -253,3 +301,40 @@ watch(shoppingCartDrawer, () => {
     </ElDrawer>
   </div>
 </template>
+
+<style lang="scss" scoped>
+::v-deep{
+  .el-button--text.payment{
+    color: #E6A23C;
+  }
+  .el-radio__label .recommend{
+    font-size: 1px;
+  }
+  .el-radio__label .imageAlipay .el-image{
+    position: relative;
+    top: -8px;
+  }
+  .el-radio__label .imageAlipay .el-image img{
+   width: 80px;
+  }
+
+  .el-radio__label .imageIntegral .el-image{
+    position: relative;
+    top: -12px;
+  }
+  .el-radio__label .imageIntegral .el-image img{
+   width: 120px;
+  }
+  .el-radio .el-radio__label{
+    display: flex;
+  }
+  .el-radio__label .imageRecommed .el-image{
+    position: relative;
+    top: -3px;
+    margin-left: 20px;
+  }
+  .el-radio__label .imageRecommed .el-image img{
+   width: 30px;
+  }
+}
+</style>

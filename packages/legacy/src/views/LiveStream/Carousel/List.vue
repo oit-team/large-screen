@@ -42,11 +42,14 @@ export default {
             to: 'LiveStreamCarouselUpdate',
           },
           {
-            name: '公共投放',
-            type: 'primary',
-            icon: 'el-icon-position',
-            to: '/live-stream/carousel/public-release',
+            slot: 'release',
           },
+          // {
+          //   name: '公共投放',
+          //   type: 'primary',
+          //   icon: 'el-icon-position',
+          //   to: '/live-stream/carousel/public-release',
+          // },
         ],
         table: {
           data: this.data.advertsList,
@@ -97,6 +100,9 @@ export default {
         },
       }
     },
+    brandType() {
+      return this.$store.state.userData.brandType
+    },
   },
 
   methods: {
@@ -132,6 +138,19 @@ export default {
         this.$refs.page.loadData()
       })
     },
+    handleAction(to) {
+      if (typeof to === 'string') {
+        const isPath = /^\.{0,2}\//.test(to)
+        // 路径跳转还是命名跳转
+        const route = isPath
+          ? { path: to }
+          : { name: to }
+        this.$router.push(route)
+      }
+      else {
+        this.$router.push(to)
+      }
+    },
   },
 }
 </script>
@@ -139,6 +158,17 @@ export default {
 <template>
   <page-container>
     <table-page v-bind="tablePageOption" ref="page" auto>
+      <template slot="actions:release">
+        <el-button
+          v-if="brandType !== 1"
+          icon="el-icon-position"
+          type="primary"
+          size="small"
+          @click="handleAction('/live-stream/carousel/public-release')"
+        >
+          公共投放
+        </el-button>
+      </template>
       <template slot="content:describe" slot-scope="{ row }">
         <el-tag
           v-if="row.defaults === DEFAULT_STATE.YES"

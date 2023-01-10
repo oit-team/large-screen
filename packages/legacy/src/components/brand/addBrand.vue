@@ -468,7 +468,7 @@ export default {
               orgId: this.tableRadio.orgId,
               adminName: this.ruleForm.adminName + this.ADMIN,
               brandName: this.ruleForm.brandName,
-              // brandType: this.ruleForm.brandType,
+              brandType: this.newBrandType,
               abbreviation: this.ruleForm.abbreviation,
               contacts: this.ruleForm.contacts,
               telephone: this.ruleForm.telephone,

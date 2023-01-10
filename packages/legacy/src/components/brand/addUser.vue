@@ -246,7 +246,7 @@ export default ({
                   type: 'warning',
                 })
               }
-            })
+            }).finally(() => this.addUserLoading = false)
           }
           else {
             // 新增用户接口
@@ -300,7 +300,7 @@ export default ({
                   type: 'warning',
                 })
               }
-            })
+            }).finally(() => this.addUserLoading = false)
           }
         }
         else {

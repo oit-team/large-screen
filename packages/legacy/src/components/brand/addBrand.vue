@@ -1,5 +1,6 @@
 <script>
 import { Upload } from '@oit/element-ui-extend'
+import { keyBy } from 'lodash-es'
 import getIndustryAll from '@/api/brand'
 
 export default {
@@ -12,11 +13,13 @@ export default {
   },
   data() {
     return {
+      configMap: {},
       // 上传头像
       imageUrl: '',
 
       loading: false,
       addCompanyLoading: false,
+      submitLoading: false,
       // pageNum:1,
       // pagesize:10,
       dialog: false, // 新增公司
@@ -35,7 +38,7 @@ export default {
         brandAddress: '', // 品牌地址
         adminName: '',
         brandName: '',
-        brandType: '',
+        // brandType: '',
         abbreviation: '',
         brandLogo: '',
         bueStartTime: '',
@@ -50,10 +53,18 @@ export default {
         totalNumShop: '',
         telephone: '',
         industryId: '',
+        onLineTime: '', // 大屏开关机时间
+        offLineTime: '',
+        carouselDuration: '', // 轮播时长
+        timePrice: '', // 时间段价格
+        initTheDay: '', // 初始化天数
+
       },
+      brandConfigList: [],
 
       // 选择
       tableRadio: '',
+      newBrandType: 0, // 品牌类型
       rules: {
         brandLogo: [
           { required: true, message: '请上传品牌Logo', trigger: 'blur' },
@@ -77,9 +88,9 @@ export default {
           { required: true, message: '请输入品牌名称', trigger: 'blur' },
           { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' },
         ],
-        brandType: [
-          { required: true, message: '请输入品牌类型', trigger: 'blur' },
-        ],
+        // brandType: [
+        //   { required: true, message: '请输入品牌类型', trigger: 'blur' },
+        // ],
         abbreviation: [
           { required: true, message: '请输入品牌简称', trigger: 'blur' },
           { min: 2, max: 8, message: '长度在 2 到 8 个字符', trigger: 'blur' },
@@ -124,17 +135,46 @@ export default {
   },
 
   watch: {
-
+    activeStep(newVal) {
+      if (newVal == 2) {
+        // 执行查询配置初始数据
+        this.getBrandConfig()
+      }
+    },
   },
   created() {
-
   },
   mounted() {
     this.companyShow()
     this.getIndustryAll()
   },
-  activated() {},
+  activated() {
+  },
   methods: {
+    // 配置列表
+    getBrandConfig() {
+      const con = {}
+      const jsonParam = this.GLOBAL.g_paramJson(con)
+      this.$axios.post(`${this.GLOBAL.system_manager_server}/brand/getBrandConfig`, jsonParam).then((res) => {
+        if (res.data.head.status == 0) {
+          this.brandConfigList = res.data.body.resultList
+
+          this.configMap = keyBy(this.brandConfigList, 'code')
+        }
+        else {
+          this.$message({
+            message: res.data.head.msg,
+            type: 'warning',
+          })
+        }
+      }).catch((err) => {
+        this.$message({
+          message: err.message,
+          type: 'warning',
+        })
+      })
+    },
+
     changeFile(file, fileList) {
       const loading = this.$loading({
         lock: true,
@@ -185,6 +225,8 @@ export default {
         console.log(err)
       })
     },
+
+    // 所属行业
     async getIndustryAll() {
       const res = await getIndustryAll()
       this.options = res.body.resultList
@@ -414,36 +456,61 @@ export default {
     },
     // 新增品牌
     regbrand(formName) {
+      this.ruleForm.configList = Object.values(this.configMap)
       const _this = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          const con = {
-            brandLogo: this.ruleForm.brandLogo,
-            orgId: this.tableRadio.orgId,
-            adminName: this.ruleForm.adminName + this.ADMIN,
-            brandName: this.ruleForm.brandName,
-            brandType: this.ruleForm.brandType,
-            abbreviation: this.ruleForm.abbreviation,
-            contacts: this.ruleForm.contacts,
-            telephone: this.ruleForm.telephone,
-            mailbox: this.ruleForm.mailbox,
-            dueStartTime: this.ruleForm.bueStartTime,
-            dueEndTime: this.ruleForm.bueEndTime,
-            gradeS: this.ruleForm.gradeS,
-            gradeA: this.ruleForm.gradeA,
-            gradeB: this.ruleForm.gradeB,
-            gradeC: this.ruleForm.gradeC,
-            totalNumShop: this.ruleForm.totalNumShop,
-            industryId: this.ruleForm.industryId,
-            introduce: this.ruleForm.introduce,
-            address: this.ruleForm.brandAddress,
+          this.submitLoading = true
+          let con = {}
+          if (this.newBrandType === 0) {
+            con = {
+              brandLogo: this.ruleForm.brandLogo,
+              orgId: this.tableRadio.orgId,
+              adminName: this.ruleForm.adminName + this.ADMIN,
+              brandName: this.ruleForm.brandName,
+              // brandType: this.ruleForm.brandType,
+              abbreviation: this.ruleForm.abbreviation,
+              contacts: this.ruleForm.contacts,
+              telephone: this.ruleForm.telephone,
+              mailbox: this.ruleForm.mailbox,
+              dueStartTime: this.ruleForm.bueStartTime,
+              dueEndTime: this.ruleForm.bueEndTime,
+              gradeS: this.ruleForm.gradeS,
+              gradeA: this.ruleForm.gradeA,
+              gradeB: this.ruleForm.gradeB,
+              gradeC: this.ruleForm.gradeC,
+              totalNumShop: this.ruleForm.totalNumShop,
+              industryId: this.ruleForm.industryId,
+              introduce: this.ruleForm.introduce,
+              address: this.ruleForm.brandAddress,
+            }
+          }
+          else {
+            con = {
+              brandLogo: this.ruleForm.brandLogo,
+              orgId: this.tableRadio.orgId,
+              adminName: this.ruleForm.adminName + this.ADMIN,
+              brandName: this.ruleForm.brandName,
+              brandType: this.newBrandType,
+              abbreviation: this.ruleForm.abbreviation,
+              contacts: this.ruleForm.contacts,
+              telephone: this.ruleForm.telephone,
+              mailbox: this.ruleForm.mailbox,
+              dueStartTime: this.ruleForm.bueStartTime,
+              dueEndTime: this.ruleForm.bueEndTime,
+              // industryId: this.ruleForm.industryId,
+              introduce: this.ruleForm.introduce,
+              address: this.ruleForm.brandAddress,
+              configList: this.ruleForm.configList,
+            }
           }
           // console.log('新增品牌参数',con)
           const jsonParam = _this.GLOBAL.g_paramJson(con)
           _this.$axios.post(`${_this.GLOBAL.system_manager_server}/brand/insertBrandInfo`, jsonParam).then((res) => {
           // console.log("新增品牌-----",res.data.body);
             if (res.data.head.status == 0) {
-            // 成功
+              this.submitLoading = false
+              // 成功
               _this.$message({
                 message: res.data.head.msg,
                 type: 'success',
@@ -454,6 +521,7 @@ export default {
             }
             else {
             // 失败
+              this.submitLoading = false
               _this.$message({
                 message: res.data.head.msg,
                 type: 'warning',
@@ -462,6 +530,7 @@ export default {
           })
         }
         else {
+          this.submitLoading = false
           // console.log('error submit!!');
           return false
         }
@@ -478,12 +547,23 @@ export default {
     <el-divider />
     <el-steps :active="activeStep" finish-status="success" simple style="margin:10px 0px;">
       <el-step title="选择公司信息" />
-      <el-step title="填写品牌信息" />
-      <el-step title="填写品牌配置" />
+      <el-step title="填写信息" />
+      <el-step title="填写配置" />
     </el-steps>
     <div v-show="activeStep == 0" class="content">
-      <div class="operateBtn">
-        <el-button size="small" icon="el-icon-plus" class="addBtnOnly" type="success" @click="addCompany()">
+      <div class="operateBtn flex flex-col">
+        <div class="text-gray-500 my-4 p-4 w-2/5 rounded-md border border-gray-300">
+          <span><span class="text-red-500">*</span>请选择品牌类型：</span>
+          <el-radio-group v-model="newBrandType">
+            <el-radio :label="0">
+              品牌
+            </el-radio>
+            <el-radio :label="1">
+              商场
+            </el-radio>
+          </el-radio-group>
+        </div>
+        <el-button style="width:120px" size="small" icon="el-icon-plus" type="success" @click="addCompany()">
           新增公司
         </el-button>
         <el-drawer
@@ -585,7 +665,7 @@ export default {
         <el-form-item label="品牌简称" prop="abbreviation">
           <el-input v-model="ruleForm.abbreviation" placeholder="请输入品牌简称" autocomplete="off" style="width:60%;" />
         </el-form-item>
-        <el-form-item label="所属行业" prop="industryId">
+        <el-form-item v-if="newBrandType === 0" label="所属行业" prop="industryId">
           <el-select v-model="ruleForm.industryId" placeholder="请选择所属行业">
             <el-option
               v-for="item in options"
@@ -602,12 +682,12 @@ export default {
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item label="品牌类型" prop="brandType">
+        <!-- <el-form-item label="品牌类型" prop="brandType">
           <el-select v-model="ruleForm.brandType" placeholder="请选择品牌类型">
             <el-option label="品牌" value="0" />
             <el-option label="商场" value="1" />
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="品牌入驻时间" prop="bueStartTime">
           <el-date-picker
             v-model="ruleForm.bueStartTime"
@@ -649,26 +729,69 @@ export default {
       </el-form>
     </div>
     <div v-show="activeStep == 2" class="content">
-      <h3 style="text-align:left;line-height:40px;">
-        店铺&人员限制
-      </h3>
-      <el-form ref="form" :model="ruleForm" :rules="rules" label-width="100px">
-        <el-form-item label="店铺总数量" prop="totalNumShop">
-          <el-input v-model="ruleForm.totalNumShop" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入店铺总数量" autocomplete="off" style="width:60%;" />
-        </el-form-item>
-        <el-form-item label="S级人员数量">
-          <el-input v-model="ruleForm.gradeS" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入S级人员数量" autocomplete="off" style="width:60%;" />
-        </el-form-item>
-        <el-form-item label="A级人员数量">
-          <el-input v-model="ruleForm.gradeA" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入A级人员数量" autocomplete="off" style="width:60%;" />
-        </el-form-item>
-        <el-form-item label="B级人员数量">
-          <el-input v-model="ruleForm.gradeB" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入B级人员数量" autocomplete="off" style="width:60%;" />
-        </el-form-item>
-        <el-form-item label="C级人员数量">
-          <el-input v-model="ruleForm.gradeC" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入C级人员数量" autocomplete="off" style="width:60%;" />
-        </el-form-item>
-      </el-form>
+      <div v-if="newBrandType === 0">
+        <h3 style="text-align:left;line-height:40px;">
+          店铺&人员限制
+        </h3>
+        <el-form ref="form" :model="ruleForm" :rules="rules" label-width="100px">
+          <el-form-item label="店铺总数量" prop="totalNumShop">
+            <el-input v-model="ruleForm.totalNumShop" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入店铺总数量" autocomplete="off" style="width:60%;" />
+          </el-form-item>
+          <el-form-item label="S级人员数量">
+            <el-input v-model="ruleForm.gradeS" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入S级人员数量" autocomplete="off" style="width:60%;" />
+          </el-form-item>
+          <el-form-item label="A级人员数量">
+            <el-input v-model="ruleForm.gradeA" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入A级人员数量" autocomplete="off" style="width:60%;" />
+          </el-form-item>
+          <el-form-item label="B级人员数量">
+            <el-input v-model="ruleForm.gradeB" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入B级人员数量" autocomplete="off" style="width:60%;" />
+          </el-form-item>
+          <el-form-item label="C级人员数量">
+            <el-input v-model="ruleForm.gradeC" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入C级人员数量" autocomplete="off" style="width:60%;" />
+          </el-form-item>
+        </el-form>
+      </div>
+      <div v-else>
+        <el-form v-if="Object.keys(configMap).length" ref="form" :model="ruleForm" :rules="rules" label-width="120px">
+          <el-form-item :label="configMap.BRAND_START_TIME.configName">
+            <el-time-select
+              v-model="configMap.BRAND_START_TIME.value"
+              :picker-options="{
+                start: '01:00',
+                step: '00:30',
+                end: '24:00',
+              }"
+              :placeholder="`请选择${configMap.BRAND_START_TIME.configName}`"
+              clearable
+            />
+          </el-form-item>
+          <el-form-item :label="configMap.BRAND_END_TIME.configName">
+            <el-time-select
+              v-model="configMap.BRAND_END_TIME.value"
+              :picker-options="{
+                start: '01:00',
+                step: '00:30',
+                end: '24:00',
+              }"
+              :placeholder="`请选择${configMap.BRAND_END_TIME.configName}`"
+              clearable
+            />
+          </el-form-item>
+          <el-form-item :label="configMap.INTERVAL_MINUTE.configName">
+            <el-select v-model="configMap.INTERVAL_MINUTE.value" style="width:220px" :placeholder="`请输入${configMap.INTERVAL_MINUTE.configName}`">
+              <el-option label="10" value="0" />
+              <el-option label="20" value="1" />
+              <el-option label="30" value="2" />
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="configMap.BRAND_INTERVAL_PRICE.configName">
+            <el-input v-model="configMap.BRAND_INTERVAL_PRICE.value" oninput="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" :placeholder="`请选择${configMap.BRAND_INTERVAL_PRICE.configName}`" autocomplete="off" style="width:60%;" />
+          </el-form-item>
+          <el-form-item :label="configMap.INTERVAL_DAY.configName">
+            <el-input v-model="configMap.INTERVAL_DAY.value" oninput="value=value.replace(/[^\d]/g,'')" :placeholder="`请输入${configMap.INTERVAL_DAY.configName}`" autocomplete="off" style="width:60%;" />
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
     <div class="step">
       <el-button style="margin-left:auto;" type="primary" plain :disabled="prevDisabled" @click="clickPerv()">
@@ -677,7 +800,7 @@ export default {
       <el-button v-if="activeStep < 2" type="primary" plain @click="clickNext('ruleForm')">
         下一步
       </el-button>
-      <el-button v-if="activeStep >= 2" type="primary" plain @click="regbrand('form')">
+      <el-button v-if="activeStep >= 2" v-loading="submitLoading" type="primary" plain @click="regbrand('form')">
         提交
       </el-button>
     </div>
@@ -729,6 +852,9 @@ export default {
       position: absolute;
       right: 10px;
       bottom: -20px;
+    }
+    .el-scrollbar__view .time-select-item{
+      padding: 8px 20px !important;
     }
   }
 

@@ -444,9 +444,6 @@ export default {
                 <el-button type="primary" size="medium" @click="batchAppoint()">
                   批量预约
                 </el-button>
-                <!-- <el-button type="info" size="medium" @click="cancelAppoint()">
-                  取消
-                </el-button> -->
               </div>
             </div>
           </div>

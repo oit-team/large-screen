@@ -183,6 +183,8 @@ export default {
       this.onedayMinutesList = res.body.resultList.map((item) => {
         item.isAfter = dayjs().isAfter(dayjs(item.configStartTime))
         this.$set(item, '_check', false)
+        this.$set(item, '_open', false)
+        if (item?.bookList) item.bookList.shift()
         return item
       })
     },
@@ -340,7 +342,7 @@ export default {
             @click="changeTime(item, index)"
           >
             {{ `${item.startTime.slice(11)}` }}
-            <span class="text-xs">（待预约：<span :class="nowHIndex === index ? 'text-white' : 'text-[#409EFF]'">{{ `${item.bookStateNum}` }}）</span></span>
+            <span class="text-xs">（待预定：<span :class="nowHIndex === index ? 'text-white' : 'text-[#409EFF]'">{{ `${item.bookStateNum}` }}）</span></span>
           </div>
         </div>
         <el-empty v-else class="w-full" :image-size="100" description="暂无数据" />
@@ -358,47 +360,80 @@ export default {
                   <i v-if="TIME_LINE_STYLE[onedayMinute.bookState].type === 'el'" :class="TIME_LINE_STYLE[onedayMinute.bookState].icon" :style="{ backgroundColor: TIME_LINE_STYLE[onedayMinute.bookState].color, color: '#fff', borderRadius: '50%' }" />
                   <img v-if="TIME_LINE_STYLE[onedayMinute.bookState].type === 'svg'" :src="TIME_LINE_STYLE[onedayMinute.bookState].icon" :style="{ backgroundColor: TIME_LINE_STYLE[onedayMinute.bookState].color }" class="w-[24px] h-[24px]">
                 </template>
-                <div class="flex items-center">
-                  <div class="flex items-center">
-                    <el-checkbox
-                      v-model="onedayMinute._check"
-                      :disabled="onedayMinute.bookState !== 0 || onedayMinute.isAfter"
-                      class="mx-2"
-                      @change="changeCheck($event, onedayMinute.bookConnfigId)"
-                    />
-                    <el-tag v-if="onedayMinute.bookState === BOOKSTATE.EMPTY" type="primary" class="mr-2">
-                      待预约
-                    </el-tag>
-                    <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.REVIEW" type="info" class="mr-2">
-                      待审核
-                    </el-tag>
-                    <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.PASS" type="warning" class="mr-2">
-                      待支付
-                    </el-tag>
-                    <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.PLAY" type="primary" class="mr-2">
-                      未播放
-                    </el-tag>
-                    <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.PLAYED" type="success" class="mr-2">
-                      已播放
-                    </el-tag>
-                    <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.FAIL" type="danger" class="mr-2">
-                      发布失败
-                    </el-tag>
-                    <div :class="onedayMinute.isAfter ? 'pastTime' : 'futureTime'">
-                      {{ `${onedayMinute.configStartTime.slice(11, 16)}-${onedayMinute.configEndTime.slice(11, 16)}` }}
-                      (<span :class="onedayMinute.isAfter ? 'pastTime text-xs' : 'futureMoney  text-xs'">￥{{ `${onedayMinute.bookPrice}` }}</span>)
-                      <span v-if="onedayMinute.advertsName && onedayMinute.shopName " class="ml-4">{{ `${onedayMinute.advertsName}(${onedayMinute.shopName})` }}</span>
+                <div class="w-full">
+                  <div class="flex justify-between items-center w-4/5">
+                    <div class="flex items-center">
+                      <div class="flex items-center">
+                        <el-checkbox
+                          v-model="onedayMinute._check"
+                          :disabled="onedayMinute.bookState !== 0 || onedayMinute.isAfter"
+                          class="mx-2"
+                          @change="changeCheck($event, onedayMinute.bookConnfigId)"
+                        />
+                        <el-tag v-if="onedayMinute.bookState === BOOKSTATE.EMPTY" type="primary" class="mr-2">
+                          待预定
+                        </el-tag>
+                        <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.REVIEW" type="info" class="mr-2">
+                          待审核
+                        </el-tag>
+                        <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.PASS" type="warning" class="mr-2">
+                          待支付
+                        </el-tag>
+                        <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.PLAY" type="primary" class="mr-2">
+                          未播放
+                        </el-tag>
+                        <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.PLAYED" type="success" class="mr-2">
+                          已播放
+                        </el-tag>
+                        <el-tag v-else-if="onedayMinute.bookState === BOOKSTATE.FAIL" type="danger" class="mr-2">
+                          发布失败
+                        </el-tag>
+                        <div :class="onedayMinute.isAfter ? 'pastTime' : 'futureTime'">
+                          {{ `${onedayMinute.configStartTime.slice(11, 16)}-${onedayMinute.configEndTime.slice(11, 16)}` }}
+                          (<span :class="onedayMinute.isAfter ? 'pastTime text-xs' : 'futureMoney  text-xs'">￥{{ `${onedayMinute.bookPrice}` }}</span>)
+                          <span v-if="onedayMinute.advertsName && onedayMinute.shopName " class="ml-4">{{ `${onedayMinute.advertsName}(${onedayMinute.shopName})` }}</span>
+                        </div>
+                        <span v-if="onedayMinute.bookState === BOOKSTATE.REVIEW" :class="onedayMinute.isAfter ? 'pastTime' : 'futureTime'" class="ml-6 text-xs">{{ onedayMinute.remarks }}</span>
+                        <el-button v-if="onedayMinute.bookState === BOOKSTATE.EMPTY" :disabled="onedayMinute.isAfter" class="ml-4" type="text" size="mini" @click="openListDrawer(onedayMinute.bookConnfigId)">
+                          预约
+                        </el-button>
+                        <el-button v-if="onedayMinute.isPay === BOOKSTATE.REVIEW && onedayMinute.bookState === BOOKSTATE.PASS" :disabled="onedayMinute.isAfter" class="ml-4 payment" type="text" size="mini" @click="handleClickPay(onedayMinute)">
+                          去支付
+                        </el-button>
+                        <el-button v-if="onedayMinute.bookState > BOOKSTATE.EMPTY" class="ml-4" type="text" size="mini" @click="previewAds(onedayMinute)">
+                          预览
+                        </el-button>
+                      </div>
                     </div>
-                    <span v-if="onedayMinute.bookState === BOOKSTATE.REVIEW" :class="onedayMinute.isAfter ? 'pastTime' : 'futureTime'" class="ml-6 text-xs">{{ onedayMinute.remarks }}</span>
-                    <el-button v-if="onedayMinute.bookState === BOOKSTATE.EMPTY" :disabled="onedayMinute.isAfter" class="ml-4" type="text" size="mini" @click="openListDrawer(onedayMinute.bookConnfigId)">
-                      预约
-                    </el-button>
-                    <el-button v-if="onedayMinute.isPay === BOOKSTATE.REVIEW && onedayMinute.bookState === BOOKSTATE.PASS" :disabled="onedayMinute.isAfter" class="ml-4 payment" type="text" size="mini" @click="handleClickPay(onedayMinute)">
-                      去支付
-                    </el-button>
-                    <el-button v-if="onedayMinute.bookState > BOOKSTATE.EMPTY" class="ml-4" type="text" size="mini" @click="previewAds(onedayMinute)">
-                      预览
-                    </el-button>
+
+                    <div class="px-8 py-2" @click="onedayMinute._open = !onedayMinute._open">
+                      <i v-if="onedayMinute._open" class="el-icon-arrow-down" />
+                      <i v-else class="el-icon-arrow-right" />
+                    </div>
+                  </div>
+
+                  <div v-if="onedayMinute.bookList?.length > 0 && onedayMinute._open" class="w-full">
+                    <div
+                      v-for="(book, index) in onedayMinute.bookList"
+                      :key="index"
+                      class="pl-16 gap-x-2 flex items-center py-2"
+                    >
+                      <div class="w-full flex items-center">
+                        <div class="flex items-center gap-4">
+                          <div :style="{ color: TIME_LINE_STYLE[book.bookState].color }">
+                            {{ book.bookstateName }}
+                          </div>
+                          <div>
+                            {{ book.advertsName }}({{ book.shopName }})
+                          </div>
+                          <div>{{ book.createTime }}</div>
+                        </div>
+                        <el-button class="ml-4" type="text" size="mini" @click="previewAds(book)">
+                          预览
+                        </el-button>
+                      </div>
+                      <el-divider v-if="index !== onedayMinute.bookList.length - 1" />
+                    </div>
                   </div>
                 </div>
               </el-timeline-item>

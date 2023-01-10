@@ -5,7 +5,7 @@ import toApprove from '@/assets/icons/toApprove.svg'
 import * as api from '@/api/liveStream'
 import CarouselPreview from '@/components/business/CarouselPreview'
 
-const BOOKSTATE = {
+const BOOK_STATE = {
   EMPTY: 0,
   REVIEW: 1,
   PASS: 2,
@@ -15,35 +15,41 @@ const BOOKSTATE = {
 }
 
 const TIME_LINE_STYLE = {
-  [BOOKSTATE.EMPTY]: {
+  [BOOK_STATE.EMPTY]: {
     icon: 'el-icon-time',
     color: '#409EFF',
     type: 'el',
+    text: '待预定',
   },
-  [BOOKSTATE.REVIEW]: {
+  [BOOK_STATE.REVIEW]: {
     icon: toApprove,
     color: '#909399',
     type: 'svg',
+    text: '待审核',
   },
-  [BOOKSTATE.PASS]: {
+  [BOOK_STATE.PASS]: {
     icon: 'el-icon-circle-check',
     color: '#67C23A',
     type: 'el',
+    text: '已通过',
   },
-  [BOOKSTATE.PLAY]: {
+  [BOOK_STATE.PLAY]: {
     icon: 'el-icon-video-play',
     color: '#409EFF',
     type: 'el',
+    text: '待播放',
   },
-  [BOOKSTATE.PLAYED]: {
+  [BOOK_STATE.PLAYED]: {
     icon: 'el-icon-circle-check',
     color: '#67C23A',
     type: 'el',
+    text: '已播放',
   },
-  [BOOKSTATE.ERROR]: {
+  [BOOK_STATE.ERROR]: {
     icon: 'el-icon-warning-outline',
     color: '#F56C6C',
     type: 'el',
+    text: '发布失败',
   },
 }
 
@@ -59,6 +65,8 @@ export default {
   data() {
     return {
       TIME_LINE_STYLE,
+      BOOKSTATE: BOOK_STATE,
+      HANDLETYPE,
       search: '',
       navLoading: false,
       brandList: [],
@@ -75,8 +83,6 @@ export default {
         label: 'brandName',
       },
       carouselMapCache: {},
-      BOOKSTATE,
-      HANDLETYPE,
       selectTimeList: [], // 最终提交时的数组
       previewDrawerVisible: false,
       // .....................
@@ -109,15 +115,6 @@ export default {
     },
     devId() {
       this.getDateToWeek()
-    },
-    // 获取的分钟  时间段
-    moreTime() {
-      this.moreTime.forEach((item) => {
-        item._configStartTime = item.configStartTime.substring(item.configStartTime.indexOf(' ') + 1, item.configStartTime.length)
-        item._configEndTime = item.configEndTime.substring(item.configEndTime.indexOf(' ') + 1, item.configEndTime.length)
-        this.$set(item, '_check', false)
-        // item._check = false
-      })
     },
   },
 
@@ -162,6 +159,13 @@ export default {
         this.minuteLoading = false
       })
       this.moreTime = res.body.resultList
+      this.moreTime.forEach((item) => {
+        item._configStartTime = item.configStartTime.substring(item.configStartTime.indexOf(' ') + 1, item.configStartTime.length)
+        item._configEndTime = item.configEndTime.substring(item.configEndTime.indexOf(' ') + 1, item.configEndTime.length)
+        this.$set(item, '_check', false)
+        this.$set(item, '_open', false)
+        if (item?.bookList) item.bookList.shift()
+      })
     },
     // 切换设备  左侧设备菜单
     handleNodeClick(data) {
@@ -342,46 +346,71 @@ export default {
                     <i v-if="TIME_LINE_STYLE[time.bookState].type === 'el'" :class="TIME_LINE_STYLE[time.bookState].icon" :style="{ backgroundColor: TIME_LINE_STYLE[time.bookState].color, color: '#fff', borderRadius: '50%' }" />
                     <img v-if="TIME_LINE_STYLE[time.bookState].type === 'svg'" :src="TIME_LINE_STYLE[time.bookState].icon" :style="{ backgroundColor: TIME_LINE_STYLE[time.bookState].color }" class="w-[24px] h-[24px]">
                   </template>
-                  <div class="flex items-center">
-                    <div class="flex w-1/2 items-center">
-                      <el-checkbox
-                        v-if="selectContent === HANDLETYPE.HANDLE"
-                        v-model="time._check"
-                        :disabled="time.bookState !== 1"
-                        class="mx-2"
-                        @change="changeCheck($event, time.bookId)"
-                      />
-                      <el-tag v-if="time.bookState === BOOKSTATE.EMPTY" class="mr-2">
-                        待预约
-                      </el-tag>
-                      <el-tag v-else-if="time.bookState === BOOKSTATE.REVIEW" type="info" class="mr-2">
-                        待审核
-                      </el-tag>
-                      <el-tag v-else-if="time.bookState === BOOKSTATE.PASS" type="success" class="mr-2">
-                        已通过
-                      </el-tag>
-                      <el-tag v-else-if="time.bookState === BOOKSTATE.PLAY" class="mr-2" effect="dark">
-                        待播放
-                      </el-tag>
-                      <el-tag v-else-if="time.bookState === BOOKSTATE.PLAYED" class="mr-2">
-                        已播放
-                      </el-tag>
-                      <el-tag v-else-if="time.bookState === BOOKSTATE.ERROR" type="danger" class="mr-2">
-                        发布失败
-                      </el-tag>
-                      <div :class="time.bookState !== BOOKSTATE.REVIEW ? 'text-[#c0c4cc]' : ''">
-                        {{ `${time._configStartTime}-${time._configEndTime}` }} <span>{{ `${time.advertsName || '暂无'}(${time.shopName || '暂无'})` }}</span>
+                  <div class="flex justify-between items-center w-4/5">
+                    <div class="flex items-center flex-1">
+                      <div class="flex w-1/2 items-center">
+                        <el-checkbox
+                          v-if="selectContent === HANDLETYPE.HANDLE"
+                          v-model="time._check"
+                          :disabled="time.bookState !== 1"
+                          class="mx-2"
+                          @change="changeCheck($event, time.bookId)"
+                        />
+                        <el-tag v-if="time.bookState === BOOKSTATE.EMPTY" class="mr-2">
+                          待预定
+                        </el-tag>
+                        <el-tag v-else-if="time.bookState === BOOKSTATE.REVIEW" type="info" class="mr-2">
+                          待审核
+                        </el-tag>
+                        <el-tag v-else-if="time.bookState === BOOKSTATE.PASS" type="success" class="mr-2">
+                          已通过
+                        </el-tag>
+                        <el-tag v-else-if="time.bookState === BOOKSTATE.PLAY" class="mr-2" effect="dark">
+                          待播放
+                        </el-tag>
+                        <el-tag v-else-if="time.bookState === BOOKSTATE.PLAYED" class="mr-2">
+                          已播放
+                        </el-tag>
+                        <el-tag v-else-if="time.bookState === BOOKSTATE.ERROR" type="danger" class="mr-2">
+                          发布失败
+                        </el-tag>
+                        <div :class="time.bookState !== BOOKSTATE.REVIEW ? 'text-[#c0c4cc]' : ''">
+                          {{ `${time._configStartTime}-${time._configEndTime}` }} <span>{{ `${time.advertsName || '暂无'}(${time.shopName || '暂无'})` }}</span>
+                        </div>
+                        <el-button v-if="time.bookState !== BOOKSTATE.EMPTY" class="ml-4" type="text" size="mini" @click="previewAds(time)">
+                          预览
+                        </el-button>
+                        <div v-if="time.bookState === BOOKSTATE.REVIEW && selectContent === HANDLETYPE.HANDLE" class="flex gap-2 ml-4">
+                          <el-button type="success" icon="el-icon-check" size="mini" circle @click="updateBookInfo(2, time.bookId)" />
+                          <el-button type="danger" icon="el-icon-close" size="mini" circle @click="updateBookInfo(0, time.bookId)" />
+                        </div>
                       </div>
-                      <el-button v-if="time.bookState !== BOOKSTATE.EMPTY" class="ml-4" type="text" size="mini" @click="previewAds(time)">
-                        预览
-                      </el-button>
                     </div>
+                    <div class="px-8 py-2" @click="time._open = !time._open">
+                      <i v-if="time._open" class="el-icon-arrow-down" />
+                      <i v-else class="el-icon-arrow-right" />
+                    </div>
+                  </div>
 
-                    <!--  操作部分 -->
-                    <div class="flex items-center">
-                      <div v-if="time.bookState === BOOKSTATE.REVIEW && selectContent === HANDLETYPE.HANDLE" class="flex gap-2 ml-4">
-                        <el-button type="success" icon="el-icon-check" size="mini" circle @click="updateBookInfo(2, time.bookId)" />
-                        <el-button type="danger" icon="el-icon-close" size="mini" circle @click="updateBookInfo(0, time.bookId)" />
+                  <div v-show="time.bookList?.length > 0 && time._open" class="w-full">
+                    <div
+                      v-for="(book, bookId) in time.bookList"
+                      :key="bookId"
+                      class="pl-16 gap-x-2 py-2"
+                    >
+                      <div class="w-full flex items-center">
+                        <div class="flex items-center gap-4">
+                          <div :style="{ color: TIME_LINE_STYLE[book.bookState].color }">
+                            {{ book.bookstateName }}
+                          </div>
+                          <div>
+                            {{ book.advertsName }}({{ book.shopName }})
+                          </div>
+                          <div>{{ book.createTime }}</div>
+                        </div>
+                        <el-button class="ml-4" type="text" size="mini" @click="previewAds(book)">
+                          预览
+                        </el-button>
                       </div>
                     </div>
                   </div>

@@ -18,6 +18,7 @@ onMounted(async () => {
     productId: id,
   })
   config.value = JSON.parse(res.body.productAttr)
+
   const productInfo = res.body.productInfo
   if (isEdit) {
     formRef.value.form.setInitialValues({
@@ -30,7 +31,12 @@ onMounted(async () => {
 })
 
 async function addProductInfoData(form: any) {
-  const { imgs, detailsImg, video, ...fields } = form
+  const {
+    imgs,
+    detailsImg,
+    video,
+    ...fields
+  } = form
 
   await addProductInfo({
     tradeId: store.state.userData.industryId,
@@ -42,7 +48,12 @@ async function addProductInfoData(form: any) {
 }
 
 async function updateProductInfoData(form: any) {
-  const { imgs, detailsImg, video, ...fields } = form
+  const {
+    imgs,
+    detailsImg,
+    video,
+    ...fields
+  } = form
   const res = await updateProductInfo({
     tradeId: store.state.userData.industryId,
     productId: id,

@@ -103,8 +103,8 @@ export default defineComponent({
         <div v-if="userData.isMenagerRole > 0" class="brandInfo px-6 mr-2">
           <ElPopover
             placement="top-start"
-            width="200"
             trigger="hover"
+            popper-class="h-[600px] pl-3 overflow-y-auto"
           >
             <div class="operateBtnBox" style="line-height:40px;cursor:pointer;">
               <div
@@ -153,6 +153,7 @@ export default defineComponent({
 .userAcountInfo{
   .brandInfo{
     border-right: 1px solid #ccc ;
+
   }
 }
 .operateBtnBox{

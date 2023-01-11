@@ -184,7 +184,6 @@ export default {
         item.isAfter = dayjs().isAfter(dayjs(item.configStartTime))
         this.$set(item, '_check', false)
         this.$set(item, '_open', false)
-        if (item?.bookList) item.bookList.shift()
         return item
       })
     },
@@ -412,7 +411,7 @@ export default {
                     </div>
                   </div>
 
-                  <div v-if="onedayMinute.bookList?.length > 0 && onedayMinute._open" class="w-full">
+                  <div v-if="onedayMinute.bookList && onedayMinute._open" class="w-full">
                     <div
                       v-for="(book, index) in onedayMinute.bookList"
                       :key="index"
@@ -420,7 +419,8 @@ export default {
                     >
                       <div class="w-full flex items-center">
                         <div class="flex items-center gap-4">
-                          <div :style="{ color: TIME_LINE_STYLE[book.bookState].color }">
+                          <div :style="{ color: TIME_LINE_STYLE[book.bookState]?.color }">
+                            <!--                          <div> -->
                             {{ book.bookstateName }}
                           </div>
                           <div>
@@ -432,7 +432,6 @@ export default {
                           预览
                         </el-button>
                       </div>
-                      <el-divider v-if="index !== onedayMinute.bookList.length - 1" />
                     </div>
                   </div>
                 </div>

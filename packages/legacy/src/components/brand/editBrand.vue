@@ -57,9 +57,9 @@ export default {
           { required: true, message: '请输入品牌简称', trigger: 'blur' },
           { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' },
         ],
-        industryId: [
-          { required: true, message: '请选择所属行业', trigger: 'blur' },
-        ],
+        // industryId: [
+        //   { required: true, message: '请选择所属行业', trigger: 'blur' },
+        // ],
         brandType: [
           { required: true, message: '请选择所属类型', trigger: 'blur' },
         ],
@@ -75,9 +75,9 @@ export default {
         address: [
           { required: true, message: '请输入品牌地址', trigger: 'blur' },
         ],
-        totalNumShop: [
-          { required: true, message: '请输入店铺总数量', trigger: 'blur' },
-        ],
+        // totalNumShop: [
+        //   { required: true, message: '请输入店铺总数量', trigger: 'blur' },
+        // ],
       },
       allPayMenuList: [
         {
@@ -437,7 +437,7 @@ export default {
             <el-option label="商场" :value="1" />
           </el-select>
         </el-form-item>
-        <el-form-item label="所属行业" prop="industryId">
+        <el-form-item label="所属行业">
           <el-select v-model="brandList.industryId" placeholder="请选择所属行业">
             <el-option
               v-for="item in options"
@@ -477,7 +477,7 @@ export default {
         <el-form-item label="品牌地址" prop="address">
           <el-input v-model="brandList.address" placeholder="请输入品牌地址" autocomplete="off" style="width:60%;" />
         </el-form-item>
-        <el-form-item label="店铺总数量" prop="totalNumShop">
+        <el-form-item label="店铺总数量">
           <el-input v-model="brandList.totalNumShop" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入店铺总数量" autocomplete="off" style="width:60%;" />
         </el-form-item>
         <el-form-item label="S级人员数量">

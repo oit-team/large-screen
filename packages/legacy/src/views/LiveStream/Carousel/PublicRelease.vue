@@ -15,6 +15,8 @@ const BOOKSTATE = {
   PLAY: 3, // 待播放
   PLAYED: 4, // 已播放
   FAIL: 5, // 发布失败
+  FAILED: 6,
+  PAY_FAILED: 7,
 }
 
 export const TIME_LINE_STYLE = {
@@ -47,6 +49,12 @@ export const TIME_LINE_STYLE = {
     icon: 'el-icon-warning-outline',
     color: '#F56C6C',
     type: 'el',
+  },
+  [BOOKSTATE.FAILED]: {
+    color: '#E6A23C',
+  },
+  [BOOKSTATE.PAY_FAILED]: {
+    color: '#F56C6C',
   },
 }
 

@@ -13,6 +13,7 @@ const BOOK_STATE = {
   PLAYED: 4,
   ERROR: 5,
   FAILED: 6,
+  PAY_FAILED: 7,
 }
 
 const TIME_LINE_STYLE = {
@@ -48,6 +49,9 @@ const TIME_LINE_STYLE = {
   },
   [BOOK_STATE.FAILED]: {
     color: '#E6A23C',
+  },
+  [BOOK_STATE.PAY_FAILED]: {
+    color: '#F56C6C',
   },
 }
 

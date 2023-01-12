@@ -128,6 +128,17 @@ export const routes: RouteConfig[] = [
         name: 'IntegralList',
         component: () => import('@/views/Integral/IntegralList.vue'),
       },
+      // 配置管理（系统配置）
+      {
+        path: '/config/systemConfig',
+        name: 'SystemConfig',
+        component: () => import('@/views/ConfigManage/SystemConfig/List.vue'),
+      },
+      {
+        path: '/config/updateConfig',
+        name: 'UpdateConfig',
+        component: () => import('@/views/ConfigManage/SystemConfig/Update.vue'),
+      },
       {
         path: '/404',
         component: () => import('@/views/404.vue'),

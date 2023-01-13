@@ -21,15 +21,15 @@ export default {
     },
     rules: {
       dictCode: [
-        { required: true, message: '请输入类型标识', trigger: 'blur' },
+        { required: true, message: '请输入类型编码', trigger: 'blur' },
         { min: 1, max: 32, message: '长度在 1 到 32 个字符', trigger: 'blur' },
       ],
       dictitemCode: [
-        { required: true, message: '请输入标识', trigger: 'blur' },
+        { required: true, message: '请输入配置编码', trigger: 'blur' },
         { min: 1, max: 32, message: '长度在 1 到 32 个字符', trigger: 'blur' },
       ],
       dictitemDisplayName: [
-        { required: true, message: '请输入名称', trigger: 'blur' },
+        { required: true, message: '请输入配置内容', trigger: 'blur' },
       ],
     },
   }),

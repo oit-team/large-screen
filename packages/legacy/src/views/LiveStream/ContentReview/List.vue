@@ -387,13 +387,13 @@ export default {
                         </div>
                       </div>
                     </div>
-                    <div class="px-8 py-2" @click="time._open = !time._open">
+                    <div v-if="time.bookList?.length > 0" class="px-8 py-2" @click="time._open = !time._open">
                       <i v-if="time._open" class="el-icon-arrow-down" />
                       <i v-else class="el-icon-arrow-right" />
                     </div>
                   </div>
 
-                  <div v-show="time.bookList && time._open" class="w-full">
+                  <div v-if="time.bookList?.length > 0 && time._open" class="w-full">
                     <div
                       v-for="(book, bookId) in time.bookList"
                       :key="bookId"

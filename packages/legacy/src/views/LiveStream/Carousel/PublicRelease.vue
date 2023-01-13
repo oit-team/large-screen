@@ -413,13 +413,13 @@ export default {
                       </div>
                     </div>
 
-                    <div class="px-8 py-2" @click="onedayMinute._open = !onedayMinute._open">
+                    <div v-if="onedayMinute?.bookList.length > 0" class="px-8 py-2" @click="onedayMinute._open = !onedayMinute._open">
                       <i v-if="onedayMinute._open" class="el-icon-arrow-down" />
                       <i v-else class="el-icon-arrow-right" />
                     </div>
                   </div>
 
-                  <div v-if="onedayMinute.bookList && onedayMinute._open" class="w-full">
+                  <div v-if="onedayMinute.bookList.length > 0 && onedayMinute._open" class="w-full">
                     <div
                       v-for="(book, index) in onedayMinute.bookList"
                       :key="index"

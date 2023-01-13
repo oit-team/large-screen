@@ -11,7 +11,6 @@ export default {
 
     data: {},
     search: '',
-    code: '',
     dictCode: '',
     nowIndex: 0,
     configList: [],
@@ -31,6 +30,9 @@ export default {
 
   }),
   computed: {
+    userData() {
+      return this.$store.state.userData
+    },
     searchList() {
       return [...this.configList].filter(item => item.dictName.includes(this.search))
     },
@@ -39,12 +41,7 @@ export default {
         promise: this.loadData,
         actions: [
           {
-            name: '新增',
-            type: 'primary',
-            icon: 'el-icon-plus',
-            click: () => {
-              this.$router.push(`/config/updateConfig?dictCode=${this.dictCode}`)
-            },
+            slot: 'addConfig',
           },
         ],
         table: {
@@ -75,17 +72,19 @@ export default {
   mounted() {
     this.getDictType()
   },
+
   methods: {
     // 左侧配置类型
     async getDictType() {
       this.configLeftLoading = true
       const res = await getDictType({
         pageNum: 1,
-        pageSize: 20,
+        pageSize: 100,
       }).finally(() => { this.configLeftLoading = false })
 
       this.configList = res.body.result
       this.dictCode = this.configList[0].dictCode
+
       await this.$refs.table.loadData()
     },
 
@@ -162,17 +161,12 @@ export default {
 <template>
   <div class="flex page-container text-sm">
     <div class="w-[20%] flex flex-col mr-2 mb-2 rounded-lg border overflow-hidden">
-      <!-- <div class="p-2">
-        <ElTooltip content="新增" placement="top">
-          <ElButton type="success" size="mini" circle class="px-3" icon="el-icon-plus"/>
-        </ElTooltip>
-      </div> -->
       <div class="flex p-1">
         <ElInput v-model="search" clearable placeholder="关键字搜索" />
         <ElTooltip content="刷新" placement="top">
           <ElButton class="px-3 ml-1" icon="el-icon-refresh" @click="getDictType" />
         </ElTooltip>
-        <ElTooltip content="新增" placement="top">
+        <ElTooltip v-if="userData.isMenagerRole === 1" content="新增" placement="top">
           <ElButton class="px-3" icon="el-icon-plus" @click="addConfigBtn" />
         </ElTooltip>
       </div>
@@ -195,7 +189,13 @@ export default {
     </div>
 
     <div class="w-[80%]">
-      <TablePage v-bind="tablePageOption" ref="table" field-key="1673417416576" />
+      <TablePage v-bind="tablePageOption" ref="table" field-key="1673417416576">
+        <template slot="actions:addConfig">
+          <ElButton v-if="userData.isMenagerRole === 1" size="small" type="primary" icon="el-icon-plus" @click="$router.push(`/config/updateConfig?dictCode=${dictCode}`)">
+            新增
+          </ElButton>
+        </template>
+      </TablePage>
     </div>
 
     <ElDrawer :title="isEditConfigList ? '编辑' : '新增'" :visible.sync="updateConfigDrawer" size="35%">

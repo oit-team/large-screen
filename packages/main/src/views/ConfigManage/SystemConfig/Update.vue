@@ -94,6 +94,10 @@ export default {
 
     // 提交
     async onSubmit() {
+      if (!this.form.dictitemCode && !this.form.dictitemDisplayName) {
+        this.$message.warning('请填写必填项')
+        return
+      }
       const upload = this.$refs.upload
       if (!upload.checkUploadDone()) return this.$message.warning('请等待文件上传完成')
 
@@ -118,16 +122,16 @@ export default {
     <ElDivider />
     <div class="w-[60%] h-full mb-4">
       <ElForm ref="form" :model="form" :rules="rules" label-width="80px">
-        <ElFormItem label="类型标识" prop="dictCode">
+        <ElFormItem label="类型编码" prop="dictCode">
           <ElInput v-model="form.dictCode" readonly />
         </ElFormItem>
-        <ElFormItem label="标识" prop="dictitemCode">
+        <ElFormItem label="配置编码" prop="dictitemCode">
           <ElInput v-model="form.dictitemCode" :readonly="isEdit" />
         </ElFormItem>
-        <ElFormItem label="名称" prop="dictitemDisplayName">
+        <ElFormItem label="配置内容" prop="dictitemDisplayName">
           <ElInput v-model="form.dictitemDisplayName" />
         </ElFormItem>
-        <ElFormItem label="值">
+        <ElFormItem label="描述">
           <ElInput v-model="form.remark" />
         </ElFormItem>
 

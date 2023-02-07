@@ -9,9 +9,7 @@
     "dev": "cross-env NODE_ENV=development vite --host",
     "build": "vite build",
     "build:dev": "cross-env NODE_ENV=development vite build -w",
-    "lint": "eslint \"**/*.{vue,ts,js,json}\" --fix",
-    "fix:sass": "sass-migrator division node_modules/**/*.scss",
-    "prepare": "npm run fix:sass"
+    "lint": "eslint \"**/*.{vue,ts,js,json}\" --fix"
   },
   "dependencies": {
     "@oit/element-ui-extend": "0.3.8-beta.5",
@@ -34,11 +32,12 @@
     "@vitejs/plugin-vue2": "^1.1.2",
     "@vitejs/plugin-vue2-jsx": "^1.0.3",
     "autoprefixer": "^10.4.13",
+    "eslint": "^8.20.0",
     "less": "^4.1.3",
     "postcss": "^8.4.18",
-    "sass": "^1.55.0",
-    "sass-migrator": "^1.7.1",
+    "sass": "~1.32.0",
     "tailwindcss": "^3.2.2",
+    "typescript": "^4.7.4",
     "unocss": "^0.46.2",
     "unplugin-auto-import": "^0.10.1",
     "unplugin-icons": "^0.14.7",

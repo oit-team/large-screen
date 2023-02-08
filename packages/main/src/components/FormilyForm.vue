@@ -34,6 +34,7 @@ import {
 } from '@formily/element'
 import type { PropType } from 'vue'
 import { Upload as CustomUpload } from '@oit/element-ui-extend'
+import FEditor from './FEditor'
 
 const props = defineProps({
   scope: {
@@ -127,12 +128,11 @@ const { SchemaField } = createSchemaField({
     Editable,
     PreviewText,
     Upload,
+    Editor: FEditor,
   },
 })
 
-const formCreated = ref(createForm({
-  // effects: props.effects as any,
-}))
+const formCreated = ref(createForm({}))
 
 const fieldScope = {
   ...props.scope,

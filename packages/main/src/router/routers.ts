@@ -139,6 +139,17 @@ export const routes: RouteConfig[] = [
         name: 'UpdateConfig',
         component: () => import('@/views/ConfigManage/SystemConfig/Update.vue'),
       },
+      // 行业配置
+      {
+        path: '/config/tradeConfig',
+        name: 'TradeConfig',
+        component: () => import('@/views/ConfigManage/TradeConfig/List.vue'),
+      },
+      {
+        path: '/config/tradeUpdate/:industryId/:type',
+        name: 'TradeUpdate',
+        component: () => import('@/views/ConfigManage/TradeConfig/Update.vue'),
+      },
       {
         path: '/404',
         component: () => import('@/views/404.vue'),

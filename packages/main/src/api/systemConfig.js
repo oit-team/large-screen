@@ -30,3 +30,21 @@ export function updateDictitemInfo(params) {
 export function getConfigDetailed(params) {
   return post('/system/menu/getConfigDetailed', params)
 }
+
+// 行业配置
+export function getIndustryList(params) {
+  return post('/system/industryConf/getIndustryList', params)
+}
+
+export function addIndustryInfo(params) {
+  return post('/system/industryConf/addIndustryInfo', params)
+}
+
+export function getIndustryDetails(params) {
+  return post('/system/industryConf/getIndustryDetails', params)
+}
+
+export function updateIndustryState(params) {
+  return post('/system/industryConf/updateIndustryState', params)
+}
+

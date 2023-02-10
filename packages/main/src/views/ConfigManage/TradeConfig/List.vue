@@ -37,7 +37,7 @@ export default {
               {
                 tip: ({ row }) => ['上架', '下架'][row.state],
                 icon: ({ row }) => ['el-icon-top', 'el-icon-bottom'][row.state],
-                type: 'warning',
+                type: ({ row }) => ['primary', 'warning'][row.state],
                 click: async ({ row }) => {
                   const state = row.state === 0 ? 1 : 0
                   const type = ['上架', '下架'][row.state]

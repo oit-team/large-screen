@@ -126,6 +126,20 @@ export default {
   },
   created() {
     this.type = this.$route.params?.type || ''
+    switch (this.type) {
+      case 'add':
+        this.content = '新增行业信息'
+        break
+      case 'edit':
+        this.content = '编辑行业信息'
+        break
+      case 'see':
+        this.content = '查看行业信息'
+        break
+      default:
+        this.content = '行业信息'
+        break
+    }
     if (this.$route.params.industryId) this.loadData()
   },
   methods: {
@@ -178,6 +192,7 @@ export default {
     },
     // 编辑修改 行业属性
     editAttribute(e, i) {
+      if (this.type === 'see') return false
       this.attributeDrawerType = 1
       this.editAttributeIndex = i
       this.attributeForm = JSON.parse(JSON.stringify(e))
@@ -358,7 +373,10 @@ export default {
             完成
           </ElButton>
         </div>
-        <div class="grid grid-cols-4 gap-4 gap-y-2 w-full">
+        <div v-if="attributeList.length === 0" class="w-full h-full">
+          <ElEmpty description="暂无数据" />
+        </div>
+        <div v-else class="grid grid-cols-4 gap-4 gap-y-2 w-full">
           <div
             v-for="(item, index) in attributeList"
             :key="index"
@@ -370,9 +388,11 @@ export default {
               <div>属性值：<span class="text-[#333]">{{ item.attribIndex }}</span></div>
             </div>
             <i
+              v-if="type !== 'see'"
               class="el-icon-close"
               @click.stop="attributeList.splice(index, 1)"
             />
+            <!--            <ElButton type="danger" plain size="mini" icon="el-icon-close" circle /> -->
           </div>
         </div>
       </div>
@@ -380,7 +400,7 @@ export default {
 
     <div v-show="radio1 === '行业配置'" class="w-full h-full">
       <ElTabs tab-position="left">
-        <ElTabPane label="列表显示配置" class="pl-6">
+        <ElTabPane label="产品列表显示配置" class="pl-6">
           <div class="h-full">
             <div v-if="type !== 'see'" class="mb-2 flex justify-end">
               <ElButton type="primary" icon="el-icon-plus" size="small" @click="addTabForm">
@@ -438,7 +458,6 @@ export default {
               >
                 <template slot-scope="scope">
                   {{ scope.row.noSearchShow === 0 ? '是' : '否' }}
-                  <!--                  {{ scope.row.noSearchShow }} -->
                 </template>
               </ElTableColumn>
               <ElTableColumn
@@ -448,7 +467,6 @@ export default {
               >
                 <template slot-scope="scope">
                   {{ scope.row.noTableShow === 0 ? '是' : '否' }}
-                  <!--                  {{ scope.row.noTableShow }} -->
                 </template>
               </ElTableColumn>
               <ElTableColumn
@@ -467,7 +485,7 @@ export default {
             </ElTable>
           </div>
         </ElTabPane>
-        <ElTabPane label="详情配置" class="pl-6">
+        <ElTabPane label="互动屏产品详情配置" class="pl-6">
           <div v-if="type !== 'see'" class="mb-2 flex justify-end">
             <ElButton type="primary" icon="el-icon-plus" size="small" @click="detailsDrawer = true">
               新增
@@ -487,10 +505,10 @@ export default {
                 <div>属性值：<span class="text-[#333]">{{ item.indexDescrip }}</span></div>
               </div>
               <i
+                v-if="type !== 'see'"
                 class="el-icon-close"
                 @click="detailsConfig.splice(index, 1)"
               />
-              <!--              @click="deleteDetailsConfig(index)" -->
             </div>
           </div>
         </ElTabPane>
@@ -563,7 +581,7 @@ export default {
             <ElInput v-model.trim="tabForm.fieldType" :maxlength="maxlength" />
           </ElFormItem>
           <ElFormItem label="扩展信息" prop="fieldAttr">
-            <ElInput v-model.trim="tabForm.fieldAttr" />
+            <ElInput v-model.trim="tabForm.fieldAttr" :maxlength="maxlength" />
           </ElFormItem>
           <ElFormItem label="是否作为搜索项">
             <ElSwitch v-model="tabForm.noSearchShow" />
@@ -599,7 +617,7 @@ export default {
             :class="{ 'bg-[#5c96fd] text-white': filterDetail(item) }"
             @click="addDetailsList(item)"
           >
-            <div class="text-sm">
+            <div class="text-sm leading-relaxed">
               <div>属性名：<span class="text-[#333]" :class="{ 'text-white': filterDetail(item) }">{{ item.indexName }}</span></div>
               <div>属性值：<span class="text-[#333]" :class="{ 'text-white': filterDetail(item) }">{{ item.indexDescrip }}</span></div>
             </div>

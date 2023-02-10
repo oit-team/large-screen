@@ -26,6 +26,7 @@ export default {
       ],
       typeSort: [
         { required: true, message: '请输入类别排序', trigger: 'blur' },
+        { min: 1, max: 32, message: '长度在 1 到 32 个字符', trigger: 'blur' },
       ],
 
     },

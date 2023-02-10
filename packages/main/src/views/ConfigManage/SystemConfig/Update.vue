@@ -30,6 +30,10 @@ export default {
       ],
       dictitemDisplayName: [
         { required: true, message: '请输入配置内容', trigger: 'blur' },
+        { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' },
+      ],
+      remark: [
+        { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' },
       ],
     },
   }),
@@ -131,7 +135,7 @@ export default {
         <ElFormItem label="配置内容" prop="dictitemDisplayName">
           <ElInput v-model="form.dictitemDisplayName" />
         </ElFormItem>
-        <ElFormItem label="描述">
+        <ElFormItem label="描述" prop="remark">
           <ElInput v-model="form.remark" />
         </ElFormItem>
 

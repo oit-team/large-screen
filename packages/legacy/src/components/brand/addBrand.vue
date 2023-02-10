@@ -126,6 +126,7 @@ export default {
         chunkSize: 1024 * 5,
         check: true,
         accept: 'image/*',
+        maxlength: 50,
         onSuccess: (...e) => {
           this.imageUrl = e[0].data.fileUrl
           this.ruleForm.brandLogo = e[0].data.fileUrl
@@ -715,7 +716,7 @@ export default {
           />
         </el-form-item>
         <el-form-item label="品牌地址" prop="brandAddress">
-          <el-input v-model="ruleForm.brandAddress" placeholder="请输入品牌地址" autocomplete="off" style="width:60%;" />
+          <el-input v-model="ruleForm.brandAddress" placeholder="请输入品牌地址" autocomplete="off" style="width:60%;" :maxlength="maxlength" />
         </el-form-item>
         <el-form-item label="联系人">
           <el-input v-model="ruleForm.contacts" placeholder="请输入联系人" autocomplete="off" style="width:60%;" />

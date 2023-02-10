@@ -48,3 +48,14 @@ export function updateIndustryState(params) {
   return post('/system/industryConf/updateIndustryState', params)
 }
 
+export function updateIndustryAttrib(params) {
+  return post('/system/industryConf/updateIndustryAttrib', params)
+}
+
+export function updateIndustryIndexConfig(params) {
+  return post('/system/industryConf/updateIndustryIndexConfig', params)
+}
+
+export function updateProductDisplayConfig(params) {
+  return post('/system/industryConf/updateProductDisplayConfig', params)
+}

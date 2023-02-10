@@ -22,6 +22,7 @@ const Component = defineComponent({
         ref={editorRef}
         initialEditType="wysiwyg"
         previewStyle="vertical"
+        initialValue={props.value}
         height={props.height}
         options={{
           autofocus: false,

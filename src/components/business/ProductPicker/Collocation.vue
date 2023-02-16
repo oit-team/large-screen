@@ -34,6 +34,13 @@
         试衣间
       </div>
     </div>
+    <div v-if="showModule(4)" class="p-2 flex flex-col items-center" @click="() => $refs.permission.open()">
+      <v-img
+        class="rounded-xl h-54px w-54px"
+        src="@/asset/image/camera.png"
+      ></v-img>
+      智能搭配
+    </div>
 
     <Permission ref="permission" @accept="sendCommandToDevice()" />
   </Drawer>

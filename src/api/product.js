@@ -33,3 +33,17 @@ export function getAdvertsInfo(devId) {
 export function addFittingRecord(params) {
   return post(`${API_SERVICE.LIVE_BROADCAST}/device/addFittingRecord`, params)
 }
+
+/*
+* 商品详情
+* */
+export function goodsInfo(params) {
+  return post('/goods/api/style/info', params)
+}
+
+/*
+* 商品详情
+* */
+export function collocationInfo(params) {
+  return post('/goods/api/coll/info', params)
+}

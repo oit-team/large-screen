@@ -24,9 +24,9 @@
         </div>
         <div
           v-if="selectedProduct.imgResources && selectedProduct.imgResources.length"
-          class="flex absolute bottom-0 z-10 justify-end p-2 w-full"
+          class="absolute bottom-0 z-10 flex items-center justify-between p-2 w-full bg-black bg-opacity-40"
         >
-          <div class="overflow-hidden bg-black bg-opacity-40 rounded">
+          <div class="overflow-hidden rounded">
             <vc-btn class="px-1 min-w-0 bg-transparent" tile dark @click="() => $headerSwiper.slidePrev()">
               <vc-icon>fas fa-chevron-left</vc-icon>
             </vc-btn>
@@ -34,6 +34,12 @@
             <vc-btn class="px-1 min-w-0 bg-transparent" tile dark @click="() => $headerSwiper.slideNext()">
               <vc-icon>fas fa-chevron-right</vc-icon>
             </vc-btn>
+          </div>
+          <div class="flex text-white" @click="toDetails(selectedProduct.id, selectedProduct.brandId)">
+            查看更多
+            <vc-icon dark>
+              fas fa-angle-double-right
+            </vc-icon>
           </div>
         </div>
       </div>
@@ -508,6 +514,15 @@ export default {
         setTimeout(() => {
           this.loading = false
         })
+      })
+    },
+    toDetails(id, brandId) {
+      this.$router.push({
+        name: 'MatchingList',
+        params: {
+          id,
+          brandId,
+        },
       })
     },
   },

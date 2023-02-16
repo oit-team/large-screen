@@ -24,6 +24,11 @@ const routes = [
     name: 'Recommend',
     component: () => import('@/views/Recommend.vue'),
   },
+  {
+    path: '/matching-list/:id/:brandId',
+    name: 'MatchingList',
+    component: () => import('@/views/MatchingList.vue'),
+  },
 ]
 
 const router = new VueRouter({

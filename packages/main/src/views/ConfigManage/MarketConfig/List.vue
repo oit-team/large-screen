@@ -46,12 +46,12 @@ export default {
       this.$confirm('确定保存此配置的修改吗？', '提示', { type: 'warning' }).then(async () => {
         this.ruleForm.configList = Object.values(this.configMap)
         await this.updateBrandConfig()
-      }).catch(() => this.$message({ message: '取消编辑！', type: 'info' }))
+      }).catch(err => this.$message({ message: err.message || '取消修改！', type: 'warning' }))
     },
 
     cancelUpdate() {
       this.isUpdate = false
-      this.$message({ message: '取消编辑！', type: 'info' })
+      this.$message({ message: '取消编辑！', type: 'warning' })
     },
 
   },

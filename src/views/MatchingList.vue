@@ -1,6 +1,6 @@
 <template>
   <!--  aspect-9/16 -->
-  <div class="grid bg-gray grid-rows-[620px,min-content,1fr] relative overflow-hidden overflow-y-auto">
+  <div class="grid bg-gray grid-rows-[620px,min-content,1fr] relative overflow-hidden overflow-y-auto h-full">
     <header class="relative bg-white rounded-lg box-border flex justify-center overflow-hidden mx-4 my-2">
       <div class="overflow-hidden aspect-3/4">
         <v-swiper
@@ -13,11 +13,11 @@
             v-for="(src, index) in infoData.styleList"
             :key="index"
           >
-            <!--            :src="getSmallImage(src.imgUrl, 'x')" -->
+            <!--            :src="src.imgUrl" -->
             <v-img
               class="img"
               height="100%"
-              :src="src.imgUrl"
+              :src="getSmallImage(src.imgUrl, 'x')"
               contain
               @click="showPreview = true"
             />
@@ -64,10 +64,9 @@
         class="mb-2"
         @click="showInfo(del)"
       >
-        <!--        :src="getSmallImage(imgUrl, 'x')" -->
         <v-img
           class="img"
-          :src="del.imgUrl"
+          :src="getSmallImage(del.imgUrl, 'x')"
           contain
         />
         <div class="text-center">
@@ -127,6 +126,7 @@ import { collocationInfo } from '@/api/product'
 import ProductPreview from '@/components/business/ProductPreview/ProductPreview.vue'
 import Drawer from '@/components/commons/Drawer'
 import GoodsInfo from '@/components/business/ProductPicker/GoodsInfo'
+import { getSmallImage } from '@/utils/helper'
 export default {
   components: {
     ProductPreview,
@@ -152,19 +152,19 @@ export default {
   },
   watch: {
   },
-  created() {
-    this.id = this.$route.params?.id
-    this.brandId = this.$route.params?.brandId
-    this.setSwiperOptions()
-    this.getData()
-  },
   mounted() {
     this.$nextTick(() => {
       this.$headerSwiper = this.$refs.swiper?.$swiper
     })
   },
+  activated() {
+    this.id = this.$route.params?.id
+    this.brandId = this.$route.params?.brandId
+    this.setSwiperOptions()
+    this.getData()
+  },
   methods: {
-    // getSmallImage,
+    getSmallImage,
     setSwiperOptions() {
       // 轮播图片集合
       this.options = {

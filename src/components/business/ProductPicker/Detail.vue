@@ -23,11 +23,10 @@
             v-for="(src, index) in infoData.styleList"
             :key="index"
           >
-            <!--            :src="getSmallImage(src.imgUrl, 'x')" -->
             <v-img
               class="img"
               height="100%"
-              :src="src.imgUrl"
+              :src="getSmallImage(src.imgUrl, 'x')"
               contain
               @click="showPreview = true"
             />

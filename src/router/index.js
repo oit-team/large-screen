@@ -15,6 +15,11 @@ const routes = [
     component: () => import('@/views/Carousel.vue'),
   },
   {
+    path: '/luck-draw',
+    name: 'LuckDraw',
+    component: () => import('@/views/LuckDraw.vue'),
+  },
+  {
     path: '/video',
     name: 'Video',
     component: () => import('@/views/Video.vue'),
@@ -23,6 +28,11 @@ const routes = [
     path: '/recommend',
     name: 'Recommend',
     component: () => import('@/views/Recommend.vue'),
+  },
+  {
+    path: '/matching-list/:id/:brandId',
+    name: 'MatchingList',
+    component: () => import('@/views/MatchingList.vue'),
   },
 ]
 

@@ -11,7 +11,12 @@
     </v-overlay>
 
     <SelectGoods ref="fitting" :goods-list="goodsList"></SelectGoods>
-    <GoodsInfo ref="info" :info-data="infoData"></GoodsInfo>
+    <!--    <GoodsInfo ref="info" :info-data="infoData"></GoodsInfo> -->
+    <GoodsInfo
+      ref="info"
+      @dialog-close="dialogClose"
+      @away="onAway"
+    ></GoodsInfo>
   </div>
 </template>
 
@@ -56,7 +61,6 @@ export default {
         } else {
           this.$refs.collocation.close()
           this.$refs.fitting.close()
-          this.$refs.info.close()
         }
       },
     },
@@ -65,23 +69,16 @@ export default {
   },
   mounted() {
     this.$refs.fitting.close()
-    this.$refs.info.close()
   },
   methods: {
     showInfo(item) {
       clearTimeout(this.timer)
-      this.infoData = item
-      this.$refs.fitting.close()
-      this.$refs.info.open()
-      this.overlay = true
+      this.$refs.info.open(item)
       this.$emit('lock')
-      this.timer = setTimeout(() => {
-        this.closeOverlay()
-      }, 60000)
+      this.$refs.fitting.close()
     },
     showFitting() {
       clearTimeout(this.timer)
-      this.$refs.info.close()
       this.$refs.fitting.open()
       this.overlay = true
       this.$emit('lock')
@@ -104,8 +101,14 @@ export default {
       this.overlay = false
       this.$emit('unlock')
       this.$refs.fitting.close()
-      this.$refs.info.close()
       this.$refs.collocation.reset()
+    },
+    dialogClose() {
+      this.$emit('unlock')
+      this.$refs.collocation.reset()
+    },
+    onAway() {
+      this.$refs.info.closedialog()
     },
   },
 }

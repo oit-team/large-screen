@@ -8,7 +8,6 @@
       @close="close"
       @click.stop
     />
-
     <ProductPicker
       ref="picker"
       :options="options"

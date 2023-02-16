@@ -6,7 +6,8 @@
       </div>
     </div>
     <v-divider class="!border-current"></v-divider>
-    <!--    点击试衣间 -->
+
+    <!--        点击试衣间 -->
     <div class="w-full h-7rem p-3 pt-4 box-border flex flex-col justify-center items-center text-sm" @click="isShow">
       <v-badge
         color="#f47b7b"
@@ -21,7 +22,7 @@
           src="@/asset/image/fitting.png"
         ></v-img>
       </v-badge>
-      试衣间
+      抽奖
     </div>
 
     <Permission ref="permission" @accept="sendCommandToDevice()" />
@@ -62,9 +63,12 @@ export default {
       this.showBorder = false
     },
     isShow() {
-      this.$emit('show-fitting')
-      this.showBorder = true
-      this.clickIndex = null
+      // this.$emit('show-fitting')
+      // this.showBorder = true
+      // this.clickIndex = null
+      this.$router.push({
+        name: 'LuckDraw',
+      })
     },
     reset() {
       this.clickIndex = null

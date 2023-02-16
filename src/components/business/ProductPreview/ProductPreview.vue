@@ -2,7 +2,7 @@
   <v-fade-transition>
     <div v-show="value" class="product-preview" @click="$emit('input', !value)">
       <Swiper ref="swiper" :options="swiperOption" @touchmove.native.prevent>
-        <SwiperSlide v-for="item of imgResources" :key="item">
+        <SwiperSlide v-for="(item, index) of imgResources" :key="index">
           <v-img :src="item" height="100%" />
         </SwiperSlide>
 
@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 
 export default {
   name: 'ProductPreview',
@@ -36,7 +36,7 @@ export default {
 
   computed: {
     imgResources() {
-      return this.$store.state.selectedProduct?.imgResources ?? []
+      return this.list ?? this.$store.state.selectedProduct?.imgResources ?? []
     },
   },
 
@@ -60,9 +60,9 @@ export default {
 
 <style scoped lang="scss">
 .product-preview {
-  position: fixed;
+  position: absolute;
   z-index: 100;
-  width: 100vw;
+  width: 100%;
   background-color: #ffffff;
   aspect-ratio: 9/16;
 
@@ -74,8 +74,8 @@ export default {
     }
 
     ::v-deep .swiper-pagination-bullet {
-      width: 24px;
-      height: 24px;
+      width: 10px;
+      height: 10px;
     }
 
     ::v-deep .swiper-pagination-bullet-active {

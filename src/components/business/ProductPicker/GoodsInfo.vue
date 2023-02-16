@@ -1,74 +1,54 @@
 <template>
-  <Drawer ref="drawer" position="left" offset="50%" class="rounded-r-3xl drawerW z-61">
-    <div class="w-full p-3 leading-15">
-      <div class="info-item flex">
-        <div class="lable w-32 text-center">
-          类别
-        </div>
-        <div class="lable w-3/5">
-          {{ infoData.styleCategory }}
-        </div>
+  <div class="text-center">
+    <v-dialog
+      v-model="dialog"
+      width="75%"
+      @click:outside="closedialog"
+    >
+      <div v-if="dialog" class="h-[75vh] bg-gray" @touchstart="onTouchstart">
+        <Clothing ref="clothing" :product-id="productId" :is-dialog="isDialog"></Clothing>
       </div>
-      <div class="info-item flex">
-        <div class="lable w-32 text-center">
-          颜色
-        </div>
-        <div class="lable w-3/5">
-          {{ infoData.styleColor }}
-        </div>
-      </div>
-      <div class="info-item flex">
-        <div class="lable w-32 text-center">
-          材质
-        </div>
-        <div class="lable w-3/5">
-          {{ infoData.styleFabric }}
-        </div>
-      </div>
-      <div class="info-item flex">
-        <div class="lable w-32 text-center">
-          廓形
-        </div>
-        <div class="lable w-3/5">
-          {{ infoData.styleFlowerPattern }}
-        </div>
-      </div>
-      <div class="info-item flex">
-        <div class="lable w-32 text-center">
-          场合
-        </div>
-        <div class="lable w-3/5">
-          {{ infoData.styleInfo }}
-        </div>
-      </div>
-      <div class="info-item flex">
-        <div class="lable w-32 text-center">
-          标签
-        </div>
-        <div class="lable w-3/5">
-          {{ infoData.styleLabel }}
-        </div>
-      </div>
-    </div>
-  </Drawer>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
-import Drawer from '@/components/commons/Drawer'
+import Clothing from './Detail.vue'
+
+const AWAY_TIME = 30000 // 30s
+let timer = null
 
 export default {
   components: {
-    Drawer,
+    Clothing,
   },
   props: {
-    infoData: Object,
+  },
+  data() {
+    return {
+      infoData: {},
+      dialog: false,
+      productId: '',
+      isDialog: true,
+    }
   },
   methods: {
-    open() {
-      this.$refs.drawer.open()
+    open(data) {
+      this.dialog = true
+      this.infoData = data
+      this.productId = this.infoData.id
+      this.onTouchstart()
     },
-    close() {
-      this.$refs.drawer.close()
+    // 点击dialog容器之外触发关闭
+    closedialog() {
+      this.dialog = false
+      this.$emit('dialog-close')
+    },
+    onTouchstart() {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        this.$emit('away')
+      }, AWAY_TIME)
     },
   },
 }

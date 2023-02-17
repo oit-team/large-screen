@@ -22,7 +22,7 @@
           src="@/asset/image/fitting.png"
         ></v-img>
       </v-badge>
-      抽奖
+      试衣间
     </div>
 
     <Permission ref="permission" @accept="sendCommandToDevice()" />
@@ -63,12 +63,12 @@ export default {
       this.showBorder = false
     },
     isShow() {
-      // this.$emit('show-fitting')
-      // this.showBorder = true
-      // this.clickIndex = null
-      this.$router.push({
-        name: 'LuckDraw',
-      })
+      this.$emit('show-fitting')
+      this.showBorder = true
+      this.clickIndex = null
+      // this.$router.push({
+      //   name: 'LuckDraw',
+      // })
     },
     reset() {
       this.clickIndex = null

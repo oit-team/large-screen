@@ -11,7 +11,7 @@
     </v-overlay>
 
     <SelectGoods ref="fitting" :goods-list="goodsList"></SelectGoods>
-    <!--    <GoodsInfo ref="info" :info-data="infoData"></GoodsInfo> -->
+
     <GoodsInfo
       ref="info"
       @dialog-close="dialogClose"

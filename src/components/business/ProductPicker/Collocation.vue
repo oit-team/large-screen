@@ -8,21 +8,31 @@
     <v-divider class="!border-current"></v-divider>
 
     <!--        点击试衣间 -->
-    <div class="w-full h-7rem p-3 pt-4 box-border flex flex-col justify-center items-center text-sm" @click="isShow">
-      <v-badge
-        color="#f47b7b"
-        :content="$store.state.shoppingCart.list.length"
-        :value="!!$store.state.shoppingCart.list.length"
-        :offset-x="10"
-        :offset-y="10"
-      >
-        <v-img
-          class="rounded-xl"
-          :class="showBorder ? 'borders' : ''"
-          src="@/asset/image/fitting.png"
-        ></v-img>
-      </v-badge>
-      试衣间
+    <div class="w-full h-7rem p-3 pt-4 box-border flex justify-center items-center text-sm" @click="isShow">
+      <!--      <div class="flex flex-col items-center h-full"> -->
+      <!--        <vc-icon dark class="mb-2"> -->
+      <!--          fas fa-volume-high -->
+      <!--        </vc-icon> -->
+      <!--        呼叫 -->
+      <!--      </div> -->
+      <div class="flex flex-col items-center h-full">
+        <v-badge
+          color="#f47b7b"
+          :content="$store.state.shoppingCart.list.length"
+          :value="!!$store.state.shoppingCart.list.length"
+          :offset-x="10"
+          :offset-y="10"
+        >
+          <v-img
+            width="50"
+            height="50"
+            class="rounded-xl"
+            :class="showBorder ? 'borders' : ''"
+            src="@/asset/image/fitting.png"
+          ></v-img>
+        </v-badge>
+        试衣间
+      </div>
     </div>
 
     <Permission ref="permission" @accept="sendCommandToDevice()" />

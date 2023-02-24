@@ -145,11 +145,6 @@ export const routes: RouteConfig[] = [
         name: 'MarketConfig',
         component: () => import('@/views/ConfigManage/MarketConfig/List.vue'),
       },
-      {
-        path: '/config/updateMarket',
-        name: 'MarketUpdate',
-        component: () => import('@/views/ConfigManage/MarketConfig/Update.vue'),
-      },
       // 行业配置
       {
         path: '/config/tradeConfig',

@@ -79,7 +79,7 @@ export default {
                 step: '00:30',
                 end: '24:00',
               }"
-              placeholder="请选择"
+              :placeholder="`请选择${configMap.BRAND_START_TIME.configName}`"
               clearable
             />
           </ElFormItem>
@@ -95,7 +95,7 @@ export default {
                 step: '00:30',
                 end: '24:00',
               }"
-              placeholder="请选择"
+              :placeholder="`请选择${configMap.BRAND_END_TIME.configName}`"
               clearable
             />
           </ElFormItem>
@@ -103,7 +103,7 @@ export default {
             <p v-if="!isUpdate" class="ml-8">
               {{ configMap.INTERVAL_MINUTE.value }}
             </p>
-            <ElSelect v-else v-model="configMap.INTERVAL_MINUTE.value" style="width:220px" placeholder="请输入名称">
+            <ElSelect v-else v-model="configMap.INTERVAL_MINUTE.value" style="width:220px" :placeholder="`请选择${configMap.INTERVAL_MINUTE.configName}`">
               <ElOption label="10" value="10" />
               <ElOption label="20" value="20" />
               <ElOption label="30" value="30" />
@@ -113,13 +113,13 @@ export default {
             <p v-if="!isUpdate" class="ml-8">
               {{ configMap.BRAND_INTERVAL_PRICE.value }}
             </p>
-            <ElInput v-else v-model="configMap.BRAND_INTERVAL_PRICE.value" oninput="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" placeholder="请选择" autocomplete="off" style="width:60%;" />
+            <ElInput v-else v-model="configMap.BRAND_INTERVAL_PRICE.value" oninput="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" :placeholder="`请输入${configMap.BRAND_INTERVAL_PRICE.configName}`" autocomplete="off" style="width:60%;" />
           </ElFormItem>
           <ElFormItem :label="configMap.INTERVAL_DAY.configName">
             <p v-if="!isUpdate" class="ml-8">
               {{ configMap.INTERVAL_DAY.value }}
             </p>
-            <ElInput v-else v-model="configMap.INTERVAL_DAY.value" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入" autocomplete="off" style="width:60%;" />
+            <ElInput v-else v-model="configMap.INTERVAL_DAY.value" oninput="value=value.replace(/[^\d]/g,'')" :placeholder="`请输入${configMap.INTERVAL_DAY.configName}`" autocomplete="off" style="width:60%;" />
           </ElFormItem>
         </ElForm>
         <div class="absolute bottom-0 left-0 ml-12 p-10">

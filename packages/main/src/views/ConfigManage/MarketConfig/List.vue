@@ -104,9 +104,9 @@ export default {
               {{ configMap.INTERVAL_MINUTE.value }}
             </p>
             <ElSelect v-else v-model="configMap.INTERVAL_MINUTE.value" style="width:220px" placeholder="请输入名称">
-              <ElOption label="10" value="0" />
-              <ElOption label="20" value="1" />
-              <ElOption label="30" value="2" />
+              <ElOption label="10" value="10" />
+              <ElOption label="20" value="20" />
+              <ElOption label="30" value="30" />
             </ElSelect>
           </ElFormItem>
           <ElFormItem :label="configMap.BRAND_INTERVAL_PRICE.configName">

@@ -136,9 +136,6 @@ export default {
       case 'see':
         this.content = '查看行业信息'
         break
-      default:
-        this.content = '行业信息'
-        break
     }
     if (this.$route.params.industryId) this.loadData()
   },
@@ -339,7 +336,7 @@ export default {
       <ElPageHeader :content="content" @back="$router.back()" />
       <!--      新增全部完成 -->
       <ElButton v-if="type === 'add'" type="success" size="small" @click="submit('form')">
-        完成
+        提交
       </ElButton>
     </div>
 
@@ -365,7 +362,7 @@ export default {
         <ElEmpty description="暂无数据" />
       </div>
       <div v-else class="w-h-full">
-        <div v-if="type === 'edit'" class="mb-2 flex justify-end">
+        <div v-if="type !== 'see'" class="mb-2 flex justify-end">
           <ElButton icon="el-icon-plus" size="small" type="primary" plain @click="addAttributeBtn">
             新增属性
           </ElButton>

@@ -198,6 +198,7 @@ export default {
       },
       drawerCount: 0,
       drawerSelectList: '',
+      dialogFormVisible: false,
     }
   },
 
@@ -206,7 +207,6 @@ export default {
       this.$refs.tree.filter(val)
     },
     $route(to, from) {
-      // // console.log(">>>>>>>>>",to,from);
       // if(to.fullPath == '/brand/addUser'){
       //   from.meta.keepAlive = true
       // }else{
@@ -214,16 +214,11 @@ export default {
       // }
     },
     tableData(val) {
-      // // console.log("this.taskCheckedList===",this.taskCheckedList)
-      // // console.log("val====",val)
       if (val && this.taskCheckedList && this.activeTab == 2) {
-        // // console.log("11111111111")
         this.$nextTick(() => {
           val.forEach((item) => {
             this.taskCheckedList.forEach((self) => {
-              // // console.log("2222222222")
               if (item.taskId == self.taskId) {
-                // // console.log("33333=====",item.taskId)
                 this.$refs.taskTable.toggleRowSelection(item, true)
               }
             })
@@ -264,13 +259,11 @@ export default {
     const _this = this
     setTimeout(() => {
       _this.curCheckedKey = _this.orgList[0].id
-      console.log(_this.curCheckedKey)
       _this.nodeId = _this.orgList[0].id
       _this.orgStId = _this.nodeId
       _this.isShop = _this.orgList[0].isShop
 
       _this.$refs.tree.setCurrentKey(_this.curCheckedKey)
-      console.log(_this.$refs.tree)
 
       _this.loading = true
       _this.dynamicParam = [
@@ -283,7 +276,6 @@ export default {
       _this.serverName = _this.GLOBAL.system_manager_server
       _this.requestUrl = '/user/getUsers'
 
-      // // console.log("_this.brandTitArr==",_this.brandTitArr)
       if (_this.brandTitArr.length > 0) {
         sessionStorage.headTitString = _this.brandTitArr[0]
       }
@@ -328,21 +320,17 @@ export default {
         el.value = this.pageNum
       }
     })
-    // // console.log("==========mounted=======",this.dynamicParam)
     this.$refs.child.parentMsg(this.dynamicParam)
     // parentMsg 只传参，不调方法;parentMsgs 传参，且调方法
   },
   activated() {
     this.getAreaManager()
     this.getStoreList()
-    // console.log("==综合管理==activated====")
     // this.getTreeOrgList()
     this.clickNodeFlag = false
-    // // console.log("sessionStorage.headTitString-----",sessionStorage.headTitString)
     if (sessionStorage.headTitString) {
       this.headTitArr = JSON.parse(sessionStorage.headTitString)
     }
-    // // console.log("this.headTitArr========",this.headTitArr);
     // if (!this.headTitArr) {
     //   this.$message({
     //     message: 'this.headTitArr为空',
@@ -356,13 +344,11 @@ export default {
     // 注册的总线事件（Bus）要在组件销毁时(beforeDestroy/destroyed)卸载，否则会多次挂载，造成触发一次但多个响应的情况 -- 第二种不生效
     _this.$bus.$off('detailShow')
     _this.$bus.$on('detailShow', (data) => { // 接收
-    // // console.log("----------data---------",data)
       if (!data.id) { // 是新增还是编辑
         // _this.tableData.unshift(data);
         // _this.total = _this.total+1;
         _this.$nextTick(() => {
           // 新增数据后走公共搜索组件里的清空搜索进行重新请求数据
-          // // console.log("_this.$refs.child====",_this.$refs.child)
           _this.$refs.child.resetSearch(this.dynamicParam)
         })
       }
@@ -398,7 +384,6 @@ export default {
 
     async getStoreList() {
       const res = await getStoreList()
-      console.log(res)
       this.marketList = res.body.storeList
     },
     // 任务下发 获取选择下发的成员
@@ -1963,7 +1948,6 @@ export default {
     },
     // 点击操作-》编辑按钮
     clickEdit() {
-      console.log('点击编辑时的this.nodeInfo====', this.nodeInfo)
       this.handleClickFlag = false
       this.shopDialog = true
       this.editFlag = true
@@ -2041,7 +2025,6 @@ export default {
       }).then(() => {
         const jsonParam = _this.GLOBAL.g_paramJson(con)
         _this.$axios.post(`${_this.GLOBAL.system_manager_server}/org/delOrgOrShopById`, jsonParam).then((res) => {
-          // // console.log("====删除区域/店铺接口==========",res.data.body);   // 成功时 body为null
           _this.handleClickFlag = false
           if (res.data.head.status == 0) {
             _this.$message({
@@ -2066,8 +2049,9 @@ export default {
       })
     },
     cancelRecharge(formName) {
-      this.shopDialog = false
-      this.integralForm.integral = ''
+      // this.shopDialog = false
+      this.dialogFormVisible = false
+      // this.integralForm.integral = ''
       this.$refs.integralForm.resetFields()
       this.$message({
         message: '取消充值！',
@@ -2084,7 +2068,8 @@ export default {
       const jsonParam = this.GLOBAL.g_paramJson(con)
       this.$axios.post(`${this.GLOBAL.system_manager_server}/pay/alipay`, jsonParam).then((res) => {
         if (res.data.head.status === 0) {
-          document.write(res.data.body.result)
+          // document.write(res.data.body.result)
+          window.open('https://www.baidu.com/')
         }
         else {
           this.$message({
@@ -2104,7 +2089,6 @@ export default {
     cancelAdd(formName) {
       this.shopDialog = false
       // this.$refs[formName].resetFields();
-      // // console.log(this.$refs.shopForm,this.$refs.areaForm)
       if (this.$refs.shopForm) {
         this.$refs.shopForm.resetFields()
       }
@@ -2126,11 +2110,9 @@ export default {
     },
     // 确认新增区域
     conAddArea(formName) {
-      // // console.log("确认新增区域");
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.updateAreaLoading = true
-          // // console.log("-----333333333333--------",this.nodeInfo)
           let path = null
           if (this.nodeInfo) {
             path = `${this.nodeInfo.path},${this.nodeInfo.id}`
@@ -2138,7 +2120,6 @@ export default {
           else {
             path = '0'
           }
-          // // console.log("--------path-------",path)
           const _this = this
           const con = {
             // brandId: sessionStorage.brandId,
@@ -2152,7 +2133,6 @@ export default {
 
           const jsonParam = _this.GLOBAL.g_paramJson(con)
           _this.$axios.post(`${_this.GLOBAL.system_manager_server}/org/insertOrg`, jsonParam).then((res) => {
-            // // console.log("====确认新增区域接口==========",res.data.body);   // 成功时 body为null
             // _this.shopDialog = false;
             // _this.areaForm.areaName = '';
             // _this.areaForm.areaCode = '';
@@ -2184,19 +2164,16 @@ export default {
           })
         }
         else {
-          // console.log('error submit!!');
           return false
         }
       })
     },
     // 确认新增店铺
     conAddShop(formName) {
-      // // console.log("确认新增区域");
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.updateShopLoading = true
           const _this = this
-          // // console.log("_this.shopForm============",_this.shopForm)
           let orgStId = null
           if (_this.shopForm.orgStId) {
             orgStId = _this.shopForm.orgStId
@@ -2220,7 +2197,6 @@ export default {
 
           const jsonParam = _this.GLOBAL.g_paramJson(con)
           _this.$axios.post(`${_this.GLOBAL.system_manager_server}/org/insertShop`, jsonParam).then((res) => {
-            // // console.log("====确认新增区域接口==========",res.data.body);   // 成功时 body为null
             if (res.data.head.status == 0) {
               this.updateShopLoading = false
               _this.shopDialog = false
@@ -2251,15 +2227,12 @@ export default {
           })
         }
         else {
-          // console.log('error submit!!');
           return false
         }
       })
     },
     // 确认编辑区域或店铺
     conEditAreaOrShop(formName) {
-      // // console.log("确认编辑区域或店铺");
-      // // console.log("====================",this.nodeInfo);
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const _this = this
@@ -2297,10 +2270,8 @@ export default {
               dutyId: _this.areaForm.dutyId,
             }
           }
-          // console.log("----编辑con---",con)
           const jsonParam = _this.GLOBAL.g_paramJson(con)
           _this.$axios.post(`${_this.GLOBAL.system_manager_server}/org/updateShopOrOrgById`, jsonParam).then((res) => {
-            // // console.log("====确认编辑接口==========",res.data.body);   // 成功时 body为null
             if (res.data.head.status == 0) {
               _this.shopDialog = false
               _this.shopForm.shopName = ''
@@ -2329,14 +2300,12 @@ export default {
           })
         }
         else {
-          // console.log('error submit!!');
           return false
         }
       })
     },
     // 店铺所属区域变化时
     changeArea(val) {
-      // // console.log("=====店铺所属区域id======",val);
       this.shopForm.orgStId = val
     },
     // 更换区域负责人
@@ -2458,20 +2427,7 @@ export default {
 
     <div style="width:0.5px;background-color:#ddd;margin-left:6px;" />
     <div ref="brandRightCon" class="rightListCon">
-      <div class="userTabBox">
-        <!-- <div :class="activeTab == 1 ? 'active' : ''" class="tabItem" @click="clickUserTab(1)">
-          用户列表
-        </div> -->
-        <!-- <div :class="activeTab == 2 ? 'active' : ''" class="tabItem" @click="clickUserTab(2)">
-          考核下发
-        </div>
-        <div :class="activeTab == 3 ? 'active' : ''" class="tabItem" @click="newClickUserTab(3)">
-          设备管理
-        </div> -->
-        <!-- <div :class="activeTab == 4 ? 'active' : ''" class="tabItem" @click="newClickUserTab(4)">
-          终端搭配
-        </div> -->
-      </div>
+      <div class="userTabBox" />
       <!-- 组件 -->
       <common-search
         v-if="activeTab == 1 || activeTab == 2"
@@ -2836,8 +2792,11 @@ export default {
               <el-form-item label="联系电话" :label-width="formLabelWidth" prop="telephone">
                 <el-input v-model="shopForm.telephone" autocomplete="off" placeholder="请输入店铺联系电话" />
               </el-form-item>
-              <el-form-item label="所属积分" :label-width="formLabelWidth" prop="telephone">
-                <el-input v-model="shopForm.integralNumber" disabled autocomplete="off" />
+              <el-form-item label="所属积分" :label-width="formLabelWidth" prop="telephone" inline>
+                <el-input v-model="shopForm.integralNumber" disabled autocomplete="off" class="!w-4/5" />
+                <el-button type="primary" class="ml-2 flex-1" @click="dialogFormVisible = true">
+                  积分充值
+                </el-button>
               </el-form-item>
 
               <el-form-item label="开店日期" :label-width="formLabelWidth" prop="openDate">
@@ -2882,25 +2841,42 @@ export default {
               </el-button>
             </div>
           </el-tab-pane>
-          <el-tab-pane v-if="editShop" label="积分充值" name="integral">
-            <!-- 新增积分充值 接口还未调TODO -->
-            <el-form ref="integralForm" :model="integralForm">
-              <el-form-item label="充值积分" :label-width="formLabelWidth">
-                <el-input v-model="integralForm.integral" oninput="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" autocomplete="off" placeholder="请输入充值积分数" />
-              </el-form-item>
-            </el-form>
-            <div class="demo-drawer__footer">
-              <el-button size="small" @click="cancelRecharge('integralForm')">
-                取 消
-              </el-button>
-              <el-button size="small" type="primary" @click="conRechargeIntegral('integralForm')">
-                立即支付
-              </el-button>
-            </div>
-          </el-tab-pane>
+          <!--          <el-tab-pane v-if="editShop" label="积分充值" name="integral"> -->
+          <!--            &lt;!&ndash; 新增积分充值 接口还未调TODO &ndash;&gt; -->
+          <!--            <el-form ref="integralForm" :model="integralForm"> -->
+          <!--              <el-form-item label="充值积分" :label-width="formLabelWidth"> -->
+          <!--                <el-input v-model="integralForm.integral" oninput="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" autocomplete="off" placeholder="请输入充值积分数" /> -->
+          <!--              </el-form-item> -->
+          <!--            </el-form> -->
+          <!--            <div class="demo-drawer__footer"> -->
+          <!--              <el-button size="small" @click="cancelRecharge('integralForm')"> -->
+          <!--                取 消 -->
+          <!--              </el-button> -->
+          <!--              <el-button size="small" type="primary" @click="conRechargeIntegral('integralForm')"> -->
+          <!--                立即支付 -->
+          <!--              </el-button> -->
+          <!--            </div> -->
+          <!--          </el-tab-pane> -->
         </el-tabs>
       </div>
     </el-drawer>
+
+    <el-dialog title="积分充值" :visible.sync="dialogFormVisible" width="40%">
+      <!-- 新增积分充值 接口还未调TODO -->
+      <el-form ref="integralForm" :model="integralForm">
+        <el-form-item label="充值积分" :label-width="formLabelWidth">
+          <el-input v-model="integralForm.integral" oninput="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" autocomplete="off" placeholder="请输入充值积分数" />
+        </el-form-item>
+      </el-form>
+      <div class="demo-drawer__footer">
+        <el-button size="small" @click="cancelRecharge('integralForm')">
+          取 消
+        </el-button>
+        <el-button size="small" type="primary" @click="conRechargeIntegral('integralForm')">
+          立即支付
+        </el-button>
+      </div>
+    </el-dialog>
 
     <!-- 批量授权 -->
     <el-drawer
@@ -3160,4 +3136,8 @@ export default {
 <style lang="less" scoped>
 @deep:~">>>";
 @import '../../assets/css/brand/brandInteManage.css';
+
+:deep(.el-form-item__content){
+  display: flex;
+}
 </style>

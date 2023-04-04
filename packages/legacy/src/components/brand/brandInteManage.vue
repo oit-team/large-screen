@@ -2068,8 +2068,7 @@ export default {
       const jsonParam = this.GLOBAL.g_paramJson(con)
       this.$axios.post(`${this.GLOBAL.system_manager_server}/pay/alipay`, jsonParam).then((res) => {
         if (res.data.head.status === 0) {
-          // document.write(res.data.body.result)
-          window.open('https://www.baidu.com/')
+          window.open(res.data.body.result)
         }
         else {
           this.$message({

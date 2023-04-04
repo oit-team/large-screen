@@ -344,7 +344,7 @@ export default ({
         <el-select v-model="ruleForm.accountType" placeholder="请选择">
           <el-option label="小程序用户" value="0" />
           <el-option label="管家用户" value="1" />
-          <!-- <el-option label="小程序及管家用户" value="3" /> -->
+          <el-option label="小程序及管家用户" value="3" />
         </el-select>
       </el-form-item>
 

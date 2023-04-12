@@ -18,7 +18,7 @@
   },
   "lint-staged": {
     "*.{vue,js,ts,json}": [
-      "cross-env NODE_ENV=production npm run lint"
+      "cross-env NODE_ENV=production eslint --fix"
     ]
   },
   "commitlint": {

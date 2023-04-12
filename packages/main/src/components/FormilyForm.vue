@@ -34,7 +34,7 @@ import {
 } from '@formily/element'
 import type { PropType } from 'vue'
 import { Upload as CustomUpload } from '@oit/element-ui-extend'
-import FEditor from './FEditor'
+import FEditor from './FEditor.vue'
 
 const props = defineProps({
   scope: {

@@ -41,10 +41,8 @@ const config = defineConfig({
         // ElementUiResolver({
         //   importStyle: false,
         // }),
-        // IconsResolver({
-        //   componentPrefix: '',
-        // }),
       ],
+      deep: false,
       dts: 'src/components.d.ts',
     }),
     // Icons(),

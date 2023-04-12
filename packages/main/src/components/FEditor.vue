@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Editor } from '@toast-ui/vue-editor'
+import '@toast-ui/editor/dist/i18n/zh-cn'
 import '@toast-ui/editor/dist/toastui-editor.css'
 
 defineProps({
@@ -35,6 +36,7 @@ function onBlur() {
         ['hr', 'quote'],
         ['ul', 'ol'],
       ],
+      language: 'zh-CN',
     }"
     @blur="onBlur"
   />

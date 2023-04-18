@@ -37,9 +37,13 @@ const tablePageOption = computed(() => ({
       type: 'primary',
       click: () => router.push('/product/new'),
     },
+    {
+      slot: 'multiple',
+    },
   ],
   table: {
     data: data.value,
+    selection: true,
     actions: {
       width: 150,
       buttons: [
@@ -92,6 +96,29 @@ function refresh() {
 }
 
 onActivated(refresh)
+
+// 奖池：批量上下架
+async function handleMultiple(state: number) {
+  if (table.value.selected.length === 0) {
+    Message({
+      message: '请至少选择其中一项数据！',
+      type: 'warning',
+    })
+    return
+  }
+  const selectedIds = table.value.selected.map(({ productId }: any) => productId)
+  const jackpotType = ['下架', '上架'][state]
+
+  await MessageBox(`确定要${jackpotType}吗？`, '提示', 'warning')
+
+  await updateProductStateData({
+    id: selectedIds,
+    productState: state,
+  })
+  Message.success(`${jackpotType}成功！`)
+  table.value.loadData()
+  table.value.clearSelection()
+}
 </script>
 
 <template>
@@ -115,6 +142,21 @@ onActivated(refresh)
             </div>
           </template>
         </ElTableColumn>
+      </template>
+      <template slot="actions:multiple">
+        <ElDropdown class="mx-2">
+          <ElButton type="primary" size="small">
+            批量管理<i class="el-icon-arrow-down el-icon--right" />
+          </ElButton>
+          <ElDropdownMenu slot="dropdown">
+            <ElDropdownItem @click.native="handleMultiple(1)">
+              上架
+            </ElDropdownItem>
+            <ElDropdownItem @click.native="handleMultiple(0)">
+              下架
+            </ElDropdownItem>
+          </ElDropdownMenu>
+        </ElDropdown>
       </template>
     </TablePage>
   </div>

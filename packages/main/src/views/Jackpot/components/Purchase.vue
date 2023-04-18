@@ -158,15 +158,19 @@ watch(shoppingCartDrawer, () => {
         <ElCard v-for="item of data" :key="item.jackpotId" :body-style="{ padding: 0 }">
           <ElImage :src="convertImageSize(item.impUrl)" fit="contain" class="w-full aspect-square" />
           <div class="p-2">
-            <div>{{ item.vouchersName }}</div>
+            <div class="w-full truncate">
+              {{ item.vouchersName }}
+            </div>
             <div class="text-xs grid grid-cols-2">
               <span>库存：{{ item.jackpotInventory }}</span>
               <span>价格：{{ item.jackpotBuyPrice }}</span>
             </div>
             <div class="flex mt-2">
               <ElButton size="mini" :disabled="item.jackpotInventory <= 0" @click="shoppingCartCount[item.jackpotId] ? removeCart(item) : addCart(item)">
-                {{ shoppingCartCount[item.jackpotId] ? `已添加(${shoppingCartCount[item.jackpotId]})` : '添加购物车' }}
+                {{ shoppingCartCount[item.jackpotId] ? `已添加` : '添加购物车' }}
+                <!--                {{ shoppingCartCount[item.jackpotId] ? `已添加(${shoppingCartCount[item.jackpotId]})` : '添加购物车' }} -->
               </ElButton>
+              <ElInputNumber v-show="shoppingCartCount[item.jackpotId] > 0" v-model="shoppingCartCount[item.jackpotId]" size="small" class="ml-2" :min="0" :max="item.jackpotInventory" />
             </div>
           </div>
         </ElCard>

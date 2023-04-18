@@ -92,9 +92,12 @@ export default {
         typeId: this.typeId,
       })
       this.form = res.body
-      this.checkedImg = [{
-        url: res.body.typeImg,
-      }]
+
+      this.checkedImg = res.body.typeImg
+        ? [{
+            url: res.body.typeImg,
+          }]
+        : []
     },
 
     async getProductParent() {
@@ -154,7 +157,8 @@ export default {
           <ElFormItem label="类别图片" prop="typeImg">
             <VcUpload
               v-bind="uploadOption"
-              ref="upload" action="/api/system/file/uploadFile"
+              ref="upload"
+              action="/api/system/file/uploadFile"
               list-type="picture-card"
               :show-file-list="true"
               :file-list="checkedImg"

@@ -199,6 +199,19 @@ export default {
       drawerCount: 0,
       drawerSelectList: '',
       dialogFormVisible: false,
+      showMall: false,
+      onMallForm: {
+        floor: 0,
+        number: '',
+      },
+      onMallFormRules: {
+        floor: [
+          { required: true, message: '请选择楼层', trigger: 'blur' },
+        ],
+        number: [
+          { required: true, message: '请输入商铺号码', trigger: 'blur' },
+        ],
+      },
     }
   },
 
@@ -559,7 +572,7 @@ export default {
     },
     // 导入店铺
     importList(val) {
-      // // console.log("导入店铺",val);
+      console.log('导入店铺', val)
       this.importFlag = val
       this.importShopFlag = true
     },
@@ -2311,6 +2324,21 @@ export default {
     changeAreaManger(val) {
       this.areaForm.dutyId = val
     },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('submit!')
+          console.log(this.onMallForm)
+        }
+        else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
+    },
   },
 }
 </script>
@@ -2329,7 +2357,7 @@ export default {
           <el-button class="authBtnOnly" style="border-color: #FCCB02;background: #FCCB02;color:#fff;" icon="el-icon-s-data" circle @click="changeOperate(2)" />
         </el-tooltip>
         <el-tooltip class="item" effect="dark" content="导入店铺" placement="top">
-          <el-button style="border-color: #4FD5AC;background: #4FD5AC;color:#fff;" class="addBtnOnly" icon="el-icon-download" circle @click="importList(&quot;1&quot;)" />
+          <el-button style="border-color: #4FD5AC;background: #4FD5AC;color:#fff;" class="addBtnOnly" icon="el-icon-download" circle @click="importList(1)" />
         </el-tooltip>
         <el-tooltip class="item" effect="dark" content="导出店铺" placement="top">
           <el-button style="border-color: #ADA3EE;background: #ADA3EE;color:#fff;" class="downLoadBtnOnly" icon="el-icon-upload2" circle @click="exportList('2')" />
@@ -2452,7 +2480,7 @@ export default {
               角色授权
             </el-button>
           </el-tooltip>
-          <el-button size="small" icon="el-icon-download" style="background:#4FD5AC;border-color: #4FD5AC;color:#fff;" class="addBtnOnly" @click="importList(&quot;2&quot;)">
+          <el-button size="small" icon="el-icon-download" style="background:#4FD5AC;border-color: #4FD5AC;color:#fff;" class="addBtnOnly" @click="importList(2)">
             导入用户
           </el-button>
           <el-button size="small" icon="el-icon-upload2" style="background:#ADA3EE;border-color: #ADA3EE;color:#fff;" class="downLoadBtnOnly" @click="exportList('1')">
@@ -2550,7 +2578,7 @@ export default {
             :reserve-selection="true"
           />
           <el-table-column
-            v-if="isShop != &quot;2&quot;"
+            v-if="isShop !== 2"
             prop="issueFlag"
             label="下发记录"
             show-overflow-tooltip
@@ -2625,8 +2653,11 @@ export default {
       center
       width="270px"
     >
-      <el-button v-if="isShop == '0'" size="small" @click="clickAdd">
+      <el-button v-if="isShop === '0'" size="small" @click="clickAdd">
         新 增
+      </el-button>
+      <el-button v-if="isShop === '1'" size="small" @click="handleClickFlag = false, showMall = true">
+        入驻商场
       </el-button>
       <el-button size="small" @click="clickEdit">
         编 辑
@@ -2860,6 +2891,41 @@ export default {
       </div>
     </el-drawer>
 
+    <!--    入驻商场 -->
+    <el-drawer
+      :visible.sync="showMall"
+      title="入驻商场"
+      direction="rtl"
+    >
+      <div class="p-4">
+        <el-form ref="onMallForm" :model="onMallForm" :rules="onMallFormRules">
+          <el-form-item label="选择楼层" prop="floor">
+            <el-radio-group v-model="onMallForm.floor">
+              <el-radio
+                v-for="item in 5"
+                :key="item"
+                :label="item"
+              >
+                F{{ item }}
+              </el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="活动名称" prop="number">
+            <el-input v-model="onMallForm.number" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('onMallForm')">
+              立即创建
+            </el-button>
+            <el-button @click="resetForm('onMallForm')">
+              重置
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </el-drawer>
+
+    <!-- 积分充值 -->
     <el-dialog title="积分充值" :visible.sync="dialogFormVisible" width="40%">
       <!-- 新增积分充值 接口还未调TODO -->
       <el-form ref="integralForm" :model="integralForm">
@@ -3138,5 +3204,9 @@ export default {
 
 :deep(.el-form-item__content){
   display: flex;
+}
+:deep(.el-form-item){
+  display: flex;
+  align-items: center;
 }
 </style>

@@ -25,8 +25,14 @@ export default {
     tablePageOption() {
       return {
         promise: this.loadData,
+        actions: [
+          {
+            slot: 'multiple',
+          },
+        ],
         table: {
           data: this.data.resultList,
+          selection: true,
           actions: {
             width: 120,
             buttons: [
@@ -76,11 +82,33 @@ export default {
       })
     },
 
+    // 奖池：批量上下架
+    async handleMultiple(state) {
+      if (this.$refs.table.selected.length === 0) {
+        this.$message({
+          message: '请至少选择其中一项数据！',
+          type: 'warning',
+        })
+        return
+      }
+
+      const selectedIds = this.$refs.table.selected.map(({ jackpotId }) => jackpotId)
+      const jackpotType = state === PUTAWAY_STATE.SOLDOUT ? '上架' : '下架'
+
+      await this.$confirm(`确定要${jackpotType}吗？`, '提示', { type: 'warning' })
+
+      await this.updateJackpotByState(state, selectedIds)
+      this.$message.success(`${jackpotType}成功！`)
+      this.$refs.table.loadData()
+      this.$refs.table.clearSelection()
+    },
+
     // 上下架
     async updateJackpotByState(jackpotState, jackpotId) {
       await updateJackpotByState({
         jackpotId: (Array.isArray(jackpotId)) ? jackpotId : [jackpotId],
         jackpotState,
+        jackpotType: 0,
       })
     },
 
@@ -127,6 +155,21 @@ export default {
               </div>
             </template>
           </ElTableColumn>
+        </template>
+        <template slot="actions:multiple">
+          <ElDropdown class="mx-2">
+            <ElButton type="primary" size="small">
+              批量管理<i class="el-icon-arrow-down el-icon--right" />
+            </ElButton>
+            <ElDropdownMenu slot="dropdown">
+              <!--              <ElDropdownItem @click.native="handleMultiple(2)"> -->
+              <!--                上架 -->
+              <!--              </ElDropdownItem> -->
+              <ElDropdownItem @click.native="handleMultiple(0)">
+                下架
+              </ElDropdownItem>
+            </ElDropdownMenu>
+          </ElDropdown>
         </template>
       </TablePage>
       <ElDrawer title="审批记录" :visible.sync="drawer" size="35%">

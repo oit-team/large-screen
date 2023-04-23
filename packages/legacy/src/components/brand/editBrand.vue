@@ -549,6 +549,28 @@ export default {
       </div>
     </div>
 
+    <div v-if="brandList.brandType" class="flex mt-4">
+      <h3>商场详情</h3>
+      <div>
+        <el-table
+          :data="allPayMenuList"
+          stripe
+          border
+        >
+          <el-table-column
+            prop="menuName"
+            label="楼层"
+            width="140"
+          />
+          <el-table-column
+            prop="menuCode"
+            label="楼层平面图"
+            width="140"
+          />
+        </el-table>
+      </div>
+    </div>
+
     <div class="step">
       <el-button type="primary" @click="cancel">
         取消

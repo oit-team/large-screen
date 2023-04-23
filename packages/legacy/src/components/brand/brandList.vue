@@ -8,8 +8,8 @@ export default {
     return {
       brandData: [],
       pageNum: 1, // 当前页
-      pageSize: 999, // 页大小
-      activeName: '1', // 手风琴效果，默认展开1
+      pageSize: 12, // 页大小
+      activeName: 'brand', // 手风琴效果，默认展开1
       total: 0,
       brandInfoIndex: '',
     }
@@ -134,7 +134,9 @@ export default {
       this.pageNum = val
       this.brandShow()
     },
-
+    handleClick(tab, e) {
+      console.log(this.activeName)
+    },
   },
 }
 </script>
@@ -146,7 +148,16 @@ export default {
         新增品牌
       </el-button>
     </div>
-    <el-divider />
+    <!--    <el-divider /> -->
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="品牌" name="brand">
+        品牌
+      </el-tab-pane>
+      <el-tab-pane label="商场" name="mall">
+        配置管理
+      </el-tab-pane>
+    </el-tabs>
+
     <div class="content_body">
       <div class="content">
         <div
@@ -295,10 +306,10 @@ export default {
                 <div class="divR">
                   {{ item.brandInfo.introduce }}
                   <!-- <el-tooltip class="item p-0" effect="dark" content="Bottom Center 提示文字" placement="bottom">
-                    <div class="mr-4 truncate">
-                      {{ item.brandInfo.introduce }}
-                    </div>
-                  </el-tooltip> -->
+										<div class="mr-4 truncate">
+											{{ item.brandInfo.introduce }}
+										</div>
+									</el-tooltip> -->
                 </div>
               </div>
               <div class="divH">
@@ -380,16 +391,16 @@ export default {
         </div>
       </div>
     </div>
-    <!-- <el-pagination
+    <el-pagination
       background
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
       :current-page="pageNum"
-      :page-sizes="[10, 20, 30]"
+      :page-sizes="[12, 24, 36]"
       :page-size="100"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="total">
-    </el-pagination> -->
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
   </div>
 </template>
 

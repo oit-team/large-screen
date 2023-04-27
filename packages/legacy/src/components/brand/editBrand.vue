@@ -47,14 +47,14 @@ export default {
       brandList: {},
       rules: {
         brandLogo: [
-          { required: true, message: '请上传品牌logo', trigger: 'blur' },
+          { required: true, message: '请上传logo', trigger: 'blur' },
         ],
         brandName: [
-          { required: true, message: '请输入品牌名称', trigger: 'blur' },
+          { required: true, message: '请输入名称', trigger: 'blur' },
           { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' },
         ],
         abbreviation: [
-          { required: true, message: '请输入品牌简称', trigger: 'blur' },
+          { required: true, message: '请输入简称', trigger: 'blur' },
           { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' },
         ],
         // industryId: [
@@ -70,10 +70,10 @@ export default {
           { required: true, message: '请选择到期时间', trigger: 'blur' },
         ],
         introduce: [
-          { required: true, message: '请输入品牌介绍', trigger: 'blur' },
+          { required: true, message: '请输入介绍', trigger: 'blur' },
         ],
         address: [
-          { required: true, message: '请输入品牌地址', trigger: 'blur' },
+          { required: true, message: '请输入地址', trigger: 'blur' },
         ],
         // totalNumShop: [
         //   { required: true, message: '请输入店铺总数量', trigger: 'blur' },
@@ -138,6 +138,8 @@ export default {
       checkedMenuArr: [], // 已选择日期的菜单列表
       payedMenuList: [], // 已付费菜单列表
       uploadFileList: [],
+      value: [],
+      industryOptions: [],
 
     }
   },
@@ -274,7 +276,7 @@ export default {
     },
     async getIndustryAll() {
       const res = await getIndustryAll()
-      this.options = res.body.resultList
+      this.industryOptions = res.body.resultList
     },
     // 获取已选择日期的菜单并格式化为传参需要的格式
     changeDate() {
@@ -402,7 +404,7 @@ export default {
     <el-divider />
     <div class="content">
       <el-form ref="brandList" :model="brandList" :rules="rules" label-width="120px">
-        <el-form-item label="品牌Logo" prop="brandLogo">
+        <el-form-item label="Logo" prop="brandLogo">
           <!-- 上传品牌logo -->
           <vc-upload
             v-bind="uploadOption" ref="upload" action="/system/file/uploadFile"
@@ -411,71 +413,70 @@ export default {
           >
             <img v-if="brandList.brandLogo || uploadFileList.fileUrl" :src="brandList.brandLogo" class="imgLogo">
             <el-button v-if="brandList.brandLogo" class="upBtn">
-              修改品牌Logo
+              修改Logo
             </el-button>
             <el-button v-else class="upBtn">
-              上传品牌Logo
+              上传Logo
             </el-button>
           </vc-upload>
         </el-form-item>
-        <el-form-item label="品牌状态">
+        <el-form-item label="状态">
           <el-switch
             v-model="status"
             active-color="#4FD5AC"
             inactive-color="#e5e5e5"
           />
         </el-form-item>
-        <el-form-item label="品牌名称" prop="brandName">
-          <el-input v-model="brandList.brandName" placeholder="请输入品牌名称" autocomplete="off" style="width:60%;" />
+        <el-form-item label="名称" prop="brandName">
+          <el-input v-model="brandList.brandName" placeholder="请输入名称" autocomplete="off" style="width:60%;" />
         </el-form-item>
-        <el-form-item label="品牌简称" prop="abbreviation">
-          <el-input v-model="brandList.abbreviation" placeholder="请输入品牌简称" autocomplete="off" style="width:60%;" />
+        <el-form-item label="简称" prop="abbreviation">
+          <el-input v-model="brandList.abbreviation" placeholder="请输入简称" autocomplete="off" style="width:60%;" />
         </el-form-item>
-        <el-form-item label="品牌类型" prop="brandType">
-          <el-select v-model="brandList.brandType" placeholder="请选择品牌类型">
+        <el-form-item label="类型" prop="brandType">
+          <el-select v-model="brandList.brandType" placeholder="请选择类型">
             <el-option label="品牌" :value="0" />
             <el-option label="商场" :value="1" />
           </el-select>
         </el-form-item>
+        <!-- 所属行业换成级联 -->
         <el-form-item label="所属行业">
-          <el-select v-model="brandList.industryId" placeholder="请选择所属行业">
-            <el-option
-              v-for="item in options"
-              :key="item.industryId"
-              :label="item.industryName"
-              :value="item.industryId"
-            />
-          </el-select>
+          <el-cascader
+            v-model="brandList.industryId"
+            placeholder="请选择所属行业"
+            :options="industryOptions"
+            :props="{ value: 'industryId', label: 'industryName', children: 'son' }"
+          />
         </el-form-item>
 
-        <el-form-item label="品牌入驻时间" prop="dueStartTime">
+        <el-form-item label="入驻时间" prop="dueStartTime">
           <el-date-picker
             v-model="brandList.dueStartTime"
             style="width:60%;"
             type="date"
-            placeholder="请选择品牌入驻时间"
+            placeholder="请选择入驻时间"
             format="yyyy 年 MM 月 dd 日"
             value-format="yyyy-MM-dd"
           />
         </el-form-item>
-        <el-form-item label="品牌到期时间" prop="dueEndTime">
+        <el-form-item label="到期时间" prop="dueEndTime">
           <el-date-picker
             v-model="brandList.dueEndTime"
             style="width:60%;"
             type="date"
-            placeholder="请选择品牌到期时间"
+            placeholder="请选择到期时间"
             format="yyyy 年 MM 月 dd 日"
             value-format="yyyy-MM-dd"
           />
         </el-form-item>
-        <el-form-item label="品牌介绍" prop="introduce">
+        <el-form-item label="介绍" prop="introduce">
           <el-input
             v-model="brandList.introduce" type="textarea" maxlength="100" resize="none"
-            show-word-limit autosize placeholder="请输入品牌介绍" autocomplete="off" style="width:60%;"
+            show-word-limit autosize placeholder="请输入介绍" autocomplete="off" style="width:60%;"
           />
         </el-form-item>
-        <el-form-item label="品牌地址" prop="address">
-          <el-input v-model="brandList.address" placeholder="请输入品牌地址" autocomplete="off" style="width:60%;" />
+        <el-form-item label="地址" prop="address">
+          <el-input v-model="brandList.address" placeholder="请输入地址" autocomplete="off" style="width:60%;" />
         </el-form-item>
         <el-form-item label="店铺总数量">
           <el-input v-model="brandList.totalNumShop" oninput="value=value.replace(/[^\d]/g,'')" placeholder="请输入店铺总数量" autocomplete="off" style="width:60%;" />

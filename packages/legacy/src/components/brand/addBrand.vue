@@ -13,6 +13,7 @@ export default {
   },
   data() {
     return {
+      maxMB: 10,
       configMap: {},
       // 上传头像
       imageUrl: '',
@@ -52,7 +53,7 @@ export default {
         gradeC: '',
         totalNumShop: '',
         telephone: '',
-        industryId: '',
+        industryId: [],
         onLineTime: '', // 大屏开关机时间
         offLineTime: '',
         carouselDuration: '', // 轮播时长
@@ -67,7 +68,7 @@ export default {
       newBrandType: 0, // 品牌类型
       rules: {
         brandLogo: [
-          { required: true, message: '请上传品牌Logo', trigger: 'blur' },
+          { required: true, message: '请上传Logo', trigger: 'blur' },
         ],
         orgName: [
           { required: true, message: '请输入公司名称', trigger: 'blur' },
@@ -85,14 +86,14 @@ export default {
           { min: 2, max: 10, message: '请输入英文字母或数字', trigger: 'blur' },
         ],
         brandName: [
-          { required: true, message: '请输入品牌名称', trigger: 'blur' },
+          { required: true, message: '请输入名称', trigger: 'blur' },
           { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' },
         ],
         // brandType: [
         //   { required: true, message: '请输入品牌类型', trigger: 'blur' },
         // ],
         abbreviation: [
-          { required: true, message: '请输入品牌简称', trigger: 'blur' },
+          { required: true, message: '请输入简称', trigger: 'blur' },
           { min: 2, max: 8, message: '长度在 2 到 8 个字符', trigger: 'blur' },
         ],
         bueStartTime: [
@@ -105,14 +106,17 @@ export default {
           { required: true, message: '请输入店铺总数量', trigger: 'blur' },
         ],
         introduce: [
-          { required: true, message: '请输入品牌介绍', trigger: 'blur' },
+          { required: true, message: '请输入介绍', trigger: 'blur' },
         ],
         brandAddress: [
-          { required: true, message: '请输入品牌地址', trigger: 'blur' },
+          { required: true, message: '请输入地址', trigger: 'blur' },
         ],
       },
       options: [],
-
+      checkedFloorImgs: [], // 选中楼层反显
+      floorImgList: [], // 格式化后的楼层图
+      floorthNumber: '', // 楼层数
+      floorMapList: [],
     }
   },
   computed: {
@@ -130,6 +134,24 @@ export default {
         onSuccess: (...e) => {
           this.imageUrl = e[0].data.fileUrl
           this.ruleForm.brandLogo = e[0].data.fileUrl
+        },
+      }
+    },
+    uploadOptionFloorImg() {
+      return {
+        drag: true,
+        showFileList: false,
+        multiple: true,
+        maxSize: 1024 * this.maxMB,
+        limit: 5,
+        chunkSize: 1024 * 5,
+        check: true,
+        accept: 'image/*',
+        onError: (e, file) => {
+          this.$message.error(`${file.name} 上传失败，请重试！`)
+        },
+        onSuccess: ({ data }, file, fileList) => {
+          this.floorImgList = fileList
         },
       }
     },
@@ -230,7 +252,7 @@ export default {
     // 所属行业
     async getIndustryAll() {
       const res = await getIndustryAll()
-      this.options = res.body.resultList
+      this.industryOptions = res.body.resultList
     },
     // 返回
     goBack() {
@@ -458,6 +480,10 @@ export default {
     // 新增品牌
     regbrand(formName) {
       this.ruleForm.configList = Object.values(this.configMap)
+      this.floorMapList = this.floorImgList.map(item => ({
+        floorNum: item.floorNum,
+        mapUrl: item.response?.data?.fileUrl,
+      }))
       const _this = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -481,7 +507,7 @@ export default {
               gradeB: this.ruleForm.gradeB,
               gradeC: this.ruleForm.gradeC,
               totalNumShop: this.ruleForm.totalNumShop,
-              industryId: this.ruleForm.industryId,
+              industryId: this.ruleForm.industryId[0], // 品牌传大类
               introduce: this.ruleForm.introduce,
               address: this.ruleForm.brandAddress,
             }
@@ -503,6 +529,7 @@ export default {
               introduce: this.ruleForm.introduce,
               address: this.ruleForm.brandAddress,
               configList: this.ruleForm.configList,
+              floorMapList: this.floorMapList,
             }
           }
           // console.log('新增品牌参数',con)
@@ -538,6 +565,11 @@ export default {
       })
     },
 
+    deleteSelectedImgsItem(item) {
+      this.floorImgList.splice(item, 1)
+      console.log(item, '点击删除这一张照片')
+    },
+
   },
 }
 </script>
@@ -554,7 +586,7 @@ export default {
     <div v-show="activeStep == 0" class="content">
       <div class="operateBtn flex flex-col">
         <div class="text-gray-500 my-4 p-4 w-2/5 rounded-md border border-gray-300">
-          <span><span class="text-red-500">*</span>请选择品牌类型：</span>
+          <span><span class="text-red-500">*</span>请选择类型：</span>
           <el-radio-group v-model="newBrandType">
             <el-radio :label="0">
               品牌
@@ -647,8 +679,7 @@ export default {
     </div>
     <div v-show="activeStep == 1" class="content">
       <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="120px">
-        <el-form-item label="品牌Logo" prop="brandLogo">
-          <!-- action="http://192.168.9.71:8089/gdy/system/file/uploadFile" -->
+        <el-form-item label="Logo" prop="brandLogo">
           <vc-upload
             v-bind="uploadOption" ref="upload" action="/system/file/uploadFile"
             class="avatar-uploader"
@@ -656,25 +687,24 @@ export default {
           >
             <img v-if="imageUrl" :src="imageUrl" class="imgLogo">
             <el-button class="upBtn">
-              上传品牌Logo
+              上传Logo
             </el-button>
           </vc-upload>
         </el-form-item>
-        <el-form-item label="品牌名称" prop="brandName">
-          <el-input v-model="ruleForm.brandName" placeholder="请输入品牌名称" autocomplete="off" style="width:60%;" />
+        <el-form-item label="名称" prop="brandName">
+          <el-input v-model="ruleForm.brandName" placeholder="请输入名称" autocomplete="off" style="width:60%;" />
         </el-form-item>
-        <el-form-item label="品牌简称" prop="abbreviation">
-          <el-input v-model="ruleForm.abbreviation" placeholder="请输入品牌简称" autocomplete="off" style="width:60%;" />
+        <el-form-item label="简称" prop="abbreviation">
+          <el-input v-model="ruleForm.abbreviation" placeholder="请输入简称" autocomplete="off" style="width:60%;" />
         </el-form-item>
+        <!-- 所属行业换成级联 TODOLIST -->
         <el-form-item v-if="newBrandType === 0" label="所属行业" prop="industryId">
-          <el-select v-model="ruleForm.industryId" placeholder="请选择所属行业">
-            <el-option
-              v-for="item in options"
-              :key="item.industryId"
-              :label="item.industryName"
-              :value="item.industryId"
-            />
-          </el-select>
+          <el-cascader
+            v-model="ruleForm.industryId"
+            placeholder="请选择所属行业"
+            :options="industryOptions"
+            :props="{ value: 'industryId', label: 'industryName', children: 'son' }"
+          />
         </el-form-item>
         <el-form-item label="管理员名称" prop="adminName">
           <el-input v-model="ruleForm.adminName" maxlength="10" placeholder="请输入管理员名称" autocomplete="off" style="width:60%;">
@@ -689,34 +719,34 @@ export default {
             <el-option label="商场" value="1" />
           </el-select>
         </el-form-item> -->
-        <el-form-item label="品牌入驻时间" prop="bueStartTime">
+        <el-form-item label="入驻时间" prop="bueStartTime">
           <el-date-picker
             v-model="ruleForm.bueStartTime"
             style="width:60%;"
             type="date"
-            placeholder="请选择品牌入驻时间"
+            placeholder="请选择入驻时间"
             format="yyyy 年 MM 月 dd 日"
             value-format="yyyy-MM-dd"
           />
         </el-form-item>
-        <el-form-item label="品牌到期时间" prop="bueEndTime">
+        <el-form-item label="到期时间" prop="bueEndTime">
           <el-date-picker
             v-model="ruleForm.bueEndTime"
             style="width:60%;"
             type="date"
-            placeholder="请选择品牌到期时间"
+            placeholder="请选择到期时间"
             format="yyyy 年 MM 月 dd 日"
             value-format="yyyy-MM-dd"
           />
         </el-form-item>
-        <el-form-item label="品牌介绍" prop="introduce">
+        <el-form-item label="介绍" prop="introduce">
           <el-input
             v-model="ruleForm.introduce" type="textarea" maxlength="100" resize="none"
-            show-word-limit autosize placeholder="请输入品牌介绍" autocomplete="off" style="width:60%;"
+            show-word-limit autosize placeholder="请输入介绍" autocomplete="off" style="width:60%;"
           />
         </el-form-item>
-        <el-form-item label="品牌地址" prop="brandAddress">
-          <el-input v-model="ruleForm.brandAddress" placeholder="请输入品牌地址" autocomplete="off" style="width:60%;" :maxlength="maxlength" />
+        <el-form-item label="地址" prop="brandAddress">
+          <el-input v-model="ruleForm.brandAddress" placeholder="请输入地址" autocomplete="off" style="width:60%;" :maxlength="maxlength" />
         </el-form-item>
         <el-form-item label="联系人">
           <el-input v-model="ruleForm.contacts" placeholder="请输入联系人" autocomplete="off" style="width:60%;" />
@@ -779,7 +809,7 @@ export default {
             />
           </el-form-item>
           <el-form-item :label="configMap.INTERVAL_MINUTE.configName">
-            <el-select v-model="configMap.INTERVAL_MINUTE.value" style="width:220px" :placeholder="`请输入${configMap.INTERVAL_MINUTE.configName}`">
+            <el-select v-model="configMap.INTERVAL_MINUTE.value" style="width: 60%" :placeholder="`请输入${configMap.INTERVAL_MINUTE.configName}`">
               <el-option label="10" value="0" />
               <el-option label="20" value="1" />
               <el-option label="30" value="2" />
@@ -790,6 +820,35 @@ export default {
           </el-form-item>
           <el-form-item :label="configMap.INTERVAL_DAY.configName">
             <el-input v-model="configMap.INTERVAL_DAY.value" oninput="value=value.replace(/[^\d]/g,'')" :placeholder="`请输入${configMap.INTERVAL_DAY.configName}`" autocomplete="off" style="width:60%;" />
+          </el-form-item>
+        </el-form>
+        <el-form ref="selectedImgForm" class="selectedImgForm" label-width="120px">
+          <el-form-item label="楼层/引导图" class="checkedFloorImgs">
+            <div v-for="item, index in floorImgList" :key="index" class="floorImages">
+              <el-image
+                style="width: 146px; height: 146px"
+                :src="item.url"
+                fit="cover"
+              />
+              <div class="checkImgMask">
+                <div class="w-full h-full flex justify-center items-center">
+                  <el-button type="info" icon="el-icon-delete" circle @click="deleteSelectedImgsItem(item)" />
+                </div>
+              </div>
+              <el-input v-model="item.floorNum" size="mini" placeholder="填写楼层号" />
+            </div>
+            <vc-upload
+              v-bind="uploadOptionFloorImg"
+              ref="floorUpload"
+              class="floor-uploader" action="/system/file/uploadFile"
+              list-type="picture-card"
+              :show-file-list="false"
+            >
+              <i class="el-icon-plus" />
+            </vc-upload>
+            <div class="el-upload__tip text-red-500 ml-4">
+              *只能上传图片，单次提交最多{{ uploadOptionFloorImg.limit }}个，且不得超过{{ maxMB }}MB
+            </div>
           </el-form-item>
         </el-form>
       </div>
@@ -840,11 +899,22 @@ export default {
     display:flex;
   }
   ::v-deep{
-    .el-upload-dragger{
+    .avatar-uploader .el-upload-dragger{
       display: flex;
       width: 18%;
       height: 40px;
       border: 0;
+    }
+    .checkedFloorImgs .el-form-item__content{
+      display: flex;
+      align-items: center;
+    }
+    .floor-uploader .el-upload-dragger{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
     }
     .el-textarea__inner{
       min-height: 60px;
@@ -856,6 +926,9 @@ export default {
     }
     .el-scrollbar__view .time-select-item{
       padding: 8px 20px !important;
+    }
+    .el-date-editor.el-input{
+      width: 60%;
     }
   }
 
@@ -878,26 +951,55 @@ export default {
       border-radius:20px;
       margin-right:10px;
     }
-    // .upBtn{
-    // }
   }
 
-  // .avatar-uploader .el-upload:hover {
-  //   border-color: #409EFF;
-  // }
-  // .avatar-uploader-icon {
-  //   font-size: 28px;
-  //   color: #8c939d;
-  //   width: 178px;
-  //   height: 178px;
-  //   line-height: 178px;
-  //   text-align: center;
-  // }
-  // .avatar {
-  //   width: 178px;
-  //   height: 178px;
-  //   display: block;
-  // }
+  .selectedImgForm{
+      min-height: 200px;
+  }
+  .floor-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .el-upload__tip{
+    position: absolute;
+    bottom: -30px;
+    left: -12px;
+  }
+  .floorImages{
+    position: relative;
+    width: 147px;
+    height: 147px;
+    border-radius: 20%;
+    margin-right:15px;
+    .el-image{
+      border-radius: 5%;
+      img{
+        border-radius: 5%;
+      }
+   }
+    .checkImgMask{
+      display: none;
+      position: absolute;
+      top:  0;
+      left: 0;
+      width: 99%;
+      height: 99%;
+      border-radius: 5%;
+      background-color: black;
+      opacity: .3;
+    }
+  }
+
+  .floorImages:hover .checkImgMask{
+    display: block;
+  }
 
   .el-form-item:nth-child(1){
     height:40px;

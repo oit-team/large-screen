@@ -142,7 +142,7 @@ export default {
             <p v-if="!isUpdate" class="ml-8">
               {{ configMap.INTERVAL_MINUTE.value }}
             </p>
-            <ElSelect v-else v-model="configMap.INTERVAL_MINUTE.value" style="width:220px" :placeholder="`请选择${configMap.INTERVAL_MINUTE.configName}`">
+            <ElSelect v-else v-model="configMap.INTERVAL_MINUTE.value" style="width: 60%" :placeholder="`请选择${configMap.INTERVAL_MINUTE.configName}`">
               <ElOption label="10" value="10" />
               <ElOption label="20" value="20" />
               <ElOption label="30" value="30" />
@@ -254,5 +254,9 @@ export default {
   .floorImages:hover .checkImgMask{
     display: block;
   }
+
+  .el-date-editor.el-input{
+      width: 60%;
+    }
 }
 </style>

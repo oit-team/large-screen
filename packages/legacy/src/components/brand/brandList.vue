@@ -6,12 +6,21 @@ export default {
   components: {},
   data() {
     return {
+      searchLoading: false,
+      collapse: true,
+      collapseHeight: 60,
       brandData: [],
       pageNum: 1, // 当前页
       pageSize: 12, // 页大小
-      activeName: 'brand', // 手风琴效果，默认展开1
+      // activeName: 'brand', // 手风琴效果，默认展开1
       total: 0,
       brandInfoIndex: '',
+      // 搜索项表单
+      searchForm: {
+        brandType: '',
+        brandState: '',
+        address: '',
+      },
     }
   },
   watch: {},
@@ -22,6 +31,13 @@ export default {
     this.brandShow()
   },
   methods: {
+    submitSearch() {
+      this.brandShow()
+    },
+    resetSearch() {
+      this.$refs.searchForm.resetFields()
+      this.brandShow()
+    },
     initialize(i, brandInfo, cmd, data) {
       const apiList = ['scopeGoods', 'scopePush', 'calcPush']
       api[apiList[i]]({
@@ -52,6 +68,7 @@ export default {
       const con = {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
+        ...this.searchForm,
       }
       const jsonParam = _this.GLOBAL.g_paramJson(con)
       // // console.log('获取品牌注册列表参数',con)
@@ -125,38 +142,72 @@ export default {
       })
     },
     handleSizeChange(val) {
-      // // console.log(`每页 ${val} 条`);
       this.pageSize = val
       this.brandShow()
     },
     handleCurrentChange(val) {
-      // // console.log(`当前页: ${val}`);
       this.pageNum = val
       this.brandShow()
     },
-    handleClick(tab, e) {
-      console.log(this.activeName)
-    },
+    // handleClick(tab, e) {
+    //   console.log(this.activeName)
+    // },
   },
 }
 </script>
 
 <template>
   <div id="brandList" class="pageCommonStyle page-container text-sm">
+    <!-- 列表搜索项 -->
+    <div
+      class="flex justify-between flex-wrap px-4 pt-3 mb-3 border rounded-md overflow-hidden"
+      :style="{
+        height: collapse ? `${collapseHeight}px` : 'auto',
+      }"
+    >
+      <el-form ref="searchForm" :inline="true" :model="searchForm" size="mini" class="demo-form-inline flex-1 grid grid-cols-3">
+        <el-form-item label="品牌" prop="brandType">
+          <el-select v-model="searchForm.brandType" placeholder="请选择品牌类型">
+            <el-option label="品牌" value="0" />
+            <el-option label="商场" value="1" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="状态" prop="brandState">
+          <el-select v-model="searchForm.brandState" placeholder="请选择品牌状态">
+            <el-option label="不可用" value="0" />
+            <el-option label="可用" value="1" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="地址" prop="address">
+          <el-input v-model="searchForm.address" placeholder="请输入地址" />
+        </el-form-item>
+      </el-form>
+      <div class="query-form__action">
+        <el-button icon="el-icon-search" type="primary" size="mini" :loading="searchLoading" @click="submitSearch">
+          搜索
+        </el-button>
+        <el-button size="mini" @click="resetSearch">
+          重置
+        </el-button>
+        <el-button type="text" :auto-insert-space="false" :icon="collapse ? 'el-icon-caret-bottom' : 'el-icon-caret-top'" class="text-xs" size="mini" @click="collapse = !collapse">
+          {{ collapse ? '展开' : '收起' }}
+        </el-button>
+      </div>
+    </div>
     <div class="operateBtn">
       <el-button class="addBtnOnly" size="small" icon="el-icon-plus" type="success" @click="addBrand()">
         新增品牌
       </el-button>
     </div>
     <!--    <el-divider /> -->
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <!-- <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="品牌" name="brand">
         品牌
       </el-tab-pane>
       <el-tab-pane label="商场" name="mall">
         配置管理
       </el-tab-pane>
-    </el-tabs>
+    </el-tabs> -->
 
     <div class="content_body">
       <div class="content">
@@ -405,6 +456,17 @@ export default {
 </template>
 
 <style lang="less" scoped>
+::v-deep{
+  .demo-form-inline{
+    .el-form-item__content{
+      width: 80%;
+      .el-select{
+        width: 100%;
+      }
+    }
+  }
+
+}
 @deep: ~">>>";
 #brandList {
   .operateBtn {
@@ -601,4 +663,7 @@ export default {
     padding: 7px 8.5px !important;
   }
 }
+</style>
+
+<style lang="scss" scoped>
 </style>

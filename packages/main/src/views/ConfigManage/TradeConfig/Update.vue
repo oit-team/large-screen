@@ -1,6 +1,7 @@
 <script>
 import {
   addIndustryInfo,
+  getDictItemList,
   getIndustryDetails,
   updateIndustryAttrib,
   updateIndustryIndexConfig,
@@ -25,6 +26,7 @@ export default {
         maxRows: 12,
       },
       form: { // 行业form
+        industryCategory: '',
         industryName: '',
         attrConf: '',
       },
@@ -49,6 +51,9 @@ export default {
       direction: 'rtl',
       attributeList: [], // 行业属性 列表
       rules: {
+        industryCategory: [
+          { required: true, message: '请输入所属行业类别', trigger: 'blur' },
+        ],
         industryName: [
           { required: true, message: '请输入行业名称', trigger: 'blur' },
         ],
@@ -91,6 +96,7 @@ export default {
       detailsConfig: [], // 详情配置列表
       detailsConfigList: [], // 详情配置列表
       listDisplayConfig: [],
+      industryList: [], // 行业列表
     }
   },
   computed: {
@@ -139,6 +145,9 @@ export default {
     }
     if (this.$route.params.industryId) this.loadData()
   },
+  mounted() {
+    this.getDictItemList()
+  },
   methods: {
     async loadData() {
       this.loading = true
@@ -150,6 +159,14 @@ export default {
       this.detailsConfig = this.attributeInfo.industryConfig?.detailsConfig
       this.attributeList = [...this.attributeInfo.attribInfo]
       this.loading = false
+    },
+
+    // 获取行业大类
+    async getDictItemList() {
+      const res = await getDictItemList({
+        dictCode: 'INDUSTRY_CATEGORY',
+      })
+      this.industryList = res.body.resultList
     },
     // 新增点击完成
     submit(formName) {
@@ -349,6 +366,16 @@ export default {
     </div>
 
     <ElForm v-show="radio1 === '行业信息'" ref="form" :model="form" label-width="150px" :rules="rules" class="w-1/2">
+      <ElFormItem label="所属行业类别" prop="industryCategory">
+        <ElSelect v-model="form.industryCategory" :disabled="type !== 'add'" placeholder="请选择所属行业类别">
+          <ElOption
+            v-for="item in industryList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
+        </ElSelect>
+      </ElFormItem>
       <ElFormItem label="行业名称" prop="industryName">
         <ElInput v-model="form.industryName" clearable :maxlength="maxlength" :disabled="type !== 'add'" />
       </ElFormItem>

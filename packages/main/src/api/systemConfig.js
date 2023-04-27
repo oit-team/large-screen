@@ -59,3 +59,7 @@ export function updateIndustryIndexConfig(params) {
 export function updateProductDisplayConfig(params) {
   return post('/system/industryConf/updateProductDisplayConfig', params)
 }
+
+export function getDictItemList(params) {
+  return post('/system/dictInfo/getDictItemList', params)
+}

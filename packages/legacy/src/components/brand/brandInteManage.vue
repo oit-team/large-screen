@@ -101,6 +101,7 @@ export default {
         gradeId: '',
         shopCode: '',
         storeId: '',
+        houseNum: '',
       },
       shopStore: false, // 编辑店铺时是否禁用 选择商场选项
       shopRules: {
@@ -147,7 +148,7 @@ export default {
         limitTimes: null,
         isAll: false,
       },
-      marketList: [],
+      storeList: [],
       taskFormRules: {
         taskTime: [
           { required: true, message: '请选择任务开始和结束时间', trigger: 'blur' },
@@ -212,6 +213,7 @@ export default {
           { required: true, message: '请输入商铺号码', trigger: 'blur' },
         ],
       },
+      selectedShopValue: [],
     }
   },
 
@@ -397,7 +399,7 @@ export default {
 
     async getStoreList() {
       const res = await getStoreList()
-      this.marketList = res.body.storeList
+      this.storeList = res.body.storeList
     },
     // 任务下发 获取选择下发的成员
     drawerSelect(val) {
@@ -1948,6 +1950,7 @@ export default {
       _this.shopForm.telephone = ''
       _this.shopForm.openDate = ''
       _this.shopForm.shopCode = ''
+      this.selectedShopValue = []
       if (_this.isShop == '1') {
         _this.shopForm.orgStId = ''
       }
@@ -1986,11 +1989,10 @@ export default {
         this.shopForm.shopCode = this.nodeInfo.shopCode
         this.shopForm.orgStId = Number(this.nodeInfo.parentId)
         this.shopForm.storeId = Number(this.nodeInfo.storeId)
+        this.shopForm.houseNum = this.nodeInfo.houseNum
+        this.selectedShopValue = [this.nodeInfo?.storeId, this.nodeInfo?.floorMapId]
         if (this.shopForm.orgStId == 0) {
           this.shopForm.orgStId = null
-        }
-        if (this.shopForm.storeId == 0) {
-          this.shopForm.storeId = null
         }
       }
       else if (this.nodeInfo.isShop == '0') { // 区域
@@ -2103,11 +2105,13 @@ export default {
       // this.$refs[formName].resetFields();
       if (this.$refs.shopForm) {
         this.$refs.shopForm.resetFields()
+        this.selectedShopValue = []
       }
       if (this.$refs.areaForm) {
         this.$refs.areaForm.resetFields()
       }
       const _this = this
+      this.shopForm.houseNum = ''
       _this.shopForm.shopName = ''
       _this.shopForm.address = ''
       _this.shopForm.gradeId = ''
@@ -2201,7 +2205,10 @@ export default {
             gradeId: _this.shopForm.gradeId,
             telephone: _this.shopForm.telephone,
             orgStId,
-            storeId: _this.shopForm.storeId,
+            // storeId: _this.shopForm.storeId,
+            storeId: _this.selectedShopValue[0],
+            floorMapId: _this.selectedShopValue[1],
+            houseNum: _this.shopForm.houseNum,
             openDate: _this.shopForm.openDate,
             shopCode: _this.shopForm.shopCode,
             userId: sessionStorage.userId,
@@ -2223,6 +2230,9 @@ export default {
               _this.areaForm.areaName = ''
               _this.areaForm.areaCode = ''
               _this.areaForm.dutyId = ''
+              _this.shopForm.houseNum = ''
+              _this.selectedShopValue = []
+              _this.shopForm.storeId = ''
               _this.$message({
                 message: '新增店铺成功',
                 type: 'success',
@@ -2265,7 +2275,9 @@ export default {
               telephone: _this.shopForm.telephone,
               openDate: _this.shopForm.openDate,
               shopCode: _this.shopForm.shopCode,
-              storeId: _this.shopForm.storeId,
+              storeId: _this.selectedShopValue[0],
+              floorMapId: _this.selectedShopValue[1],
+              houseNum: _this.shopForm.houseNum,
             }
           }
           else if (_this.nodeInfo.isShop == '0') {
@@ -2297,6 +2309,10 @@ export default {
               _this.areaForm.areaName = ''
               _this.areaForm.areaCode = ''
               _this.areaForm.dutyId = ''
+              _this.shopForm.houseNum = ''
+              _this.selectedShopValue = ''
+              _this.shopForm.storeId = ''
+
               _this.$message({
                 message: '编辑成功',
                 type: 'success',
@@ -2673,7 +2689,7 @@ export default {
       :visible.sync="shopDialog"
       :wrapper-closable="false"
       direction="rtl"
-      size="40%"
+      size="45%"
     >
       <div class="demo-drawer__content px-3 py-4">
         <el-tabs v-if="!editFlag" v-model="activeName" tab-position="top" style="height:auto;">
@@ -2751,14 +2767,19 @@ export default {
                 </el-select>
               </el-form-item>
               <el-form-item label="所属商场" :label-width="formLabelWidth">
-                <el-select v-model="shopForm.storeId" filterable clearable placeholder="请选择所属商场">
-                  <el-option
-                    v-for="item in marketList"
-                    :key="item.storeId"
-                    :label="item.storeName"
-                    :value="item.storeId"
-                  />
-                </el-select>
+                <el-cascader
+                  v-model="selectedShopValue"
+                  :props="{ value: 'storeId', label: 'storeName', children: 'floorMapList' }"
+                  :options="storeList"
+                  placeholder="请选择商场"
+                />
+                <el-input
+                  v-model="shopForm.houseNum"
+                  :disabled="selectedShopValue.length < 2"
+                  style="width: 35%;margin-left: 10px"
+                  placeholder="请输入门牌号"
+                  clearable
+                />
               </el-form-item>
             </el-form>
             <div class="demo-drawer__footer">
@@ -2852,14 +2873,20 @@ export default {
                 </el-select>
               </el-form-item>
               <el-form-item label="所属商场" :label-width="formLabelWidth">
-                <el-select v-model="shopForm.storeId" :disabled="shopStore" clearable filterable placeholder="请选择所属商场">
-                  <el-option
-                    v-for="item in marketList"
-                    :key="item.storeId"
-                    :label="item.storeName"
-                    :value="item.storeId"
-                  />
-                </el-select>
+                <el-cascader
+                  v-model="selectedShopValue"
+                  disabled
+                  :props="{ value: 'storeId', label: 'storeName', children: 'floorMapList' }"
+                  :options="storeList"
+                  placeholder="请选择商场"
+                />
+                <el-input
+                  v-model="shopForm.houseNum"
+                  disabled
+                  style="width: 35%;margin-left: 10px"
+                  placeholder="请输入门牌号"
+                  clearable
+                />
               </el-form-item>
             </el-form>
             <div class="demo-drawer__footer">

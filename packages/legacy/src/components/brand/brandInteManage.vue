@@ -1,4 +1,5 @@
 <script lang="jsx">
+import { Message, MessageBox } from 'element-ui'
 // import bus from '../../assets/js/eventBus'
 import { defineComponent } from 'vue'
 import commonSearch from '../common/commonSearch'
@@ -6,6 +7,7 @@ import { delIssue } from '../../api/statistics'
 import ManagementPage from './DeviceList'
 import CollocationPage from './Collocation'
 import { getStoreList, getUserList } from '@/api/statistics'
+import { getmallEntrance } from '@/api/system'
 // import test from '../../assets/brandJs/test';
 
 export default {
@@ -101,7 +103,7 @@ export default {
         gradeId: '',
         shopCode: '',
         storeId: '',
-        houseNum: '',
+        // houseNum: '',
       },
       shopStore: false, // 编辑店铺时是否禁用 选择商场选项
       shopRules: {
@@ -210,10 +212,11 @@ export default {
           { required: true, message: '请选择楼层', trigger: 'blur' },
         ],
         number: [
-          { required: true, message: '请输入商铺号码', trigger: 'blur' },
+          { required: true, message: '请输入门牌号', trigger: 'blur' },
         ],
       },
       selectedShopValue: [],
+      houseNum: null,
     }
   },
 
@@ -1915,24 +1918,43 @@ export default {
         this.$refs.child.parentMsgs(this.dynamicParam)
       }
     },
-    // 当某一节点被鼠标右键点击时会触发该事件
-    nodeRightClick(MouseEvent, object, Node, VueComponent) {
-      // // console.log("节点右击------",MouseEvent, object, Node, VueComponent);
-      // console.log("树节点右键单击======",Node.data)   // 单击节点的信息
-      if (Node.data.isShop == '1') { // 店铺
-        this.isShop = '1'
+    // 点击下拉框新增-修改-删除
+    handleCommand(command) {
+      switch (command) {
+        case 'add':
+          this.clickAdd()
+          break
+        case 'entrance':
+          this.showMall = true
+          break
+        case 'edit':
+          this.clickEdit()
+          break
+        case 'delete':
+          this.clickDel()
+          break
       }
-      if (Node.data.isShop == '2') { // 品牌节点
-        this.isShop = '2'
-      }
-      if (Node.data.isShop == '0') {
-        this.isShop = '0' // 区域
-      }
-      if (this.isShop == '0' || this.isShop == '1') {
-        this.handleClickFlag = true
-      }
-      this.nodeInfo = Node.data // 先将data存到变量里
     },
+    // 当某一节点被鼠标右键点击时会触发该事件
+
+    // nodeRightClick(MouseEvent, object, Node, VueComponent) {
+    //   // // console.log("节点右击------",MouseEvent, object, Node, VueComponent);
+    //   console.log('树节点右键单击======', Node.data) // 单击节点的信息
+    //   if (Node.data.isShop == '1') { // 店铺
+    //     this.isShop = '1'
+    //   }
+    //   if (Node.data.isShop == '2') { // 品牌节点
+    //     this.isShop = '2'
+    //   }
+    //   if (Node.data.isShop == '0') {
+    //     this.isShop = '0' // 区域
+    //   }
+    //   if (this.isShop == '0' || this.isShop == '1') {
+    //     this.handleClickFlag = true
+    //   }
+    //   this.nodeInfo = Node.data // 先将data存到变量里
+    // },
+
     // 节点拖拽处理函数结束================================
 
     // 点击操作-》新增按钮
@@ -1989,8 +2011,8 @@ export default {
         this.shopForm.shopCode = this.nodeInfo.shopCode
         this.shopForm.orgStId = Number(this.nodeInfo.parentId)
         this.shopForm.storeId = Number(this.nodeInfo.storeId)
-        this.shopForm.houseNum = this.nodeInfo.houseNum
-        this.selectedShopValue = [this.nodeInfo?.storeId, this.nodeInfo?.floorMapId]
+        // this.shopForm.houseNum = this.nodeInfo.houseNum
+        // this.selectedShopValue = [this.nodeInfo?.storeId, this.nodeInfo?.floorMapId]
         if (this.shopForm.orgStId == 0) {
           this.shopForm.orgStId = null
         }
@@ -2105,13 +2127,13 @@ export default {
       // this.$refs[formName].resetFields();
       if (this.$refs.shopForm) {
         this.$refs.shopForm.resetFields()
-        this.selectedShopValue = []
+        // this.selectedShopValue = []
       }
       if (this.$refs.areaForm) {
         this.$refs.areaForm.resetFields()
       }
       const _this = this
-      this.shopForm.houseNum = ''
+      // this.shopForm.houseNum = ''
       _this.shopForm.shopName = ''
       _this.shopForm.address = ''
       _this.shopForm.gradeId = ''
@@ -2206,9 +2228,9 @@ export default {
             telephone: _this.shopForm.telephone,
             orgStId,
             // storeId: _this.shopForm.storeId,
-            storeId: _this.selectedShopValue[0],
-            floorMapId: _this.selectedShopValue[1],
-            houseNum: _this.shopForm.houseNum,
+            // storeId: _this.selectedShopValue[0],
+            // floorMapId: _this.selectedShopValue[1],
+            // houseNum: _this.shopForm.houseNum,
             openDate: _this.shopForm.openDate,
             shopCode: _this.shopForm.shopCode,
             userId: sessionStorage.userId,
@@ -2230,8 +2252,8 @@ export default {
               _this.areaForm.areaName = ''
               _this.areaForm.areaCode = ''
               _this.areaForm.dutyId = ''
-              _this.shopForm.houseNum = ''
-              _this.selectedShopValue = []
+              // _this.shopForm.houseNum = ''
+              // _this.selectedShopValue = []
               _this.shopForm.storeId = ''
               _this.$message({
                 message: '新增店铺成功',
@@ -2275,9 +2297,9 @@ export default {
               telephone: _this.shopForm.telephone,
               openDate: _this.shopForm.openDate,
               shopCode: _this.shopForm.shopCode,
-              storeId: _this.selectedShopValue[0],
-              floorMapId: _this.selectedShopValue[1],
-              houseNum: _this.shopForm.houseNum,
+              // storeId: _this.selectedShopValue[0],
+              // floorMapId: _this.selectedShopValue[1],
+              // houseNum: _this.shopForm.houseNum,
             }
           }
           else if (_this.nodeInfo.isShop == '0') {
@@ -2309,8 +2331,8 @@ export default {
               _this.areaForm.areaName = ''
               _this.areaForm.areaCode = ''
               _this.areaForm.dutyId = ''
-              _this.shopForm.houseNum = ''
-              _this.selectedShopValue = ''
+              // _this.shopForm.houseNum = ''
+              // _this.selectedShopValue = ''
               _this.shopForm.storeId = ''
 
               _this.$message({
@@ -2340,20 +2362,22 @@ export default {
     changeAreaManger(val) {
       this.areaForm.dutyId = val
     },
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!')
-          console.log(this.onMallForm)
-        }
-        else {
-          console.log('error submit!!')
-          return false
-        }
+
+    async submitForm() {
+      await MessageBox.confirm('确定要提交吗？', '提示')
+      await getmallEntrance({
+        storeId: this.selectedShopValue[0],
+        floorMapId: this.selectedShopValue[1],
+        houseNum: this.houseNum,
       })
+      await Message.success('操作成功！')
+      await this.resetForm()
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
+
+    resetForm() {
+      this.selectedShopValue = []
+      this.houseNum = ''
+      this.showMall = false
     },
   },
 }
@@ -2447,13 +2471,46 @@ export default {
           @node-drag-end="handleDragEnd"
           @node-drop="handleDrop"
           @node-click="handleNodeClick"
-          @node-contextmenu="nodeRightClick"
         >
-          <div slot-scope="{ node, data }" class="custom-tree-node">
+          <!-- <div slot-scope="{ node, data }" class="custom-tree-node">
             <span>{{ data.osName }}</span>
             <span>({{ data.member }})</span>
             <span v-if="data.isShop == '2'" style="margin-left:30px;" @click.stop="getTreeOrgList()"><i style="font-size:16px;" class="el-icon-refresh" /></span>
-          </div>
+          </div> -->
+          <template #default="{ data }">
+            <div class="w-full flex items-center justify-between pr-2">
+              <div>
+                <span>{{ data.osName }}</span>
+                <span>({{ data.member }})</span>
+                <span v-if="data.isShop == '2'" style="margin-left:30px;" @click.stop="getTreeOrgList()"><i style="font-size:16px;" class="el-icon-refresh" /></span>
+              </div>
+              <el-dropdown
+                v-if="data.isShop !== '2'"
+                trigger="click"
+                @command="handleCommand"
+              >
+                <span class="el-dropdown-link">
+                  <i class="el-icon-more" />
+                </span>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item v-if="data.isShop === '0'" command="add">
+                      新增
+                    </el-dropdown-item>
+                    <el-dropdown-item v-if="data.isShop === '1'" command="entrance">
+                      入驻商场
+                    </el-dropdown-item>
+                    <el-dropdown-item command="edit">
+                      编辑
+                    </el-dropdown-item>
+                    <el-dropdown-item command="delete">
+                      删除
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+          </template>
         </el-tree>
         <div v-else>
           <div v-if="!orgListLoading" style="line-height:200px;">
@@ -2766,7 +2823,7 @@ export default {
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item label="所属商场" :label-width="formLabelWidth">
+              <!-- <el-form-item label="所属商场" :label-width="formLabelWidth">
                 <el-cascader
                   v-model="selectedShopValue"
                   :props="{ value: 'storeId', label: 'storeName', children: 'floorMapList' }"
@@ -2780,7 +2837,7 @@ export default {
                   placeholder="请输入门牌号"
                   clearable
                 />
-              </el-form-item>
+              </el-form-item> -->
             </el-form>
             <div class="demo-drawer__footer">
               <el-button size="small" @click="cancelAdd('shopForm')">
@@ -2872,7 +2929,7 @@ export default {
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item label="所属商场" :label-width="formLabelWidth">
+              <!-- <el-form-item label="所属商场" :label-width="formLabelWidth">
                 <el-cascader
                   v-model="selectedShopValue"
                   disabled
@@ -2887,7 +2944,7 @@ export default {
                   placeholder="请输入门牌号"
                   clearable
                 />
-              </el-form-item>
+              </el-form-item> -->
             </el-form>
             <div class="demo-drawer__footer">
               <el-button size="small" @click="cancelAdd('shopForm')">
@@ -2923,29 +2980,31 @@ export default {
       :visible.sync="showMall"
       title="入驻商场"
       direction="rtl"
+      size="42%"
     >
       <div class="p-4">
-        <el-form ref="onMallForm" :model="onMallForm" :rules="onMallFormRules">
-          <el-form-item label="选择楼层" prop="floor">
-            <el-radio-group v-model="onMallForm.floor">
-              <el-radio
-                v-for="item in 5"
-                :key="item"
-                :label="item"
-              >
-                F{{ item }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="活动名称" prop="number">
-            <el-input v-model="onMallForm.number" />
+        <el-form ref="onMallForm" class="mallForm">
+          <el-form-item label="所属商场" label-width="80px">
+            <el-cascader
+              v-model="selectedShopValue"
+              :props="{ value: 'storeId', label: 'storeName', children: 'floorMapList' }"
+              :options="storeList"
+              placeholder="请选择商场"
+            />
+            <el-input
+              v-model="houseNum"
+              :disabled="selectedShopValue.length < 2"
+              style="width: 35%;margin-left: 10px"
+              placeholder="请输入门牌号"
+              clearable
+            />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('onMallForm')">
-              立即创建
+            <el-button @click="resetForm">
+              取消
             </el-button>
-            <el-button @click="resetForm('onMallForm')">
-              重置
+            <el-button class="ml-12" type="primary" @click="submitForm">
+              提交
             </el-button>
           </el-form-item>
         </el-form>
@@ -3235,5 +3294,19 @@ export default {
 :deep(.el-form-item){
   display: flex;
   align-items: center;
+}
+
+::v-deep{
+
+  .el-dropdown {
+    display: none;
+  }
+
+  .el-tree-node__content:hover .el-dropdown {
+    display: block;
+  }
+  .is-current > .el-tree-node__content .el-dropdown {
+    display: block;
+  }
 }
 </style>

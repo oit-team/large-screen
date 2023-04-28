@@ -40,3 +40,7 @@ export function getTreeOrgList(brandId) {
 export function getExportInfo(params) {
   return post(`${API_SERVICE.SYSTEM}/excelPublic/getExportInfo`, params)
 }
+
+export function getmallEntrance(params) {
+  return post('/system/org/mallEntrance', params)
+}

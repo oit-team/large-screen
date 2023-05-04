@@ -155,6 +155,7 @@ export default {
         industryId: this.$route.params.industryId,
       })
       this.attributeInfo = res.body
+      this.form.industryCategory = res.body.industryCategory
       this.listDisplayConfig = this.attributeInfo.industryConfig.listDisplayConfig
       this.detailsConfig = this.attributeInfo.industryConfig?.detailsConfig
       this.attributeList = [...this.attributeInfo.attribInfo]
@@ -188,10 +189,12 @@ export default {
             .then(async () => {
               await addIndustryInfo({
                 ...this.form,
-                IndustryAttrib: this.attributeList,
+                listDisplayConfig: this.listDisplayConfig,
+                detailsConfig: this.detailsConfig,
+                industryAttrib: this.attributeList,
               })
               this.$message.success('成功')
-              // this.$router.back()
+              this.$router.back()
             })
             .catch(() => {})
         }

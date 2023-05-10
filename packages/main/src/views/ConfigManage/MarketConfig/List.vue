@@ -1,11 +1,12 @@
 <script>
 import { Upload } from '@oit/element-ui-extend'
 import { keyBy } from 'lodash-es'
+import FloorUpload from './components/FloorUpload.vue'
 import { getBrandConfigById, updateBrandConfig } from '@/api/market'
 
 export default {
   name: 'MarketList',
-  components: { VcUpload: Upload },
+  components: { VcUpload: Upload, FloorUpload },
   data: () => ({
     maxMB: 10,
     isUpdate: false,
@@ -15,43 +16,30 @@ export default {
     configList: [], // 初始接口结果
     configMap: {}, // 初始数据map
     floorImgList: [],
+    allFloorImgList: [],
     floorMapList: [],
   }),
-
-  computed: {
-    uploadOptionFloorImg() {
-      return {
-        drag: true,
-        showFileList: false,
-        multiple: true,
-        maxSize: 1024 * this.maxMB,
-        limit: 5,
-        chunkSize: 1024 * 5,
-        check: true,
-        accept: 'image/*',
-        onError: (e, file) => {
-          this.$message.error(`${file.name} 上传失败，请重试！`)
-        },
-        onSuccess: ({ data }, file, fileList) => {
-          this.floorImgList = fileList
-        },
-      }
-    },
-  },
 
   mounted() {
     this.getBrandConfigById()
   },
 
   methods: {
+    addShopConfig() {
+      this.isUpdate = true
+      this.allFloorImgList.push({
+        url: '',
+        floorNum: '',
+      })
+    },
     // 查询配置详情
     async getBrandConfigById() {
       const res = await getBrandConfigById({
-        brandId: sessionStorage.getItem('brandId'), // 235
+        brandId: sessionStorage.getItem('brandId'),
       })
       this.configList = res.body.resultList
       this.configMap = keyBy(this.configList, 'code')
-      this.floorImgList = res.body.floorMapList.map(item => ({
+      this.allFloorImgList = res.body.floorMapList.map(item => ({
         url: item.mapUrl,
         floorNum: item.floorNum,
       }))
@@ -74,15 +62,18 @@ export default {
     },
 
     deleteSelectedImgsItem(item) {
-      this.floorImgList.splice(item, 1)
+      const index = this.allFloorImgList.indexOf(item)
+      if (index !== -1) {
+        this.$delete(this.allFloorImgList, index)
+      }
     },
 
     async submitUpdate() {
       this.$confirm('确定保存此配置的修改吗？', '提示', { type: 'warning' }).then(async () => {
         this.ruleForm.configList = Object.values(this.configMap)
-        this.floorMapList = this.floorImgList.map(item => ({
+        this.floorMapList = this.allFloorImgList.map(item => ({
           floorNum: item.floorNum,
-          mapUrl: item.response?.data?.fileUrl || item.url,
+          mapUrl: item.url,
         }))
         await this.updateBrandConfig()
       }).catch(err => this.$message({ message: err.message || '取消修改！', type: 'warning' }))
@@ -91,6 +82,7 @@ export default {
     cancelUpdate() {
       this.isUpdate = false
       this.$message({ message: '取消编辑！', type: 'warning' })
+      this.getBrandConfigById()
     },
 
   },
@@ -163,32 +155,12 @@ export default {
         </ElForm>
         <ElForm ref="selectedImgForm" class="selectedImgForm" label-width="150px">
           <ElFormItem label="楼层/引导图" class="checkedFloorImgs">
-            <div v-for="item, index in floorImgList" :key="index" class="floorImages">
-              <ElImage
-                style="width: 146px; height: 146px"
-                :src="item.url"
-                fit="cover"
-              />
-              <div v-if="isUpdate" class="checkImgMask">
-                <div class="w-full h-full flex justify-center items-center">
-                  <ElButton type="info" icon="el-icon-delete" circle @click="deleteSelectedImgsItem(item)" />
-                </div>
-              </div>
-              <ElInput v-model="item.floorNum" :disabled="!isUpdate" size="mini" placeholder="填写楼层号" />
+            <div v-for="item, index in allFloorImgList" :key="index" class="floorImages">
+              <FloorUpload :url.sync="item.url" :floor.sync="item.floorNum" :disabled="!isUpdate" @delUploadItem="deleteSelectedImgsItem(item)" />
             </div>
-            <VcUpload
-              v-bind="uploadOptionFloorImg"
-              ref="floorUpload"
-              class="floor-uploader" action="api/system/file/uploadFile"
-              list-type="picture-card"
-              :show-file-list="false"
-              :disabled="!isUpdate"
-            >
-              <i class="el-icon-plus" />
-            </VcUpload>
-            <div class="el-upload__tip text-red-500 ml-4">
-              *只能上传图片，单次提交最多{{ uploadOptionFloorImg.limit }}个，且不得超过{{ maxMB }}MB
-            </div>
+            <ElButton v-if="isUpdate" type="primary" size="small" plain class="self-end" @click="addShopConfig">
+              新增
+            </ElButton>
           </ElFormItem>
         </ElForm>
         <div class="ml-12 p-10">
@@ -232,6 +204,13 @@ export default {
     height: 147px;
     border-radius: 20%;
     margin-right:15px;
+    .deleteItemBtn{
+      position: absolute;
+      top:  -18px;
+      right: -7px;
+      color: red;
+      font-weight: bold;
+    }
     .el-image{
       border-radius: 5%;
       img{
@@ -239,22 +218,14 @@ export default {
       }
    }
     .checkImgMask{
-      display: none;
       position: absolute;
       top:  0;
       left: 0;
       width: 99%;
       height: 99%;
       border-radius: 5%;
-      background-color: black;
-      opacity: .3;
     }
   }
-
-  .floorImages:hover .checkImgMask{
-    display: block;
-  }
-
   .el-date-editor.el-input{
       width: 60%;
     }

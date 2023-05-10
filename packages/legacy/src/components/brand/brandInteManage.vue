@@ -103,7 +103,7 @@ export default {
         gradeId: '',
         shopCode: '',
         storeId: '',
-        // houseNum: '',
+        houseNum: '',
       },
       shopStore: false, // 编辑店铺时是否禁用 选择商场选项
       shopRules: {
@@ -130,6 +130,7 @@ export default {
         ],
       },
       formLabelWidth: '100px',
+      labelPosition: 'right',
       nodeInfo: null, // 单击节点的信息
       editFlag: false, // 是否为编辑节点
       editArea: false,
@@ -1986,6 +1987,7 @@ export default {
     },
     // 点击操作-》编辑按钮
     clickEdit() {
+      // console.log(this.nodeInfo, '数据')
       this.handleClickFlag = false
       this.shopDialog = true
       this.editFlag = true
@@ -2011,8 +2013,8 @@ export default {
         this.shopForm.shopCode = this.nodeInfo.shopCode
         this.shopForm.orgStId = Number(this.nodeInfo.parentId)
         this.shopForm.storeId = Number(this.nodeInfo.storeId)
-        // this.shopForm.houseNum = this.nodeInfo.houseNum
-        // this.selectedShopValue = [this.nodeInfo?.storeId, this.nodeInfo?.floorMapId]
+        this.shopForm.houseNum = this.nodeInfo.houseNum
+        this.selectedShopValue = [Number(this.nodeInfo?.storeId), Number(this.nodeInfo?.floorMapId)]
         if (this.shopForm.orgStId == 0) {
           this.shopForm.orgStId = null
         }
@@ -2127,13 +2129,13 @@ export default {
       // this.$refs[formName].resetFields();
       if (this.$refs.shopForm) {
         this.$refs.shopForm.resetFields()
-        // this.selectedShopValue = []
+        this.selectedShopValue = []
       }
       if (this.$refs.areaForm) {
         this.$refs.areaForm.resetFields()
       }
       const _this = this
-      // this.shopForm.houseNum = ''
+      this.shopForm.houseNum = ''
       _this.shopForm.shopName = ''
       _this.shopForm.address = ''
       _this.shopForm.gradeId = ''
@@ -2228,9 +2230,9 @@ export default {
             telephone: _this.shopForm.telephone,
             orgStId,
             // storeId: _this.shopForm.storeId,
-            // storeId: _this.selectedShopValue[0],
-            // floorMapId: _this.selectedShopValue[1],
-            // houseNum: _this.shopForm.houseNum,
+            storeId: _this.selectedShopValue[0],
+            floorMapId: _this.selectedShopValue[1],
+            houseNum: _this.shopForm.houseNum,
             openDate: _this.shopForm.openDate,
             shopCode: _this.shopForm.shopCode,
             userId: sessionStorage.userId,
@@ -2252,8 +2254,8 @@ export default {
               _this.areaForm.areaName = ''
               _this.areaForm.areaCode = ''
               _this.areaForm.dutyId = ''
-              // _this.shopForm.houseNum = ''
-              // _this.selectedShopValue = []
+              _this.shopForm.houseNum = ''
+              _this.selectedShopValue = []
               _this.shopForm.storeId = ''
               _this.$message({
                 message: '新增店铺成功',
@@ -2297,9 +2299,9 @@ export default {
               telephone: _this.shopForm.telephone,
               openDate: _this.shopForm.openDate,
               shopCode: _this.shopForm.shopCode,
-              // storeId: _this.selectedShopValue[0],
-              // floorMapId: _this.selectedShopValue[1],
-              // houseNum: _this.shopForm.houseNum,
+              storeId: _this.selectedShopValue[0],
+              floorMapId: _this.selectedShopValue[1],
+              houseNum: _this.shopForm.houseNum,
             }
           }
           else if (_this.nodeInfo.isShop == '0') {
@@ -2331,8 +2333,8 @@ export default {
               _this.areaForm.areaName = ''
               _this.areaForm.areaCode = ''
               _this.areaForm.dutyId = ''
-              // _this.shopForm.houseNum = ''
-              // _this.selectedShopValue = ''
+              _this.shopForm.houseNum = ''
+              _this.selectedShopValue = []
               _this.shopForm.storeId = ''
 
               _this.$message({
@@ -2497,9 +2499,12 @@ export default {
                     <el-dropdown-item v-if="data.isShop === '0'" command="add">
                       新增
                     </el-dropdown-item>
-                    <el-dropdown-item v-if="data.isShop === '1'" command="entrance">
+                    <!-- <el-dropdown-item v-if="data.isShop === '1'" command="entrance">
                       入驻商场
-                    </el-dropdown-item>
+                    </el-dropdown-item> -->
+                    <!-- <el-dropdown-item v-if="data.isShop === '1'" command="edit">
+                      积分充值
+                    </el-dropdown-item> -->
                     <el-dropdown-item command="edit">
                       编辑
                     </el-dropdown-item>
@@ -2781,14 +2786,14 @@ export default {
           </el-tab-pane>
           <el-tab-pane :key="2" label="新增店铺" name="shop">
             <!-- 店铺表单 -->
-            <el-form ref="shopForm" :model="shopForm" :rules="shopRules">
-              <el-form-item label="店铺名称" :label-width="formLabelWidth" prop="shopName">
+            <el-form ref="shopForm" class="shopForm" :model="shopForm" :label-position="labelPosition" label-width="80px" :rules="shopRules">
+              <el-form-item label="店铺名称" prop="shopName">
                 <el-input v-model="shopForm.shopName" autocomplete="off" placeholder="请输入店铺名称" />
               </el-form-item>
-              <el-form-item label="店铺地址" :label-width="formLabelWidth" prop="address">
+              <el-form-item label="店铺地址" prop="address">
                 <el-input v-model="shopForm.address" autocomplete="off" maxlength="32" placeholder="请输入店铺地址" />
               </el-form-item>
-              <el-form-item label="店铺等级" :label-width="formLabelWidth" prop="gradeId">
+              <el-form-item label="店铺等级" prop="gradeId">
                 <el-select v-model="shopForm.gradeId" placeholder="请选择店铺等级">
                   <el-option label="S" value="S" />
                   <el-option label="A" value="A" />
@@ -2797,11 +2802,11 @@ export default {
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="联系电话" :label-width="formLabelWidth" prop="telephone">
+              <el-form-item label="联系电话" prop="telephone">
                 <el-input v-model="shopForm.telephone" autocomplete="off" placeholder="请输入联系电话" />
               </el-form-item>
 
-              <el-form-item label="开店日期" :label-width="formLabelWidth" prop="openDate">
+              <el-form-item label="开店日期" prop="openDate">
                 <el-date-picker
                   v-model="shopForm.openDate"
                   type="date"
@@ -2809,11 +2814,11 @@ export default {
                   placeholder="选择日期"
                 />
               </el-form-item>
-              <el-form-item label="店铺编码" :label-width="formLabelWidth" prop="shopCode">
+              <el-form-item label="店铺编码" prop="shopCode">
                 <el-input v-model="shopForm.shopCode" autocomplete="off" placeholder="请输入店铺编码" />
               </el-form-item>
 
-              <el-form-item label="所属区域" :label-width="formLabelWidth">
+              <el-form-item label="所属区域">
                 <el-select v-model="shopForm.orgStId" filterable placeholder="请选择所属区域" @change="changeArea">
                   <el-option
                     v-for="item in areaList"
@@ -2823,10 +2828,11 @@ export default {
                   />
                 </el-select>
               </el-form-item>
-              <!-- <el-form-item label="所属商场" :label-width="formLabelWidth">
+              <el-form-item label="所属商场">
                 <el-cascader
                   v-model="selectedShopValue"
-                  :props="{ value: 'storeId', label: 'storeName', children: 'floorMapList' }"
+                  style="width: 65%"
+                  :props="{ value: 'storeId', label: 'storeName', children: 'floorMapList', checkStrictly: true }"
                   :options="storeList"
                   placeholder="请选择商场"
                 />
@@ -2837,7 +2843,7 @@ export default {
                   placeholder="请输入门牌号"
                   clearable
                 />
-              </el-form-item> -->
+              </el-form-item>
             </el-form>
             <div class="demo-drawer__footer">
               <el-button size="small" @click="cancelAdd('shopForm')">
@@ -2882,14 +2888,14 @@ export default {
           </el-tab-pane>
           <el-tab-pane v-if="editShop" label="编辑店铺" name="shop">
             <!-- 店铺表单 -->
-            <el-form ref="shopForm" :model="shopForm" :rules="shopRules">
-              <el-form-item label="店铺名称" :label-width="formLabelWidth" prop="shopName">
+            <el-form ref="shopForm" :model="shopForm" class="shopForm" :label-position="labelPosition" :rules="shopRules" label-width="80px">
+              <el-form-item label="店铺名称" prop="shopName">
                 <el-input v-model="shopForm.shopName" autocomplete="off" placeholder="请输入店铺名称" />
               </el-form-item>
-              <el-form-item label="店铺地址" :label-width="formLabelWidth" prop="address">
+              <el-form-item label="店铺地址" prop="address">
                 <el-input v-model="shopForm.address" autocomplete="off" maxlength="32" placeholder="请输入店铺地址" />
               </el-form-item>
-              <el-form-item label="店铺等级" :label-width="formLabelWidth" prop="gradeId">
+              <el-form-item label="店铺等级" prop="gradeId">
                 <el-select v-model="shopForm.gradeId" placeholder="请选择店铺等级">
                   <el-option label="S" value="S" />
                   <el-option label="A" value="A" />
@@ -2897,17 +2903,17 @@ export default {
                   <el-option label="C" value="C" />
                 </el-select>
               </el-form-item>
-              <el-form-item label="联系电话" :label-width="formLabelWidth" prop="telephone">
+              <el-form-item label="联系电话" prop="telephone">
                 <el-input v-model="shopForm.telephone" autocomplete="off" placeholder="请输入店铺联系电话" />
               </el-form-item>
-              <el-form-item label="所属积分" :label-width="formLabelWidth" prop="telephone" inline>
+              <el-form-item label="所属积分" prop="telephone" inline>
                 <el-input v-model="shopForm.integralNumber" disabled autocomplete="off" class="!w-4/5" />
                 <el-button type="primary" class="ml-2 flex-1" @click="dialogFormVisible = true">
                   积分充值
                 </el-button>
               </el-form-item>
 
-              <el-form-item label="开店日期" :label-width="formLabelWidth" prop="openDate">
+              <el-form-item label="开店日期" prop="openDate">
                 <el-date-picker
                   v-model="shopForm.openDate"
                   type="date"
@@ -2915,11 +2921,11 @@ export default {
                   placeholder="选择日期"
                 />
               </el-form-item>
-              <el-form-item label="店铺编码" :label-width="formLabelWidth" prop="shopCode">
+              <el-form-item label="店铺编码" prop="shopCode">
                 <el-input v-model="shopForm.shopCode" autocomplete="off" placeholder="请输入店铺编码" />
               </el-form-item>
 
-              <el-form-item label="所属区域" :label-width="formLabelWidth">
+              <el-form-item label="所属区域">
                 <el-select v-model="shopForm.orgStId" filterable placeholder="请选择所属区域" @change="changeArea">
                   <el-option
                     v-for="item in areaList"
@@ -2929,9 +2935,10 @@ export default {
                   />
                 </el-select>
               </el-form-item>
-              <!-- <el-form-item label="所属商场" :label-width="formLabelWidth">
+              <el-form-item label="所属商场">
                 <el-cascader
                   v-model="selectedShopValue"
+                  style="width: 65%"
                   disabled
                   :props="{ value: 'storeId', label: 'storeName', children: 'floorMapList' }"
                   :options="storeList"
@@ -2944,7 +2951,7 @@ export default {
                   placeholder="请输入门牌号"
                   clearable
                 />
-              </el-form-item> -->
+              </el-form-item>
             </el-form>
             <div class="demo-drawer__footer">
               <el-button size="small" @click="cancelAdd('shopForm')">
@@ -2987,6 +2994,7 @@ export default {
           <el-form-item label="所属商场" label-width="80px">
             <el-cascader
               v-model="selectedShopValue"
+              style="width: 60%"
               :props="{ value: 'storeId', label: 'storeName', children: 'floorMapList' }"
               :options="storeList"
               placeholder="请选择商场"
@@ -3307,6 +3315,9 @@ export default {
   }
   .is-current > .el-tree-node__content .el-dropdown {
     display: block;
+  }
+  .shopForm .el-form-item__content{
+    width: 60%;
   }
 }
 </style>

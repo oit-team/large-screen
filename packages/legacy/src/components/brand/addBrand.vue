@@ -1,11 +1,15 @@
 <script>
 import { Upload } from '@oit/element-ui-extend'
 import { keyBy } from 'lodash-es'
+import FloorUpload from './components/FloorUpload.vue'
 import getIndustryAll from '@/api/brand'
 
 export default {
   name: 'AddBrand',
-  components: { VcUpload: Upload },
+  components: {
+    VcUpload: Upload,
+    FloorUpload,
+  },
   filters: {
     formatType(val) {
       return val == '0' ? 'HOME' : 'APP'
@@ -117,6 +121,8 @@ export default {
       floorImgList: [], // 格式化后的楼层图
       floorthNumber: '', // 楼层数
       floorMapList: [],
+      floorNum: '',
+      allFloorImgList: [],
     }
   },
   computed: {
@@ -134,24 +140,6 @@ export default {
         onSuccess: (...e) => {
           this.imageUrl = e[0].data.fileUrl
           this.ruleForm.brandLogo = e[0].data.fileUrl
-        },
-      }
-    },
-    uploadOptionFloorImg() {
-      return {
-        drag: true,
-        showFileList: false,
-        multiple: true,
-        maxSize: 1024 * this.maxMB,
-        limit: 5,
-        chunkSize: 1024 * 5,
-        check: true,
-        accept: 'image/*',
-        onError: (e, file) => {
-          this.$message.error(`${file.name} 上传失败，请重试！`)
-        },
-        onSuccess: ({ data }, file, fileList) => {
-          this.floorImgList = fileList
         },
       }
     },
@@ -480,9 +468,9 @@ export default {
     // 新增品牌
     regbrand(formName) {
       this.ruleForm.configList = Object.values(this.configMap)
-      this.floorMapList = this.floorImgList.map(item => ({
+      this.floorMapList = this.allFloorImgList.map(item => ({
         floorNum: item.floorNum,
-        mapUrl: item.response?.data?.fileUrl,
+        mapUrl: item.url,
       }))
       const _this = this
       this.$refs[formName].validate((valid) => {
@@ -568,6 +556,13 @@ export default {
     deleteSelectedImgsItem(item) {
       this.floorImgList.splice(item, 1)
       console.log(item, '点击删除这一张照片')
+    },
+
+    addShopConfig() {
+      this.allFloorImgList.push({
+        url: '',
+        floorNum: '',
+      })
     },
 
   },
@@ -822,33 +817,14 @@ export default {
             <el-input v-model="configMap.INTERVAL_DAY.value" oninput="value=value.replace(/[^\d]/g,'')" :placeholder="`请输入${configMap.INTERVAL_DAY.configName}`" autocomplete="off" style="width:60%;" />
           </el-form-item>
         </el-form>
-        <el-form ref="selectedImgForm" class="selectedImgForm" label-width="120px">
+        <el-form ref="selectedImgForm" class="selectedImgForm" label-width="150px">
           <el-form-item label="楼层/引导图" class="checkedFloorImgs">
-            <div v-for="item, index in floorImgList" :key="index" class="floorImages">
-              <el-image
-                style="width: 146px; height: 146px"
-                :src="item.url"
-                fit="cover"
-              />
-              <div class="checkImgMask">
-                <div class="w-full h-full flex justify-center items-center">
-                  <el-button type="info" icon="el-icon-delete" circle @click="deleteSelectedImgsItem(item)" />
-                </div>
-              </div>
-              <el-input v-model="item.floorNum" size="mini" placeholder="填写楼层号" />
+            <div v-for="item, index in allFloorImgList" :key="index" class="floorImages">
+              <floor-upload :url.sync="item.url" :floor.sync="item.floorNum" @delUploadItem="deleteSelectedImgsItem(item)" />
             </div>
-            <vc-upload
-              v-bind="uploadOptionFloorImg"
-              ref="floorUpload"
-              class="floor-uploader" action="/system/file/uploadFile"
-              list-type="picture-card"
-              :show-file-list="false"
-            >
-              <i class="el-icon-plus" />
-            </vc-upload>
-            <div class="el-upload__tip text-red-500 ml-4">
-              *只能上传图片，单次提交最多{{ uploadOptionFloorImg.limit }}个，且不得超过{{ maxMB }}MB
-            </div>
+            <el-button type="primary" size="small" plain class="self-end" @click="addShopConfig">
+              新增
+            </el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -967,38 +943,33 @@ export default {
     flex-direction: row;
     align-items: center;
   }
-  .el-upload__tip{
-    position: absolute;
-    bottom: -30px;
-    left: -12px;
-  }
   .floorImages{
     position: relative;
     width: 147px;
     height: 147px;
     border-radius: 20%;
     margin-right:15px;
+    .deleteItemBtn{
+      position: absolute;
+      top:  -25px;
+      right: -15px;
+      color: red;
+      font-weight: bold;
+    }
     .el-image{
       border-radius: 5%;
       img{
         border-radius: 5%;
       }
    }
-    .checkImgMask{
-      display: none;
+   .checkImgMask{
       position: absolute;
       top:  0;
       left: 0;
       width: 99%;
       height: 99%;
       border-radius: 5%;
-      background-color: black;
-      opacity: .3;
     }
-  }
-
-  .floorImages:hover .checkImgMask{
-    display: block;
   }
 
   .el-form-item:nth-child(1){

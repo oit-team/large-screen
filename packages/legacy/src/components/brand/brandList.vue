@@ -124,7 +124,6 @@ export default {
         const jsonParam = _this.GLOBAL.g_paramJson(con)
         // // console.log('删除品牌参数',con)
         _this.$axios.post(`${_this.GLOBAL.system_manager_server}/brand/deleteBrandInfo`, jsonParam).then((res) => {
-          console.log(res)
           if (res.data.head.status == 0) {
             _this.$message({
               message: res.data.head.msg,
@@ -165,7 +164,7 @@ export default {
         height: collapse ? `${collapseHeight}px` : 'auto',
       }"
     >
-      <el-form ref="searchForm" :inline="true" :model="searchForm" size="mini" class="demo-form-inline flex-1 grid grid-cols-3">
+      <el-form ref="searchForm" :inline="true" :model="searchForm" size="small" class="demo-form-inline flex-1 grid grid-cols-3">
         <el-form-item label="品牌" prop="brandType">
           <el-select v-model="searchForm.brandType" placeholder="请选择品牌类型">
             <el-option label="品牌" value="0" />

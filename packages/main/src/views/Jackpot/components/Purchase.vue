@@ -26,7 +26,7 @@ const totalIntegral = ref(0)
 const allIntegral = ref(0)
 const totalPrice = computed(() => {
   return shoppingCartList.value.reduce((total, item) => {
-    return new Big(+item.jackpotBuyPrice).times(shoppingCartCount.value[item.jackpotId]).plus(total).toNumber()
+    return new Big(+item.jackpotBuyPrice || 0).times(shoppingCartCount.value[item.jackpotId]).plus(total).toNumber()
   }, 0)
 })
 
@@ -154,7 +154,7 @@ watch(shoppingCartDrawer, () => {
       </ElButton>
     </div>
     <div class="flex-1 overflow-auto mt-2">
-      <div v-if="data.length !== 0" class="grid lt-xl:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-4 pb-2">
+      <div v-if="data.length !== 0" class="grid lt-xl:grid-cols-4 xl:grid-cols-6 gap-4 pb-2">
         <ElCard v-for="item of data" :key="item.jackpotId" :body-style="{ padding: 0 }">
           <ElImage :src="convertImageSize(item.impUrl)" fit="contain" class="w-full aspect-square" />
           <div class="p-2">
@@ -163,14 +163,14 @@ watch(shoppingCartDrawer, () => {
             </div>
             <div class="text-xs grid grid-cols-2">
               <span>库存：{{ item.jackpotInventory }}</span>
-              <span>价格：{{ item.jackpotBuyPrice }}</span>
+              <span>价格：{{ item.jackpotBuyPrice || 0 }}</span>
             </div>
             <div class="flex mt-2">
               <ElButton size="mini" :disabled="item.jackpotInventory <= 0" @click="shoppingCartCount[item.jackpotId] ? removeCart(item) : addCart(item)">
                 {{ shoppingCartCount[item.jackpotId] ? `已添加` : '添加购物车' }}
                 <!--                {{ shoppingCartCount[item.jackpotId] ? `已添加(${shoppingCartCount[item.jackpotId]})` : '添加购物车' }} -->
               </ElButton>
-              <ElInputNumber v-show="shoppingCartCount[item.jackpotId] > 0" v-model="shoppingCartCount[item.jackpotId]" size="small" class="ml-2" :min="0" :max="item.jackpotInventory" />
+              <ElInputNumber v-show="shoppingCartCount[item.jackpotId] > 0" v-model="shoppingCartCount[item.jackpotId]" size="mini" class="ml-2" :min="0" :max="item.jackpotInventory" />
             </div>
           </div>
         </ElCard>
@@ -219,7 +219,11 @@ watch(shoppingCartDrawer, () => {
           <ElTableColumn
             prop="jackpotBuyPrice"
             label="单价"
-          />
+          >
+            <template #default="{ row }">
+              {{ row.jackpotBuyPrice || 0 }}
+            </template>
+          </ElTableColumn>
           <ElTableColumn
             label="数量"
             width="180"

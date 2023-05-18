@@ -2107,7 +2107,7 @@ export default {
       const jsonParam = this.GLOBAL.g_paramJson(con)
       this.$axios.post(`${this.GLOBAL.system_manager_server}/pay/alipay`, jsonParam).then((res) => {
         if (res.data.head.status === 0) {
-          window.open(res.data.body.result)
+          document.write(res.data.body.result)
         }
         else {
           this.$message({

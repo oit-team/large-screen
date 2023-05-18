@@ -62,6 +62,7 @@ const config = defineConfig({
       '/api': {
         target: 'http://192.168.9.67:9092',
         // target: 'http://192.168.9.65:8089',
+        // target: 'http://xky.gaodanyi.com:8092/api',
         changeOrigin: true,
         rewrite: path => path.replace('/api', ''),
       },

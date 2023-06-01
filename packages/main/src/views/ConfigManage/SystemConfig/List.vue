@@ -176,7 +176,7 @@ export default {
           <div
             v-for="(item, index) in searchList"
             :key="index"
-            class="configList flex justify-between w-full cursor-pointer box-border px-4 py-2 box-border rounded bindHover text-[#606266] text-sm"
+            class="configList flex justify-between w-full cursor-pointer px-4 py-2 box-border rounded bindHover text-[#606266] text-sm"
             :class="nowIndex === index ? 'bg-[#F0F7FF]' : ''"
             @click="changeCheck(item, index)"
           >

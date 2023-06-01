@@ -156,6 +156,42 @@ export const routes: RouteConfig[] = [
         name: 'TradeUpdate',
         component: () => import('@/views/ConfigManage/TradeConfig/Update.vue'),
       },
+      // 用户管理
+      {
+        path: '/user/list',
+        name: 'UserManageList',
+        component: () => import('@/views/UserManage/List.vue'),
+      },
+      // 服务管理
+      {
+        path: '/service/list',
+        name: 'ServiceList',
+        component: () => import('@/views/Service/List.vue'),
+      },
+      // 服务编辑
+      {
+        path: '/service/update',
+        name: 'ServiceUpdate',
+        component: () => import('@/views/Service/components/Update.vue'),
+      },
+      // 服务详情
+      {
+        path: '/service/detail',
+        name: 'ServiceDetail',
+        component: () => import('@/views/Service/components/Detail.vue'),
+      },
+      // 订单管理
+      {
+        path: '/order/list',
+        name: 'OrderManageList',
+        component: () => import('@/views/OrderManage/List.vue'),
+      },
+      // 活动管理
+      {
+        path: '/activity/list',
+        name: 'ActivityList',
+        component: () => import('@/views/ActivityManage/List.vue'),
+      },
       {
         path: '/404',
         component: () => import('@/views/404.vue'),

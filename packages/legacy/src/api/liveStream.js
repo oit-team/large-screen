@@ -294,3 +294,10 @@ export function getAuditBook(params) {
 export function updateBookInfo(params) {
   return post(`${API_SERVICE.LIVE_BROADCAST}/book/updateBookInfo`, params)
 }
+
+/**
+ * 删除内容资源
+ */
+export function batchDeleteAdvertsRes(params) {
+  return post(`${API_SERVICE.LIVE_BROADCAST}/adverts/batchDeleteAdvertsRes`, params)
+}

@@ -1,6 +1,6 @@
 <script>
 import TablePage from '@/components/classify/TablePage/TablePage'
-import { getAdvertsRes } from '@/api/liveStream'
+import { batchDeleteAdvertsRes, getAdvertsRes } from '@/api/liveStream'
 import PreviewFile from '@/components/classify/PreviewFile'
 import FILE_TYPE from '@/enums/FILE_TYPE'
 import { convertImageSize } from '@/utils/helper'
@@ -25,9 +25,15 @@ export default {
             type: 'primary',
             to: 'CarouselResourcesUpload',
           },
+          {
+            name: '批量删除',
+            type: 'primary',
+            click: this.selectedDelete,
+          },
         ],
         table: {
           data: this.data.result,
+          selection: true,
         },
         pager: {
           total: this.data.totalCount,
@@ -50,13 +56,30 @@ export default {
         type: file.resType,
       }])
     },
+    // 批量删除
+    async selectedDelete() {
+      if (this.$refs.table.selected.length === 0) {
+        this.$message({
+          message: '请至少勾选其中一项数据！',
+          type: 'warning',
+        })
+        return
+      }
+      const idList = this.$refs.table.selected.map(item => item.id)
+      await this.$confirm('确定要删除勾选数据？', '提示', { type: 'warning' })
+      await batchDeleteAdvertsRes({
+        idList,
+      })
+      this.$message.success('删除成功！')
+      this.$refs.table.loadData()
+    },
   },
 }
 </script>
 
 <template>
   <page-container>
-    <table-page v-bind="tablePageOption" auto @row-click="previewFile">
+    <table-page ref="table" v-bind="tablePageOption" auto @row-click="previewFile">
       <template #column:resUrl>
         <el-table-column
           prop="resUrl"

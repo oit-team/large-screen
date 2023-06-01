@@ -224,7 +224,7 @@ export default {
     <el-divider />
     <el-form ref="ruleForm" style="margin-top:20px;" :model="ruleForm" :rules="rules" label-width="110px" :label-position="labelPosition" class="demo-ruleForm">
       <el-form-item label="菜单名称" prop="menuName">
-        <el-input v-model="ruleForm.menuName" style="width:60%;" placeholder="请选择菜单名称" />
+        <el-input v-model="ruleForm.menuName" style="width:60%;" placeholder="请输入菜单名称" />
       </el-form-item>
       <el-form-item label="父菜单">
         <!--  value-key="id"     -->
@@ -247,16 +247,16 @@ export default {
       </el-form-item>
 
       <el-form-item label="访问路径" prop="menuUrl">
-        <el-input v-model="ruleForm.menuUrl" style="width:60%;" placeholder="请选择菜单访问路径" />
+        <el-input v-model="ruleForm.menuUrl" style="width:60%;" placeholder="请输入菜单访问路径" />
       </el-form-item>
       <el-form-item label="菜单编码" prop="menuCode">
-        <el-input v-model="ruleForm.menuCode" style="width:60%;" placeholder="请选择菜单编码" />
+        <el-input v-model="ruleForm.menuCode" style="width:60%;" placeholder="请输入菜单编码" />
       </el-form-item>
       <el-form-item label="菜单描述" prop="menuRemark">
         <el-input v-model="ruleForm.menuRemark" style="width:60%;" placeholder="请输入菜单描述" />
       </el-form-item>
       <el-form-item label="菜单图标" prop="menuImg">
-        <el-input v-model="ruleForm.menuImg" style="width:60%;" placeholder="请选择菜单Icon相应的name" />
+        <el-input v-model="ruleForm.menuImg" style="width:60%;" placeholder="请输入菜单Icon相应的name" />
       </el-form-item>
       <el-form-item label="菜单排序" prop="orderBy">
         <el-input v-model="ruleForm.orderBy" style="width:60%;" placeholder="请输入菜单排序(数字类型)" />

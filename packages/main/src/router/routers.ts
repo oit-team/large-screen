@@ -193,6 +193,11 @@ export const routes: RouteConfig[] = [
         component: () => import('@/views/ActivityManage/List.vue'),
       },
       {
+        path: '/activity/update',
+        name: 'ActivityUpdate',
+        component: () => import('@/views/ActivityManage/Update.vue'),
+      },
+      {
         path: '/404',
         component: () => import('@/views/404.vue'),
       },

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { createForm } from '@formily/core'
+import { createForm, onFieldInitialValueChange, onFieldReact } from '@formily/core'
 import type { ISchema } from '@formily/vue'
-import { FormProvider, createSchemaField, useField } from '@formily/vue'
+import { FormProvider, createSchemaField, useField, useFormEffects } from '@formily/vue'
+
+import { autorun } from '@formily/reactive'
 import {
   ArrayCards,
   ArrayItems,
@@ -58,7 +60,14 @@ const Upload = defineComponent({
   inheritAttrs: false,
   setup() {
     const fieldRef = useField<any>()
-    const initialValue = fieldRef.value.initialValue || []
+    const fieldInitialValue = fieldRef.value.initialValue
+    const initialValue = ref(fieldInitialValue && typeof fieldInitialValue === 'object' ? JSON.parse(JSON.stringify(fieldRef.value.initialValue)) : [])
+
+    useFormEffects(() => {
+      onFieldInitialValueChange(fieldRef.value.path.entire, (field) => {
+        initialValue.value = field.value
+      })
+    })
 
     return function (this: any) {
       return h(CustomUpload, {
@@ -71,7 +80,7 @@ const Upload = defineComponent({
             url: 'thumbUrl',
           },
           ...fieldRef.value.componentProps,
-          fileList: initialValue,
+          fileList: initialValue.value,
           onChange: (file: any, _files: any) => {
             const files = _files
               .map((item: any) => {

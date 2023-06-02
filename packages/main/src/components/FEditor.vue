@@ -3,7 +3,7 @@ import { Editor } from '@toast-ui/vue-editor'
 import '@toast-ui/editor/dist/i18n/zh-cn'
 import '@toast-ui/editor/dist/toastui-editor.css'
 
-defineProps({
+const props = defineProps({
   value: String,
   height: String,
   maxlength: Number,
@@ -12,6 +12,10 @@ defineProps({
 const emit = defineEmits(['change'])
 
 const editorRef = ref()
+
+watch(() => props.value, () => {
+  editorRef.value?.editor?.setHTML?.(props.value)
+})
 
 function onBlur() {
   const editor = editorRef.value?.editor

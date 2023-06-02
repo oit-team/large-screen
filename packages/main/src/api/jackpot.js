@@ -66,3 +66,58 @@ export function getIndustryAll(params) {
 export function getShopByIntegralNum(params) {
   return post('/jackpot/procurement/getShopByIntegralNum', params)
 }
+
+// -----------活动----------
+/**
+ * 新增活动
+ * @param {*} params
+ * @returns
+ */
+export function addActivity(params) {
+  return post('jackpot/activity/addActivity', params)
+}
+
+/**
+ * 活动列表
+ * @param {*} params
+ * @returns
+ */
+export function getActivityList(params) {
+  return post('jackpot/activity/getActivityList', params)
+}
+
+/**
+ * 活动详情
+ * @param {*} params
+ * @returns
+ */
+export function getActivityById(params) {
+  return post('jackpot/activity/getActivityById', params)
+}
+
+/**
+ * 修改活动
+ * @param {*} params
+ * @returns
+ */
+export function updateActivity(params) {
+  return post('jackpot/activity/updateActivity', params)
+}
+
+/**
+ * 删除活动
+ * @param {*} params
+ * @returns
+ */
+export function deleteActivity(params) {
+  return post('jackpot/activity/deleteActivity', params)
+}
+
+/**
+ * 活动上下架
+ * @param {*} params
+ * @returns
+ */
+export function updateActivityStatus(params) {
+  return post('jackpot/activity/updateActivityStatus', params)
+}

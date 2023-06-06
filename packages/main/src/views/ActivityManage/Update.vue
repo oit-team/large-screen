@@ -55,7 +55,7 @@ async function submitForm() {
   <div>
     <PageHeader :content="isEdit ? '编辑活动' : '新增活动'">
       <template #actions>
-        <ElButton v-if="isEdit" type="primary" :loading="updateGoodsLoading" @click="submitForm()">
+        <ElButton type="primary" :loading="updateGoodsLoading" @click="submitForm()">
           保存
         </ElButton>
       </template>

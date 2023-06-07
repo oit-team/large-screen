@@ -2,12 +2,17 @@
 import { SearchForm } from '@oit/element-ui-extend'
 import Big from 'big.js'
 import { Message, MessageBox } from 'element-ui'
-import { addProcurementOrder, getIndustryAll, getJackpotStyleList, getShopByIntegralNum } from '@/api/jackpot'
+import { addAddActivityJackpot, addProcurementOrder, getIndustryAll, getJackpotStyleList, getShopByIntegralNum } from '@/api/jackpot'
 
 import { fieldStorage } from '@/utils/fieldStorage'
 
 import { convertImageSize } from '@/utils/helper'
+import store from '@/store'
 
+const props = defineProps({
+  isTicket: Number,
+  id: String,
+})
 const data = shallowRef([])
 const total = ref(0)
 const pageNum = ref(1)
@@ -29,6 +34,7 @@ const totalPrice = computed(() => {
     return new Big(+item.jackpotBuyPrice || 0).times(shoppingCartCount.value[item.jackpotId]).plus(total).toNumber()
   }, 0)
 })
+const userData = store.state.userData
 
 async function getFields() {
   const json = await fieldStorage.get('1669621663084')
@@ -140,6 +146,22 @@ async function loadIndustryState() {
 }
 loadIndustryState()
 
+async function addAddActivityJackpots() {
+  await MessageBox.confirm('确定关联吗？', '提示', { type: 'warning' })
+  await addAddActivityJackpot({
+    activityId: props.id,
+    jackpotIds: shoppingCartList.value.map(item => ({
+      jackpotId: item.jackpotId,
+      jackpotNumber: shoppingCartCount.value[item.jackpotId],
+    })),
+  })
+  await Message.success('关联成功！')
+  shoppingCartData.value = {}
+  shoppingCartCount.value = {}
+  shoppingCartDrawer.value = false
+  getJackpotStyleListData()
+}
+
 watch(shoppingCartDrawer, () => {
   getIntegralNum()
 })
@@ -241,7 +263,19 @@ watch(shoppingCartDrawer, () => {
             </template>
           </ElTableColumn>
         </ElTable>
-        <div class="px-2 py-4 flex flex-col">
+        <div v-if="props.isTicket === 1" class="px-2 py-4 flex justify-between items-center">
+          <div class="p-2" />
+
+          <ElButton
+            type="primary"
+            :loading="addShopCartLoading"
+            :disabled="paymentRadio === 2 && totalIntegral > allIntegral"
+            @click="addAddActivityJackpots()"
+          >
+            {{ props.isTicket === 1 ? '立即关联' : '立即支付' }}
+          </ElButton>
+        </div>
+        <div v-else class="px-2 py-4 flex flex-col">
           <div class="flex">
             <div class="p-2">
               总计：￥{{ totalPrice }}
@@ -301,7 +335,8 @@ watch(shoppingCartDrawer, () => {
               :disabled="paymentRadio === 2 && totalIntegral > allIntegral"
               @click="addProcurementOrderData()"
             >
-              立即支付
+              {{ props.isTicket === 1 ? '立即关联' : '立即支付' }}
+              <!-- 立即支付 -->
             </ElButton>
           </div>
         </div>

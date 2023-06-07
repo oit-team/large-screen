@@ -121,3 +121,30 @@ export function deleteActivity(params) {
 export function updateActivityStatus(params) {
   return post('jackpot/activity/updateActivityStatus', params)
 }
+
+/**
+ * 查询奖券列表
+ * @param {*} params
+ * @returns
+ */
+export function getActivityJackpotList(params) {
+  return post('/jackpot/jackpotInfo/getActivityJackpotList', params)
+}
+
+/**
+ * 活动删除关联奖券
+ * @param {*} params
+ * @returns
+ */
+export function deleteJackpotInfos(params) {
+  return post('/jackpot/jackpotInfo/deleteJackpotInfos', params)
+}
+
+/**
+ * 活动关联公共奖券
+ * @param {*} params
+ * @returns
+ */
+export function addAddActivityJackpot(params) {
+  return post('/jackpot/activity/addAddActivityJackpot', params)
+}

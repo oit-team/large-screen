@@ -33,6 +33,17 @@ export default {
             width: 180,
             buttons: [
               {
+                tip: '关联奖券',
+                type: 'primary',
+                icon: 'el-icon-connection',
+                click: ({ row }) => this.$router.push({
+                  name: 'ActivityTicket',
+                  query: {
+                    id: `${row.activityId}`,
+                  },
+                }),
+              },
+              {
                 tip: ({ row }) => ['上架', '下架'][row.shelfStatusKey],
                 icon: ({ row }) => ['el-icon-top', 'el-icon-bottom'][row.shelfStatusKey],
                 type: ({ row }) => ['primary', 'warning'][row.shelfStatusKey],
@@ -59,19 +70,8 @@ export default {
                     type: 'edit',
                   },
                 }),
+                disabled: ({ row }) => row.shelfStatusKey !== 0,
               },
-              // {
-              //   tip: '查看',
-              //   type: 'info',
-              //   icon: 'el-icon-view',
-              //   click: ({ row }) => this.$router.push({
-              //     name: 'ActivityUpdate',
-              //     query: {
-              //       activityId: row.activityId,
-              //       type: 'see',
-              //     },
-              //   }),
-              // },
               {
                 tip: '删除',
                 type: 'danger',
@@ -87,6 +87,7 @@ export default {
                   Message.success('删除成功')
                   this.$refs.table.loadData()
                 },
+                disabled: ({ row }) => row.shelfStatusKey !== 0,
               }],
           },
         },

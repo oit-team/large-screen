@@ -73,7 +73,7 @@
                   },
                   "remarks": {
                     "type": "string",
-                    "title": "活动说明",
+                    "title": "活动须知",
                     "x-decorator": "FormItem",
                     "x-component": "Editor",
                     "x-validator": [],

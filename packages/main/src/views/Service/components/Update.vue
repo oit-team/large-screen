@@ -304,7 +304,7 @@ export default {
                 @blur="onBlur"
               />
             </ElFormItem>
-            <ElFormItem label="服务备注">
+            <ElFormItem label="服务须知">
               <Editor
                 ref="editorRemarkRef"
                 initial-edit-type="wysiwyg"

@@ -154,7 +154,7 @@ defineExpose({
 
 <template>
   <FormProvider ref="formRef" class="rounded-lg p-2" :form="formCreated">
-    <FormLayout :label-col="6" :wrapper-col="10">
+    <FormLayout :label-col="6">
       <SchemaField :schema="config.schema" :scope="fieldScope" />
     </FormLayout>
   </FormProvider>

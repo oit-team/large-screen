@@ -106,7 +106,7 @@ export default {
     },
     onRemarkEditorBlur() {
       const editor = this.$refs.editorRemarkRef?.editor
-      this.editorRemarkText = editor.wwEditor.el.textContent
+      const text = editor.wwEditor.el.textContent
       this.editorRemarkText = text.trim() ? this.$refs.editorRef?.editor.getHTML() : ''
     },
     // 删除tag

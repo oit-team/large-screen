@@ -33,3 +33,18 @@ export function deleteServiceInfo(params) {
 export function upAndDownServiceInfo(params) {
   return post('/system/serviceInfo/upAndDownServiceInfo', params)
 }
+
+/**
+ * 服务订单列表
+ */
+export function getServiceOrderList(params) {
+  return post('/system/serviceOrder/getServiceOrderList', params)
+}
+
+/**
+ * 服务订单详情
+ */
+export function getServiceOrderDetail(params) {
+  return post('/system/serviceOrder/getServiceOrderDetail', params)
+}
+

@@ -182,9 +182,15 @@ export const routes: RouteConfig[] = [
       },
       // 订单管理
       {
-        path: '/order/list',
+        path: '/service/order/list',
         name: 'OrderManageList',
         component: () => import('@/views/OrderManage/List.vue'),
+      },
+      // 订单详情
+      {
+        path: '/service/order/detail',
+        name: 'OrderDetail',
+        component: () => import('@/views/OrderManage/components/Detail.vue'),
       },
       // 活动管理
       {

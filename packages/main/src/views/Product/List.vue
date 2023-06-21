@@ -62,7 +62,7 @@ const tablePageOption = computed(() => ({
             const type = ['上架', '下架'][row.productStateKey]
             await MessageBox.confirm(`要${type}该商品吗？`, '提示')
             await updateProductStateData({
-              id: row.productId,
+              ids: [row.productId],
               productState: state,
             })
             Message.success(`${type}成功`)
@@ -112,7 +112,7 @@ async function handleMultiple(state: number) {
   await MessageBox(`确定要${jackpotType}吗？`, '提示', 'warning')
 
   await updateProductStateData({
-    id: selectedIds,
+    ids: selectedIds,
     productState: state,
   })
   Message.success(`${jackpotType}成功！`)

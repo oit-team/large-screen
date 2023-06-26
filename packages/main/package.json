@@ -25,6 +25,7 @@
     "big.js": "^6.2.1",
     "core-js": "^3.24.0",
     "crypto-js": "^4.1.1",
+    "echarts": "^5.4.2",
     "element-ui": "^2.15.10",
     "lodash-es": "^4.17.21",
     "vue": "^2.7.8",
@@ -45,7 +46,7 @@
     "unplugin-auto-import": "^0.10.1",
     "unplugin-icons": "^0.14.7",
     "unplugin-vue-components": "^0.21.2",
-    "vite": "^3.0.3",
+    "vite": "^4.3.9",
     "vite-plugin-eslint": "^1.8.1",
     "vue-template-compiler": "^2.7.8",
     "vue-template-es2015-compiler": "^1.9.1"

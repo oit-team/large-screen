@@ -14,10 +14,6 @@ export default {
   },
   data: () => ({
     isLoading: false,
-    isAppointLoading: false,
-    isPeopleTrafficLoading: false,
-    isInterestedLoading: false,
-    isLotteryLoading: false,
     appointInfo: {}, // 服务预约
     lotteryInfo: {}, // 拓客引流
     attractTrafficInfo: {}, // 流量监测图表

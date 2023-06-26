@@ -30,6 +30,12 @@ export const routes: RouteConfig[] = [
         name: 'Home',
         component: () => import('@/views/Home.vue'),
       },
+      // 首页看板
+      {
+        path: '/dashboard/data',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/data/index.vue'),
+      },
       // 角色管理
       {
         path: '/role/roleList',

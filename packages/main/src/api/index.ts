@@ -4,6 +4,7 @@ import { Message } from 'element-ui'
 import type { ApiErrorOptions } from './ApiError'
 import ApiError from './ApiError'
 import { getToken } from '@/utils/auth'
+import store from '@/store'
 
 function createApiError(options: ApiErrorOptions) {
   return new ApiError(options).reject()
@@ -42,7 +43,7 @@ axios.interceptors.response.use((response) => {
 export function post(url: string, params: any = {}, config: any = {}) {
   const userData: any = {
     userId: sessionStorage.userId,
-    brandId: sessionStorage.brandId,
+    brandId: sessionStorage.brandId || store.state.userData.brandId,
   }
 
   const formattedParams = {

@@ -33,3 +33,22 @@ export function deleteProductInfo(params) {
 export function getGoodsTypeConfig() {
   return post('/goods/dictitemInfo/getGoodsTypeConfig')
 }
+
+/*
+  * 管理配置黑名单列表
+ */
+export function getProductDisplayNone(params) {
+  return post('/goods/product/getProductDisplayNone', params)
+}
+
+/**
+ *
+ * @param {*} 添加、移出黑名单
+ */
+export function removeProductDisplayNone(params) {
+  return post('/goods/product/removeProductDisplayNone', params)
+}
+
+export function addProductDisplayNone(params) {
+  return post('/goods/product/addProductDisplayNone', params)
+}

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Message, MessageBox } from 'element-ui'
+import BlacklistDrawer from './BlackListDrawer.vue'
 import { convertImageSize } from '@/utils/helper'
-import { deleteProductInfo, getProductAll, getProductIndex, updateProductState } from '@/api/product'
+import { addProductDisplayNone, deleteProductInfo, getProductAll, getProductIndex, updateProductState } from '@/api/product'
 import router from '@/router'
 import store from '@/store'
 
@@ -10,9 +11,14 @@ const total = ref(0)
 const fields = shallowRef()
 const table = ref()
 
+const shopId = ref(0)
+
+const blackDrawer = ref()
+
 async function getProductAllData(params: any) {
   const res = await getProductAll(params)
   total.value = res.body.count
+  shopId.value = res.body.shopId
   data.value = res.body.resultList
 }
 
@@ -29,6 +35,16 @@ async function updateProductStateData(params: any) {
   })
 }
 
+async function openBlackDrawer() {
+  blackDrawer.value.open()
+}
+
+// async function addOrRemoveBlackList(){
+//   const res = await addOrRemoveProductDisplayNone({
+//     productIdList:
+//   })
+// }
+
 const tablePageOption = computed(() => ({
   promise: getProductAllData,
   actions: [
@@ -40,12 +56,17 @@ const tablePageOption = computed(() => ({
     {
       slot: 'multiple',
     },
+    {
+      name: '隐藏列表',
+      type: 'primary',
+      click: () => openBlackDrawer(),
+    },
   ],
   table: {
     data: data.value,
     selection: true,
     actions: {
-      width: 150,
+      width: 180,
       buttons: [
         {
           tip: '编辑',
@@ -77,9 +98,22 @@ const tablePageOption = computed(() => ({
             await MessageBox.confirm('要删除该商品吗？', '提示')
             const res = await deleteProductInfo({
               id: row.productId,
-              brandId: store.state.userData.brandId,
             })
             Message.success('删除成功')
+            refresh()
+          },
+        },
+        {
+          tip: '隐藏',
+          icon: 'el-icon-minus',
+          type: 'info',
+          disabled: ({ row }: any) => !shopId.value,
+          click: async ({ row }: any) => {
+            await MessageBox.confirm('要隐藏此项吗？', '提示')
+            await addProductDisplayNone({
+              productIdList: [row.productId],
+            })
+            Message.success('隐藏成功')
             refresh()
           },
         },
@@ -106,6 +140,7 @@ async function handleMultiple(state: number) {
     })
     return
   }
+
   const selectedIds = table.value.selected.map(({ productId }: any) => productId)
   const jackpotType = ['下架', '上架'][state]
 
@@ -124,9 +159,6 @@ async function handleMultiple(state: number) {
 <template>
   <div class="p-2">
     <TablePage v-bind="tablePageOption" ref="table" :fields="fields">
-      <!-- <template #content:productUrl="{ row }">
-        <ElImage :src="convertImageSize(row.imgUrl)" class="max-w-100px max-h-100px file-res" />
-      </template> -->
       <template #column:productUrl>
         <ElTableColumn
           prop="productUrl"
@@ -159,6 +191,8 @@ async function handleMultiple(state: number) {
         </ElDropdown>
       </template>
     </TablePage>
+
+    <BlacklistDrawer ref="blackDrawer" />
   </div>
 </template>
 

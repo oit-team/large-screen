@@ -154,6 +154,23 @@ async function handleMultiple(state: number) {
   table.value.loadData()
   table.value.clearSelection()
 }
+async function hiddenListItem() {
+  if (table.value.selected.length === 0) {
+    Message({
+      message: '请至少选择其中一项数据！',
+      type: 'warning',
+    })
+    return
+  }
+  const selectedIds = table.value.selected.map(({ productId }: any) => productId)
+
+  await MessageBox.confirm('要批量隐藏选中的项吗？', '提示')
+  await addProductDisplayNone({
+    productIdList: selectedIds,
+  })
+  Message.success('批量隐藏成功')
+  refresh()
+}
 </script>
 
 <template>
@@ -186,6 +203,9 @@ async function handleMultiple(state: number) {
             </ElDropdownItem>
             <ElDropdownItem @click.native="handleMultiple(0)">
               下架
+            </ElDropdownItem>
+            <ElDropdownItem @click.native="hiddenListItem">
+              隐藏
             </ElDropdownItem>
           </ElDropdownMenu>
         </ElDropdown>

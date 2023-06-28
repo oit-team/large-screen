@@ -96,8 +96,6 @@ function refresh() {
   table.value.loadData()
 }
 
-onActivated(refresh)
-
 defineExpose({
   open,
   close,

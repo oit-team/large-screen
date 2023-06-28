@@ -39,12 +39,6 @@ async function openBlackDrawer() {
   blackDrawer.value.open()
 }
 
-// async function addOrRemoveBlackList(){
-//   const res = await addOrRemoveProductDisplayNone({
-//     productIdList:
-//   })
-// }
-
 const tablePageOption = computed(() => ({
   promise: getProductAllData,
   actions: [
@@ -151,8 +145,8 @@ async function handleMultiple(state: number) {
     productState: state,
   })
   Message.success(`${jackpotType}成功！`)
-  table.value.loadData()
-  table.value.clearSelection()
+  table.value?.loadData()
+  table.value?.clearSelection()
 }
 async function hiddenListItem() {
   if (table.value.selected.length === 0) {

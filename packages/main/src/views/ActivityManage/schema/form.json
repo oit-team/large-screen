@@ -77,6 +77,7 @@
                     "x-decorator": "FormItem",
                     "x-component": "Editor",
                     "x-validator": [],
+                    "required": true,
                     "x-component-props": {},
                     "x-decorator-props": {},
                     "x-index": 3,

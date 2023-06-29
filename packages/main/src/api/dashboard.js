@@ -29,7 +29,7 @@ export function getLotteryInteraction(params) {
 }
 
 /*
-  拓客引流
+  用户近七天感兴趣商品排名Top10
 */
 export function getTopTenProducts(params) {
   return post('/liveBroadcast/home/getTopTenProducts', params)

@@ -27,3 +27,10 @@ export function getAppointmentReport(params) {
 export function getLotteryInteraction(params) {
   return post('/liveBroadcast/home/getLotteryInteraction', params)
 }
+
+/*
+  拓客引流
+*/
+export function getTopTenProducts(params) {
+  return post('/liveBroadcast/home/getTopTenProducts', params)
+}

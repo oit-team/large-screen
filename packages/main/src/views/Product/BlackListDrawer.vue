@@ -4,6 +4,8 @@ import { convertImageSize } from '@/utils/helper'
 import { getProductDisplayNone, getProductIndex, removeProductDisplayNone } from '@/api/product'
 import store from '@/store'
 
+const emit = defineEmits(['done'])
+
 const data = shallowRef([])
 const total = ref(0)
 const fields = shallowRef()
@@ -53,6 +55,7 @@ async function deleteBatchBlackList() {
   refresh()
   table.value.clearSelection()
   close()
+  emit('done')
 }
 
 const tablePageOption = computed(() => ({
@@ -82,6 +85,7 @@ const tablePageOption = computed(() => ({
             Message.success('移出成功')
             refresh()
             close()
+            emit('done')
           },
         },
       ],

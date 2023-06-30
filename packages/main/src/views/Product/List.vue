@@ -206,7 +206,7 @@ async function hiddenListItem() {
       </template>
     </TablePage>
 
-    <BlacklistDrawer ref="blackDrawer" />
+    <BlacklistDrawer ref="blackDrawer" @done="refresh()" />
   </div>
 </template>
 
